@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1084254307608",
+    "project_id": "cozydiary-22111",
+    "storage_bucket": "cozydiary-22111.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084254307608:android:4dc1e76f7809be2a57ca6d",
+        "android_client_info": {
+          "package_name": "com.example.cozydiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084254307608-kpnrl27hmkqd3de9uge7vkt7ae6g4892.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cozydiary",
+            "certificate_hash": "180654c27c5bc19d83d6f0dab1001eeb562f1a16"
+          }
+        },
+        {
+          "client_id": "1084254307608-ki9kdsvps1o8trn7trp2s5tanpm4j07g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSaM7T9vku1N2vVKJpjp0R6qh9YfVG1Wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084254307608-ki9kdsvps1o8trn7trp2s5tanpm4j07g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

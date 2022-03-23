@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1084254307608-731d80noq2ml4tekeqa67qtvjq882mg8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1084254307608-731d80noq2ml4tekeqa67qtvjq882mg8</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1084254307608-kpnrl27hmkqd3de9uge7vkt7ae6g4892.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC2DdjS9bSFnGE1b05XlGwKcMz22aXbApw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1084254307608</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.cozydaily</string>
+	<key>PROJECT_ID</key>
+	<string>cozydiary-22111</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cozydiary-22111.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1084254307608:ios:b09732a7af32c65c57ca6d</string>
+</dict>
+</plist>
