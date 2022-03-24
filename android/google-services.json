@@ -37,6 +37,13 @@
             {
               "client_id": "1084254307608-ki9kdsvps1o8trn7trp2s5tanpm4j07g.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1084254307608-731d80noq2ml4tekeqa67qtvjq882mg8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cozydaily"
+              }
             }
           ]
         }

@@ -15,11 +15,5 @@
       "type": "dart",
       "flutterMode": "profile"
     },
-    {
-      "name": "Flutter (lib\\google_login.dart)",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib\\google_login.dart"
-    }
   ]
 }
