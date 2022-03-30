@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'google_sign_in.dart';
 
 class GoogleSignUp extends StatelessWidget {

@@ -1,11 +1,20 @@
+import 'package:cozydiary/pages/firebaseCRUD_page.dart';
 import 'package:cozydiary/pages/home_page.dart';
 import 'package:cozydiary/pages/login_page.dart';
+import 'package:cozydiary/pages/personal_page.dart';
 import 'package:cozydiary/pages/register_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:video_player/video_player.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -19,7 +28,9 @@ class MyApp extends StatelessWidget {
       routes: {
         "registerpage": (context) => const RegisterPage(),
         "loginpage": (context) => const LoginPage(),
-        "homepage": (context) => HomePage(),
+        "homepage": (context) => const HomePage(),
+        "personalpage": (context) => const PersonalPage(),
+        "firebasepage": (context) => const FirebasePage(),
       },
       home: MyHomePage(
         title: 'CozyDiary',
@@ -42,13 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
   late VideoPlayerController _controller;
   bool _isLoggedIn = false;
   late GoogleSignInAccount _userObj;
-
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('asstes/images/video.mp4')
+    _controller = VideoPlayerController.asset('assets/images/video.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {
@@ -75,7 +85,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     }).catchError((e) {});
                   },
-                  child: Text("Logout"))
+                  child: Text("Logout")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'personalpage');
+                  },
+                  child: Text("跳轉個人頁面")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'firebasepage');
+                  },
+                  child: Text("跳轉Firebase頁面"))
             ],
           ))
         : Scaffold(
@@ -99,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   opacity: 0.3,
                   child: ConstrainedBox(
                     child: Image.asset(
-                      'asstes/images/Black.png',
+                      'assets/images/Black.png',
                       fit: BoxFit.cover,
                     ),
                     constraints: const BoxConstraints.expand(),
@@ -110,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Center(
                     child: Align(
                   alignment: const Alignment(0.0, -0.35),
-                  child: Image.asset('asstes/images/CozyDiary.png'),
+                  child: Image.asset('assets/images/CozyDiary.png'),
                 )),
 
                 //登入按鈕
@@ -170,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         Align(
                                           alignment: const Alignment(0.0, 0.0),
                                           child: Image.asset(
-                                              "asstes/images/icons8-facebook-48.png"),
+                                              "assets/images/icons8-facebook-48.png"),
                                         ),
                                         const Align(
                                             alignment: Alignment(0.0, 0.3),
