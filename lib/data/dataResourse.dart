@@ -1,12 +1,21 @@
 import 'package:flutter/foundation.dart';
 
+const List<String> HomePageImage_List = [
+  "https://images.pexels.com/photos/11297792/pexels-photo-11297792.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+  "https://images.pexels.com/photos/11482689/pexels-photo-11482689.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11705729/pexels-photo-11705729.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11656139/pexels-photo-11656139.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11656059/pexels-photo-11656059.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11631650/pexels-photo-11631650.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+];
+
 const List<String> Image_List = [
-  "https://i.imgur.com/b9GSg7I.jpg",
-  "https://i.imgur.com/b9GSg7I.jpg",
-  "https://i.imgur.com/b9GSg7I.jpg",
-  "https://i.imgur.com/b9GSg7I.jpg",
-  "https://i.imgur.com/b9GSg7I.jpg",
-  "https://i.imgur.com/b9GSg7I.jpg",
+  "https://images.pexels.com/photos/11297792/pexels-photo-11297792.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+  "https://images.pexels.com/photos/11482689/pexels-photo-11482689.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11705729/pexels-photo-11705729.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11656139/pexels-photo-11656139.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11656059/pexels-photo-11656059.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11631650/pexels-photo-11631650.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
 ];
 
 const List<String> PostText_List = [

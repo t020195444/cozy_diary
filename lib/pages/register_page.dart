@@ -6,8 +6,9 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+        backgroundColor: Colors.black38,
         body: Center(
-      child: Text("註冊頁面"),
-    ));
+          child: Text("註冊頁面"),
+        ));
   }
 }

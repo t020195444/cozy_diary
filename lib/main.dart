@@ -1,21 +1,21 @@
 import 'package:cozydiary/pages/firebaseCRUD_page.dart';
 import 'package:cozydiary/pages/home_page.dart';
-import 'package:cozydiary/pages/login_page.dart';
 import 'package:cozydiary/pages/personal_page.dart';
 import 'package:cozydiary/pages/register_page.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:video_player/video_player.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'firebase_options.dart';
+import 'widget/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,12 +27,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       routes: {
         "registerpage": (context) => const RegisterPage(),
-        "loginpage": (context) => const LoginPage(),
         "homepage": (context) => const HomePage(),
         "personalpage": (context) => const PersonalPage(),
         "firebasepage": (context) => const FirebasePage(),
       },
-      home: MyHomePage(
+      home: const MyHomePage(
         title: 'CozyDiary',
       ),
       debugShowCheckedModeBanner: false,
@@ -53,7 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
   late VideoPlayerController _controller;
   bool _isLoggedIn = false;
   late GoogleSignInAccount _userObj;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+    ],
+  );
+  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -68,36 +72,16 @@ class _MyHomePageState extends State<MyHomePage> {
     _controller.setLooping(true);
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isLoggedIn
-        ? Scaffold(
-            body: Column(
-            children: [
-              Image.network(_userObj.photoUrl!),
-              Text(_userObj.displayName!),
-              Text(_userObj.email),
-              TextButton(
-                  onPressed: () {
-                    _googleSignIn.signOut().then((value) {
-                      setState(() {
-                        _isLoggedIn = false;
-                      });
-                    }).catchError((e) {});
-                  },
-                  child: Text("Logout")),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'personalpage');
-                  },
-                  child: Text("跳轉個人頁面")),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'firebasepage');
-                  },
-                  child: Text("跳轉Firebase頁面"))
-            ],
-          ))
+        ? HomePage()
         : Scaffold(
             body: Center(
                 child: Stack(
