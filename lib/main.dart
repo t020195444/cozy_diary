@@ -1,4 +1,3 @@
-import 'package:cozydiary/pages/firebaseCRUD_page.dart';
 import 'package:cozydiary/pages/home_page.dart';
 import 'package:cozydiary/pages/personal_page.dart';
 import 'package:cozydiary/pages/register_page.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
         "registerpage": (context) => const RegisterPage(),
         "homepage": (context) => const HomePage(),
         "personalpage": (context) => const PersonalPage(),
-        "firebasepage": (context) => const FirebasePage(),
       },
       home: const MyHomePage(
         title: 'CozyDiary',

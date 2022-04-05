@@ -3,9 +3,9 @@ import 'package:like_button/like_button.dart';
 
 import '../Data/dataResourse.dart';
 
-class BuildCard extends StatelessWidget {
+class BuildCardHome extends StatelessWidget {
   final int index;
-  const BuildCard({Key? key, required this.index}) : super(key: key);
+  const BuildCardHome({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class BuildCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Image.network(
-            Image_List[index],
+            HomePageImage_List[index],
             fit: BoxFit.cover,
           ),
           Padding(

@@ -10,10 +10,10 @@ const List<String> HomePageImage_List = [
 ];
 
 const List<String> Image_List = [
-  "https://images.pexels.com/photos/11297792/pexels-photo-11297792.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-  "https://images.pexels.com/photos/11482689/pexels-photo-11482689.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/11705729/pexels-photo-11705729.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/11656139/pexels-photo-11656139.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11696935/pexels-photo-11696935.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11566658/pexels-photo-11566658.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11503177/pexels-photo-11503177.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/11503173/pexels-photo-11503173.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
   "https://images.pexels.com/photos/11656059/pexels-photo-11656059.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
   "https://images.pexels.com/photos/11631650/pexels-photo-11631650.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
 ];

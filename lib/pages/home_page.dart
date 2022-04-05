@@ -1,3 +1,5 @@
+import 'package:cozydiary/pages/Homepage.dart';
+import 'package:cozydiary/screen_widget/viewPostScreen.dart';
 import 'package:cozydiary/screen_widget/HomeScreen_GridView.dart';
 import 'package:cozydiary/pages/personal_page.dart';
 import 'package:cozydiary/pages/register_page.dart';
@@ -16,9 +18,10 @@ class _HomePageState extends State<HomePage> {
   bool _isLoggedIn = true;
   late GoogleSignInAccount _userObj;
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
@@ -32,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   final screens = [
-    HomeScreen(),
+    homepage(),
     RegisterPage(),
     PersonalPage(),
   ];
@@ -40,9 +43,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black38,
+        extendBody: true,
+        backgroundColor: Colors.black,
         bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
           backgroundColor: Colors.transparent,
+          buttonBackgroundColor: Colors.white,
           height: 50,
           items: <Widget>[
             Icon(Icons.home, size: 30),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../Data/dataResourse.dart';
-import '../Widget/buildCard.dart';
+import '../widget/buildCard_personal.dart';
 
 class InitPostGridView extends StatelessWidget {
   const InitPostGridView({Key? key}) : super(key: key);
