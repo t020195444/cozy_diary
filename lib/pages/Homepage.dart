@@ -96,10 +96,12 @@ class NestedTabBar extends StatefulWidget {
 class _NestedTabBarState extends State<NestedTabBar>
     with TickerProviderStateMixin {
   late TabController _nestedTabController;
+  var _scrollViewController;
   @override
   void initState() {
     super.initState();
     _nestedTabController = new TabController(length: 5, vsync: this);
+    _scrollViewController = ScrollController();
     //調整第二頁中的tabbar
   }
 
@@ -112,95 +114,106 @@ class _NestedTabBarState extends State<NestedTabBar>
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        TabBar(
-          isScrollable: true,
-          indicatorSize: TabBarIndicatorSize.label,
-          labelStyle: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
-          controller: _nestedTabController,
-          labelColor: Colors.white,
-          labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-          unselectedLabelColor: Color.fromARGB(150, 255, 255, 255),
-          unselectedLabelStyle: TextStyle(fontSize: 15),
-          tabs: <Widget>[
-            Container(
-                height: 46,
-                width: 50,
-                child: Center(
-                  child: Text(
-                    '運動',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-            Container(
-                height: 46,
-                width: 50,
-                child: Center(
-                  child: Text(
-                    '美妝',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-            Container(
-                height: 46,
-                width: 50,
-                child: Center(
-                  child: Text(
-                    '生活',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-            Container(
-                height: 46,
-                width: 50,
-                child: Center(
-                  child: Text(
-                    '藝術',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-            Container(
-                height: 46,
-                width: 50,
-                child: Center(
-                  child: Text(
-                    '搞笑',
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-          ],
-        ),
-        Container(
-          height: screenHeight * 0.8,
-          margin: EdgeInsets.only(left: 16.0, right: 16.0),
-          child: TabBarView(
+    return NestedScrollView(
+      controller: _scrollViewController,
+      headerSliverBuilder: (context, bool) => [
+        SliverAppBar(
+          primary: true,
+          floating: false,
+          pinned: true,
+          snap: false,
+          expandedHeight: 0,
+          backgroundColor: Color.fromARGB(10, 255, 255, 255),
+          title: TabBar(
+            isScrollable: true,
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
             controller: _nestedTabController,
-            children: <Widget>[
-              //文章放這，如果要捲動套件，要自己加，我目前沒寫
+            labelColor: Colors.white,
+            labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            unselectedLabelColor: Color.fromARGB(150, 255, 255, 255),
+            unselectedLabelStyle: TextStyle(fontSize: 15),
+            tabs: <Widget>[
               Container(
-                child: const HomeScreen(),
-              ),
+                  height: 30,
+                  width: 30,
+                  child: Center(
+                    child: Text(
+                      '運動',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  )),
               Container(
-                child: const HomeScreen(),
-              ),
+                  height: 30,
+                  width: 50,
+                  child: Center(
+                    child: Text('美妝',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                        )),
+                  )),
               Container(
-                child: const HomeScreen(),
-              ),
+                  height: 30,
+                  width: 50,
+                  child: Center(
+                    child: Text('生活',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                        )),
+                  )),
               Container(
-                child: const HomeScreen(),
-              ),
+                  height: 30,
+                  width: 50,
+                  child: Center(
+                    child: Text('藝術',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                        )),
+                  )),
               Container(
-                child: const HomeScreen(),
-              ),
+                  height: 30,
+                  width: 50,
+                  child: Center(
+                    child: Text('搞笑',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                        )),
+                  )),
             ],
           ),
         ),
       ],
+      body: TabBarView(
+        controller: _nestedTabController,
+        children: <Widget>[
+          //文章放這，如果要捲動套件，要自己加，我目前沒寫
+          Container(
+            child: const HomeScreen(),
+          ),
+          Container(
+            child: const HomeScreen(),
+          ),
+          Container(
+            child: const HomeScreen(),
+          ),
+          Container(
+            child: const HomeScreen(),
+          ),
+          Container(
+            child: const HomeScreen(),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -15,7 +15,11 @@ class HomeScreen extends StatelessWidget {
             crossAxisCount: 2,
             itemCount: HomePageImage_List.length,
             itemBuilder: (context, index) {
-              return BuildCardHome(index: index);
+              String imgPath = HomePageImage_List[index];
+              return BuildCardHome(
+                index: index,
+                imgPath: '',
+              );
             }));
   }
 }

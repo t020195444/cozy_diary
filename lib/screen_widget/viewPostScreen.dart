@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../Data/dataResourse.dart';
+
 class ViewPostScreen extends StatefulWidget {
   @override
+  late String imgPath;
   _ViewPostScreenState createState() => _ViewPostScreenState();
 }
 
 class _ViewPostScreenState extends State<ViewPostScreen> {
+  String? get imgPath => null;
+
   Widget _buildComment(int index) {
-    // debugPaintSizeEnabled = true;
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: ListTile(
@@ -29,7 +33,7 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
               child: Image(
                 height: 50.0,
                 width: 50.0,
-                image: AssetImage('assets/images/user1.jpg'),
+                image: AssetImage(imgPath!),
                 fit: BoxFit.cover,
               ),
             ),

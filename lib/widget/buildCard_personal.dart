@@ -7,7 +7,10 @@ import '../screen_widget/viewPostScreen.dart';
 
 class BuildCard extends StatelessWidget {
   final int index;
-  const BuildCard({Key? key, required this.index}) : super(key: key);
+  final String imgPath;
+
+  const BuildCard({Key? key, required this.index, required this.imgPath})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

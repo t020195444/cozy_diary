@@ -15,8 +15,13 @@ class InitPostGridView extends StatelessWidget {
             crossAxisCount: 2,
             itemCount: Image_List.length,
             itemBuilder: (context, index) {
+              String imgPath = Image_List[index];
+
               return GestureDetector(
-                child: BuildCard(index: index),
+                child: BuildCard(
+                  index: index,
+                  imgPath: '',
+                ),
                 onTap: () {},
               );
             }));

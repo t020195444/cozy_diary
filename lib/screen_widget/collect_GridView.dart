@@ -15,7 +15,10 @@ class InitCollectGridView extends StatelessWidget {
             crossAxisCount: 2,
             itemCount: Image_List.length,
             itemBuilder: (context, index) {
-              return BuildCard(index: index);
+              return BuildCard(
+                index: index,
+                imgPath: '',
+              );
             }));
   }
 }
