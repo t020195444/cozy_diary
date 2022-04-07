@@ -5,11 +5,15 @@ import '../Data/dataResourse.dart';
 
 class BuildCardHome extends StatelessWidget {
   final int index;
-  const BuildCardHome({Key? key, required this.index}) : super(key: key);
+  final String imgPath;
+
+  const BuildCardHome({Key? key, required this.index, required this.imgPath})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color.fromARGB(40, 255, 255, 255),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -19,11 +23,12 @@ class BuildCardHome extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(15),
-            child: Text(
-              PostText_List[index],
-              softWrap: true,
-              maxLines: 2,
-            ),
+            child: Text(PostText_List[index],
+                softWrap: true,
+                maxLines: 2,
+                style: TextStyle(
+                  color: Colors.white70,
+                )),
           ),
           Padding(
               padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
@@ -46,7 +51,9 @@ class BuildCardHome extends StatelessWidget {
                           Text(
                             '許悅',
                             style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.bold),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           )
                         ],
                       )
