@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 
-import '../Data/dataResourse.dart';
+import '../../../Data/dataResourse.dart';
 
 class BuildCardHome extends StatelessWidget {
   final int index;
-  final String imgPath;
-
-  const BuildCardHome({Key? key, required this.index, required this.imgPath})
-      : super(key: key);
+  const BuildCardHome({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

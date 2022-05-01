@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../Data/dataResourse.dart';
 
 class ViewPostScreen extends StatefulWidget {
+  const ViewPostScreen(int index, {Key? key}) : super(key: key);
+
   @override
-  late String imgPath;
   _ViewPostScreenState createState() => _ViewPostScreenState();
 }
 
 class _ViewPostScreenState extends State<ViewPostScreen> {
-  String? get imgPath => null;
-
   Widget _buildComment(int index) {
     return Padding(
       padding: EdgeInsets.all(10.0),
@@ -30,13 +29,10 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
           ),
           child: CircleAvatar(
             child: ClipOval(
-              child: Image(
-                height: 50.0,
-                width: 50.0,
-                image: AssetImage(imgPath!),
-                fit: BoxFit.cover,
-              ),
-            ),
+                child: Image.network(
+              HomePageImage_List[index],
+              fit: BoxFit.cover,
+            )),
           ),
         ),
         title: Text(

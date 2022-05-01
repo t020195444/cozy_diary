@@ -1,19 +1,19 @@
-import 'package:cozydiary/screen_widget/HomeScreen_GridView.dart';
+import 'package:cozydiary/pages/Home/widget/HomeScreen_GridView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class homepage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _homepageState createState() => _homepageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _homepageState extends State<homepage>
+class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 3, vsync: this);
+    _tabController = new TabController(length: 3, vsync: this, initialIndex: 1);
     //調整第一頁的tarbar
   }
 

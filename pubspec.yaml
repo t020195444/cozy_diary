@@ -45,7 +45,8 @@ dependencies:
   like_button: ^2.0.4
   curved_navigation_bar:
   page_transition:
-
+  flutter_map: any
+  flutter_map_location_marker: any
   provider: ^5.0.0
 
 dev_dependencies:

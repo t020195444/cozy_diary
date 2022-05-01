@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Data/dataResourse.dart';
+import '../../Data/dataResourse.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);

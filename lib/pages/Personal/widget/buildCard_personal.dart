@@ -1,23 +1,21 @@
+import 'package:cozydiary/screen_widget/viewPostScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../Data/dataResourse.dart';
-import '../screen_widget/viewPostScreen.dart';
+import '../../../Data/dataResourse.dart';
 
 class BuildCard extends StatelessWidget {
   final int index;
   final String imgPath;
-
   const BuildCard({Key? key, required this.index, required this.imgPath})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(PageTransition(
-            child: ViewPostScreen(),
+            child: ViewPostScreen(index),
             type: PageTransitionType.rightToLeft,
             alignment: Alignment.center));
       },

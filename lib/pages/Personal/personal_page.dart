@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../screen_widget/collect_GridView.dart';
-import '../screen_widget/post_GridView.dart';
-import '../widget/DrawerWidget.dart';
-import '../widget/EditPersonalButton.dart';
-import '../widget/IntroductionWidget.dart';
-import '../widget/followerWidget.dart';
-import '../widget/userHeaderWidget.dart';
+import 'widget/collect_GridView.dart';
+import '../../screen_widget/post_GridView.dart';
+import 'DrawerWidget.dart';
+import 'EditPersonalButton.dart';
+import 'IntroductionWidget.dart';
+import 'followerWidget.dart';
+import 'userHeaderWidget.dart';
 
 class PersonalPage extends StatelessWidget {
   const PersonalPage({Key? key}) : super(key: key);

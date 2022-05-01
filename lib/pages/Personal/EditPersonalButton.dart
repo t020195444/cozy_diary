@@ -1,7 +1,7 @@
-import 'package:cozydiary/widget/userHeaderWidget.dart';
+import 'package:cozydiary/pages/Personal/userHeaderWidget.dart';
 import 'package:flutter/material.dart';
-import '../pages/Edit_Personal.dart';
-import 'PageTranslationAnimation.dart';
+import 'Edit_Personal.dart';
+import 'widget/PageTranslationAnimation.dart';
 
 class EditPersoalImformationButton extends StatelessWidget {
   const EditPersoalImformationButton({Key? key}) : super(key: key);

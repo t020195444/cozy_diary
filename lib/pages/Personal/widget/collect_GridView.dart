@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../Data/dataResourse.dart';
-import '../Widget/buildCard_personal.dart';
+import '../../../Data/dataResourse.dart';
+import '../widget/buildCard_personal.dart';
 
 class InitCollectGridView extends StatelessWidget {
   const InitCollectGridView({Key? key}) : super(key: key);

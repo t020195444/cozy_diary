@@ -1,7 +1,7 @@
-import 'package:cozydiary/widget/buildCard_home.dart';
+import 'package:cozydiary/pages/Home/widget/buildCard_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../data/dataResourse.dart';
+import '../../../data/dataResourse.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,10 +15,8 @@ class HomeScreen extends StatelessWidget {
             crossAxisCount: 2,
             itemCount: HomePageImage_List.length,
             itemBuilder: (context, index) {
-              String imgPath = HomePageImage_List[index];
               return BuildCardHome(
                 index: index,
-                imgPath: '',
               );
             }));
   }

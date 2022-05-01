@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Data/dataResourse.dart';
+import '../../Data/dataResourse.dart';
 
 class follower_Widget extends StatefulWidget {
   const follower_Widget({Key? key}) : super(key: key);
