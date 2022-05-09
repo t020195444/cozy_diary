@@ -86,9 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(child: Obx(
         () {
           if (logincontroller.googleAccount.value == null)
-            return Login(context);
-          else
             return HomePageTabbar();
+          else
+            return Login(context);
         },
       )),
     );

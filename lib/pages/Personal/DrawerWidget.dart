@@ -1,6 +1,5 @@
+import 'package:cozydiary/Data/dataResourse.dart';
 import 'package:flutter/material.dart';
-
-import '../../Data/dataResourse.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -35,7 +34,7 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
         ),
-        const ListTile(
+        ListTile(
           leading: Icon(
             Icons.manage_accounts,
             color: Colors.white,
@@ -46,6 +45,7 @@ class DrawerWidget extends StatelessWidget {
               color: Colors.white,
             ),
           ),
+          onTap: () {},
         ),
         const ListTile(
           leading: Icon(

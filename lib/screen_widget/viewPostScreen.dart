@@ -1,16 +1,19 @@
+import 'package:cozydiary/Data/dataResourse.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 
-import '../Data/dataResourse.dart';
+import 'package:flutter/rendering.dart';
 
 class ViewPostScreen extends StatefulWidget {
-  const ViewPostScreen(int index, {Key? key}) : super(key: key);
-
+  final String imageUrl;
+  const ViewPostScreen({Key? key, required this.imageUrl}) : super(key: key);
   @override
   _ViewPostScreenState createState() => _ViewPostScreenState();
 }
 
 class _ViewPostScreenState extends State<ViewPostScreen> {
   Widget _buildComment(int index) {
+    // debugPaintSizeEnabled = true;
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: ListTile(
@@ -18,6 +21,8 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
           width: 50.0,
           height: 50.0,
           decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill, image: NetworkImage(Image_List[3])),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
@@ -27,13 +32,6 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
               ),
             ],
           ),
-          child: CircleAvatar(
-            child: ClipOval(
-                child: Image.network(
-              HomePageImage_List[index],
-              fit: BoxFit.cover,
-            )),
-          ),
         ),
         title: Text(
           'test123',
@@ -42,12 +40,10 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
           ),
         ),
         subtitle: Text('test456'),
-        trailing: IconButton(
-          icon: Icon(
-            Icons.favorite_border,
-          ),
-          color: Colors.grey,
-          onPressed: () => Navigator.pop(context),
+        trailing: Container(
+          child: LikeButton(),
+          width: 35,
+          height: 35,
         ),
       ),
     );
@@ -56,7 +52,6 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEDF0F6),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
@@ -66,7 +61,7 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
               width: double.infinity,
               height: 600.0,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 49, 46, 46),
                 borderRadius: BorderRadius.circular(25.0),
               ),
               child: Column(
@@ -84,7 +79,7 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                                 color: Colors.black,
                                 onPressed: () {
                                   Navigator.pop(context);
-                                }, //=> Navigator.pop(context),
+                                },
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.87,
@@ -93,12 +88,12 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                                       margin: EdgeInsets.fromLTRB(0, 0, 10, 4),
                                       width: 50.0,
                                       height: 50.0,
-                                      decoration: new BoxDecoration(
+                                      decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          image: new DecorationImage(
+                                          image: DecorationImage(
                                               fit: BoxFit.fill,
-                                              image: AssetImage(
-                                                  'assets/images/user1.jpg'))),
+                                              image:
+                                                  NetworkImage(Image_List[3]))),
                                       child: RawMaterialButton(
                                         onPressed: () {
                                           print('this is user avatar');
@@ -108,32 +103,6 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                                             Color.fromARGB(0, 255, 255, 255),
                                         shape: CircleBorder(),
                                       )),
-                                  // Container(
-                                  //   width: 50.0,
-                                  //   height: 50.0,
-                                  //   decoration: BoxDecoration(
-                                  //     shape: BoxShape.circle,
-                                  //     boxShadow: [
-                                  //       BoxShadow(
-                                  //         color: Colors.black45,
-                                  //         offset: Offset(0, 2),
-                                  //         blurRadius: 6.0,
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  //   child: CircleAvatar(
-                                  //     child: ClipOval(
-                                  //       child: Image(
-                                  //         height: 50.0,
-                                  //         width: 50.0,
-                                  //         image: AssetImage(
-                                  //             'assets/images/pic1.jpg'),
-                                  //         fit: BoxFit.cover,
-
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
                                   title: Text(
                                     'test789',
                                     style: TextStyle(
@@ -151,25 +120,22 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                             ]),
                         InkWell(
                           onDoubleTap: () => print('Like post'),
-                          child: Container(
-                            margin: EdgeInsets.all(10.0),
-                            width: double.infinity,
-                            height: 350.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Colors.black45,
-                              //     offset: Offset(0, 5),
-                              //     blurRadius: 8.0,
+                          child: Hero(
+                              tag: widget.imageUrl,
+                              child: Image.network(widget.imageUrl)
+                              // Container(
+                              //   margin: EdgeInsets.all(10.0),
+                              //   width: double.infinity,
+                              //   height: 350.0,
+                              //   decoration: BoxDecoration(
+                              //     borderRadius: BorderRadius.circular(25.0),
+                              //     image: DecorationImage(
+                              //       image: NetworkImage(widget.imageUrl),
+                              //       fit: BoxFit.cover,
+                              //     ),
                               //   ),
-                              // ],
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/pic1.jpg'),
-                                fit: BoxFit.cover,
+                              // ),
                               ),
-                            ),
-                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -180,17 +146,9 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.favorite_border),
-                                        iconSize: 30.0,
-                                        onPressed: () => print('Like post'),
-                                      ),
-                                      Text(
-                                        '2,515',
-                                        style: TextStyle(
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                      LikeButton(
+                                        likeCount: 2515,
+                                        isLiked: false,
                                       ),
                                     ],
                                   ),
@@ -234,7 +192,7 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
               width: double.infinity,
               height: 600.0,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 49, 46, 46),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
                   topRight: Radius.circular(30.0),
@@ -259,9 +217,9 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
           height: 100.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0),
-              topRight: Radius.circular(30.0),
-            ),
+                // topLeft: Radius.circular(30.0),
+                // topRight: Radius.circular(30.0),
+                ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black12,
@@ -269,7 +227,7 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                 blurRadius: 6.0,
               ),
             ],
-            color: Colors.white,
+            color: Color.fromARGB(255, 49, 46, 46),
           ),
           child: Padding(
             padding: EdgeInsets.all(12.0),
@@ -291,6 +249,8 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                   width: 48.0,
                   height: 48.0,
                   decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(Image_List[3]), fit: BoxFit.fill),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
@@ -300,25 +260,16 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                       ),
                     ],
                   ),
-                  child: CircleAvatar(
-                    child: ClipOval(
-                      child: Image(
-                        height: 48.0,
-                        width: 48.0,
-                        image: AssetImage('assets/images/user1.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
                 ),
                 suffixIcon: Container(
                   margin: EdgeInsets.only(right: 4.0),
                   width: 70.0,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
                     ),
-                    color: Color(0xFF23B66F),
                     onPressed: () => print('Post comment'),
                     child: Icon(
                       Icons.send,

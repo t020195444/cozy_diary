@@ -12,11 +12,13 @@ class BuildCard extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.of(context).push(PageTransition(
-            child: ViewPostScreen(index),
-            type: PageTransitionType.rightToLeft,
+            child: ViewPostScreen(
+              imageUrl: Image_List[index],
+            ),
+            type: PageTransitionType.fade,
             alignment: Alignment.center));
       },
       child: Card(
@@ -24,9 +26,12 @@ class BuildCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.network(
-              Image_List[index],
-              fit: BoxFit.cover,
+            Hero(
+              tag: Image_List[index],
+              child: Image.network(
+                Image_List[index],
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(15),

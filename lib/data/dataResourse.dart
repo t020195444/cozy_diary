@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
 
 const List<String> HomePageImage_List = [
   "https://images.pexels.com/photos/11297792/pexels-photo-11297792.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -39,4 +39,4 @@ Map<String, String> PersonalValue_Map = {
   "birthDay": "2003-07-20"
 };
 
-var PersonalValue_List = PersonalValue_Map.entries.toList();
+File? UserHeaderImage;
