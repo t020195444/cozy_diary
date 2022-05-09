@@ -1,9 +1,6 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Map/map_page.dart';
-import 'package:cozydiary/screen_widget/viewPostScreen.dart';
-import 'package:cozydiary/pages/Home/widget/HomeScreen_GridView.dart';
 import 'package:cozydiary/pages/Personal/personal_page.dart';
-import 'package:cozydiary/pages/Home/register_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';

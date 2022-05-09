@@ -1,9 +1,25 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+
+class GeolocatorService {
+  Future<Position?> determinePosition() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error('Location Not Available');
+      }
+    } else {
+      throw Exception('Error');
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+}
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -55,33 +71,6 @@ class _MapPageState extends State<MapPage> {
               maxZoom: 19,
             ),
           ),
-          LocationMarkerLayerWidget(
-            plugin: LocationMarkerPlugin(
-              centerCurrentLocationStream:
-                  _centerCurrentLocationStreamController.stream,
-              centerOnLocationUpdate: _centerOnLocationUpdate,
-            ),
-          ),
-        ],
-        nonRotatedChildren: [
-          Positioned(
-            right: 20,
-            bottom: 70,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Automatically center the location marker on the map when location updated until user interact with the map.
-                setState(
-                  () => _centerOnLocationUpdate = CenterOnLocationUpdate.always,
-                );
-                // Center the location marker on the map and zoom the map to level 18.
-                _centerCurrentLocationStreamController.add(18);
-              },
-              child: const Icon(
-                Icons.my_location,
-                color: Colors.white,
-              ),
-            ),
-          )
         ],
       ),
     );
