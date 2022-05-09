@@ -27,10 +27,16 @@ const List<String> PostText_List = [
   "https://scontent.ftpe7-1.fna.fbcdn.net/v/t39.30808-6/273654804_5198756196809958_3595704412470077409_n.jpg?stp=dst-jpg_p600x600&_nc_cat=106&ccb=1-5&_nc_sid=730e14&_nc_ohc=L5fSFOjmXXoAX_pSrsO&_nc_ht=scontent.ftpe7-1.fna&oh=00_AT_LT97mhOgJ3lHPsDnMLqgCq6mlYZXzQC9Io3eTbxpCrQ&oe=623DC8BB"
 ];
 
-Map<String, int> PersonalValue_Map = {
-  "followeingCount": 100,
-  "followerCount": 156,
-  "postCount": PostText_List.length
+Map<String, String> PersonalValue_Map = {
+  "UID": "10846005",
+  "UserName": "許悅",
+  "Introduction":
+      "BOCAN選貨店《全館限時免運中》誠實賣場 只有全新公司貨營業時間：13:00-23:00//行銷徵才中 詳情請見精選限時//如何選購：小盒子私訊/7-11賣貨便有想要ㄉ鞋子沒在版上可以帶圖/尺寸 小盒子我們🛒《有任何問題或需求歡迎隨時小盒子》lkfgjofdsijglkfdsjglfsdjglkfdsjglkfdj;sh;jsg;ihojlgfdsjhlkfdsgmblfsgnjhjsrogjgfdoihjgfdihjogfdijsafkadjfkdsjfljsdgkdfgkldsgkljglkjgkfjdskgjkldsgjlskdjglkfdss",
+  "followeingCount": "100",
+  "followerCount": "156",
+  "postCount": PostText_List.length.toString(),
+  "launchCount": "2",
+  "birthDay": "2003-07-20"
 };
 
 var PersonalValue_List = PersonalValue_Map.entries.toList();
