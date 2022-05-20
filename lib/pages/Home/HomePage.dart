@@ -28,9 +28,7 @@ class _HomePageState extends State<HomePage>
     // debugPaintSizeEnabled = true;
 
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(50, 255, 255, 255),
         elevation: 0,
         title: Center(
           child: TabBar(
@@ -123,7 +121,6 @@ class _NestedTabBarState extends State<NestedTabBar>
           pinned: true,
           snap: false,
           expandedHeight: 0,
-          backgroundColor: Color.fromARGB(10, 255, 255, 255),
           title: TabBar(
             isScrollable: true,
             indicatorSize: TabBarIndicatorSize.label,
@@ -212,7 +209,6 @@ class _NestedTabBarState extends State<NestedTabBar>
           Container(
             child: const HomeScreen(),
           ),
-          
         ],
       ),
     );
