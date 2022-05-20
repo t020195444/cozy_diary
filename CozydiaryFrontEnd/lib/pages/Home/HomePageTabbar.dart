@@ -1,11 +1,16 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
+import 'package:cozydiary/pages/Home/ImagePicker.dart';
 import 'package:cozydiary/pages/Map/map_page.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+<<<<<<< Updated upstream
 import '../Personal/Page/personal_page.dart';
+=======
+import 'UserData.dart';
+>>>>>>> Stashed changes
 
 class HomePageTabbar extends StatefulWidget {
   const HomePageTabbar({Key? key}) : super(key: key);
@@ -31,7 +36,7 @@ class _HomePageTabbarState extends State<HomePageTabbar> {
   }
 
   final screens = [
-    MapPage(),
+    UserDataPage(),
     HomePage(),
     PersonalPage(),
   ];
