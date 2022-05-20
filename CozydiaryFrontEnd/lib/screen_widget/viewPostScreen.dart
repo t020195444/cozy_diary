@@ -121,21 +121,20 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
                         InkWell(
                           onDoubleTap: () => print('Like post'),
                           child: Hero(
-                              tag: widget.imageUrl,
-                              child: Image.network(widget.imageUrl)
-                              // Container(
-                              //   margin: EdgeInsets.all(10.0),
-                              //   width: double.infinity,
-                              //   height: 350.0,
-                              //   decoration: BoxDecoration(
-                              //     borderRadius: BorderRadius.circular(25.0),
-                              //     image: DecorationImage(
-                              //       image: NetworkImage(widget.imageUrl),
-                              //       fit: BoxFit.cover,
-                              //     ),
-                              //   ),
-                              // ),
+                            tag: widget.imageUrl,
+                            child: Container(
+                              margin: EdgeInsets.all(10.0),
+                              width: double.infinity,
+                              height: 350.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25.0),
+                                image: DecorationImage(
+                                  image: NetworkImage(widget.imageUrl),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
+                            ),
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),

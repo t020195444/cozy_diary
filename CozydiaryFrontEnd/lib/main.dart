@@ -1,6 +1,6 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Personal/personal_page.dart';
+import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,11 +20,21 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'CozyDiary',
-      theme: ThemeData(),
+      theme: ThemeData(
+          primaryColor: Color.fromARGB(255, 202, 175, 154),
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Color.fromARGB(255, 202, 175, 154),
+          ),
+          cardTheme: CardTheme(
+              color: Colors.white,
+              shape: Border.all(
+                  color: Color.fromARGB(255, 195, 170, 150), width: 0.5)),
+          tabBarTheme: const TabBarTheme()),
       routes: {
-        "homepage": (context) => HomePageTabbar(),
+        "homepage": (context) => const HomePageTabbar(),
         "personalpage": (context) => const PersonalPage(),
       },
       home: const MyHomePage(
@@ -78,14 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Obx(
-        () {
-          if (logincontroller.googleAccount.value == null)
-            return Login(context);
-          else
-            return HomePageTabbar();
-        },
-      )),
+      body: Center(child: Obx(() {
+        if (logincontroller.googleAccount.value == null)
+          return const HomePageTabbar();
+        else
+          return Login(context);
+      })),
     );
   }
 

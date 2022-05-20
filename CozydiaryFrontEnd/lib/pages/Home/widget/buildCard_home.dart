@@ -10,7 +10,6 @@ class BuildCardHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(40, 255, 255, 255),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -24,7 +23,7 @@ class BuildCardHome extends StatelessWidget {
                 softWrap: true,
                 maxLines: 2,
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: Colors.black,
                 )),
           ),
           Padding(
@@ -50,7 +49,7 @@ class BuildCardHome extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.black),
                           )
                         ],
                       )

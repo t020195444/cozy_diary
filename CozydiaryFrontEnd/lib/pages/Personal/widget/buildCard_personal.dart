@@ -22,7 +22,6 @@ class BuildCard extends StatelessWidget {
             alignment: Alignment.center));
       },
       child: Card(
-        color: Colors.blueGrey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
