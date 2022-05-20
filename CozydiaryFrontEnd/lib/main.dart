@@ -88,13 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Obx(() {
-        if (logincontroller.googleAccount.value == null)
-          return Login(context);
-        else
-          return const HomePageTabbar();
-      })),
-    );
+        body: Center(child: Login(context)
+            // Obx(() {
+            // if (logincontroller.googleAccount.value == null)
+            // })),
+            ));
   }
 
   Scaffold Login(BuildContext context) {
@@ -147,15 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                         logincontroller.loginWithGoogle();
                       },
-                      // =>
-                      //     {
-                      //   _googleSignIn.signIn().then((userData) {
-                      //     setState(() {
-                      //       _isLoggedIn = true;
-                      //       _userObj = userData!;
-                      //     });
-                      //   }).catchError((e) {})
-                      // },
                       child: const Text(
                         "登入",
                         style: TextStyle(
