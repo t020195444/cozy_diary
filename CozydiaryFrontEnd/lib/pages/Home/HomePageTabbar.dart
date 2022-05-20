@@ -13,13 +13,9 @@ class HomePageTabbar extends StatefulWidget {
 }
 
 class _HomePageTabbarState extends State<HomePageTabbar> {
-  bool _isLoggedIn = true;
-  late GoogleSignInAccount _userObj;
-
   int _selectedIndex = 1;
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
