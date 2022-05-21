@@ -23,6 +23,28 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'CozyDiary',
       theme: ThemeData(
+          inputDecorationTheme: const InputDecorationTheme(
+            counterStyle: TextStyle(color: Colors.black),
+            labelStyle: TextStyle(color: Colors.black45),
+            filled: true,
+            fillColor: Colors.white,
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black87),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+          ),
           primaryColor: Color.fromARGB(255, 202, 175, 154),
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(

@@ -1,4 +1,6 @@
 import 'package:cozydiary/Data/dataResourse.dart';
+import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
+import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
 
 import 'package:cozydiary/pages/Personal/userIdWidget.dart';
 import 'package:cozydiary/pages/Personal/userNameWidget.dart';
@@ -8,8 +10,7 @@ import 'package:readmore/readmore.dart';
 import '../../../screen_widget/collect_GridView.dart';
 import '../../../screen_widget/post_GridView.dart';
 import '../DrawerWidget.dart';
-import '../PersonalPage/PersonalController.dart';
-import '../PersonalPage/TabbarController.dart';
+
 import 'Edit_Personal.dart';
 import '../followerWidget.dart';
 import '../userHeaderWidget.dart';
