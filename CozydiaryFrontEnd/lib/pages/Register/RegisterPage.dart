@@ -4,8 +4,9 @@ import 'package:cozydiary/login_controller.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  RegisterPage({Key? key}) : super(key: key);
 
+  final LoginController logincontroller = Get.put(LoginController());
   Widget choiceGender() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +91,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final LoginController logincontroller = Get.put(LoginController());
+    final LoginController logincontroller = Get.put(LoginController());
     final GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
     String? birthText = DateFormat("yyyy-MM-dd").format(DateTime.now());
     late DateTime currentBirth = DateTime.now();
@@ -264,7 +265,9 @@ class RegisterPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30)),
               ),
               child: Text("完成"),
-              onPressed: () {},
+              onPressed: () {
+                logincontroller.testpost();
+              },
             ),
           )
         ]),
@@ -272,5 +275,3 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
-
-

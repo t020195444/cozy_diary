@@ -33,7 +33,7 @@ class _HomePageTabbarState extends State<HomePageTabbar> {
   }
 
   final screens = [
-    UserDataPage(),
+    MapPage(),
     HomePage(),
     PersonalPage(),
   ];

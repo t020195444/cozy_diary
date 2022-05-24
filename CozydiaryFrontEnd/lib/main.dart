@@ -165,7 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     // ignore: deprecated_member_use
                     child: RaisedButton(
                       onPressed: () {
-                        logincontroller.loginWithGoogle();
+                        // logincontroller.loginWithGoogle();
+                        logincontroller.tohomepage();
+                        // logincontroller.toregisterpage();
                       },
                       child: const Text(
                         "登入",

@@ -55,24 +55,24 @@ class _HomePageState extends State<HomePage>
                 ),
               ]),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          iconSize: 30.0,
-          color: Color.fromARGB(155, 0, 0, 0),
-          onPressed: () {
-            print('back to user page');
-          }, //=> Navigator.pop(context),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_horiz),
-            iconSize: 30.0,
-            color: Color.fromARGB(155, 0, 0, 0),
-            onPressed: () {
-              print('more');
-            }, //=> Navigator.pop(context),
-          ),
-        ],
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   iconSize: 30.0,
+        //   color: Color.fromARGB(155, 0, 0, 0),
+        //   onPressed: () {
+        //     print('back to user page');
+        //   }, //=> Navigator.pop(context),
+        // ),
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.more_horiz),
+        //     iconSize: 30.0,
+        //     color: Color.fromARGB(155, 0, 0, 0),
+        //     onPressed: () {
+        //       print('more');
+        //     }, //=> Navigator.pop(context),
+        //   ),
+        // ],
       ),
       body: TabBarView(
         children: <Widget>[
