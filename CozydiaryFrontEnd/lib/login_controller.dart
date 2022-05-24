@@ -30,7 +30,7 @@ class LoginController extends GetxController {
     final User? user = authResult.user;
     id = googleSignIn.currentUser!.id;
     userId = user!.uid;
-    get();
+    tohomepage();
   }
 
   logout() async {
@@ -67,5 +67,50 @@ class LoginController extends GetxController {
         "pic": "ddsfdsfdsfds"
       }),
     );
+  }
+
+  //因後端還未上伺服器 這邊先使用跳頁方法
+  tohomepage() async {
+    Get.to(const HomePageTabbar());
+  }
+
+  toregisterpage() async {
+    Get.to(RegisterPage());
+  }
+
+  testpost() async {
+    var response = await http.post(
+      Uri.parse('http://yapi.smart-xwork.cn/mock/152435/userRegister'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "google_id": id,
+        "name": "tim",
+        "sex": "1",
+        "introduction": "我是usdt暴徒",
+        "birth": "2001-01-30",
+        "email": "10846036@ntub.edu.tw",
+        "pic": "ddsfdsfdsfds"
+      }),
+    );
+    var responseBody = jsonDecode(response.body);
+    print(responseBody['id']);
+    print(responseBody['messenge']);
+
+    // if (responseBody != null) {
+    //   Get.to(HomePageTabbar());
+    // }
+  }
+
+  testget() async {
+    var response = await http
+        .get(Uri.parse('http://yapi.smart-xwork.cn/mock/152435/userRegister'));
+    var responseBody = jsonDecode(response.body);
+    print(responseBody);
+  }
+
+  printid() async {
+    print(id);
   }
 }
