@@ -7,7 +7,8 @@ import 'dart:convert';
 
 class PostCoverService {
   static var client = http.Client();
-  static var uri = 'http://172.20.10.3:8080/getPostCover';
+  static var uri =
+      'http://172.20.10.10:8080/getPostCover?uid=116177189475554672889';
 
   //測試資料
   /*
@@ -42,10 +43,9 @@ class PostCoverService {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await client.get(Uri.parse(uri));
-    if (response == 200) {
-      var jsonString = response.body;
-    } else {
-      return null;
-    }
+    print(response.body);
+    var jsonString = response.body;
+    var jsonDecode = postCoverModuleFromJson(jsonString);
+    return jsonDecode;
   }
 }

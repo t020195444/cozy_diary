@@ -40,7 +40,6 @@ class PostCoverTest extends StatelessWidget {
     List<PostCoverData> postCoverData = controller.postCover.value;
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: () {
-        print(postCoverData[1].categoryName);
         // var data = postCoverModuleFromJson(response);
 
         // print(data.data);

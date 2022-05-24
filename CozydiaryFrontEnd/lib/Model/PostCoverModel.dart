@@ -39,36 +39,36 @@ class PostCoverModule {
 
 class PostCoverData {
   PostCoverData({
-    required this.userName,
-    required this.userPic,
+    required this.username,
+    required this.pic,
     required this.likes,
     required this.cover,
     required this.title,
-    required this.categoryName,
+    // required this.categoryName,
   });
 
-  String userName;
-  String userPic;
+  String username;
+  String pic;
   int likes;
   String cover;
   String title;
-  String categoryName;
+  // String categoryName;
 
   factory PostCoverData.fromJson(Map<String, dynamic> json) => PostCoverData(
-        userName: json["userName"],
-        userPic: json["userPic"],
+        username: json["username"],
+        pic: json["pic"],
         likes: json["likes"],
         cover: json["cover"],
         title: json["title"],
-        categoryName: json["categoryName"],
+        // categoryName: json["categoryName"],
       );
 
   Map<String, dynamic> toJson() => {
-        "userName": userName,
-        "userPic": userPic,
+        "username": username,
+        "pic": pic,
         "likes": likes,
         "cover": cover,
         "title": title,
-        "categoryName": categoryName,
+        // "categoryName": categoryName,
       };
 }

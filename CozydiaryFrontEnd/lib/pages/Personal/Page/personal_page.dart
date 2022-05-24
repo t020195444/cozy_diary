@@ -83,7 +83,7 @@ class PersonalView extends GetView<PersonalPageController> {
       personalController.getSliverAppbarHeight(_dynamicTotalHeight);
     }
 
-    WidgetsBinding.instance.addPostFrameCallback(_getTotalHeight);
+    WidgetsBinding.instance!.addPostFrameCallback(_getTotalHeight);
 
     return Scaffold(
       extendBodyBehindAppBar: true,

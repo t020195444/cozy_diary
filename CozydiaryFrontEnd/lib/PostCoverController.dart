@@ -17,7 +17,7 @@ class PostCoverController extends GetxController {
   void getPostCover() async {
     var Posts = await PostCoverService.fetchPostCover();
     if (Posts != null) {
-      if (Posts.status == 200 && Posts.message == "獲取用戶貼文成功") {
+      if (Posts.status == 200) {
         postCover.value = Posts.data;
       }
     }

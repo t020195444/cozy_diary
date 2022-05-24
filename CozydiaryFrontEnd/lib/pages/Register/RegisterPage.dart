@@ -4,9 +4,8 @@ import 'package:cozydiary/login_controller.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
 
-  final LoginController logincontroller = Get.put(LoginController());
   Widget choiceGender() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,9 +264,7 @@ class RegisterPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30)),
               ),
               child: Text("完成"),
-              onPressed: () {
-                logincontroller.testpost();
-              },
+              onPressed: () {},
             ),
           )
         ]),

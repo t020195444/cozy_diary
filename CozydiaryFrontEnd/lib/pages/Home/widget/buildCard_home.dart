@@ -18,8 +18,8 @@ class BuildCardHome extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Image.network(
-            PostCovers[index].cover,
+          Image.file(
+            File(PostCovers[index].cover),
             fit: BoxFit.cover,
           ),
           Padding(
@@ -31,20 +31,20 @@ class BuildCardHome extends StatelessWidget {
                   color: Colors.black,
                 )),
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 8),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.sports_basketball,
-                ),
-                Text(PostCovers[index].categoryName,
-                    softWrap: true,
-                    maxLines: 2,
-                    style: TextStyle(color: Colors.black, fontSize: 12)),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.fromLTRB(15, 0, 15, 8),
+          //   child: Row(
+          //     children: <Widget>[
+          //       Icon(
+          //         Icons.sports_basketball,
+          //       ),
+          //       Text(PostCovers[index].categoryName,
+          //           softWrap: true,
+          //           maxLines: 2,
+          //           style: TextStyle(color: Colors.black, fontSize: 12)),
+          //     ],
+          //   ),
+          // ),
           Padding(
               padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
               child: Row(
@@ -57,7 +57,7 @@ class BuildCardHome extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 12,
                           backgroundImage:
-                              NetworkImage(PostCovers[index].userPic),
+                              FileImage(File(PostCovers[index].pic)),
                         ),
                       ),
                       Column(
@@ -65,7 +65,7 @@ class BuildCardHome extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            PostCovers[index].userName,
+                            PostCovers[index].username,
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
