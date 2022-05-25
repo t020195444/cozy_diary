@@ -18,8 +18,8 @@ class BuildCardHome extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Image.file(
-            File(PostCovers[index].cover),
+          Image.network(
+            PostCovers[index].cover,
             fit: BoxFit.cover,
           ),
           Padding(
@@ -56,8 +56,7 @@ class BuildCardHome extends StatelessWidget {
                         padding: EdgeInsets.only(right: 5),
                         child: CircleAvatar(
                           radius: 12,
-                          backgroundImage:
-                              FileImage(File(PostCovers[index].pic)),
+                          backgroundImage: NetworkImage(PostCovers[index].pic),
                         ),
                       ),
                       Column(

@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:video_player/video_player.dart';
 import 'firebase/firebase_options.dart';
+import 'pages/Register/RegisterPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

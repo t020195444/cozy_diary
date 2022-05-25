@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: Center(
           child: TabBar(
@@ -74,6 +75,7 @@ class NestedTabBar extends StatelessWidget {
       controller: _scrollViewController,
       headerSliverBuilder: (context, bool) => [
         SliverAppBar(
+          automaticallyImplyLeading: false,
           primary: true,
           floating: false,
           pinned: true,
