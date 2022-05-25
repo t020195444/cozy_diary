@@ -1,4 +1,4 @@
-# cozydaily
+# cozydiary
 
 A new Flutter project.
 

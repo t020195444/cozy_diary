@@ -30,7 +30,7 @@ class LoginController extends GetxController {
     final User? user = authResult.user;
     id = googleSignIn.currentUser!.id;
     userId = user!.uid;
-    tohomepage();
+    await tohomepage();
   }
 
   logout() async {

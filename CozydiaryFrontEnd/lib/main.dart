@@ -1,8 +1,5 @@
-import 'package:cozydiary/Test/PostCoverTest.dart';
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Home/UserData.dart';
 import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:video_player/video_player.dart';
 import 'firebase/firebase_options.dart';
-import 'pages/Register/RegisterPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -113,13 +109,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return HomePageTabbar();
-    // return Scaffold(
-    //     body: Center(child: Login(context)
-    //         // Obx(() {
-    //         // if (logincontroller.googleAccount.value == null)
-    //         // })),
-    //         ));
+    // return HomePageTabbar();
+    return Scaffold(
+        body: Center(child: Login(context)
+            // Obx(() {
+            // if (logincontroller.googleAccount.value == null)
+            // })),
+            ));
   }
 
   Scaffold Login(BuildContext context) {
@@ -170,8 +166,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     // ignore: deprecated_member_use
                     child: RaisedButton(
                       onPressed: () {
-                        // logincontroller.loginWithGoogle();
-                        logincontroller.tohomepage();
+                        logincontroller.loginWithGoogle();
+                        // logincontroller.tohomepage();
                         // logincontroller.toregisterpage();
                       },
                       child: const Text(

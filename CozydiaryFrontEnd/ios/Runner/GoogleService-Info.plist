@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.cozydaily</string>
+	<string>com.example.cozydiary</string>
 	<key>PROJECT_ID</key>
 	<string>cozydiary-22111</string>
 	<key>STORAGE_BUCKET</key>

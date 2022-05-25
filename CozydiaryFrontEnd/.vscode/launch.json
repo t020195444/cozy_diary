@@ -5,12 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "cozydaily",
+      "name": "cozydiary",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "cozydaily (profile mode)",
+      "name": "cozydiary (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"

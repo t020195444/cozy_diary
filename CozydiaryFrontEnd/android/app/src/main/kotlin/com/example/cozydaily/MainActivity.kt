@@ -1,4 +1,4 @@
-package com.example.cozydaily
+package com.example.cozydiary
 
 import io.flutter.embedding.android.FlutterActivity
 
