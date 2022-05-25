@@ -55,11 +55,11 @@ class PostCoverData {
   // String categoryName;
 
   factory PostCoverData.fromJson(Map<String, dynamic> json) => PostCoverData(
-        username: json["username"].toString(),
-        pic: json["pic"].toString(),
+        username: json["username"],
+        pic: json["pic"],
         likes: json["likes"],
-        cover: json["cover"].toString(),
-        title: json["title"].toString(),
+        cover: json["cover"],
+        title: json["title"],
         // categoryName: json["categoryName"],
       );
 

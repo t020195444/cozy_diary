@@ -9,6 +9,7 @@ class PostCoverService {
   static var client = http.Client();
   static var uri =
       'http://172.20.10.10:8080/getPostCover?uid=116177189475554672889';
+  static Utf8Decoder decoder = Utf8Decoder();
 
   //測試資料
   /*
@@ -45,7 +46,8 @@ class PostCoverService {
     var response = await client.get(Uri.parse(uri));
     print(response.body);
     var jsonString = response.body;
-    var jsonDecode = postCoverModuleFromJson(jsonString);
+    var utf8JsonString = decoder.convert(response.bodyBytes);
+    var jsonDecode = postCoverModuleFromJson(utf8JsonString);
     return jsonDecode;
   }
 }
