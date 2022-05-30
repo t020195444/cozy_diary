@@ -1,6 +1,8 @@
 import 'package:cozydiary/login_controller.dart';
+import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
+import 'package:cozydiary/pages/Register/RegisterPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -109,13 +111,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return HomePageTabbar();
-    return Scaffold(
-        body: Center(child: Login(context)
-            // Obx(() {
-            // if (logincontroller.googleAccount.value == null)
-            // })),
-            ));
+    return HomePage();
+    // return Scaffold(
+    //     body: Center(child: Login(context)
+    //         // Obx(() {
+    //         // if (logincontroller.googleAccount.value == null)
+    //         // })),
+    //         ));
   }
 
   Scaffold Login(BuildContext context) {

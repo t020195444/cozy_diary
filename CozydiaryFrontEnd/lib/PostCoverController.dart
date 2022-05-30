@@ -7,6 +7,7 @@ import 'dart:convert';
 
 class PostCoverController extends GetxController {
   var postCover = <PostCoverData>[].obs;
+  var isLoading = true.obs;
 
   @override
   void onInit() {
@@ -15,11 +16,16 @@ class PostCoverController extends GetxController {
   }
 
   void getPostCover() async {
-    var Posts = await PostCoverService.fetchPostCover();
-    if (Posts != null) {
-      if (Posts.status == 200) {
-        postCover.value = Posts.data;
+    try {
+      isLoading(true);
+      var Posts = await PostCoverService.fetchPostCover();
+      if (Posts != null) {
+        if (Posts.status == 200) {
+          postCover.value = Posts.data;
+        }
       }
+    } finally {
+      isLoading(false);
     }
   }
 }

@@ -51,3 +51,13 @@ class PostCoverService {
     return jsonDecode;
   }
 }
+
+//  Future<PostCoverModule?> postData() async {
+//     http.post(
+//       Uri.parse('http://172.20.10.3:8080/addPost'),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json; charset=UTF-8',
+//       },
+//       body: ;
+//     );
+//   }

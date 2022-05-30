@@ -16,7 +16,6 @@ class HomePageTabbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabbarcontroller = Get.put(ChangePageTabbarController());
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
     final screens = [
