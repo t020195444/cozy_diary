@@ -1,4 +1,4 @@
-import 'package:cozydiary/PostCoverController.dart';
+import 'package:cozydiary/PostController.dart';
 import 'package:cozydiary/pages/Home/widget/buildCard_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final postCoverController = Get.put(PostCoverController());
+    final postCoverController = Get.put(PostController());
     return Obx(() {
       if (postCoverController.isLoading.value) {
         return Center(
@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
             context: context,
             removeTop: true,
             child: MasonryGridView.count(
+                crossAxisSpacing: 0,
                 crossAxisCount: 2,
                 itemCount: postCoverController.postCover.length,
                 itemBuilder: (context, index) {

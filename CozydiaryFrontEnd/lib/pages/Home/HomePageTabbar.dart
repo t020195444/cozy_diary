@@ -19,12 +19,13 @@ class HomePageTabbar extends StatelessWidget {
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
     final screens = [
-      UserDataPage(),
+      MapPage(),
       HomePage(),
       PersonalPage(),
     ];
-    return GetBuilder<ChangePageTabbarController>(
-      builder: (controller) => Scaffold(
+    final controller = Get.put(ChangePageTabbarController());
+    return Obx(
+      () => Scaffold(
         extendBodyBehindAppBar: true,
         extendBody: true,
         backgroundColor: Colors.black,
