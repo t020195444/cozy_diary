@@ -1,3 +1,4 @@
+import 'package:cozydiary/Test/PostCoverTest.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
@@ -8,12 +9,19 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:video_player/video_player.dart';
 import 'firebase/firebase_options.dart';
+import 'package:flutter/services.dart';
+import 'dart:io';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
   runApp(const MyApp());
 }
 
@@ -26,38 +34,38 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'CozyDiary',
       theme: ThemeData(
-          inputDecorationTheme: const InputDecorationTheme(
-            counterStyle: TextStyle(color: Colors.black),
-            labelStyle: TextStyle(color: Colors.black45),
-            filled: true,
-            fillColor: Colors.white,
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black54),
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black87),
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
+        inputDecorationTheme: const InputDecorationTheme(
+          counterStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: Colors.black45),
+          filled: true,
+          fillColor: Colors.white,
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
-          primaryColor: Color.fromARGB(255, 202, 175, 154),
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: AppBarTheme(
-            backgroundColor: Color.fromARGB(255, 202, 175, 154),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black54),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
-          cardTheme: CardTheme(
-              color: Colors.white,
-              shape: Border.all(
-                  color: Color.fromARGB(255, 195, 170, 150), width: 0.5)),
-          tabBarTheme: const TabBarTheme()),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black87),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
+        ),
+        primaryColor: Color.fromARGB(255, 202, 175, 154),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 202, 175, 154),
+        ),
+        cardTheme: CardTheme(
+            color: Colors.white,
+            shape: Border.all(
+                color: Color.fromARGB(255, 195, 170, 150), width: 0.5)),
+      ),
       routes: {
         "homepage": (context) => const HomePageTabbar(),
         "personalpage": (context) => const PersonalPage(),

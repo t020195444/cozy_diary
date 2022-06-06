@@ -1,9 +1,13 @@
-import 'package:cozydiary/Data/dataResourse.dart';
+import 'package:cozydiary/data/dataResourse.dart';
+import 'package:cozydiary/main.dart';
+import 'package:cozydiary/pages/Personal/IntroductionWidget.dart';
 import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
 import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
 
 import 'package:cozydiary/pages/Personal/userIdWidget.dart';
 import 'package:cozydiary/pages/Personal/userNameWidget.dart';
+import 'package:cozydiary/widget/refresh_Widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
@@ -27,20 +31,28 @@ class PersonalPage extends StatelessWidget {
 class PersonalView extends GetView<PersonalPageController> {
   const PersonalView({Key? key}) : super(key: key);
 
-  Widget SliverPersistentHeaderWidget(var controller, var tab) {
+  Widget _buildSliverHeaderWidget() {
     return SliverPersistentHeader(
       pinned: true,
-      delegate: _SliverAppBarDelegate(
-        TabBar(
-            controller: controller,
-            indicatorWeight: 2,
-            indicatorColor: const Color.fromARGB(255, 129, 37, 37),
-            labelColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.label,
-            isScrollable: false,
-            tabs: tab),
-      ),
+      delegate: _SliverHeaderDelegate(400, 70),
     );
+  }
+
+  Widget _buildTabbarWidget(var controller, var tab) {
+    return SliverPersistentHeader(
+        pinned: true,
+        floating: false,
+        delegate: _TabbarDelegate(
+          TabBar(
+              controller: controller,
+              indicatorWeight: 2,
+              indicatorColor: Color.fromARGB(255, 175, 152, 100),
+              labelColor: Colors.black,
+              indicatorSize: TabBarIndicatorSize.label,
+              isScrollable: true,
+              labelPadding: EdgeInsets.symmetric(horizontal: 40),
+              tabs: tab),
+        ));
   }
 
   @override
@@ -52,6 +64,7 @@ class PersonalView extends GetView<PersonalPageController> {
     final _introductionKey = GlobalKey();
     final _followerKey = GlobalKey();
     final _dividerKey = GlobalKey();
+    late double oldIntroductionHeight = 0.0;
     final personalController = Get.put(PersonalPageController());
     late double _dynamicTotalHeight = 0;
     final List<double> _childWidgetHeights = [];
@@ -64,392 +77,275 @@ class PersonalView extends GetView<PersonalPageController> {
       return renderBox.size.height;
     }
 
-    void _getTotalHeight(_) {
-      _dynamicTotalHeight = 0;
-      _childWidgetHeights.clear();
-      _childWidgetHeights.add(_getWidgetHeight(_userHeaderKey));
-      _childWidgetHeights.add(_getWidgetHeight(_userNameKey));
-      _childWidgetHeights.add(_getWidgetHeight(_userIdKey));
-      _childWidgetHeights.add(_getWidgetHeight(_followerKey));
-      _childWidgetHeights.add(_getWidgetHeight(_introductionKey));
-      _childWidgetHeights.add(_getWidgetHeight(_dividerKey));
-
-      for (double height in _childWidgetHeights) {
-        _dynamicTotalHeight = height + _dynamicTotalHeight;
+    void _refreshHeight() {
+      if (personalController.difference == 0.0) {
+        personalController.difference =
+            _getWidgetHeight(_introductionKey) - oldIntroductionHeight;
+        print(personalController.difference);
+        personalController.increaseAppbarHeight();
+      } else if (personalController.readmore.value) {
+        personalController.reduceAppbarHeight();
+      } else {
+        personalController.increaseAppbarHeight();
       }
-
-      _dynamicTotalHeight = _dynamicTotalHeight + kToolbarHeight;
-
-      personalController.getSliverAppbarHeight(_dynamicTotalHeight);
     }
 
-    WidgetsBinding.instance!.addPostFrameCallback(_getTotalHeight);
+    Widget Introduction(String text, int trimLines) {
+      final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+      final colorClickableText = Colors.black;
+      final widgetColor = Colors.black;
+      @override
+      TextSpan link = TextSpan(
+          text: personalController.readmore.value ? "... 更多" : " 減少",
+          style: TextStyle(
+            color: colorClickableText,
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              oldIntroductionHeight = _getWidgetHeight(_introductionKey);
+              personalController.onTabReadmore();
+              WidgetsBinding.instance!
+                  .addPostFrameCallback((timeStamp) => _refreshHeight());
+            });
+      Widget result = LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          assert(constraints.hasBoundedWidth);
+          final double maxWidth = constraints.maxWidth;
+          // Create a TextSpan with data
+          final texts = TextSpan(
+            text: text,
+          );
+          // Layout and measure link
+          TextPainter textPainter = TextPainter(
+            text: link,
+            textDirection: TextDirection
+                .rtl, //better to pass this from master widget if ltr and rtl both supported
+            maxLines: trimLines,
+            ellipsis: '...',
+          );
+          textPainter.layout(
+              minWidth: constraints.minWidth, maxWidth: maxWidth);
+          final linkSize = textPainter.size;
+          // Layout and measure text
+          textPainter.text = texts;
+          textPainter.layout(
+              minWidth: constraints.minWidth, maxWidth: maxWidth);
+          final textSize = textPainter.size;
+          // Get the endIndex of data
+          int? endIndex;
+          final pos = textPainter.getPositionForOffset(Offset(
+            textSize.width - linkSize.width,
+            textSize.height,
+          ));
+          endIndex = textPainter.getOffsetBefore(pos.offset);
+          var textSpan;
+          if (textPainter.didExceedMaxLines) {
+            textSpan = TextSpan(
+              text: personalController.readmore.value
+                  ? text.substring(0, endIndex)
+                  : text,
+              style: TextStyle(
+                color: widgetColor,
+              ),
+              children: <TextSpan>[link],
+            );
+          } else {
+            textSpan = TextSpan(
+              text: text,
+            );
+          }
+          return RichText(
+            softWrap: true,
+            overflow: TextOverflow.clip,
+            text: textSpan,
+          );
+        },
+      );
+      return result;
+    }
+
+    Widget _DetailSliverWidget() {
+      return SliverToBoxAdapter(
+        child: Container(
+          constraints: BoxConstraints.tightFor(
+              width: MediaQuery.of(context).size.width,
+              height: personalController.constraintsHeight.value),
+          color: Colors.white,
+          height: 90,
+          child: Column(
+            children: <Widget>[
+              Divider(
+                color: Colors.black54,
+                indent: 40,
+                endIndent: 40,
+                height: 3,
+              ),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  child: Container(
+                    key: _introductionKey,
+                    child: Introduction(PersonalValue_Map["Introduction"]!, 3),
+                  )),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: const DrawerWidget(),
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-      body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              GetBuilder<PersonalPageController>(
-                builder: ((personalState) => SliverAppBar(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      primary: true,
-                      actions: [
-                        GestureDetector(
-                          child: Padding(
-                            child: Icon(
-                              Icons.settings,
-                            ),
-                            padding: EdgeInsets.only(right: 15),
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Edit_PersonalPage()));
-                          },
-                        )
-                      ],
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Stack(
-                          fit: StackFit.passthrough,
-                          children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.fromLTRB(20, 67, 20, 0),
-                              child: Column(
-                                children: <Widget>[
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      UserHeader(
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        top: 0,
-                                        image: image,
-                                        key: _userHeaderKey,
-                                      ),
-                                      ConstrainedBox(
-                                        constraints:
-                                            const BoxConstraints(minHeight: 70),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Padding(
-                                                padding:
-                                                    EdgeInsets.only(bottom: 5),
-                                                child: UserName(
-                                                  key: _userNameKey,
-                                                )),
-                                            UserId(
-                                              key: _userIdKey,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        key: _dividerKey,
-                                        color: Color.fromARGB(132, 0, 0, 0),
-                                      ),
-                                    ],
-                                  ),
-                                  follower_Widget(
-                                    key: _followerKey,
-                                  ),
-
-                                  // Padding(
-                                  //     padding: EdgeInsets.only(bottom: 20),
-                                  //     child:
-                                  ReadMoreText(
-                                    PersonalValue_Map["Introduction"]!,
-                                    key: _introductionKey,
-                                    trimLines: 3,
-                                    trimMode: TrimMode.Line,
-                                    trimCollapsedText: "更多",
-                                    colorClickableText: Colors.black,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        centerTitle: true,
-                        collapseMode: CollapseMode.pin,
-                      ),
-                      expandedHeight: personalState.sliverAppbarHeight.value,
-                      floating: false,
-                      pinned: true,
-                      snap: false,
-                      bottom: PreferredSize(
-                          preferredSize:
-                              Size(MediaQuery.of(context).size.height, 60),
-                          child: Text("")),
-                    )),
-              ),
-              SliverPersistentHeaderWidget(
-                  _tabController.controller, _tabController.tabs),
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController.controller,
-            children: const [InitPostGridView(), InitCollectGridView()],
-          )),
+      backgroundColor: Color.fromARGB(255, 227, 227, 227),
+      body:
+          // CustomScrollView(
+          //   slivers: [
+          //     SliverPersistentHeaderWidget(
+          //         _tabController.controller, _tabController.tabs),
+          //   ],
+          // )
+          NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  _buildSliverHeaderWidget(),
+                  Obx(() => _DetailSliverWidget()),
+                  _buildTabbarWidget(
+                      _tabController.controller, _tabController.tabs)
+                ];
+              },
+              body: TabBarView(
+                controller: _tabController.controller,
+                children: const [InitPostGridView(), InitCollectGridView()],
+              )),
     );
   }
 }
-// class CustomScrollWidget extends StatefulWidget {
-//   const CustomScrollWidget({Key? key}) : super(key: key);
 
-//   @override
-//   State<CustomScrollWidget> createState() => _CustomScrollWidgetState();
-// }
+class _TabbarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar tab;
 
-// class _CustomScrollWidgetState extends State<CustomScrollWidget>
-//     with SingleTickerProviderStateMixin {
-//   late TabController _tabController;
-//   final _userHeaderKey = GlobalKey();
-//   final _userNameKey = GlobalKey();
-//   final _userIdKey = GlobalKey();
-//   final _introductionKey = GlobalKey();
-//   final _followerKey = GlobalKey();
-//   final _dividerKey = GlobalKey();
-//   final List<double> _childWidgetHeights = [];
-//   final personalPageState = Get.put(PersonalPageState());
-//   double _dynamicTotalHeight = 0;
-//   dynamic image;
-//   // double _dynamicTotalHeight = 0;
-
-//   @override
-//   void initState() {
-//     image = UserHeaderImage != null
-//         ? FileImage(UserHeaderImage!)
-//         : NetworkImage(Image_List[3]);
-//     initTabController();
-//     WidgetsBinding.instance!.addPostFrameCallback(_getTotalHeight);
-//     super.initState();
-//   }
-
-//   double _getWidgetHeight(GlobalKey key) {
-//     RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
-//     return renderBox.size.height;
-//   }
-
-//   void _getTotalHeight(_) {
-//     _dynamicTotalHeight = 0;
-//     _childWidgetHeights.clear();
-//     _childWidgetHeights.add(_getWidgetHeight(_userHeaderKey));
-//     _childWidgetHeights.add(_getWidgetHeight(_userNameKey));
-//     _childWidgetHeights.add(_getWidgetHeight(_userIdKey));
-//     _childWidgetHeights.add(_getWidgetHeight(_followerKey));
-//     _childWidgetHeights.add(_getWidgetHeight(_introductionKey));
-//     _childWidgetHeights.add(_getWidgetHeight(_dividerKey));
-
-//     for (double height in _childWidgetHeights) {
-//       _dynamicTotalHeight = height + _dynamicTotalHeight;
-//     }
-
-//     _dynamicTotalHeight = _dynamicTotalHeight + kToolbarHeight;
-//     print(_dynamicTotalHeight);
-
-//   }
-
-//   void initTabController() {
-//     _tabController = TabController(length: 2, vsync: this);
-//   }
-
-//   Widget _initTabBarView() {
-//     return TabBarView(
-//       controller: _tabController,
-//       children: const [InitPostGridView(), InitCollectGridView()],
-//     );
-//   }
-
-//   // void _initDynamicTotalHeight() {
-//   //   _dynamicTotalHeight.value = 0;
-//   //   _childWidgetHeights.clear();
-//   //   _childWidgetHeights.add(_getWidgetHeight(_userHeaderKey));
-//   //   _childWidgetHeights.add(_getWidgetHeight(_userNameKey));
-//   //   _childWidgetHeights.add(_getWidgetHeight(_userIdKey));
-//   //   _childWidgetHeights.add(_getWidgetHeight(_followerKey));
-//   //   _childWidgetHeights.add(_getWidgetHeight(_introductionKey));
-//   //   for (double height in _childWidgetHeights) {
-//   //     _dynamicTotalHeight.value = height + _dynamicTotalHeight.value;
-
-//   //   }
-//   // }
-
-//   // void _rebuildDynamicTotalHeight(bool isExpand) {
-//   //   // _initDynamicTotalHeight();
-//   //   double changeHeight =
-//   //       _getWidgetHeight(_introductionKey) - _childWidgetHeights[4];
-//   //   _dynamicTotalHeight.value = _dynamicTotalHeight.value + changeHeight;
-//   // }
-
-//   Widget SliverAppBarWidget() {
-//     return
-//          SliverAppBar(
-//           backgroundColor: Theme.of(context).primaryColor,
-//           primary: true,
-//           actions: [
-//             GestureDetector(
-//               child: Padding(
-//                 child: Icon(
-//                   Icons.settings,
-//                 ),
-//                 padding: EdgeInsets.only(right: 15),
-//               ),
-//               onTap: () {
-//                 Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                         builder: (context) => Edit_PersonalPage()));
-//               },
-//             )
-//           ],
-//           flexibleSpace: FlexibleSpaceBar(
-//             background: Stack(
-//               fit: StackFit.passthrough,
-//               children: <Widget>[
-//                 Container(
-//                   padding: const EdgeInsets.fromLTRB(20, 67, 20, 0),
-//                   child: Column(
-//                     children: <Widget>[
-//                       Column(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: <Widget>[
-//                           UserHeader(
-//                             left: 0,
-//                             right: 0,
-//                             bottom: 0,
-//                             top: 0,
-//                             image: image,
-//                             key: _userHeaderKey,
-//                           ),
-//                           ConstrainedBox(
-//                             constraints: const BoxConstraints(minHeight: 70),
-//                             child: Column(
-//                               children: <Widget>[
-//                                 Padding(
-//                                     padding: EdgeInsets.only(bottom: 5),
-//                                     child: UserName(
-//                                       key: _userNameKey,
-//                                     )),
-//                                 UserId(
-//                                   key: _userIdKey,
-//                                 )
-//                               ],
-//                             ),
-//                           ),
-//                           Divider(
-//                             key: _dividerKey,
-//                             color: Color.fromARGB(132, 0, 0, 0),
-//                           ),
-//                         ],
-//                       ),
-//                       follower_Widget(
-//                         key: _followerKey,
-//                       ),
-
-//                       // Padding(
-//                       //     padding: EdgeInsets.only(bottom: 20),
-//                       //     child:
-//                       ReadMoreText(
-//                         PersonalValue_Map["Introduction"]!,
-//                         key: _introductionKey,
-//                         trimLines: 3,
-//                         trimMode: TrimMode.Line,
-//                         trimCollapsedText: "更多",
-//                         colorClickableText: Colors.black,
-//                         style: TextStyle(color: Colors.black),
-//                       ),
-//                     ],
-//                   ),
-//                 )
-//               ],
-//             ),
-//             centerTitle: true,
-//             collapseMode: CollapseMode.pin,
-//           ),
-//           expandedHeight: PersonalPageState._sliverAppbarHeight,
-//           floating: false,
-//           pinned: true,
-//           snap: false,
-//           bottom: PreferredSize(
-//               preferredSize: Size(MediaQuery.of(context).size.height, 60),
-//               child: Text("")),
-//         );
-
-//   }
-
-//   Widget SliverPersistentHeaderWidget() {
-//     return SliverPersistentHeader(
-//       pinned: true,
-//       delegate: _SliverAppBarDelegate(
-//         TabBar(
-//           controller: _tabController,
-//           indicatorWeight: 2,
-//           indicatorColor: const Color.fromARGB(255, 129, 37, 37),
-//           labelColor: Colors.white,
-//           indicatorSize: TabBarIndicatorSize.label,
-//           isScrollable: false,
-//           tabs: const [
-//             Tab(
-//               child: Text('筆記'),
-//             ),
-//             Tab(
-//               child: Text('收藏'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       extendBodyBehindAppBar: true,
-//       drawer: const DrawerWidget(),
-//       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-//       body: NestedScrollView(
-//         headerSliverBuilder: (context, innerBoxIsScrolled) {
-//           return [
-//             SliverAppBarWidget(),
-//             SliverPersistentHeaderWidget(),
-//           ];
-//         },
-//         body: _initTabBarView(),
-//       ),
-//     );
-//   }
-// }
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
+  _TabbarDelegate(
+    this.tab,
+  );
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 37, 35, 35),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-        ),
-        child: _tabBar);
+      color: Colors.white,
+      child: Center(child: tab),
+    );
   }
 
   @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+  double get maxExtent => tab.preferredSize.height;
+
+  @override
+  double get minExtent => tab.preferredSize.height;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _SliverHeaderDelegate(this.expandedHeight, this.tabbarHeight);
+
+  final double expandedHeight;
+  final double tabbarHeight;
+
+  @override
+  double get minExtent => 0;
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Stack(
+      children: <Widget>[
+        Image.network(
+          Image_List[3],
+          fit: BoxFit.cover,
+          width: MediaQuery.of(context).size.width,
+          height: expandedHeight,
+        ),
+        Container(
+          color: Color.fromARGB(100, 0, 0, 0),
+          height: expandedHeight,
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Icon(Icons.more_horiz_outlined, color: Colors.white),
+              )
+            ],
+          ),
+        ),
+        Positioned(
+            top: expandedHeight - tabbarHeight - shrinkOffset,
+            left: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: tabbarHeight,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(45),
+                    topRight: Radius.circular(45)),
+              ),
+              child: follower_Widget(),
+            )),
+        Positioned(
+          top: expandedHeight - 140 - shrinkOffset,
+          left: 30,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                PersonalValue_Map["UserName"]!,
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+              Text(
+                "UID:" + PersonalValue_Map["UID"]!,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+        ),
+        Positioned(
+            top: expandedHeight - 130 - shrinkOffset,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: () {
+                Get.to(Edit_PersonalPage(), transition: Transition.downToUp);
+              },
+              child: Text("編輯個人資料"),
+              style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(176, 202, 175, 154),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30))),
+            ))
+      ],
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverHeaderDelegate oldDelegate) {
     return false;
   }
 }

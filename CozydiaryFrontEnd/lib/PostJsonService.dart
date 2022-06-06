@@ -1,15 +1,21 @@
-import 'package:cozydiary/PostCoverController.dart';
+import 'package:cozydiary/Model/WritePostModule.dart';
+import 'package:cozydiary/PostController.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:http/http.dart' as http;
 import 'Model/PostCoverModel.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
-class PostCoverService {
+class PostService {
   static var client = http.Client();
-  static var uri =
+  static Dio dio = Dio();
+  static var getPostCoverUri =
       'http://172.20.10.10:8080/getPostCover?uid=116177189475554672889';
-  static Utf8Decoder decoder = Utf8Decoder();
+  static var writePostUri = 'http://172.20.10.10:8080/addPost';
+  static Utf8Decoder utf8Decoder = Utf8Decoder();
+  static Utf8Encoder utf8Encoder = Utf8Encoder();
+  static var postController = Get.put(PostController());
 
   //測試資料
   /*
@@ -43,21 +49,16 @@ class PostCoverService {
   static Future<PostCoverModule?> fetchPostCover() async {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
-    var response = await client.get(Uri.parse(uri));
-    print(response.body);
-    var jsonString = response.body;
-    var utf8JsonString = decoder.convert(response.bodyBytes);
-    var jsonDecode = postCoverModuleFromJson(utf8JsonString);
-    return jsonDecode;
+    var response = await dio.get(getPostCoverUri);
+    print(response.data.toString());
+    var jsonString = response.data.toString();
+    // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
+    var fromJsonValue = postCoverModuleFromJson(jsonString);
+    return fromJsonValue;
+  }
+
+  static Future<dynamic> postData() async {
+    var formData = postController.writePost();
+    return await dio.post(writePostUri, data: formData);
   }
 }
-
-//  Future<PostCoverModule?> postData() async {
-//     http.post(
-//       Uri.parse('http://172.20.10.3:8080/addPost'),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: ;
-//     );
-//   }

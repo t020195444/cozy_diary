@@ -1,6 +1,7 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/pages/Home/controller/TopTabbarController.dart';
+import 'package:cozydiary/pages/Map/map_page.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class HomePageTabbar extends StatelessWidget {
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
     final screens = [
-      UserDataPage(),
+      MapPage(),
       HomePage(),
       PersonalPage(),
     ];
