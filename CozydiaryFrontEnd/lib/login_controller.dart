@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:io';
+import 'package:cozydiary/Model/UserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,12 +13,15 @@ class LoginController extends GetxController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);
   var googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  late String userId;
-  late String id = '';
-  late UserMetadata metadata;
-  late List<String> responseBody;
 
-  loginWithGoogle() async {
+  late User? googleuser;
+  late String id = '';
+  late String email = '';
+  late String googlepic = "";
+  late List<String> responseBody;
+  var userData = <userdata.UserDataModel>[].obs;
+
+  void loginWithGoogle() async {
     googleAccount.value = await googleSignIn.signIn();
     final googleAuth = await googleAccount.value!.authentication;
     final credential = GoogleAuthProvider.credential(
@@ -28,19 +30,23 @@ class LoginController extends GetxController {
     );
     final authResult = await _auth.signInWithCredential(credential);
     final User? user = authResult.user;
+    googleuser = user;
     id = googleSignIn.currentUser!.id;
-    userId = user!.uid;
-    await tohomepage();
+
+    email = user!.email!;
+    googlepic = user.providerData[0].photoURL!;
+
+    toregisterpage();
   }
 
-  logout() async {
+  void logout() async {
     googleAccount.value = await googleSignIn.signOut();
     Get.to(const MyHomePage(
       title: '',
     ));
   }
 
-  get() async {
+  void get() async {
     var response =
         await http.get(Uri.parse('http://172.20.10.3:8080/getUser?gid=' + id));
     var responseBody = jsonDecode(response.body);
@@ -51,7 +57,7 @@ class LoginController extends GetxController {
       Get.to(RegisterPage());
   }
 
-  post() async {
+  void post() async {
     http.post(
       Uri.parse('http://172.20.10.3:8080/userRegister'),
       headers: <String, String>{
@@ -70,15 +76,16 @@ class LoginController extends GetxController {
   }
 
   //因後端還未上伺服器 這邊先使用跳頁方法
-  tohomepage() async {
+
+  void tohomepage() async {
     Get.to(const HomePageTabbar());
   }
 
-  toregisterpage() async {
+  void toregisterpage() async {
     Get.to(RegisterPage());
   }
 
-  testpost() async {
+  void testpost() async {
     var response = await http.post(
       Uri.parse('http://yapi.smart-xwork.cn/mock/152435/userRegister'),
       headers: <String, String>{
@@ -103,14 +110,14 @@ class LoginController extends GetxController {
     // }
   }
 
-  testget() async {
+  void testget() async {
     var response = await http
         .get(Uri.parse('http://yapi.smart-xwork.cn/mock/152435/userRegister'));
     var responseBody = jsonDecode(response.body);
     print(responseBody);
   }
 
-  printid() async {
-    print(id);
+  void printid() async {
+    print(userdata.User);
   }
 }

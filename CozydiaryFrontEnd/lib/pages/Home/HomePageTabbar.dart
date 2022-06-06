@@ -1,11 +1,10 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
-import 'package:cozydiary/pages/Home/ImagePicker.dart';
-import 'package:cozydiary/pages/Map/map_page.dart';
+import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
+import 'package:cozydiary/pages/Home/controller/TopTabbarController.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../Personal/Page/personal_page.dart';
 import 'UserData.dart';
@@ -16,6 +15,7 @@ class HomePageTabbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ChangePageTabbarController());
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
     final screens = [
@@ -23,31 +23,29 @@ class HomePageTabbar extends StatelessWidget {
       HomePage(),
       PersonalPage(),
     ];
-    return GetBuilder<ChangePageTabbarController>(
-      builder: (controller) => Scaffold(
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        backgroundColor: Colors.black,
-        bottomNavigationBar: CurvedNavigationBar(
-          index: controller.selectedIndex.value,
-          key: _bottomNavigationKey,
-          backgroundColor: Colors.transparent,
-          buttonBackgroundColor: Colors.white,
-          height: 50,
-          items: <Widget>[
-            Icon(Icons.add_alert, size: 30),
-            Icon(Icons.home, size: 30),
-            Icon(
-              Icons.person,
-              size: 30,
-            ),
-          ],
-          onTap: (index) {
-            controller.onItemTapped(index);
-          },
-        ),
-        body: screens[controller.selectedIndex.value],
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: Colors.black,
+      bottomNavigationBar: CurvedNavigationBar(
+        index: ChangePageTabbarController().selectedIndex.value,
+        key: _bottomNavigationKey,
+        backgroundColor: Colors.transparent,
+        buttonBackgroundColor: Colors.white,
+        height: 50,
+        items: <Widget>[
+          Icon(Icons.add_alert, size: 30),
+          Icon(Icons.home, size: 30),
+          Icon(
+            Icons.person,
+            size: 30,
+          ),
+        ],
+        onTap: (index) {
+          ChangePageTabbarController().onItemTapped(index);
+        },
       ),
+      body: screens[ChangePageTabbarController().selectedIndex.value],
     );
   }
 }

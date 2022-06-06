@@ -48,7 +48,6 @@ class UserDataPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text(logincontroller.userId),
           Text(logincontroller.id),
           CupertinoButton(
               child: const Text("發送"),

@@ -1,8 +1,7 @@
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
-import 'package:cozydiary/pages/Register/RegisterPage.dart';
+import 'package:cozydiary/register_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +21,8 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final registerController = Get.put(RegisterController());
+    final logincontroller = Get.put(LoginController());
     return GetMaterialApp(
       title: 'CozyDiary',
       theme: ThemeData(
@@ -111,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return Login(context);
     // return Scaffold(
     //     body: Center(child: Login(context)
     //         // Obx(() {
