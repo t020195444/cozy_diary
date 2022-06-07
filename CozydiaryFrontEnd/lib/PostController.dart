@@ -1,4 +1,4 @@
-import 'package:cozydiary/Model/WritePostModule.dart';
+import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:image_picker/image_picker.dart';

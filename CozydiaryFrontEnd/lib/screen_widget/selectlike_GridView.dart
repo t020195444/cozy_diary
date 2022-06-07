@@ -18,7 +18,7 @@ class SelectLikeGridView extends StatelessWidget {
               return GestureDetector(
                 child: BuildCard(
                   index: index,
-                  imgPath: '',
+                  userPostCover: [],
                 ),
                 onTap: () {},
               );
