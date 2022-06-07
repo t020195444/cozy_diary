@@ -16,9 +16,10 @@ class PersonalService {
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(getUserUri + id);
     print(response.data.toString());
-    var jsonString = response.data.toString();
+    var jsonString = response.data;
+    var encodeJsonString = userModelToJson(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
-    var fromJsonValue = userModelFromJson(jsonString);
+    var fromJsonValue = userModelFromJson(encodeJsonString);
     return fromJsonValue;
   }
 
