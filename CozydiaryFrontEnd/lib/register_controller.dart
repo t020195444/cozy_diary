@@ -2,6 +2,7 @@ import 'dart:io' as io;
 import 'package:cozydiary/Model/UserDataModel.dart';
 import 'package:cozydiary/data/dataResourse.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/pages/Register/SelectLikePage.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseauth;
 import 'package:get/get.dart' hide MultipartFile, FormData, Response;
@@ -48,7 +49,7 @@ class RegisterController extends GetxController {
     //     pic: pic.value));
     // print(googleId + email);
     // print(userData[0].toJson());
-    await Get.to(HomePageTabbar());
+    await Get.to(SelectLikePage());
   }
 
   void choicemen() {

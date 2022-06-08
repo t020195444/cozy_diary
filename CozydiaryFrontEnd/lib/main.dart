@@ -90,14 +90,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final LoginController logincontroller = Get.put(LoginController());
   late VideoPlayerController _controller;
-  bool _isLoggedIn = false;
-  late GoogleSignInAccount _userObj;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-    ],
-  );
-  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -110,12 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       });
     _controller.setLooping(true);
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 
   @override

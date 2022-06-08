@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../Data/dataResourse.dart';
-import '../pages/Personal/widget/buildCard_personal.dart';
+import '../../../Data/dataResourse.dart';
+import '../../Personal/widget/buildCard_personal.dart';
 
 class SelectLikeGridView extends StatelessWidget {
   const SelectLikeGridView({Key? key}) : super(key: key);
