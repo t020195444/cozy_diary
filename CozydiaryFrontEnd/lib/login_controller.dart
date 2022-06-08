@@ -36,8 +36,8 @@ class LoginController extends GetxController {
     email = user!.email!;
     googlepic = user.providerData[0].photoURL!;
 
-    // toregisterpage();
-    tohomepage();
+    // await login();
+    toregisterpage();
   }
 
   void logout() async {
@@ -47,7 +47,7 @@ class LoginController extends GetxController {
     ));
   }
 
-  void get() async {
+  login() async {
     var response =
         await http.get(Uri.parse('http://172.20.10.3:8080/getUser?gid=' + id));
     var responseBody = jsonDecode(response.body);

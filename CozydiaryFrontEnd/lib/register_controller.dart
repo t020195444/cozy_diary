@@ -31,25 +31,26 @@ class RegisterController extends GetxController {
       googleId = user!.providerData[0].uid!;
       email = user.providerData[0].email!;
       name.value = user.providerData[0].displayName!;
+      pic.value = user.providerData[0].photoURL!;
       print(googleId);
     });
     super.onInit();
   }
 
   void adddata() async {
-    // userData.clear();
+    userData.clear();
 
-    // userData.add(User(
-    //     googleId: googleId,
-    //     name: name.value,
-    //     sex: sex.value,
-    //     introduction: introduction.value,
-    //     birth: DateTime.parse(birth.value),
-    //     email: email,
-    //     pic: pic.value));
-    // print(googleId + email);
-    // print(userData[0].toJson());
-    await Get.to(SelectLikePage());
+    userData.add(User(
+        googleId: googleId,
+        name: name.value,
+        sex: sex.value,
+        introduction: introduction.value,
+        birth: DateTime.parse(birth.value),
+        email: email,
+        pic: pic.value));
+    print(googleId + email);
+    print(userData[0].toJson());
+    await Get.to(HomePageTabbar());
   }
 
   void choicemen() {
