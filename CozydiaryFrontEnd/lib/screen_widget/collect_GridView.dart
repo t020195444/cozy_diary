@@ -17,7 +17,7 @@ class InitCollectGridView extends StatelessWidget {
             itemBuilder: (context, index) {
               return BuildCard(
                 index: index,
-                imgPath: '',
+                userPostCover: [],
               );
             }));
   }

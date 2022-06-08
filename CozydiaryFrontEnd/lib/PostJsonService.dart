@@ -1,20 +1,14 @@
-import 'package:cozydiary/Model/WritePostModule.dart';
 import 'package:cozydiary/PostController.dart';
-import 'package:cozydiary/login_controller.dart';
-import 'package:http/http.dart' as http;
 import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
-import 'dart:convert';
 import 'package:dio/dio.dart';
 
 class PostService {
-  static var client = http.Client();
   static Dio dio = Dio();
   static var getPostCoverUri =
       'http://172.20.10.10:8080/getPostCover?uid=116177189475554672889';
   static var writePostUri = 'http://172.20.10.10:8080/addPost';
-  static Utf8Decoder utf8Decoder = Utf8Decoder();
-  static Utf8Encoder utf8Encoder = Utf8Encoder();
+
   static var postController = Get.put(PostController());
 
   //測試資料

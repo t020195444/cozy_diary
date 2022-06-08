@@ -1,5 +1,6 @@
 import 'package:cozydiary/PostController.dart';
 import 'package:cozydiary/pages/Home/widget/buildCard_home.dart';
+import 'package:cozydiary/pages/Home/widget/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -15,9 +16,17 @@ class HomeScreen extends StatelessWidget {
     return Obx(() {
       if (postCoverController.isLoading.value) {
         return Center(
-            child: CircularProgressIndicator(
-          color: Colors.white10,
-        ));
+            child: Column(
+              children: [
+                FloatingActionButton(onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MediaGrid(),
+                      ));
+                })
+              ],
+            ));
       } else {
         return MediaQuery.removePadding(
             context: context,

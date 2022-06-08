@@ -1,3 +1,4 @@
+import 'package:cozydiary/Model/PostCoverModel.dart';
 import 'package:cozydiary/screen_widget/viewPostScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
@@ -7,8 +8,8 @@ import '../../../Data/dataResourse.dart';
 
 class BuildCard extends StatelessWidget {
   final int index;
-  final String imgPath;
-  const BuildCard({Key? key, required this.index, required this.imgPath})
+  final List<PostCoverData> userPostCover;
+  const BuildCard({Key? key, required this.index, required this.userPostCover})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,14 +29,14 @@ class BuildCard extends StatelessWidget {
             Hero(
               tag: Image_List[index],
               child: Image.network(
-                Image_List[index],
+                userPostCover[index].cover,
                 fit: BoxFit.cover,
               ),
             ),
             Padding(
               padding: EdgeInsets.all(15),
               child: Text(
-                PostText_List[index],
+                userPostCover[index].title,
                 softWrap: true,
                 maxLines: 2,
               ),
@@ -51,7 +52,8 @@ class BuildCard extends StatelessWidget {
                           padding: EdgeInsets.only(right: 5),
                           child: CircleAvatar(
                             radius: 12,
-                            backgroundImage: NetworkImage(Image_List[3]),
+                            backgroundImage:
+                                NetworkImage(userPostCover[index].pic),
                           ),
                         ),
                         Column(
@@ -59,7 +61,7 @@ class BuildCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Elsa',
+                              userPostCover[index].username,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )
@@ -68,7 +70,7 @@ class BuildCard extends StatelessWidget {
                       ],
                     ),
                     LikeButton(
-                      likeCount: 0,
+                      likeCount: userPostCover[index].likes,
                       isLiked: false,
                       size: 15,
                     )
