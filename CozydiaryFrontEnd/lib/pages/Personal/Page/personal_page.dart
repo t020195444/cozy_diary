@@ -35,7 +35,8 @@ class PersonalView extends StatelessWidget {
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
         pinned: true,
-        delegate: _SliverHeaderDelegate(400, 70, personalController),
+        delegate: _SliverHeaderDelegate(
+            MediaQuery.of(context).size.height * 0.5, 70, personalController),
       );
     }
 
@@ -165,11 +166,15 @@ class PersonalView extends StatelessWidget {
                 height: 3,
               ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   child: Container(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.85),
                     key: _introductionKey,
                     child: Introduction(
-                        personalController.userData.value.introduction, 3),
+                        // "BOCAN選貨店《全館限時免運中》誠實賣場 只有全新公司貨營業時間：13:00-23:00//行銷徵才中 詳情請見精選限時//如何選購：小盒子私訊/7-11賣貨便有想要ㄉ鞋子沒在版上可以帶圖/尺寸 小盒子我們🛒《有任何問題或需求歡迎隨時小盒子》lkfgjofdsijglkfdsjglfsdjglkfdsjglkfdj;sh;jsg;ihojlgfdsjhlkfdsgmblfsgnjhjsrogjgfdoihjgfdihjogfdijsafkadjfkdsjfljsdgkdfgkldsgkljglkjgkfjdskgjkldsgjlskdjglkfdss",
+                        personalController.userData.value.introduction,
+                        3),
                   )),
             ],
           ),
@@ -322,63 +327,63 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     Widget followerWidget(
         int trackerCount, int followerCount, int postCount, eventCount) {
-      return Wrap(
-        spacing: 25,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Column(children: <Widget>[
             Text(
               '$trackerCount',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '追隨中',
               style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ]),
           Column(children: <Widget>[
             Text(
               '$followerCount',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '粉絲',
               style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ]),
           Column(children: <Widget>[
             Text(
               '$postCount',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '貼文',
               style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ]),
           Column(children: <Widget>[
             Text(
               '$eventCount',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '聚集數',
               style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ]),
         ],
@@ -429,26 +434,35 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                         topLeft: Radius.circular(45),
                         topRight: Radius.circular(45)),
                   ),
-                  child: followerWidget(
-                      _personalPageController.userData.value.tracker.length,
-                      _personalPageController.userData.value.follower.length,
-                      _personalPageController.postCover.value.length,
-                      0),
+                  child: Container(
+                    padding: EdgeInsets.only(top: 15),
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.6),
+                    child: followerWidget(
+                        _personalPageController.userData.value.tracker.length,
+                        _personalPageController.userData.value.follower.length,
+                        _personalPageController.postCover.value.length,
+                        0),
+                  ),
                 )),
             Positioned(
-              top: expandedHeight - 140 - shrinkOffset,
+              top: (expandedHeight - tabbarHeight) * 0.8 - shrinkOffset,
               left: 30,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    // "楊哲倫",
                     _personalPageController.userData.value.name,
                     style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   Text(
                     "UID:" + _personalPageController.userData.value.googleId,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: Colors.white,
                     ),
                   )
@@ -456,7 +470,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
             Positioned(
-                top: expandedHeight - 130 - shrinkOffset,
+                top: (expandedHeight - tabbarHeight) * 0.8 - shrinkOffset,
                 right: 20,
                 child: ElevatedButton(
                   onPressed: () {
