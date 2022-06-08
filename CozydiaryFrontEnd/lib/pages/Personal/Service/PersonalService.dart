@@ -9,15 +9,15 @@ import '../../../Model/PostCoverModel.dart';
 class PersonalService {
   final googleId = "";
   static Dio dio = Dio();
-  static var getUserUri = 'http://172.20.10.10:8080/getUser?gid=';
+  static var getUserUri = 'http://140.131.114.166:80/getUser?gid=';
   static var getPostCoverForPersonalPageUri =
-      'getPostCoverForPersonalPage?uid=';
+      'http://140.131.114.166:80/getPostCoverForPersonalPage?uid=';
 
   static Future<UserModel?> fetchUserData(String id) async {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
-    var response = await dio.get(getUserUri + id);
-    print(response.data.toString());
+    var response = await dio.get(getUserUri + "116177189475554672802");
+    print(response.data);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
@@ -28,7 +28,8 @@ class PersonalService {
   static Future<PostCoverModule?> fetchUserPostCover(String id) async {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
-    var response = await dio.get(getPostCoverForPersonalPageUri + id);
+    var response =
+        await dio.get(getPostCoverForPersonalPageUri + "116177189475554672802");
     print(response.data.toString());
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);

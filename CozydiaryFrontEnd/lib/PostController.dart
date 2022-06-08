@@ -17,7 +17,7 @@ class PostController extends GetxController {
   var cover = "".obs;
   var postFiles = <PostFile>[];
   var cid = 0.obs;
-  var imageFile = <XFile>[].obs;
+  var imageFile = <String>[].obs;
 
   @override
   void onInit() {
@@ -70,8 +70,8 @@ class PostController extends GetxController {
       formData.files.addAll([
         MapEntry(
             "file",
-            await MultipartFile.fromFile(value.path,
-                filename: value.path.split("/").last + "-" + key.toString()))
+            await MultipartFile.fromFile(value,
+                filename: value.split("/").last + "-" + key.toString()))
       ]);
     });
 

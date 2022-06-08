@@ -1,7 +1,10 @@
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
+import 'package:cozydiary/PostJsonService.dart';
+import '../../../Model/WritePostModel.dart';
+import '../../../login_controller.dart';
 
 class pickController extends GetxController {
   final RxInt index = 0.obs; //抓取圖片index(type是FutureBuilder<Uint8List?>)
@@ -36,12 +39,58 @@ class pickController extends GetxController {
 
   static Color themeColor = Color.fromRGBO(202, 175, 154, 1);
 
+  late Post postsContext;
+  var loginController = Get.put(LoginController());
+  var postFiles = <PostFile>[];
+
+  @override
+  void onInit() {
+    postsContext = Post(
+        uid: "",
+        title: "",
+        content: "",
+        likes: 0,
+        collects: 0,
+        cover: "",
+        cid: 0,
+        postFiles: []);
+    super.onInit();
+  }
+
   //傳到後端的資料
-  void goToDataBase() {
-    print(finalTitle);
-    print(finalContent);
-    print(finalFirstPicPath);
-    print(finalPicPath);
+  void goToDataBase() async {
+    setPost();
+    var response = await PostService.postPostData();
+  }
+
+  void setPost() {
+    postsContext = Post(
+        uid: loginController.id,
+        title: finalTitle,
+        content: finalContent,
+        likes: 0,
+        collects: 0,
+        cover: finalFirstPicPath,
+        cid: 0,
+        postFiles: postFiles);
+  }
+
+  Future<FormData> writePost() async {
+    FormData formData = FormData();
+    // int index = 1;
+    finalPicPath.asMap().forEach((key, value) async {
+      var fileName = value.split("/").last + "-" + key.toString();
+      formData.files.addAll([
+        MapEntry(
+            "file", await MultipartFile.fromFile(value, filename: fileName))
+      ]);
+      postFiles.add(PostFile(postUrl: fileName));
+    });
+    setPost();
+    WritePostModule writePost = WritePostModule(post: postsContext);
+    formData = FormData.fromMap(writePost.toJson());
+
+    return formData;
   }
 
   //最上面的照片選擇判斷

@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebaseauth;
 import '../../../Model/PostCoverModel.dart';
 
 class PersonalPageController extends GetxController {
-  var constraintsHeight = 100.0.obs;
+  var constraintsHeight = 0.0.obs;
   var readmore = true.obs;
   var difference = 0.0;
   var isLoading = true.obs;
@@ -36,7 +36,10 @@ class PersonalPageController extends GetxController {
       googleId = user!.providerData[0].uid!;
     });
     getUserData();
-    getUserPostCover();
+    // getUserPostCover();
+    // if (userData.value.introduction == "") {
+    //   constraintsHeight.value = 18;
+    // }
     super.onInit();
   }
 
@@ -54,7 +57,6 @@ class PersonalPageController extends GetxController {
 
   void getUserPostCover() async {
     try {
-      isLoading(true);
       var Posts = await PersonalService.fetchUserPostCover(googleId);
       if (Posts != null) {
         if (Posts.status == 200) {

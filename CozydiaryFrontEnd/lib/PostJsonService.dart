@@ -8,8 +8,8 @@ import 'package:dio/dio.dart';
 class PostService {
   static Dio dio = Dio();
   static var getPostCoverUri =
-      'http://172.20.10.10:8080/getPostCover?uid=116177189475554672889';
-  static var writePostUri = 'http://172.20.10.10:8080/addPost';
+      'http://140.131.114.166:80/getPostCover?uid=116177189475554672802';
+  static var writePostUri = 'http://140.131.114.166:80/addPost';
 
   static var postController = Get.put(PostController());
 
@@ -48,13 +48,13 @@ class PostService {
     var response = await dio.get(getPostCoverUri);
     print(response.data.toString());
     var jsonString = response.data;
-    var encodeJsonString = jsonEncode(jsonString)
+    var encodeJsonString = jsonEncode(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
-    var fromJsonValue = postCoverModuleFromJson(jsonString);
+    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
     return fromJsonValue;
   }
 
-  static Future<dynamic> postData() async {
+  static Future<dynamic> postPostData() async {
     var formData = postController.writePost();
     return await dio.post(writePostUri, data: formData);
   }

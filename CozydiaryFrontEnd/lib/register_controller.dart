@@ -50,6 +50,7 @@ class RegisterController extends GetxController {
         pic: pic.value));
     print(googleId + email);
     print(userData[0].toJson());
+    register();
     await Get.to(HomePageTabbar());
   }
 

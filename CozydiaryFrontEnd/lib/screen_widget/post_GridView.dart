@@ -7,12 +7,13 @@ import '../Data/dataResourse.dart';
 import '../pages/Personal/widget/buildCard_personal.dart';
 
 class InitPostGridView extends StatelessWidget {
-  const InitPostGridView({Key? key, required this.personalPageController})
-      : super(key: key);
-  final PersonalPageController personalPageController;
+  const InitPostGridView({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var personalPageController = Get.find<PersonalPageController>();
     return Obx(() {
       if (personalPageController.isLoading.value) {
         return Center(
@@ -25,7 +26,7 @@ class InitPostGridView extends StatelessWidget {
             removeTop: true,
             child: MasonryGridView.count(
                 crossAxisCount: 2,
-                itemCount: Image_List.length,
+                itemCount: personalPageController.postCover.value.length,
                 itemBuilder: (context, index) {
                   return BuildCard(
                     index: index,

@@ -25,12 +25,12 @@ class _FinalPageState extends State<FinalPage> {
     contentText = contentCtr.text;
     if (titleText == '' && contentText == '') {
       Fluttertoast.showToast(
-                      msg: '請輸入標題與內文',
-                      gravity: ToastGravity.CENTER,
-                      toastLength: Toast.LENGTH_SHORT,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Color.fromARGB(255, 65, 65, 66),
-                    );
+        msg: '請輸入標題與內文',
+        gravity: ToastGravity.CENTER,
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Color.fromARGB(255, 65, 65, 66),
+      );
     } else {
       if (titleText == '') {
         Fluttertoast.showToast(
