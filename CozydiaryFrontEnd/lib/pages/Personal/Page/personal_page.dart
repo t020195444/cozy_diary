@@ -387,8 +387,8 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     return Obx(() => Stack(
           children: <Widget>[
-            Image.file(
-              File(_personalPageController.userData.value.pic),
+            Image.network(
+              _personalPageController.userData.value.pic,
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
               height: expandedHeight,
