@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cozydiary/PostController.dart';
 import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -45,7 +47,8 @@ class PostService {
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(getPostCoverUri);
     print(response.data.toString());
-    var jsonString = response.data.toString();
+    var jsonString = response.data;
+    var encodeJsonString = jsonEncode(jsonString)
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
     var fromJsonValue = postCoverModuleFromJson(jsonString);
     return fromJsonValue;

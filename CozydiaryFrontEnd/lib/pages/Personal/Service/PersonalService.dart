@@ -9,7 +9,7 @@ import '../../../Model/PostCoverModel.dart';
 class PersonalService {
   final googleId = "";
   static Dio dio = Dio();
-  static var getUserUri = 'http://localhost:8080/getUser?gid=';
+  static var getUserUri = 'http://172.20.10.10:8080/getUser?gid=';
   static var getPostCoverForPersonalPageUri =
       'getPostCoverForPersonalPage?uid=';
 
