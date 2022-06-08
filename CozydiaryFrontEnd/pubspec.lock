@@ -651,6 +651,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  spincircle_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: spincircle_bottom_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   sqflite:
     dependency: "direct main"
     description:

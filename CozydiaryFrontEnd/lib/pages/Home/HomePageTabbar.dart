@@ -6,6 +6,8 @@ import 'package:cozydiary/pages/Map/map_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spincircle_bottom_bar/modals.dart';
+import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 
 import '../Personal/Page/personal_page.dart';
 import 'UserData.dart';
@@ -19,94 +21,90 @@ class HomePageTabbar extends StatelessWidget {
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
     final screens = [
-      MapPage(),
+      // MapPage(),
       HomePage(),
       PersonalPage(),
+      // UserDataPage(),
     ];
     final controller = Get.put(ChangePageTabbarController());
-    return Obx(
-      () => Scaffold(
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        backgroundColor: Colors.black,
-        bottomNavigationBar: CurvedNavigationBar(
-          index: controller.selectedIndex.value,
-          key: _bottomNavigationKey,
-          backgroundColor: Colors.transparent,
-          buttonBackgroundColor: Colors.white,
-          height: 50,
-          items: <Widget>[
-            Icon(Icons.add_alert, size: 30),
-            Icon(Icons.home, size: 30),
-            Icon(
-              Icons.person,
-              size: 30,
-            ),
-          ],
-          onTap: (index) {
-            controller.onItemTapped(index);
-          },
-        ),
-        body: screens[controller.selectedIndex.value],
-      ),
-    );
+    return
+        // Obx(() =>
+        Scaffold(
+            // extendBodyBehindAppBar: true,
+            // extendBody: true,
+            // backgroundColor: Colors.black,
+            // bottomNavigationBar: CurvedNavigationBar(
+            //   index: controller.selectedIndex.value,
+            //   key: _bottomNavigationKey,
+            //   backgroundColor: Colors.transparent,
+            //   buttonBackgroundColor: Colors.white,
+            //   height: 50,
+            //   items: <Widget>[
+            //     // Icon(Icons.add_alert, size: 30),
+            //     Icon(Icons.home, size: 30),
+            //     Icon(
+            //       Icons.person,
+            //       size: 30,
+            //     ),
+            //   ],
+            //   onTap: (index) {
+            //     controller.onItemTapped(index);
+            //   },
+            // ),
+            // body: screens[controller.selectedIndex.value],
+            body: Obx((() => SpinCircleBottomBarHolder(
+                  bottomNavigationBar: SCBottomBarDetails(
+                      circleColors: [
+                        Colors.white,
+                        Colors.orange,
+                        Colors.redAccent
+                      ],
+                      iconTheme: IconThemeData(color: Colors.black45),
+                      activeIconTheme: IconThemeData(color: Colors.orange),
+                      backgroundColor: Colors.white,
+                      titleStyle:
+                          TextStyle(color: Colors.black45, fontSize: 12),
+                      activeTitleStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                      actionButtonDetails: SCActionButtonDetails(
+                          color: Colors.redAccent,
+                          icon: Icon(
+                            Icons.expand_less,
+                            color: Colors.white,
+                          ),
+                          elevation: 2),
+                      elevation: 2.0,
+                      items: [
+                        // Suggested count : 4
+                        SCBottomBarItem(
+                            icon: Icons.home,
+                            title: "首頁",
+                            onPressed: () {
+                              controller.onItemTapped(0);
+                            }),
+
+                        SCBottomBarItem(
+                            icon: Icons.person,
+                            title: "個人",
+                            onPressed: () {
+                              controller.onItemTapped(1);
+                            }),
+                      ],
+                      circleItems: [
+                        //Suggested Count: 3
+                        SCItem(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              controller.oncircleItemsTapped();
+                            }),
+                        SCItem(icon: Icon(Icons.image), onPressed: () {}),
+                        SCItem(icon: Icon(Icons.map), onPressed: () {}),
+                      ],
+                      bnbHeight: 80 // Suggested Height 80
+                      ),
+                  child: screens[controller.selectedIndex.value],
+                ))));
   }
 }
-// class HomePageTabbar extends StatefulWidget {
-//   const HomePageTabbar({Key? key}) : super(key: key);
-
-//   @override
-//   _HomePageTabbarState createState() => _HomePageTabbarState();
-// }
-
-// class _HomePageTabbarState extends State<HomePageTabbar> {
-//   int _selectedIndex = 1;
-
-//   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   void _onItemTapped(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//   }
-
-//   final screens = [
-//     UserDataPage(),
-//     HomePage(),
-//     PersonalPage(),
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         extendBodyBehindAppBar: true,
-//         extendBody: true,
-//         backgroundColor: Colors.black,
-//         bottomNavigationBar: CurvedNavigationBar(
-//           index: 1,
-//           key: _bottomNavigationKey,
-//           backgroundColor: Colors.transparent,
-//           buttonBackgroundColor: Colors.white,
-//           height: 50,
-//           items: <Widget>[
-//             Icon(Icons.add_alert, size: 30),
-//             Icon(Icons.home, size: 30),
-//             Icon(
-//               Icons.person,
-//               size: 30,
-//             ),
-//           ],
-//           onTap: (index) {
-//             setState(() {
-//               _onItemTapped(index);
-//             });
-//           },
-//         ),
-//         body: screens[_selectedIndex]);
-//   }
-// }

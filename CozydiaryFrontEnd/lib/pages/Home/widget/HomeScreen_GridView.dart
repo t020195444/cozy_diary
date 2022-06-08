@@ -17,16 +17,16 @@ class HomeScreen extends StatelessWidget {
       if (postCoverController.isLoading.value) {
         return Center(
             child: Column(
-              children: [
-                FloatingActionButton(onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MediaGrid(),
-                      ));
-                })
-              ],
-            ));
+          children: [
+            // FloatingActionButton(onPressed: (){
+            //   Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => MediaGrid(),
+            //       ));
+            // })
+          ],
+        ));
       } else {
         return MediaQuery.removePadding(
             context: context,

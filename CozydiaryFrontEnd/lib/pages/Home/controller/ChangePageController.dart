@@ -1,3 +1,4 @@
+import 'package:cozydiary/pages/Home/widget/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,11 +9,15 @@ class ChangePageTabbarController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    selectedIndex.value = 1;
+    selectedIndex.value = 0;
   }
 
   void onItemTapped(int index) {
     selectedIndex.value = index;
     update();
+  }
+
+  void oncircleItemsTapped() {
+    Get.to(MediaGrid());
   }
 }

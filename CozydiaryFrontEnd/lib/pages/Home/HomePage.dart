@@ -1,5 +1,6 @@
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/pages/Home/widget/HomeScreen_GridView.dart';
+import 'package:cozydiary/pages/Map/map_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -32,30 +33,12 @@ class HomePage extends StatelessWidget {
               unselectedLabelStyle: TextStyle(fontSize: 15),
               tabs: topTabbarController.topTabs),
         ),
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //   iconSize: 30.0,
-        //   color: Color.fromARGB(155, 0, 0, 0),
-        //   onPressed: () {
-        //     print('back to user page');
-        //   }, //=> Navigator.pop(context),
-        // ),
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.more_horiz),
-        //     iconSize: 30.0,
-        //     color: Color.fromARGB(155, 0, 0, 0),
-        //     onPressed: () {
-        //       print('more');
-        //     }, //=> Navigator.pop(context),
-        //   ),
-        // ],
       ),
       body: TabBarView(
         children: <Widget>[
           Image(image: AssetImage('assets/images/user1.jpg')),
           NestedTabBar(),
-          Image(image: AssetImage('assets/images/pic1.jpg'))
+          MapPage()
         ],
         controller: topTabbarController.topController,
       ),
