@@ -108,6 +108,12 @@ class _FinalPageState extends State<FinalPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    color: Colors.red,
+                   
+                  )
                   
                 ],
               ),

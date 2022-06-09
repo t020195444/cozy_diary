@@ -42,20 +42,20 @@ class PostService {
     "status": 200
   };*/
 
-  static Future<PostCoverModule?> fetchPostCover() async {
-    //測試資料
-    // return postCoverModuleFromJson(json.encode(jsonDATA));
-    var response = await dio.get(getPostCoverUri);
-    print(response.data.toString());
-    var jsonString = response.data;
-    var encodeJsonString = jsonEncode(jsonString);
-    // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
-    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
-    return fromJsonValue;
-  }
+  // static Future<PostCoverModule?> fetchPostCover() async {
+  //   //測試資料
+  //   // return postCoverModuleFromJson(json.encode(jsonDATA));
+  //   var response = await dio.get(getPostCoverUri);
+  //   print(response.data.toString());
+  //   var jsonString = response.data;
+  //   var encodeJsonString = jsonEncode(jsonString);
+  //   // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
+  //   var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+  //   return fromJsonValue;
+  // }
 
-  static Future<dynamic> postPostData() async {
-    var formData = postController.writePost();
-    return await dio.post(writePostUri, data: formData);
-  }
+  // static Future<dynamic> postPostData() async {
+  //   var formData = postController.writePost();
+  //   return await dio.post(writePostUri, data: formData);
+  // }
 }

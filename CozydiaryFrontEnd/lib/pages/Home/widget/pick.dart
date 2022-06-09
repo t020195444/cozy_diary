@@ -15,7 +15,7 @@ class pickController extends GetxController {
   RxBool MulitButtonColorCheck = true.obs; //切換目前切換單選多選按鈕顏色
   RxBool isMultiPick = false.obs; //判斷目前為單選多選
 
-  static List allPicPath = []; //所有照片的path存在這
+  static List<File?> allPicPath = []; //所有照片的path存在這
   //單選
   Map currPicFocusDic = {}; //選照片Focus
 
@@ -32,8 +32,8 @@ class pickController extends GetxController {
   RxMap selectedPicDic = {}.obs; //多選Dictionary
   static List multiPicName = []; //每張的檔名
   static List finalPicPath = []; //多張照片路徑存放!!!!!!!!!
-  static List selectedPicPathList =
-      []; //這是要把第一頁選的照片丟到第二頁(type是FutureBuilder<Uint8List?>)
+  static RxList selectedPicPathList =
+      [].obs; //這是要把第一頁選的照片丟到第二頁(type是FutureBuilder<Uint8List?>)
 
   static String finalTitle = '';
   static String finalContent = '';
@@ -63,7 +63,7 @@ class pickController extends GetxController {
   //傳到後端的資料
   void goToDataBase() async {
     setPost();
-    var response = await PostService.postPostData();
+    //var response = await PostService.postPostData();
   }
 
   void setPost() {
@@ -117,6 +117,7 @@ class pickController extends GetxController {
   //單選將第一頁選的照片丟到第二頁
   void singleSelectedPicNum() {
     selectedPicPath = media[index.toInt()];
+    print(selectedPicPath );
   }
 
   //多選將第一頁選的照片丟到第二頁
@@ -126,6 +127,7 @@ class pickController extends GetxController {
     } else {
       selectedPicPathList.remove(media[index.value]);
     }
+    print(selectedPicPathList);
   }
 
   void selectOrderSet() {
