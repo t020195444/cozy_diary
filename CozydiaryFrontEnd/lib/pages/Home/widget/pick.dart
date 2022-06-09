@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,7 @@ class pickController extends GetxController {
   static String singlePic = '';
   static var selectedPicPath = null;
 
-
-  static List allPicName = [];//所有的picName.  !!!!!!!!!!!
+  static List allPicName = []; //所有的picName.  !!!!!!!!!!!
   //多選
   var currNum;
   List selectOrder = [];
@@ -37,7 +37,7 @@ class pickController extends GetxController {
 
   static String finalTitle = '';
   static String finalContent = '';
-  static String finalFirstPicPath = '';   
+  static String finalFirstPicPath = '';
   //所有所選照片的path
 
   static Color themeColor = Color.fromRGBO(202, 175, 154, 1);
@@ -62,37 +62,38 @@ class pickController extends GetxController {
 
   //傳到後端的資料
   void goToDataBase() async {
-    setPost();
-    //var response = await PostService.postPostData();
+    var formdata = writePost();
+    await PostService.postPostData(await formdata);
   }
 
   void setPost() {
     postsContext = Post(
-        uid: loginController.id,
+        uid: "116177189475554672826",
         title: finalTitle,
         content: finalContent,
         likes: 0,
         collects: 0,
         cover: finalFirstPicPath,
-        cid: 0,
+        cid: 1,
         postFiles: postFiles);
   }
 
   Future<FormData> writePost() async {
     FormData formData = FormData();
     // int index = 1;
-    finalPicPath.asMap().forEach((key, value) async {
-      var fileName = value.split("/").last + "-" + key.toString();
-      formData.files.addAll([
-        MapEntry(
-            "file", await MultipartFile.fromFile(value, filename: fileName))
-      ]);
-      postFiles.add(PostFile(postUrl: fileName));
+    allPicName.asMap().forEach((key, value) async {
+      postFiles.add(PostFile(postUrl: value));
     });
     setPost();
     WritePostModule writePost = WritePostModule(post: postsContext);
-    formData = FormData.fromMap(writePost.toJson());
+    var jsonString = jsonEncode(writePost.toJson());
+    formData = FormData.fromMap({"jsondata": jsonString});
 
+    for (var i in finalPicPath) {
+      formData.files
+          .addAll([MapEntry("file", await MultipartFile.fromFile(i))]);
+    }
+    print(formData.files);
     return formData;
   }
 
@@ -133,11 +134,8 @@ class pickController extends GetxController {
   void selectOrderSet() {
     if (selectOrder.contains(currNum) != true) {
       selectOrder.add(currNum);
-      print(selectOrder.asMap());
-      print(selectOrder.asMap().keys);
     } else {
       selectOrder.remove(currNum);
-      print(selectOrder.asMap());
     }
   }
 }

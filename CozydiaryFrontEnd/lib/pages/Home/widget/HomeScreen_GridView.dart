@@ -4,8 +4,7 @@ import 'package:cozydiary/pages/Home/widget/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import '../../../data/dataResourse.dart';
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,16 +15,9 @@ class HomeScreen extends StatelessWidget {
     return Obx(() {
       if (postCoverController.isLoading.value) {
         return Center(
-            child: Column(
-          children: [
-            // FloatingActionButton(onPressed: (){
-            //   Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => MediaGrid(),
-            //       ));
-            // })
-          ],
+            child: SpinKitCircle(
+          size: 20,
+          color: Colors.black54,
         ));
       } else {
         return MediaQuery.removePadding(
