@@ -68,13 +68,13 @@ class pickController extends GetxController {
 
   void setPost() {
     postsContext = Post(
-        uid: loginController.id,
+        uid: "116177189475554672826",
         title: finalTitle,
         content: finalContent,
         likes: 0,
         collects: 0,
         cover: finalFirstPicPath,
-        cid: 0,
+        cid: 1,
         postFiles: postFiles);
   }
 
@@ -84,17 +84,17 @@ class pickController extends GetxController {
     allPicName.asMap().forEach((key, value) async {
       postFiles.add(PostFile(postUrl: value));
     });
-    print(finalPicPath);
-    for (var i in finalPicPath) {
-      formData.files
-          .addAll([MapEntry("file", await MultipartFile.fromFile(i))]);
-    }
     setPost();
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
     print(jsonString);
     formData = FormData.fromMap({"jsondata": jsonString});
     print(formData.fields);
+
+    for (var i in finalPicPath) {
+      formData.files
+          .addAll([MapEntry("file", await MultipartFile.fromFile(i))]);
+    }
     print(formData.files);
     return formData;
   }
