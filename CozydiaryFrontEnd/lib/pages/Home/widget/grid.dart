@@ -53,7 +53,7 @@ class _MediaGridState extends State<MediaGrid> {
 
         temp.add(
           FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(500, 500)),
+            future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done)
                 return Stack(
@@ -143,7 +143,7 @@ class _MediaGridState extends State<MediaGrid> {
                         i < pickController.selectedPicPathList.length;
                         i++) {
                       pickController.multiPic =
-                          pickController.allPicPath[i].toString();
+                          pickController.allPicPath[i]!.path;
                       pickController.finalPicPath.add(pickController.multiPic);
                       currSplit = pickController.multiPic.split('/');
                       currMultiSplitName = currSplit.last;
@@ -158,9 +158,9 @@ class _MediaGridState extends State<MediaGrid> {
                         pickController.allPicName[0];
 
                     //測試
-                    print(pickController.allPicName);
-                    print(pickController.finalFirstPicPath);
-                    print(pickController.finalPicPath);
+                    // print(pickController.allPicName);
+                    // print(pickController.finalFirstPicPath);
+                    // print(pickController.finalPicPath);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -36,10 +36,8 @@ class PersonalPageController extends GetxController {
       googleId = user!.providerData[0].uid!;
     });
     getUserData();
-    // getUserPostCover();
-    // if (userData.value.introduction == "") {
-    //   constraintsHeight.value = 18;
-    // }
+    getUserPostCover();
+
     super.onInit();
   }
 

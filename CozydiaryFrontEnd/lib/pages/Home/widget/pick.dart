@@ -87,9 +87,7 @@ class pickController extends GetxController {
     setPost();
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
-    print(jsonString);
     formData = FormData.fromMap({"jsondata": jsonString});
-    print(formData.fields);
 
     for (var i in finalPicPath) {
       formData.files
@@ -134,11 +132,8 @@ class pickController extends GetxController {
   void selectOrderSet() {
     if (selectOrder.contains(currNum) != true) {
       selectOrder.add(currNum);
-      print(selectOrder.asMap());
-      print(selectOrder.asMap().keys);
     } else {
       selectOrder.remove(currNum);
-      print(selectOrder.asMap());
     }
   }
 }

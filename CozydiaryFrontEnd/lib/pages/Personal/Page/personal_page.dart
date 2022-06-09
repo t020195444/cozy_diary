@@ -226,14 +226,14 @@ class PersonalView extends StatelessWidget {
               body: TabBarView(
                 controller: _tabController.controller,
                 children: [
-                  personalController.postCover.value.isEmpty
+                  Obx(() => personalController.postCover.value.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
                             Icons.image_rounded,
                           ),
                         ))
-                      : InitPostGridView(),
+                      : InitPostGridView()),
                   InitCollectGridView()
                 ],
               )),
