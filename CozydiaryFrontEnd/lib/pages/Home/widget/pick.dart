@@ -22,19 +22,22 @@ class pickController extends GetxController {
   static String singlePic = '';
   static var selectedPicPath = null;
 
+
+  static List allPicName = [];//所有的picName.  !!!!!!!!!!!
   //多選
   var currNum;
   List selectOrder = [];
 
   static String multiPic = ''; //split前變數存放
   RxMap selectedPicDic = {}.obs; //多選Dictionary
-  static List finalPicPath = []; //多張照片路徑存放
+  static List multiPicName = []; //每張的檔名
+  static List finalPicPath = []; //多張照片路徑存放!!!!!!!!!
   static List selectedPicPathList =
       []; //這是要把第一頁選的照片丟到第二頁(type是FutureBuilder<Uint8List?>)
 
   static String finalTitle = '';
   static String finalContent = '';
-  static String finalFirstPicPath = '';
+  static String finalFirstPicPath = '';   
   //所有所選照片的path
 
   static Color themeColor = Color.fromRGBO(202, 175, 154, 1);

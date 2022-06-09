@@ -82,6 +82,7 @@ class _MediaGridState extends State<MediaGrid> {
           ),
         );
       }
+
       firstPic = temp[0];
       setState(() {
         _mediaList.addAll(temp);
@@ -94,6 +95,7 @@ class _MediaGridState extends State<MediaGrid> {
   @override
   Widget build(BuildContext context) {
     List currSplit = [];
+    String currMultiSplitName;
 
     return Scaffold(
       appBar: AppBar(
@@ -104,14 +106,29 @@ class _MediaGridState extends State<MediaGrid> {
                 if (pickControllers.isMultiPick != true) {
                   //單選
                   pickController.finalPicPath = [];
+                  pickController.allPicName = [];
                   pickControllers.singleSelectedPicNum();
                   pickController.singlePic = pickController
                       .allPicPath[pickControllers.index.toInt()]
                       .toString();
-                  currSplit = pickController.singlePic.split(' ');
-                  pickController.singlePic = currSplit[1];
                   pickController.finalPicPath.add(pickController.singlePic);
+
+                  currSplit = pickController.singlePic.split('/');
+                  pickController.singlePic = currSplit.last;
+
+                  pickController.singlePic =
+                      pickController.singlePic.toString().replaceAll("'", "");
                   pickController.finalFirstPicPath = pickController.singlePic;
+                  pickController.allPicName.add(pickController.singlePic);
+
+                  //測試
+                  // print(pickController.allPicName);
+                  // print(pickController.finalFirstPicPath);
+                  // print(pickController.finalPicPath);
+
+                  // currSplit = pickController.singlePic.split(' ');
+                  // pickController.singlePic = currSplit[1];
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -120,17 +137,31 @@ class _MediaGridState extends State<MediaGrid> {
                 } else {
                   //多選
                   if (pickController.selectedPicPathList.isEmpty != true) {
+                    pickController.allPicName = [];
+                    pickController.multiPicName = [];
                     pickController.finalPicPath = [];
                     for (var i = 0;
                         i < pickController.selectedPicPathList.length;
                         i++) {
                       pickController.multiPic =
                           pickController.allPicPath[i].toString();
-                      currSplit = pickController.multiPic.split(' ');
-                      pickController.finalPicPath.add(currSplit[1]);
+                      pickController.finalPicPath.add(pickController.multiPic);
+                      currSplit = pickController.multiPic.split('/');
+                      currMultiSplitName = currSplit.last;
+                      pickController.allPicName
+                          .add(currMultiSplitName.replaceAll("'", ""));
+
+                      // currSplit = pickController.multiPic.split(' ');
+                      // pickController.finalPicPath.add(currSplit[1]);
                     }
+
                     pickController.finalFirstPicPath =
-                        pickController.finalPicPath[0];
+                        pickController.allPicName[0];
+
+                    //測試
+                    print(pickController.allPicName);
+                    print(pickController.finalFirstPicPath);
+                    print(pickController.finalPicPath);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
