@@ -16,7 +16,7 @@ class PersonalService {
   static Future<UserModel?> fetchUserData(String id) async {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
-    var response = await dio.get(getUserUri + "116177189475554672802");
+    var response = await dio.get(getUserUri + "116177189475554672826");
     print(response.data);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
@@ -29,7 +29,7 @@ class PersonalService {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response =
-        await dio.get(getPostCoverForPersonalPageUri + "116177189475554672802");
+        await dio.get(getPostCoverForPersonalPageUri + "116177189475554672826");
     print(response.data.toString());
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);

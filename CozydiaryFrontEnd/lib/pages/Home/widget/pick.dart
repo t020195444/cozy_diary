@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +16,14 @@ class pickController extends GetxController {
   RxBool MulitButtonColorCheck = true.obs; //切換目前切換單選多選按鈕顏色
   RxBool isMultiPick = false.obs; //判斷目前為單選多選
 
-  static List allPicPath = []; //所有照片的path存在這
+  static List<File?> allPicPath = []; //所有照片的path存在這
   //單選
   Map currPicFocusDic = {}; //選照片Focus
 
   static String singlePic = '';
   static var selectedPicPath = null;
 
-
-  static List allPicName = [];//所有的picName.  !!!!!!!!!!!
+  static List allPicName = []; //所有的picName.  !!!!!!!!!!!
   //多選
   var currNum;
   List selectOrder = [];
@@ -37,7 +37,7 @@ class pickController extends GetxController {
 
   static String finalTitle = '';
   static String finalContent = '';
-  static String finalFirstPicPath = '';   
+  static String finalFirstPicPath = '';
   //所有所選照片的path
 
   static Color themeColor = Color.fromRGBO(202, 175, 154, 1);
@@ -62,8 +62,8 @@ class pickController extends GetxController {
 
   //傳到後端的資料
   void goToDataBase() async {
-    setPost();
-    var response = await PostService.postPostData();
+    var formdata = writePost();
+    await PostService.postPostData(await formdata);
   }
 
   void setPost() {
@@ -81,18 +81,21 @@ class pickController extends GetxController {
   Future<FormData> writePost() async {
     FormData formData = FormData();
     // int index = 1;
-    finalPicPath.asMap().forEach((key, value) async {
-      var fileName = value.split("/").last + "-" + key.toString();
-      formData.files.addAll([
-        MapEntry(
-            "file", await MultipartFile.fromFile(value, filename: fileName))
-      ]);
-      postFiles.add(PostFile(postUrl: fileName));
+    allPicName.asMap().forEach((key, value) async {
+      postFiles.add(PostFile(postUrl: value));
     });
+    print(finalPicPath);
+    for (var i in finalPicPath) {
+      formData.files
+          .addAll([MapEntry("file", await MultipartFile.fromFile(i))]);
+    }
     setPost();
     WritePostModule writePost = WritePostModule(post: postsContext);
-    formData = FormData.fromMap(writePost.toJson());
-
+    var jsonString = jsonEncode(writePost.toJson());
+    print(jsonString);
+    formData = FormData.fromMap({"jsondata": jsonString});
+    print(formData.fields);
+    print(formData.files);
     return formData;
   }
 

@@ -53,7 +53,7 @@ class _MediaGridState extends State<MediaGrid> {
 
         temp.add(
           FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(200, 200)),
+            future: asset.thumbnailDataWithSize(ThumbnailSize(500, 500)),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done)
                 return Stack(
@@ -109,8 +109,7 @@ class _MediaGridState extends State<MediaGrid> {
                   pickController.allPicName = [];
                   pickControllers.singleSelectedPicNum();
                   pickController.singlePic = pickController
-                      .allPicPath[pickControllers.index.toInt()]
-                      .toString();
+                      .allPicPath[pickControllers.index.toInt()]!.path;
                   pickController.finalPicPath.add(pickController.singlePic);
 
                   currSplit = pickController.singlePic.split('/');

@@ -83,80 +83,6 @@ class PersonalView extends StatelessWidget {
       }
     }
 
-    Widget Introduction(String text, int trimLines) {
-      final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-      final colorClickableText = Colors.black;
-      final widgetColor = Colors.black;
-      @override
-      TextSpan link = TextSpan(
-          text: personalController.readmore.value ? "... 更多" : " 減少",
-          style: TextStyle(
-            color: colorClickableText,
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              oldIntroductionHeight = _getWidgetHeight(_introductionKey);
-              personalController.onTabReadmore();
-              WidgetsBinding.instance!
-                  .addPostFrameCallback((timeStamp) => _refreshHeight());
-            });
-      Widget result = LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          assert(constraints.hasBoundedWidth);
-          final double maxWidth = constraints.maxWidth;
-          // Create a TextSpan with data
-          final texts = TextSpan(
-            text: text,
-          );
-          // Layout and measure link
-          TextPainter textPainter = TextPainter(
-            text: link,
-            textDirection: TextDirection
-                .rtl, //better to pass this from master widget if ltr and rtl both supported
-            maxLines: trimLines,
-            ellipsis: '...',
-          );
-          textPainter.layout(
-              minWidth: constraints.minWidth, maxWidth: maxWidth);
-          final linkSize = textPainter.size;
-          // Layout and measure text
-          textPainter.text = texts;
-          textPainter.layout(
-              minWidth: constraints.minWidth, maxWidth: maxWidth);
-          final textSize = textPainter.size;
-          // Get the endIndex of data
-          int? endIndex;
-          final pos = textPainter.getPositionForOffset(Offset(
-            textSize.width - linkSize.width,
-            textSize.height,
-          ));
-          endIndex = textPainter.getOffsetBefore(pos.offset);
-          var textSpan;
-          if (textPainter.didExceedMaxLines) {
-            textSpan = TextSpan(
-              text: personalController.readmore.value
-                  ? text.substring(0, endIndex)
-                  : text,
-              style: TextStyle(
-                color: widgetColor,
-              ),
-              children: <TextSpan>[link],
-            );
-          } else {
-            textSpan = TextSpan(
-              text: text,
-            );
-          }
-          return RichText(
-            softWrap: true,
-            overflow: TextOverflow.clip,
-            text: textSpan,
-          );
-        },
-      );
-      return result;
-    }
-
     Widget _DetailSliverWidget() {
       return SliverToBoxAdapter(
         child: Container(
@@ -177,19 +103,20 @@ class PersonalView extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   child: Container(
                     constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.85),
-
+                        maxWidth: MediaQuery.of(context).size.width * 0.8),
+                    alignment: Alignment.centerLeft,
                     child: ReadMoreText(
                       personalController.userData.value.introduction == ""
                           ? "這個人很無聊，什麼都沒有留呢~"
                           : personalController.userData.value.introduction,
                       key: _introductionKey,
+                      colorClickableText: Color.fromARGB(255, 120, 118, 118),
                       trimLines: 3,
                       trimMode: TrimMode.Line,
                       trimCollapsedText: "更多",
                       trimExpandedText: "減少",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Color.fromARGB(255, 120, 118, 118),
                       ),
                       callback: (isExpand) {
                         oldIntroductionHeight =
@@ -298,7 +225,17 @@ class PersonalView extends StatelessWidget {
               },
               body: TabBarView(
                 controller: _tabController.controller,
-                children: [InitPostGridView(), InitCollectGridView()],
+                children: [
+                  personalController.postCover.value.isEmpty
+                      ? Center(
+                          child: Container(
+                          child: Icon(
+                            Icons.image_rounded,
+                          ),
+                        ))
+                      : InitPostGridView(),
+                  InitCollectGridView()
+                ],
               )),
     );
   }
