@@ -339,6 +339,7 @@ class RegisterPage extends StatelessWidget {
                   registerFormKey.currentState?.save();
                   if (registerController.name != "") {
                     registerController.adddata();
+                    registerController.register();
                   } else {
                     scrollTotop();
                   }

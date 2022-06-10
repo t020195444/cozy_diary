@@ -48,8 +48,8 @@ class LoginController extends GetxController {
   }
 
   login() async {
-    var response =
-        await http.get(Uri.parse('http://172.20.10.3:8080/getUser?gid=' + id));
+    var response = await http
+        .get(Uri.parse('http://140.131.114.166:80/getUser?gid=' + id));
     var responseBody = jsonDecode(response.body);
     print(responseBody);
     if (responseBody['data'] != null && responseBody['data']['googleId'] == id)
