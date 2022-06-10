@@ -47,34 +47,4 @@ class PostController extends GetxController {
       isLoading(false);
     }
   }
-
-  void setPost() {
-    postsContext = Post(
-        uid: loginController.id,
-        title: title.value,
-        content: content.value,
-        likes: 0,
-        collects: 0,
-        cover: cover.value,
-        cid: cid.value,
-        postFiles: postFiles);
-  }
-
-  Future<FormData> writePost() async {
-    setPost();
-
-    WritePostModule writePost = WritePostModule(post: postsContext);
-    FormData formData = FormData.fromMap(writePost.toJson());
-    // int index = 1;
-    imageFile.value.asMap().forEach((key, value) async {
-      formData.files.addAll([
-        MapEntry(
-            "file",
-            await MultipartFile.fromFile(value,
-                filename: value.split("/").last + "-" + key.toString()))
-      ]);
-    });
-
-    return formData;
-  }
 }

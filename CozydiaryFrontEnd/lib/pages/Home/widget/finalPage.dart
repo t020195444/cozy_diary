@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:cozydiary/pages/Home/HomePage.dart';
+import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cozydiary/pages/Home/widget/pick.dart';
@@ -69,6 +71,7 @@ class _FinalPageState extends State<FinalPage> {
               onPressed: () {
                 textFieldEmptyCheck(); //測試是否為空值，並且傳值
                 pickControllers.goToDataBase();
+                Get.to(HomePageTabbar());
               },
               child: Text(
                 '下一頁',
@@ -108,8 +111,6 @@ class _FinalPageState extends State<FinalPage> {
                       ),
                     ),
                   ),
-                  
-                  
                 ],
               ),
             ),
