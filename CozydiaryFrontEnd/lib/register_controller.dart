@@ -10,13 +10,13 @@ import 'package:image_picker/image_picker.dart';
 
 class RegisterController extends GetxController {
   String googleId = "";
-  RxString name = "".obs;
-  RxString sex = "1".obs;
-  RxString introduction = "".obs;
-  RxString birth = "2000-01-01".obs;
-  String email = "";
-  RxString pic = "".obs;
-  RxList f = [].obs;
+  var name = "".obs;
+  var sex = "1".obs;
+  var introduction = "".obs;
+  var birth = "2000-01-01".obs;
+  var email = "";
+  var pic = "".obs;
+  var f = [].obs;
   late Rx<io.File?> previewImage = UserHeaderImage.obs;
   final _imagePicker = ImagePicker();
 
@@ -76,21 +76,20 @@ class RegisterController extends GetxController {
 
   void register() async {
     try {
-      Response response;
-      String title = "title";
       var dio = Dio();
-      String jsonString = """
-            { "user":{
-    "googleId": "$googleId",
-    "name": "${name.toString()}",
-    "sex":"${sex.value}",
-    "introduction":"${introduction.value}",
-    "birth":"${birth.value}",
-    "email":"${email.toString()}",
-    "pic":"${pic.value}"
-}
-}
-                  """;
+      User userData = User(googleId: googleId, name: name.value, sex: sex.value, introduction: introduction.value, birth: birth.value, email: email, pic: pic.value)
+//       String jsonString = """
+//             { "user":{
+//     "googleId": "$googleId",
+//     "name": "${name.toString()}",
+//     "sex":"${sex.value}",
+//     "introduction":"${introduction.value}",
+//     "birth":"${birth.value}",
+//     "email":"${email.toString()}",
+//     "pic":"${pic.value}"
+// }
+// }
+//                   """;
       print("below is json :" + jsonString);
       var formData = FormData.fromMap(userData[0].toJson());
 

@@ -5,6 +5,7 @@ import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
 import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 import '../../../screen_widget/collect_GridView.dart';
@@ -226,14 +227,20 @@ class PersonalView extends StatelessWidget {
               body: TabBarView(
                 controller: _tabController.controller,
                 children: [
-                  Obx(() => personalController.postCover.value.isEmpty
+                  Obx(() => personalController.isLoading.value
                       ? Center(
-                          child: Container(
-                          child: Icon(
-                            Icons.image_rounded,
-                          ),
+                          child: SpinKitCircle(
+                          size: 20,
+                          color: Colors.black54,
                         ))
-                      : InitPostGridView()),
+                      : personalController.postCover.value.isEmpty
+                          ? Center(
+                              child: Container(
+                              child: Icon(
+                                Icons.image_rounded,
+                              ),
+                            ))
+                          : InitPostGridView()),
                   InitCollectGridView()
                 ],
               )),
