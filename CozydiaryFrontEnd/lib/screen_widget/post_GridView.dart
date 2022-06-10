@@ -15,25 +15,18 @@ class InitPostGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     var personalPageController = Get.find<PersonalPageController>();
     return Obx(() {
-      if (personalPageController.isLoading.value) {
-        return Center(
-            child: CircularProgressIndicator(
-          color: Colors.white10,
-        ));
-      } else {
-        return MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: MasonryGridView.count(
-                crossAxisCount: 2,
-                itemCount: personalPageController.postCover.value.length,
-                itemBuilder: (context, index) {
-                  return BuildCard(
-                    index: index,
-                    userPostCover: personalPageController.postCover.value,
-                  );
-                }));
-      }
+      return MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: MasonryGridView.count(
+              crossAxisCount: 2,
+              itemCount: personalPageController.postCover.value.length,
+              itemBuilder: (context, index) {
+                return BuildCard(
+                  index: index,
+                  userPostCover: personalPageController.postCover.value,
+                );
+              }));
     });
   }
 }

@@ -50,10 +50,11 @@ class _MediaGridState extends State<MediaGrid> {
       List<Widget> temp = [];
       for (var asset in media) {
         pickController.allPicPath.add(await asset.file);
+        
 
         temp.add(
           FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(200, 200)),
+            future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done)
                 return Stack(
@@ -82,11 +83,14 @@ class _MediaGridState extends State<MediaGrid> {
           ),
         );
       }
+      print(pickController.allPicPath);
+      
       firstPic = temp[0];
       setState(() {
         _mediaList.addAll(temp);
         pickControllers.media.addAll(temp);
         currentPage++;
+        print(_mediaList[0].runtimeType);
       });
     } else {}
   }
@@ -94,6 +98,7 @@ class _MediaGridState extends State<MediaGrid> {
   @override
   Widget build(BuildContext context) {
     List currSplit = [];
+    String currMultiSplitName;
 
     return Scaffold(
       appBar: AppBar(
@@ -104,14 +109,30 @@ class _MediaGridState extends State<MediaGrid> {
                 if (pickControllers.isMultiPick != true) {
                   //單選
                   pickController.finalPicPath = [];
+                  pickController.allPicName = [];
                   pickControllers.singleSelectedPicNum();
                   pickController.singlePic = pickController
-                      .allPicPath[pickControllers.index.toInt()]
-                      .toString();
-                  currSplit = pickController.singlePic.split(' ');
-                  pickController.singlePic = currSplit[1];
+                      .allPicPath[pickControllers.index.toInt()]!.path;
                   pickController.finalPicPath.add(pickController.singlePic);
+
+                  // currSplit = pickController.singlePic.split('/');
+                  // pickController.singlePic = currSplit.last;
+
+                  // pickController.singlePic =
+                  //     pickController.singlePic.toString().replaceAll("'", "");
                   pickController.finalFirstPicPath = pickController.singlePic;
+                  pickController.allPicName.add(pickController.singlePic);
+
+                  //測試
+                  
+                  print(pickController.allPicName);
+                  
+                  // print(pickController.finalFirstPicPath);
+                  // print(pickController.finalPicPath);
+
+                  // currSplit = pickController.singlePic.split(' ');
+                  // pickController.singlePic = currSplit[1];
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -120,17 +141,31 @@ class _MediaGridState extends State<MediaGrid> {
                 } else {
                   //多選
                   if (pickController.selectedPicPathList.isEmpty != true) {
+                    pickController.allPicName = [];
+                    pickController.multiPicName = [];
                     pickController.finalPicPath = [];
                     for (var i = 0;
                         i < pickController.selectedPicPathList.length;
                         i++) {
                       pickController.multiPic =
-                          pickController.allPicPath[i].toString();
-                      currSplit = pickController.multiPic.split(' ');
-                      pickController.finalPicPath.add(currSplit[1]);
+                          pickController.allPicPath[i]!.path;
+                      pickController.finalPicPath.add(pickController.multiPic);
+                      currSplit = pickController.multiPic.split('/');
+                      currMultiSplitName = currSplit.last;
+                      pickController.allPicName
+                          .add(currMultiSplitName.replaceAll("'", ""));
+
+                      // currSplit = pickController.multiPic.split(' ');
+                      // pickController.finalPicPath.add(currSplit[1]);
                     }
+
                     pickController.finalFirstPicPath =
-                        pickController.finalPicPath[0];
+                        pickController.allPicName[0];
+
+                    //測試
+                    // print(pickController.allPicName);
+                    // print(pickController.finalFirstPicPath);
+                    // print(pickController.finalPicPath);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -257,6 +292,7 @@ class _MediaGridState extends State<MediaGrid> {
                                         pickControllers.index.value = index;
 
                                         //多選
+                                        pickController.selectedPicPathList.value = [];
                                         pickControllers.currNum =
                                             index; //紀錄當下所選index
                                         pickControllers.selectedPicDic[

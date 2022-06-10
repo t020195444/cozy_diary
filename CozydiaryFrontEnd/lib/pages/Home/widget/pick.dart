@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -15,22 +16,24 @@ class pickController extends GetxController {
   RxBool MulitButtonColorCheck = true.obs; //切換目前切換單選多選按鈕顏色
   RxBool isMultiPick = false.obs; //判斷目前為單選多選
 
-  static List allPicPath = []; //所有照片的path存在這
+  static List<File?> allPicPath = []; //所有照片的path存在這
   //單選
   Map currPicFocusDic = {}; //選照片Focus
 
   static String singlePic = '';
   static var selectedPicPath = null;
 
+  static List allPicName = []; //所有的picName.  !!!!!!!!!!!
   //多選
   var currNum;
   List selectOrder = [];
 
   static String multiPic = ''; //split前變數存放
   RxMap selectedPicDic = {}.obs; //多選Dictionary
-  static List finalPicPath = []; //多張照片路徑存放
-  static List selectedPicPathList =
-      []; //這是要把第一頁選的照片丟到第二頁(type是FutureBuilder<Uint8List?>)
+  static List multiPicName = []; //每張的檔名
+  static List finalPicPath = []; //多張照片路徑存放!!!!!!!!!
+  static RxList selectedPicPathList =
+      [].obs; //這是要把第一頁選的照片丟到第二頁(type是FutureBuilder<Uint8List?>)
 
   static String finalTitle = '';
   static String finalContent = '';
@@ -59,37 +62,38 @@ class pickController extends GetxController {
 
   //傳到後端的資料
   void goToDataBase() async {
-    setPost();
-    var response = await PostService.postPostData();
+    var formdata = writePost();
+    await PostService.postPostData(await formdata);
   }
 
   void setPost() {
     postsContext = Post(
-        uid: loginController.id,
+        uid: "116177189475554672826",
         title: finalTitle,
         content: finalContent,
         likes: 0,
         collects: 0,
         cover: finalFirstPicPath,
-        cid: 0,
+        cid: 1,
         postFiles: postFiles);
   }
 
   Future<FormData> writePost() async {
     FormData formData = FormData();
     // int index = 1;
-    finalPicPath.asMap().forEach((key, value) async {
-      var fileName = value.split("/").last + "-" + key.toString();
-      formData.files.addAll([
-        MapEntry(
-            "file", await MultipartFile.fromFile(value, filename: fileName))
-      ]);
-      postFiles.add(PostFile(postUrl: fileName));
+    allPicName.asMap().forEach((key, value) async {
+      postFiles.add(PostFile(postUrl: value));
     });
     setPost();
     WritePostModule writePost = WritePostModule(post: postsContext);
-    formData = FormData.fromMap(writePost.toJson());
+    var jsonString = jsonEncode(writePost.toJson());
+    formData = FormData.fromMap({"jsondata": jsonString});
 
+    for (var i in finalPicPath) {
+      formData.files
+          .addAll([MapEntry("file", await MultipartFile.fromFile(i))]);
+    }
+    print(formData.files);
     return formData;
   }
 
@@ -114,6 +118,7 @@ class pickController extends GetxController {
   //單選將第一頁選的照片丟到第二頁
   void singleSelectedPicNum() {
     selectedPicPath = media[index.toInt()];
+    print(selectedPicPath );
   }
 
   //多選將第一頁選的照片丟到第二頁
@@ -123,16 +128,14 @@ class pickController extends GetxController {
     } else {
       selectedPicPathList.remove(media[index.value]);
     }
+    print(selectedPicPathList);
   }
 
   void selectOrderSet() {
     if (selectOrder.contains(currNum) != true) {
       selectOrder.add(currNum);
-      print(selectOrder.asMap());
-      print(selectOrder.asMap().keys);
     } else {
       selectOrder.remove(currNum);
-      print(selectOrder.asMap());
     }
   }
 }

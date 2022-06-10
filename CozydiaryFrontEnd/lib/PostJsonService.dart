@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cozydiary/PostController.dart';
+import 'package:cozydiary/pages/Home/widget/pick.dart';
 import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
@@ -8,7 +9,7 @@ import 'package:dio/dio.dart';
 class PostService {
   static Dio dio = Dio();
   static var getPostCoverUri =
-      'http://140.131.114.166:80/getPostCover?uid=116177189475554672802';
+      'http://140.131.114.166:80/getPostCover?uid=116177189475554672826';
   static var writePostUri = 'http://140.131.114.166:80/addPost';
 
   static var postController = Get.put(PostController());
@@ -42,20 +43,19 @@ class PostService {
     "status": 200
   };*/
 
-  static Future<PostCoverModule?> fetchPostCover() async {
-    //測試資料
-    // return postCoverModuleFromJson(json.encode(jsonDATA));
-    var response = await dio.get(getPostCoverUri);
-    print(response.data.toString());
-    var jsonString = response.data;
-    var encodeJsonString = jsonEncode(jsonString);
-    // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
-    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
-    return fromJsonValue;
-  }
+  // static Future<PostCoverModule?> fetchPostCover() async {
+  //   //測試資料
+  //   // return postCoverModuleFromJson(json.encode(jsonDATA));
+  //   var response = await dio.get(getPostCoverUri);
+  //   print(response.data.toString());
+  //   var jsonString = response.data;
+  //   var encodeJsonString = jsonEncode(jsonString);
+  //   // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
+  //   var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+  //   return fromJsonValue;
+  // }
 
-  static Future<dynamic> postPostData() async {
-    var formData = postController.writePost();
+  static Future<dynamic> postPostData(FormData formData) async {
     return await dio.post(writePostUri, data: formData);
   }
 }
