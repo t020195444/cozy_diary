@@ -20,33 +20,33 @@ class PostController extends GetxController {
   var imageFile = <String>[].obs;
 
   @override
-  // void onInit() {
-  //   getPostCover();
-  //   Post(
-  //       uid: "",
-  //       title: "",
-  //       content: "",
-  //       likes: 0,
-  //       collects: 0,
-  //       cover: "",
-  //       cid: 0,
-  //       postFiles: []);
-  //   super.onInit();
-  // }
+  void onInit() {
+    getPostCover();
+    Post(
+        uid: "",
+        title: "",
+        content: "",
+        likes: 0,
+        collects: 0,
+        cover: "",
+        cid: 0,
+        postFiles: []);
+    super.onInit();
+  }
 
-  // void getPostCover() async {
-  //   try {
-  //     isLoading(true);
-  //     var Posts = await PostService.fetchPostCover();
-  //     if (Posts != null) {
-  //       if (Posts.status == 200) {
-  //         postCover.value = Posts.data;
-  //       }
-  //     }
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
+  void getPostCover() async {
+    try {
+      isLoading(true);
+      var Posts = await PostService.fetchPostCover();
+      if (Posts != null) {
+        if (Posts.status == 200) {
+          postCover.value = Posts.data;
+        }
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
 
   void setPost() {
     postsContext = Post(
