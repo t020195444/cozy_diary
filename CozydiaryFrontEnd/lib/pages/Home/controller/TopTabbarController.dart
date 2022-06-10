@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class TopTabbarController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final List<Tab> topTabs = <Tab>[
-    Tab(text: "關注"),
+    Tab(text: "活動"),
     Tab(
       text: "發現",
     ),

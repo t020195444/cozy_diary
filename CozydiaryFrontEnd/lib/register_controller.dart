@@ -98,13 +98,13 @@ class RegisterController extends GetxController {
       formData.files
           .add(MapEntry("file", await MultipartFile.fromFile(pic.value)));
       print(formData);
-      //   response = (await dio.post('http://172.20.10.10:8080/userRegister',
-      //       data: formData));
-      //   dio.post;
-      //   if (response.statusCode == 200) {
-      //     print("成功");
-      //   }
-      //   print(response.statusCode);
+      response = (await dio.post('http://140.131.114.166:80/userRegister',
+          data: formData));
+      dio.post;
+      if (response.statusCode == 200) {
+        print("成功");
+      }
+      print(response.statusCode);
     } catch (e) {
       print(e);
     }
