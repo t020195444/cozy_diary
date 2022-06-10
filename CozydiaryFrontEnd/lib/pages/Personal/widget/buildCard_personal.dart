@@ -1,10 +1,9 @@
 import 'package:cozydiary/Model/PostCoverModel.dart';
 import 'package:cozydiary/screen_widget/viewPostScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:page_transition/page_transition.dart';
-
-import '../../../Data/dataResourse.dart';
 
 class BuildCard extends StatelessWidget {
   final int index;
@@ -15,19 +14,21 @@ class BuildCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(PageTransition(
-            child: ViewPostScreen(
-              imageUrl: Image_List[index],
-            ),
-            type: PageTransitionType.fade,
-            alignment: Alignment.center));
+        Get.to(
+          ViewPostScreen(imageUrl: userPostCover[index].cover),
+          transition: Transition.fadeIn,
+        );
       },
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Hero(
-              tag: Image_List[index],
+              tag: userPostCover[index].cover,
               child: Image.network(
                 userPostCover[index].cover,
                 fit: BoxFit.cover,
