@@ -36,8 +36,8 @@ class LoginController extends GetxController {
     email = user!.email!;
     googlepic = user.providerData[0].photoURL!;
 
-    // await login();
-    toregisterpage();
+    await login();
+    // toregisterpage();
   }
 
   void logout() async {

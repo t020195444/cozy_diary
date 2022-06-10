@@ -1,9 +1,11 @@
+import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/pages/Home/controller/TopTabbarController.dart';
 import 'package:cozydiary/pages/Map/map_page.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spincircle_bottom_bar/modals.dart';
@@ -27,6 +29,7 @@ class HomePageTabbar extends StatelessWidget {
       // UserDataPage(),
     ];
     final controller = Get.put(ChangePageTabbarController());
+    final LoginController logincontroller = Get.put(LoginController());
     return
         // Obx(() =>
         Scaffold(
@@ -99,8 +102,16 @@ class HomePageTabbar extends StatelessWidget {
                             onPressed: () {
                               controller.oncircleItemsTapped();
                             }),
-                        SCItem(icon: Icon(Icons.image), onPressed: () {}),
-                        SCItem(icon: Icon(Icons.map), onPressed: () {}),
+                        SCItem(
+                            icon: Icon(Icons.image),
+                            onPressed: () {
+                              controller.oncircleItemsTappeduser();
+                            }),
+                        SCItem(
+                            icon: Icon(Icons.map),
+                            onPressed: () {
+                              logincontroller.logout();
+                            }),
                       ],
                       bnbHeight: 80 // Suggested Height 80
                       ),

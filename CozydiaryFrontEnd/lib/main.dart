@@ -158,8 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: RaisedButton(
                       onPressed: () {
                         logincontroller.loginWithGoogle();
-                        // logincontroller.tohomepage();
-                        // logincontroller.toregisterpage();
                       },
                       child: const Text(
                         "登入",

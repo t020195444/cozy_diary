@@ -1,3 +1,4 @@
+import 'package:cozydiary/pages/Home/UserData.dart';
 import 'package:cozydiary/pages/Home/widget/grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,5 +20,9 @@ class ChangePageTabbarController extends GetxController
 
   void oncircleItemsTapped() {
     Get.to(MediaGrid());
+  }
+
+  void oncircleItemsTappeduser() {
+    Get.to(UserDataPage());
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' as io;
 import 'package:cozydiary/Model/UserDataModel.dart';
 import 'package:cozydiary/data/dataResourse.dart';
@@ -16,6 +17,7 @@ class RegisterController extends GetxController {
   RxString birth = "2000-01-01".obs;
   String email = "";
   RxString pic = "".obs;
+  RxString picorigin = "".obs;
   RxList f = [].obs;
   late Rx<io.File?> previewImage = UserHeaderImage.obs;
   final _imagePicker = ImagePicker();
@@ -39,7 +41,7 @@ class RegisterController extends GetxController {
 
   void adddata() async {
     userData.clear();
-
+    var picsplit = pic.value.split("/").last;
     userData.add(User(
         googleId: googleId,
         name: name.value,
@@ -47,11 +49,10 @@ class RegisterController extends GetxController {
         introduction: introduction.value,
         birth: DateTime.parse(birth.value),
         email: email,
-        pic: pic.value));
+        pic: picsplit));
     print(googleId + email);
     print(userData[0].toJson());
     register();
-    await Get.to(HomePageTabbar());
   }
 
   void choicemen() {
@@ -69,6 +70,7 @@ class RegisterController extends GetxController {
       final image = io.File(pickedImage.path);
       previewImage.value = image;
       pic.value = pickedImage.path;
+      picorigin.value = pickedImage.path;
     } else {
       return;
     }
@@ -76,33 +78,21 @@ class RegisterController extends GetxController {
 
   void register() async {
     try {
-      Response response;
-      String title = "title";
       var dio = Dio();
-      String jsonString = """
-            { "user":{
-    "googleId": "$googleId",
-    "name": "${name.toString()}",
-    "sex":"${sex.value}",
-    "introduction":"${introduction.value}",
-    "birth":"${birth.value}",
-    "email":"${email.toString()}",
-    "pic":"${pic.value}"
-}
-}
-                  """;
-      print("below is json :" + jsonString);
-      var formData = FormData.fromMap(userData[0].toJson());
-
-      // p.rename(newPath)
+      var postUserData = UserDataModel(user: userData[0]);
+      var jsonData = jsonEncode(postUserData.toJson());
+      var formData = FormData.fromMap({"jsondata": jsonData});
       formData.files
-          .add(MapEntry("file", await MultipartFile.fromFile(pic.value)));
+          .add(MapEntry("file", await MultipartFile.fromFile(picorigin.value)));
       print(formData);
-      response = (await dio.post('http://140.131.114.166:80/userRegister',
+      print(picorigin.value);
+      var response = (await dio.post('http://140.131.114.166:80/userRegister',
           data: formData));
-      dio.post;
       if (response.statusCode == 200) {
         print("成功");
+        Get.to(HomePageTabbar());
+      } else {
+        print("失敗");
       }
       print(response.statusCode);
     } catch (e) {
