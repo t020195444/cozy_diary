@@ -116,7 +116,7 @@ class PersonalView extends StatelessWidget {
                       trimCollapsedText: "更多",
                       trimExpandedText: "減少",
                       style: TextStyle(
-                        color: Color.fromARGB(255, 120, 118, 118),
+                        color: Color.fromARGB(255, 65, 65, 65),
                       ),
                       callback: (isExpand) {
                         oldIntroductionHeight =
@@ -206,7 +206,7 @@ class PersonalView extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Color.fromARGB(255, 227, 227, 227),
+      backgroundColor: Colors.white,
       body:
           // CustomScrollView(
           //   slivers: [
