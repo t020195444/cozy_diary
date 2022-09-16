@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1084254307608-731d80noq2ml4tekeqa67qtvjq882mg8.apps.googleusercontent.com</string>
+	<string>1084254307608-98r0d65htt5dd2b0u7000hcb1khllgrj.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1084254307608-731d80noq2ml4tekeqa67qtvjq882mg8</string>
+	<string>com.googleusercontent.apps.1084254307608-98r0d65htt5dd2b0u7000hcb1khllgrj</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>1084254307608-kpnrl27hmkqd3de9uge7vkt7ae6g4892.apps.googleusercontent.com</string>
+	<string>1084254307608-e3q1dtgtrshtn3184tsg3i3rn4v94s53.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC2DdjS9bSFnGE1b05XlGwKcMz22aXbApw</string>
 	<key>GCM_SENDER_ID</key>
@@ -31,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1084254307608:ios:b09732a7af32c65c57ca6d</string>
+	<string>1:1084254307608:ios:ef4a371e5e15601857ca6d</string>
+	<key>DATABASE_URL</key>
+	<string>https://cozydiary-22111-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

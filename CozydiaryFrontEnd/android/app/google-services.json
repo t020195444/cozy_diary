@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "1084254307608",
+    "firebase_url": "https://cozydiary-22111-default-rtdb.firebaseio.com",
+    "project_id": "cozydiary-22111",
+    "storage_bucket": "cozydiary-22111.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084254307608:android:4dc1e76f7809be2a57ca6d",
+        "android_client_info": {
+          "package_name": "com.example.cozydiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084254307608-e3q1dtgtrshtn3184tsg3i3rn4v94s53.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cozydiary",
+            "certificate_hash": "d1746b09dc46dee9579f8c0147ad27ca18aa11ed"
+          }
+        },
+        {
+          "client_id": "1084254307608-fejohkmbjs6a87k489rd5ppeg89qcqhp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cozydiary",
+            "certificate_hash": "7d1faa6411a230217af044ca3b76279d88ab71e4"
+          }
+        },
+        {
+          "client_id": "1084254307608-fv0orfq2uhfo8q7521kkvadpjkn2codf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cozydiary",
+            "certificate_hash": "929d1ea0f5b5508481acf114253cea282cf15e99"
+          }
+        },
+        {
+          "client_id": "1084254307608-ukp8dj8ek8h0m976f4v93tsph4mdinn1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cozydiary",
+            "certificate_hash": "f4ca76a273e210e327d512ef7885c4939461e3d7"
+          }
+        },
+        {
+          "client_id": "1084254307608-ki9kdsvps1o8trn7trp2s5tanpm4j07g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSaM7T9vku1N2vVKJpjp0R6qh9YfVG1Wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084254307608-ki9kdsvps1o8trn7trp2s5tanpm4j07g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1084254307608-731d80noq2ml4tekeqa67qtvjq882mg8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cozydaily"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
