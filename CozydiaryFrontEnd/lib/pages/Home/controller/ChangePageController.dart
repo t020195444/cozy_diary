@@ -1,5 +1,6 @@
+import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
 import 'package:cozydiary/pages/Home/UserData.dart';
-import 'package:cozydiary/pages/Home/widget/grid.dart';
+import 'package:cozydiary/pages/Home/widget/PickPhotoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,10 +20,10 @@ class ChangePageTabbarController extends GetxController
   }
 
   void oncircleItemsTapped() {
-    Get.to(MediaGrid());
+    Get.to(PickPhotoPage());
   }
 
   void oncircleItemsTappeduser() {
-    Get.to(UserDataPage());
+    Get.to(PostActivityPage());
   }
 }

@@ -55,8 +55,14 @@ dependencies:
   curved_navigation_bar:
   spincircle_bottom_bar:
   page_transition: ^2.0.5
-  flutter_map: any
-  flutter_map_location_marker: any
+  #地圖套件
+  flutter_map:
+    #個人位置
+  flutter_map_location_marker:
+    #標記
+  flutter_map_marker_cluster:
+
+  #狀態管理
   provider: ^5.0.0
   geolocator:
   get: ^4.6.1
@@ -65,11 +71,11 @@ dependencies:
   gallery_saver:
   liquid_progress_indicator: ^0.4.0
   fluttertoast: ^8.0.9
+
   photo_manager: ^2.1.2
   #LocalDB
   sqflite: ^2.0.2+1
   flutter_spinkit: ^5.1.0
-  
 
 dev_dependencies:
   flutter_test:

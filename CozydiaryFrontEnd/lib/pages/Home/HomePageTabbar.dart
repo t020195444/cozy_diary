@@ -1,8 +1,8 @@
 import 'package:cozydiary/login_controller.dart';
+import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/pages/Home/controller/TopTabbarController.dart';
-import 'package:cozydiary/pages/Map/map_page.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dio/dio.dart';
@@ -30,6 +30,8 @@ class HomePageTabbar extends StatelessWidget {
     ];
     final controller = Get.put(ChangePageTabbarController());
     final LoginController logincontroller = Get.put(LoginController());
+    final ActivityController activityController = Get.put(ActivityController());
+
     return
         // Obx(() =>
         Scaffold(
@@ -110,7 +112,7 @@ class HomePageTabbar extends StatelessWidget {
                         SCItem(
                             icon: Icon(Icons.map),
                             onPressed: () {
-                              logincontroller.logout();
+                              activityController.getPostCover();
                             }),
                       ],
                       bnbHeight: 80 // Suggested Height 80
