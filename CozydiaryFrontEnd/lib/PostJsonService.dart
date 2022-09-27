@@ -14,12 +14,33 @@ class PostService {
 
   static var postController = Get.put(PostController());
 
+  static Map postDetailList = {};
+  static getPostDetail(int i) async {
+    postDetailList = {};
+    var getPostDetail = 'http://140.131.114.166:80/getPostDetail?pid=$i';
+    var response = await dio.get(getPostDetail);
+    var data = response.data;
+    List tempPathList = [];
+    for (int j = 0; j < data['data']['postFiles'].length; j++) {
+      tempPathList.add(data['data']['postFiles'][j]['postUrl']);
+    }
+    postDetailList['title'] = data['data']['title'];
+    postDetailList['content'] = data['data']['content'];
+    postDetailList['url'] = tempPathList;
+    print(data);
+  }
+
+  static List postPid = [];
   static Future<PostCoverModule?> fetchPostCover() async {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(getPostCoverUri);
     print(response.data.toString());
     var jsonString = response.data;
+
+    for (int i = 0; i < jsonString.length; i++) {
+      postPid.add(jsonString['data'][i]['pid']);
+    }
     var encodeJsonString = jsonEncode(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
     var fromJsonValue = postCoverModuleFromJson(encodeJsonString);

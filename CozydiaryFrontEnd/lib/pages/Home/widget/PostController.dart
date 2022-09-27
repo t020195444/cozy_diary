@@ -30,6 +30,8 @@ class PostController extends GetxController {
 
       mediaList.value = [];
       List<Widget> temp = [];
+      pickedList = [];
+
       for (var asset in media) {
         fileList.add(await asset.file);
         temp.add(
@@ -63,6 +65,7 @@ class PostController extends GetxController {
           ),
         );
       }
+
       //設置顯示照片List
       mediaList.addAll(temp);
       //default Pic
@@ -91,6 +94,13 @@ class PostController extends GetxController {
     }
   }
 
+  String postTitle = '';
+  String postContent = '';
+  setContent(String title, String content) {
+    postTitle = title;
+    postContent = content;
+  }
+
   //create post
   late Post postsContext;
   // static String finalTitle = '';
@@ -99,6 +109,11 @@ class PostController extends GetxController {
   static List allPicName = [];
 
   void goToDataBase() async {
+    // reset Data
+    checkBox = [];
+    checkBox = List.generate(PostController.mediaList.length, (_) => false.obs);
+
+    // Post
     var formdata = writePost();
     await PostService.postPostData(await formdata);
     print(await formdata);
@@ -107,8 +122,8 @@ class PostController extends GetxController {
   void setPost() {
     postsContext = Post(
         uid: "116177189475554672826",
-        title: '標題的12312312312',
-        content: '內文',
+        title: postTitle,
+        content: postContent,
         likes: 0,
         collects: 0,
         cover: basename(pickedList[0].path),
@@ -118,6 +133,7 @@ class PostController extends GetxController {
 
   Future<FormData> writePost() async {
     FormData formData = FormData();
+    // int index = 1;
     for (int i = 0; i < pickedList.length; i++) {
       allPicName.add(basename(pickedList[i].path));
     }

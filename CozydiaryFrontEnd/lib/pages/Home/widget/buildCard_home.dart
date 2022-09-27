@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cozydiary/Model/PostCoverModel.dart';
+import 'package:cozydiary/PostJsonService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
@@ -17,9 +18,10 @@ class BuildCardHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        await PostService.getPostDetail(PostService.postPid[index]);
         Get.to(
-          ViewPostScreen(imageUrl: PostCovers[index].cover),
+          ViewPostScreen(),
           transition: Transition.fadeIn,
         );
       },

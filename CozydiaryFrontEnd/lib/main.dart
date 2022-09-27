@@ -68,9 +68,7 @@ class MyApp extends StatelessWidget {
         "homepage": (context) => const HomePageTabbar(),
         "personalpage": (context) => const PersonalPage(),
       },
-      home: MyHomePage(
-        title: '',
-      ),
+      home: HomePageTabbar(),
       debugShowCheckedModeBanner: false,
     );
   }
