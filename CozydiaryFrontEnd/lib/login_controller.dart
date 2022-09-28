@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:cozydiary/Model/UserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,7 @@ class LoginController extends GetxController {
   late String googlepic = "";
   late List<String> responseBody;
   var userData = <userdata.UserDataModel>[].obs;
+  var box = Hive.box("UidAndState");
 
   void loginWithGoogle() async {
     googleAccount.value = await googleSignIn.signIn();
@@ -32,11 +35,18 @@ class LoginController extends GetxController {
     final User? user = authResult.user;
     googleuser = user;
     id = googleSignIn.currentUser!.id;
+    box.put("uid", id);
 
     email = user!.email!;
     googlepic = user.providerData[0].photoURL!;
 
-    await login();
+    bool isLogin = await login(id);
+    print(isLogin);
+    if (isLogin) {
+      Get.to(HomePageTabbar());
+    } else {
+      Get.to(RegisterPage());
+    }
     // toregisterpage();
   }
 
@@ -45,17 +55,24 @@ class LoginController extends GetxController {
     Get.to(const MyHomePage(
       title: '',
     ));
+    box.put("isLogin", false);
   }
 
-  login() async {
+  Future<bool> login(String id) async {
+    bool isLogin = false;
     var response = await http
         .get(Uri.parse('http://140.131.114.166:80/getUser?gid=' + id));
     var responseBody = jsonDecode(response.body);
-    print(responseBody);
-    if (responseBody['data'] != null && responseBody['data']['googleId'] == id)
-      Get.to(HomePageTabbar());
-    else
-      Get.to(RegisterPage());
+
+    if (responseBody['status'] == 200 &&
+        responseBody['data']['googleId'] == id) {
+      isLogin = true;
+      print("login done. isLogin = " + isLogin.toString());
+      // Get.to(HomePageTabbar());
+    } else
+      isLogin = false;
+    // Get.to(RegisterPage());
+    return isLogin;
   }
 
   void post() async {

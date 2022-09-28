@@ -8,6 +8,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:spincircle_bottom_bar/modals.dart';
 import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 
@@ -20,12 +21,13 @@ class HomePageTabbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box("UidAndState");
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
     final screens = [
       // MapPage(),
       HomePage(),
-      PersonalPage(),
+      PersonalPage(uid: box.get("uid")),
       // UserDataPage(),
     ];
     final controller = Get.put(ChangePageTabbarController());

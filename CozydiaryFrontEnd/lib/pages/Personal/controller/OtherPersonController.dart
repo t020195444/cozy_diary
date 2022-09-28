@@ -1,19 +1,21 @@
 import 'package:cozydiary/Model/CatchPersonalModel.dart';
 import 'package:cozydiary/pages/Personal/Service/PersonalService.dart';
-import 'package:get/get.dart';
-import 'package:flutter/material.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
+import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebaseauth;
+import 'dart:convert';
 
 import '../../../Model/PostCoverModel.dart';
+import '../../../Model/trackerModel.dart';
 
-class PersonalPageController extends GetxController {
+class OtherPersonPageController extends GetxController {
   var constraintsHeight = 0.0.obs;
   var readmore = true.obs;
   var difference = 0.0;
   var isLoading = true.obs;
-  var uid = "";
+  var otherUid = "";
+  var checkedUid = "";
+  var isFollow = false.obs;
   var userData = Data(
       uid: 0,
       googleId: "",
@@ -29,45 +31,34 @@ class PersonalPageController extends GetxController {
       follower: [],
       userCategoryList: []).obs;
   var postCover = <PostCoverData>[].obs;
-  var box = Hive.box("UidAndState");
   @override
   void onInit() {
-    uid = box.get("uid");
-    getUserData(uid);
-    getUserPostCover(uid);
-
+    checkedUid = Hive.box("UidAndState").get("uid");
     super.onInit();
   }
 
-  void getUserData(String uid) async {
+  void getOtherUserData() async {
     try {
       isLoading(true);
-
-      var UserData = await PersonalService.fetchUserData(uid);
+      var UserData = await PersonalService.fetchUserData(otherUid);
       if (UserData != null) {
         if (UserData.status == 200) {
           userData.value = UserData.data;
+          for (var followers in userData.value.follower) {
+            if (followers == checkedUid) {
+              isFollow.value = true;
+            } else {
+              isFollow.value = false;
+            }
+          }
         }
       }
     } finally {}
   }
 
-  // void getOtherUserData(String otherUserId) async {
-  //   try {
-  //     isLoading(true);
-
-  //     var UserData = await PersonalService.fetchUserData(otherUserId);
-  //     if (UserData != null) {
-  //       if (UserData.status == 200) {
-  //         userData.value = UserData.data;
-  //       }
-  //     }
-  //   } finally {}
-  // }
-
-  void getUserPostCover(String uid) async {
+  void getUserPostCover() async {
     try {
-      var Posts = await PersonalService.fetchUserPostCover(uid);
+      var Posts = await PersonalService.fetchUserPostCover(otherUid);
       if (Posts != null) {
         if (Posts.status == 200) {
           postCover.value = Posts.data;
@@ -77,19 +68,6 @@ class PersonalPageController extends GetxController {
       isLoading(false);
     }
   }
-
-  // void getOtherUserPostCover(String otherUserId) async {
-  //   try {
-  //     var Posts = await PersonalService.fetchUserPostCover(otherUserId);
-  //     if (Posts != null) {
-  //       if (Posts.status == 200) {
-  //         postCover.value = Posts.data;
-  //       }
-  //     }
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
 
   void getConstraintsHeight(var height) {
     constraintsHeight.value = height;
@@ -107,5 +85,24 @@ class PersonalPageController extends GetxController {
 
   void reduceAppbarHeight() {
     constraintsHeight.value = constraintsHeight.value - difference;
+  }
+
+  void addTracker() async {
+    try {
+      AddTrackerModel trackerModel =
+          AddTrackerModel(tracker1: checkedUid, tracker2: otherUid);
+
+      var jsonData = addTrackerModelToJson(trackerModel);
+      var response = await PersonalService.addTracker(jsonData);
+      if (response.toString() == "新增追蹤成功") isFollow.value = true;
+    } finally {}
+  }
+
+  void deleteTracker() async {
+    try {
+      var response = await PersonalService.deleteTracker("30");
+      isFollow.value = false;
+      print(response);
+    } finally {}
   }
 }

@@ -50,6 +50,7 @@ class _MediaGridState extends State<MediaGrid> {
       List<Widget> temp = [];
       for (var asset in media) {
         pickController.allPicPath.add(await asset.file);
+        
 
         temp.add(
           FutureBuilder(
@@ -83,7 +84,7 @@ class _MediaGridState extends State<MediaGrid> {
         );
       }
       print(pickController.allPicPath);
-
+      
       firstPic = temp[0];
       setState(() {
         _mediaList.addAll(temp);
@@ -114,18 +115,18 @@ class _MediaGridState extends State<MediaGrid> {
                       .allPicPath[pickControllers.index.toInt()]!.path;
                   pickController.finalPicPath.add(pickController.singlePic);
 
-                  currSplit = pickController.singlePic.split('/');
-                  pickController.singlePic = currSplit.last;
+                  // currSplit = pickController.singlePic.split('/');
+                  // pickController.singlePic = currSplit.last;
 
-                  pickController.singlePic =
-                      pickController.singlePic.toString().replaceAll("'", "");
+                  // pickController.singlePic =
+                  //     pickController.singlePic.toString().replaceAll("'", "");
                   pickController.finalFirstPicPath = pickController.singlePic;
                   pickController.allPicName.add(pickController.singlePic);
 
                   //測試
-
+                  
                   print(pickController.allPicName);
-
+                  
                   // print(pickController.finalFirstPicPath);
                   // print(pickController.finalPicPath);
 
@@ -291,8 +292,7 @@ class _MediaGridState extends State<MediaGrid> {
                                         pickControllers.index.value = index;
 
                                         //多選
-                                        pickController
-                                            .selectedPicPathList.value = [];
+                                        pickController.selectedPicPathList.value = [];
                                         pickControllers.currNum =
                                             index; //紀錄當下所選index
                                         pickControllers.selectedPicDic[

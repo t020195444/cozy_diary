@@ -1,12 +1,18 @@
 import 'dart:io';
 
 import 'package:cozydiary/Model/PostCoverModel.dart';
+import 'package:cozydiary/Model/WritePostModel.dart';
+import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
+import 'package:cozydiary/pages/Personal/controller/OtherPersonController.dart';
+import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:like_button/like_button.dart';
 
 import '../../../Data/dataResourse.dart';
 import '../../../screen_widget/viewPostScreen.dart';
+import '../../Personal/Page/otherPersonPage.dart';
 
 class BuildCardHome extends StatelessWidget {
   final List<PostCoverData> PostCovers;
@@ -16,6 +22,8 @@ class BuildCardHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OtherPersonPageController otherPersonPageController =
+        Get.put(OtherPersonPageController());
     return InkWell(
       onTap: () {
         Get.to(
@@ -24,7 +32,7 @@ class BuildCardHome extends StatelessWidget {
         );
       },
       child: Hero(
-        tag: PostCovers[index].cover,
+        tag: index.toString(),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -33,9 +41,14 @@ class BuildCardHome extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Image.network(
-                PostCovers[index].cover,
-                fit: BoxFit.cover,
+              FadeInImage(
+                image: NetworkImage(PostCovers[index].cover),
+                placeholder: AssetImage("assets/images/yunhan.jpg"),
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset('asset/images/logo/logoS.png',
+                      fit: BoxFit.fitWidth);
+                },
+                fit: BoxFit.fitWidth,
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
@@ -46,20 +59,6 @@ class BuildCardHome extends StatelessWidget {
                       color: Colors.black,
                     )),
               ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(15, 0, 15, 8),
-              //   child: Row(
-              //     children: <Widget>[
-              //       Icon(
-              //         Icons.sports_basketball,
-              //       ),
-              //       Text(PostCovers[index].categoryName,
-              //           softWrap: true,
-              //           maxLines: 2,
-              //           style: TextStyle(color: Colors.black, fontSize: 12)),
-              //     ],
-              //   ),
-              // ),
               Padding(
                   padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
                   child: Row(
@@ -68,13 +67,22 @@ class BuildCardHome extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(right: 5),
-                            child: CircleAvatar(
-                              radius: 12,
-                              backgroundImage:
-                                  NetworkImage(PostCovers[index].pic),
-                            ),
-                          ),
+                              padding: EdgeInsets.only(right: 5),
+                              child: InkWell(
+                                child: CircleAvatar(
+                                  radius: 12,
+                                  backgroundImage:
+                                      NetworkImage(PostCovers[index].pic),
+                                ),
+                                onTap: () {
+                                  otherPersonPageController.otherUid =
+                                      "116177189475554672826";
+
+                                  otherPersonPageController.getOtherUserData();
+                                  otherPersonPageController.getUserPostCover();
+                                  Get.to(() => OtherPersonalPage());
+                                },
+                              )),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,75 +110,5 @@ class BuildCardHome extends StatelessWidget {
         ),
       ),
     );
-    // Card(
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: <Widget>[
-    //       Image.network(
-    //         HomePageImage_List[index],
-    //         fit: BoxFit.cover,
-    //       ),
-    //       Padding(
-    //         padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
-    //         child: Text(PostText_List[index],
-    //             softWrap: true,
-    //             maxLines: 2,
-    //             style: TextStyle(
-    //               color: Colors.black,
-    //             )),
-    //       ),
-    //       Padding(
-    //         padding: EdgeInsets.fromLTRB(15, 0, 15, 8),
-    //         child: Row(
-    //           children: <Widget>[
-    //             Icon(
-    //               Icons.sports_basketball,
-    //             ),
-    //             Text("籃球",
-    //                 softWrap: true,
-    //                 maxLines: 2,
-    //                 style: TextStyle(color: Colors.black, fontSize: 12)),
-    //           ],
-    //         ),
-    //       ),
-    //       Padding(
-    //           padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //             children: <Widget>[
-    //               Row(
-    //                 children: <Widget>[
-    //                   Padding(
-    //                     padding: EdgeInsets.only(right: 5),
-    //                     child: CircleAvatar(
-    //                       radius: 12,
-    //                       backgroundImage: NetworkImage(Image_List[3]),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     mainAxisSize: MainAxisSize.min,
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     children: <Widget>[
-    //                       Text(
-    //                         '許悅',
-    //                         style: TextStyle(
-    //                             fontSize: 12,
-    //                             fontWeight: FontWeight.bold,
-    //                             color: Colors.black),
-    //                       )
-    //                     ],
-    //                   )
-    //                 ],
-    //               ),
-    //               LikeButton(
-    //                 likeCount: 0,
-    //                 isLiked: false,
-    //                 size: 15,
-    //               )
-    //             ],
-    //           ))
-    //     ],
-    //   ),
-    // );
   }
 }

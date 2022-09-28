@@ -1,6 +1,7 @@
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/login_controller.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'Model/PostCoverModel.dart';
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
@@ -18,6 +19,7 @@ class PostController extends GetxController {
   var postFiles = <PostFile>[];
   var cid = 0.obs;
   var imageFile = <String>[].obs;
+  String uid = Hive.box("UidAndState").get("uid");
 
   @override
   void onInit() {
@@ -31,13 +33,14 @@ class PostController extends GetxController {
         cover: "",
         cid: 0,
         postFiles: []);
+
     super.onInit();
   }
 
   void getPostCover() async {
     try {
       isLoading(true);
-      var Posts = await PostService.fetchPostCover();
+      var Posts = await PostService.fetchPostCover(uid);
       if (Posts != null) {
         if (Posts.status == 200) {
           postCover.value = Posts.data;
@@ -46,5 +49,35 @@ class PostController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  void setPost() {
+    postsContext = Post(
+        uid: loginController.id,
+        title: title.value,
+        content: content.value,
+        likes: 0,
+        collects: 0,
+        cover: cover.value,
+        cid: cid.value,
+        postFiles: postFiles);
+  }
+
+  Future<FormData> writePost() async {
+    setPost();
+
+    WritePostModule writePost = WritePostModule(post: postsContext);
+    FormData formData = FormData.fromMap(writePost.toJson());
+    // int index = 1;
+    imageFile.value.asMap().forEach((key, value) async {
+      formData.files.addAll([
+        MapEntry(
+            "file",
+            await MultipartFile.fromFile(value,
+                filename: value.split("/").last + "-" + key.toString()))
+      ]);
+    });
+
+    return formData;
   }
 }

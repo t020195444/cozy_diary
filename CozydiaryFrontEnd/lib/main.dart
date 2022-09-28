@@ -8,13 +8,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
+import 'LocalDB/UidAndState.dart';
 import 'firebase/firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,6 +28,9 @@ void main() async {
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+  await Hive.initFlutter();
+  Hive.registerAdapter(UidAndStateAdapter());
+  await Hive.openBox("UidAndState");
   runApp(const MyApp());
 }
 
@@ -69,9 +77,13 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "homepage": (context) => const HomePageTabbar(),
-        "personalpage": (context) => const PersonalPage(),
+        "personalpage": (context) => PersonalPage(
+              uid: Hive.box("UidAndState").get("uid"),
+            ),
       },
-      home: HomePage(),
+      home: MyHomePage(
+        title: '',
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -87,8 +99,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final LoginController logincontroller = Get.put(LoginController());
+  final LoginController logincontroller = Get.find<LoginController>();
   late VideoPlayerController _controller;
+  var box = Hive.box("UidAndState");
 
   @override
   void initState() {
@@ -105,7 +118,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Login(context);
+    var id = box.get("uid");
+    return FutureBuilder(
+      future: logincontroller.login(id),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else {
+            if (snapshot.data as bool) {
+              FlutterNativeSplash.remove();
+              return HomePageTabbar();
+            } else {
+              FlutterNativeSplash.remove();
+              return Login(context);
+            }
+          }
+        } else {
+          return Scaffold(
+            backgroundColor: Color(0xffcaaf9a),
+          );
+        }
+      },
+    );
+    // var id = box.get("uid");
+    // if (id != null) {
+    //   return HomePageTabbar();
+    // } else {
+    //   return Login(context);
+    // }
   }
 
   Scaffold Login(BuildContext context) {
@@ -154,10 +195,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: SizedBox(
                     width: 250,
                     // ignore: deprecated_member_use
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         logincontroller.loginWithGoogle();
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(125, 255, 255, 255),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                      ),
                       child: const Text(
                         "登入",
                         style: TextStyle(
@@ -165,9 +213,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontSize: 17.0,
                             fontWeight: FontWeight.w500),
                       ),
-                      color: const Color.fromARGB(125, 255, 255, 255),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
                     ))),
           ),
 

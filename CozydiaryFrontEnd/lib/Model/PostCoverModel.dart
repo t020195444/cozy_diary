@@ -38,37 +38,44 @@ class PostCoverModule {
 }
 
 class PostCoverData {
-  PostCoverData({
-    required this.username,
-    required this.pic,
-    required this.likes,
-    required this.cover,
-    required this.title,
-    // required this.categoryName,
-  });
-
+  PostCoverData(
+      {required this.pid,
+      required this.username,
+      required this.pic,
+      required this.likes,
+      required this.cover,
+      required this.title,
+      required this.uid
+      // required this.categoryName,
+      });
+  int pid;
   String username;
   String pic;
   int likes;
   String cover;
   String title;
+  String uid;
   // String categoryName;
 
   factory PostCoverData.fromJson(Map<String, dynamic> json) => PostCoverData(
-        username: json["username"],
-        pic: json["pic"],
-        likes: json["likes"],
-        cover: json["cover"],
-        title: json["title"],
-        // categoryName: json["categoryName"],
+      pid: json["pid"],
+      username: json["username"],
+      pic: json["pic"],
+      likes: json["likes"],
+      cover: json["cover"],
+      title: json["title"],
+      uid: json["uid"]
+      // categoryName: json["categoryName"],
       );
 
   Map<String, dynamic> toJson() => {
+        "pid": pid,
         "username": username,
         "pic": pic,
         "likes": likes,
         "cover": cover,
         "title": title,
+        "uid": uid,
         // "categoryName": categoryName,
       };
 }
