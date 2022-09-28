@@ -1,6 +1,4 @@
-import 'package:cozydiary/Test/PostCoverTest.dart';
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
 import 'package:cozydiary/register_controller.dart';

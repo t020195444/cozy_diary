@@ -44,10 +44,11 @@ class PostController extends GetxController {
       if (Posts != null) {
         if (Posts.status == 200) {
           postCover.value = Posts.data;
+          print(postCover.value);
         }
       }
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 

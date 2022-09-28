@@ -1,32 +1,31 @@
-import 'package:cozydiary/Model/PostCoverModel.dart';
-import 'package:cozydiary/pages/Personal/controller/OtherPersonController.dart';
-import 'package:cozydiary/PostJsonService.dart';
+import 'dart:io';
+
+import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
-import '../../../screen_widget/viewPostScreen.dart';
-import '../../Personal/Page/otherPersonPage.dart';
 
-class BuildCardHome extends StatelessWidget {
-  final List<PostCoverData> PostCovers;
+import '../../../screen_widget/viewPostScreen.dart';
+
+class BuildCardActivity extends StatelessWidget {
+  final List<Activity> PostCovers;
   final int index;
-  const BuildCardHome({Key? key, required this.PostCovers, required this.index})
+  const BuildCardActivity(
+      {Key? key, required this.PostCovers, required this.index})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    OtherPersonPageController otherPersonPageController =
-        Get.put(OtherPersonPageController());
     return InkWell(
-      onTap: () async {
-        await PostService.getPostDetail(PostService.postPid[index]);
+      onTap: () {
         Get.to(
           ViewPostScreen(),
           transition: Transition.fadeIn,
         );
       },
       child: Hero(
-        tag: index.toString(),
+        tag: PostCovers[index].cover,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -35,18 +34,13 @@ class BuildCardHome extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FadeInImage(
-                image: NetworkImage(PostCovers[index].cover),
-                placeholder: AssetImage("assets/images/yunhan.jpg"),
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset('asset/images/logo/logoS.png',
-                      fit: BoxFit.fitWidth);
-                },
-                fit: BoxFit.fitWidth,
+              Image.network(
+                PostCovers[index].cover,
+                fit: BoxFit.cover,
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
-                child: Text(PostCovers[index].title,
+                child: Text(PostCovers[index].activityName,
                     softWrap: true,
                     maxLines: 2,
                     style: TextStyle(
@@ -61,22 +55,13 @@ class BuildCardHome extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: InkWell(
-                                child: CircleAvatar(
-                                  radius: 12,
-                                  backgroundImage:
-                                      NetworkImage(PostCovers[index].pic),
-                                ),
-                                onTap: () {
-                                  otherPersonPageController.otherUid =
-                                      "116177189475554672826";
-
-                                  otherPersonPageController.getOtherUserData();
-                                  otherPersonPageController.getUserPostCover();
-                                  Get.to(() => OtherPersonalPage());
-                                },
-                              )),
+                            padding: EdgeInsets.only(right: 5),
+                            child: CircleAvatar(
+                              radius: 12,
+                              backgroundImage:
+                                  NetworkImage(PostCovers[index].pic),
+                            ),
+                          ),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
