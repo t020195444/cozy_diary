@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
-import '../Personal/controller/PersonalController.dart';
+import '../Personal/Self/controller/SelfController.dart';
 import '../Activity/Map/MapPage.dart';
 import 'controller/TopTabbarController.dart';
 
@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   final topTabbarController = Get.put(TopTabbarController());
-  final personalController = Get.put(PersonalPageController());
+  final personalController = Get.put(SelfPageController());
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

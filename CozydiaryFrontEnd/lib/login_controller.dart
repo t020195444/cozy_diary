@@ -55,7 +55,7 @@ class LoginController extends GetxController {
     Get.to(const MyHomePage(
       title: '',
     ));
-    box.put("isLogin", false);
+    box.put("uid", "");
   }
 
   Future<bool> login(String id) async {
@@ -69,8 +69,10 @@ class LoginController extends GetxController {
       isLogin = true;
       print("login done. isLogin = " + isLogin.toString());
       // Get.to(HomePageTabbar());
-    } else
+    } else {
       isLogin = false;
+    }
+
     // Get.to(RegisterPage());
     return isLogin;
   }

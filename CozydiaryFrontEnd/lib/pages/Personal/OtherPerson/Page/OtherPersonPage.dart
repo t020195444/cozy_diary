@@ -1,42 +1,40 @@
-import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
-import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:readmore/readmore.dart';
-import '../../../screen_widget/collect_GridView.dart';
-import '../../../screen_widget/post_GridView.dart';
-import '../DrawerWidget.dart';
-import 'Edit_Personal.dart';
+import '../Controller/OtherPersonController.dart';
+import '../Controller/OtherPersonTabbarController.dart';
+import '../Widget/OtherPerson_CollectGridView.dart';
+import '../Widget/OtherPerson_PostGridView.dart';
 
-import '../userHeaderWidget.dart';
-
-class PersonalPage extends StatelessWidget {
-  const PersonalPage({Key? key, required this.uid}) : super(key: key);
-  final String uid;
+class OtherPersonalPage extends StatelessWidget {
+  const OtherPersonalPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PersonalView(uid: this.uid);
+    return PersonalView();
   }
 }
 
 class PersonalView extends StatelessWidget {
-  const PersonalView({Key? key, required this.uid}) : super(key: key);
-  final String uid;
+  const PersonalView({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _tabController = Get.put(TabbarController());
+    final _tabController = Get.put(OtherPersonTabController());
     final _introductionKey = GlobalKey();
     late double oldIntroductionHeight = 0.0;
-    final personalController = Get.find<PersonalPageController>();
+    final otherPersonPageController = Get.find<OtherPersonPageController>();
 
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
         pinned: true,
         delegate: _SliverHeaderDelegate(
-            MediaQuery.of(context).size.height * 0.5, 70, personalController),
+            MediaQuery.of(context).size.height * 0.5,
+            70,
+            otherPersonPageController),
       );
     }
 
@@ -64,21 +62,21 @@ class PersonalView extends StatelessWidget {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        personalController.constraintsHeight.value =
+        otherPersonPageController.constraintsHeight.value =
             _getWidgetHeight(_introductionKey) + 18;
       },
     );
 
     void _refreshHeight() {
-      if (personalController.difference == 0.0) {
-        personalController.difference =
+      if (otherPersonPageController.difference == 0.0) {
+        otherPersonPageController.difference =
             _getWidgetHeight(_introductionKey) - oldIntroductionHeight;
-        print(personalController.difference);
-        personalController.increaseAppbarHeight();
-      } else if (personalController.readmore.value) {
-        personalController.reduceAppbarHeight();
+        print(otherPersonPageController.difference);
+        otherPersonPageController.increaseAppbarHeight();
+      } else if (otherPersonPageController.readmore.value) {
+        otherPersonPageController.reduceAppbarHeight();
       } else {
-        personalController.increaseAppbarHeight();
+        otherPersonPageController.increaseAppbarHeight();
       }
     }
 
@@ -87,7 +85,7 @@ class PersonalView extends StatelessWidget {
         child: Container(
           constraints: BoxConstraints.tightFor(
               width: MediaQuery.of(context).size.width,
-              height: personalController.constraintsHeight.value),
+              height: otherPersonPageController.constraintsHeight.value),
           color: Colors.white,
           height: 90,
           child: Column(
@@ -105,9 +103,11 @@ class PersonalView extends StatelessWidget {
                         maxWidth: MediaQuery.of(context).size.width * 0.8),
                     alignment: Alignment.centerLeft,
                     child: ReadMoreText(
-                      personalController.userData.value.introduction == ""
+                      otherPersonPageController.userData.value.introduction ==
+                              ""
                           ? "這個人很無聊，什麼都沒有留呢~"
-                          : personalController.userData.value.introduction,
+                          : otherPersonPageController
+                              .userData.value.introduction,
                       key: _introductionKey,
                       colorClickableText: Color.fromARGB(255, 120, 118, 118),
                       trimLines: 3,
@@ -120,16 +120,16 @@ class PersonalView extends StatelessWidget {
                       callback: (isExpand) {
                         oldIntroductionHeight =
                             _getWidgetHeight(_introductionKey);
-                        personalController.onTabReadmore();
+                        otherPersonPageController.onTabReadmore();
                         WidgetsBinding.instance.addPostFrameCallback(
                             (timeStamp) => _refreshHeight());
                       },
                     ),
                     // child: Introduction(
                     //     // "BOCAN選貨店《全館限時免運中》誠實賣場 只有全新公司貨營業時間：13:00-23:00//行銷徵才中 詳情請見精選限時//如何選購：小盒子私訊/7-11賣貨便有想要ㄉ鞋子沒在版上可以帶圖/尺寸 小盒子我們🛒《有任何問題或需求歡迎隨時小盒子》lkfgjofdsijglkfdsjglfsdjglkfdsjglkfdj;sh;jsg;ihojlgfdsjhlkfdsgmblfsgnjhjsrogjgfdoihjgfdihjogfdijsafkadjfkdsjfljsdgkdfgkldsgkljglkjgkfjdskgjkldsgjlskdjglkfdss",
-                    //     // personalController.userData.value.introduction == ""?
+                    //     // otherPersonPageController.userData.value.introduction == ""?
                     //     "這個人很無聊，什麼都沒有留呢~",
-                    //     // : personalController.userData.value.introduction,
+                    //     // : otherPersonPageController.userData.value.introduction,
                     //     3),
                   )),
             ],
@@ -225,15 +225,23 @@ class PersonalView extends StatelessWidget {
               body: TabBarView(
                 controller: _tabController.controller,
                 children: [
-                  Obx(() => personalController.postCover.value.isEmpty
+                  Obx(() => otherPersonPageController.postCover.value.isEmpty
+                      ? Center(
+                          child: Container(
+                          child: Icon(
+                            Icons.image_rounded,
+                            size: MediaQuery.of(context).size.width * 0.3,
+                          ),
+                        ))
+                      : InitOtherPersonPostGridView()),
+                  otherPersonPageController.postCover.value.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
                             Icons.image_rounded,
                           ),
                         ))
-                      : InitPostGridView()),
-                  InitCollectGridView()
+                      : InitOtherPersonCollectGridView()
                 ],
               )),
     );
@@ -271,12 +279,12 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   _SliverHeaderDelegate(
     this.expandedHeight,
     this.tabbarHeight,
-    this._personalPageController,
+    this._otherPersonPageController,
   );
 
   final double expandedHeight;
   final double tabbarHeight;
-  final PersonalPageController _personalPageController;
+  final OtherPersonPageController _otherPersonPageController;
 
   @override
   double get minExtent => 0;
@@ -353,9 +361,9 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     return Obx(() => Stack(
           children: <Widget>[
-            _personalPageController.userData.value.pic == null
+            _otherPersonPageController.userData.value.pic != ""
                 ? Image.network(
-                    _personalPageController.userData.value.pic,
+                    _otherPersonPageController.userData.value.pic,
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
                     height: expandedHeight,
@@ -411,9 +419,11 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 0.6),
                     child: followerWidget(
-                        _personalPageController.userData.value.tracker.length,
-                        _personalPageController.userData.value.follower.length,
-                        _personalPageController.postCover.value.length,
+                        _otherPersonPageController
+                            .userData.value.tracker.length,
+                        _otherPersonPageController
+                            .userData.value.follower.length,
+                        _otherPersonPageController.postCover.value.length,
                         0),
                   ),
                 )),
@@ -425,14 +435,14 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 children: [
                   Text(
                     // "楊哲倫",
-                    _personalPageController.userData.value.name,
+                    _otherPersonPageController.userData.value.name,
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "UID:" + _personalPageController.userData.value.googleId,
+                    "UID:" + _otherPersonPageController.userData.value.googleId,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
@@ -446,12 +456,17 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 right: 20,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.to(Edit_PersonalPage(),
-                        transition: Transition.downToUp);
+                    _otherPersonPageController.isFollow.value
+                        ? _otherPersonPageController.deleteTracker()
+                        : _otherPersonPageController.addTracker();
                   },
-                  child: Text("編輯個人資料"),
+                  child: _otherPersonPageController.isFollow.value
+                      ? Text("已追蹤")
+                      : Text("追蹤"),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(176, 202, 175, 154),
+                      backgroundColor: _otherPersonPageController.isFollow.value
+                          ? Color.fromARGB(255, 149, 147, 147)
+                          : Color.fromARGB(176, 202, 175, 154),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ))

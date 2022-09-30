@@ -1,9 +1,8 @@
-import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
-import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'Self/controller/SelfController.dart';
 
 class ExpandableText extends StatelessWidget {
   const ExpandableText(
@@ -20,7 +19,7 @@ class ExpandableText extends StatelessWidget {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
     final colorClickableText = Colors.black45;
     final widgetColor = Colors.black45;
-    var introductionController = Get.find<PersonalPageController>();
+    var introductionController = Get.find<SelfPageController>();
     @override
     TextSpan link = TextSpan(
         text: introductionController.readmore.value ? "... 更多" : " 減少",

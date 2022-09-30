@@ -1,6 +1,6 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
+import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:cozydiary/register_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -116,13 +116,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var id = box.get("uid");
+    var id = box.get("uid") ?? "";
+
     return FutureBuilder(
+      initialData: false,
       future: logincontroller.login(id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            return Text("Error: ${snapshot.error}");
+            return Text(snapshot.error.toString());
           } else {
             if (snapshot.data as bool) {
               FlutterNativeSplash.remove();
@@ -139,6 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
     );
+
     // var id = box.get("uid");
     // if (id != null) {
     //   return HomePageTabbar();

@@ -30,11 +30,13 @@ class RegisterController extends GetxController {
     firebaseauth.FirebaseAuth.instance
         .authStateChanges()
         .listen((firebaseauth.User? user) {
-      googleId = user!.providerData[0].uid!;
-      email = user.providerData[0].email!;
-      name.value = user.providerData[0].displayName!;
-      pic.value = user.providerData[0].photoURL!;
-      print(googleId);
+      if (user != null) {
+        googleId = user.providerData[0].uid!;
+        email = user.providerData[0].email!;
+        name.value = user.providerData[0].displayName!;
+        pic.value = user.providerData[0].photoURL!;
+        print(googleId);
+      }
     });
     super.onInit();
   }

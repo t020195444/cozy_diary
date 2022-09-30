@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../Data/dataResourse.dart';
-import '../pages/Personal/widget/buildCard_personal.dart';
+import '../../../../Data/dataResourse.dart';
+import '../../Self/widget/buildCard_personal.dart';
 
-class InitCollectGridView extends StatelessWidget {
-  const InitCollectGridView({Key? key}) : super(key: key);
+class InitOtherPersonCollectGridView extends StatelessWidget {
+  const InitOtherPersonCollectGridView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

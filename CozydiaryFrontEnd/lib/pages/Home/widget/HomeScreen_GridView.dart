@@ -30,6 +30,10 @@ class HomeScreen extends StatelessWidget {
                 itemCount: postCoverController.postCover.length,
                 itemBuilder: (context, index) {
                   return BuildCardHome(
+                    key: ValueKey({
+                      postCoverController.postCover.value[index].uid,
+                      postCoverController.postCover.value[index].pid
+                    }),
                     PostCovers: postCoverController.postCover.value,
                     index: index,
                   );
