@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'dart:convert';
 
-import '../../../Model/PostCoverModel.dart';
-import '../../../Model/trackerModel.dart';
+import '../../../../Model/PostCoverModel.dart';
+import '../../../../Model/trackerModel.dart';
 
 class OtherPersonPageController extends GetxController {
   var constraintsHeight = 0.0.obs;

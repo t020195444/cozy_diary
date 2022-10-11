@@ -1,12 +1,11 @@
-import 'package:cozydiary/pages/Personal/controller/OtherPersonController.dart';
-import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:readmore/readmore.dart';
-import '../../../screen_widget/collect_GridView.dart';
-import '../../../screen_widget/post_GridView.dart';
-import 'Edit_Personal.dart';
+import '../Controller/OtherPersonController.dart';
+import '../Controller/OtherPersonTabbarController.dart';
+import '../Widget/OtherPerson_CollectGridView.dart';
+import '../Widget/OtherPerson_PostGridView.dart';
 
 class OtherPersonalPage extends StatelessWidget {
   const OtherPersonalPage({Key? key}) : super(key: key);
@@ -24,7 +23,7 @@ class PersonalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _tabController = Get.put(TabbarController());
+    final _tabController = Get.put(OtherPersonTabController());
     final _introductionKey = GlobalKey();
     late double oldIntroductionHeight = 0.0;
     final otherPersonPageController = Get.find<OtherPersonPageController>();
@@ -231,10 +230,18 @@ class PersonalView extends StatelessWidget {
                           child: Container(
                           child: Icon(
                             Icons.image_rounded,
+                            size: MediaQuery.of(context).size.width * 0.3,
                           ),
                         ))
-                      : InitPostGridView()),
-                  InitCollectGridView()
+                      : InitOtherPersonPostGridView()),
+                  otherPersonPageController.postCover.value.isEmpty
+                      ? Center(
+                          child: Container(
+                          child: Icon(
+                            Icons.image_rounded,
+                          ),
+                        ))
+                      : InitOtherPersonCollectGridView()
                 ],
               )),
     );

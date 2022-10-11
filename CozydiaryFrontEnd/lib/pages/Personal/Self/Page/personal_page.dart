@@ -1,12 +1,11 @@
-import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
-import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
-
+import 'package:cozydiary/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
-import '../../../screen_widget/collect_GridView.dart';
-import '../../../screen_widget/post_GridView.dart';
-
+import '../controller/SelfController.dart';
+import '../controller/TabbarController.dart';
+import '../widget/Self_CollectGridView.dart';
+import '../widget/Self_PostGridView.dart';
 import 'Edit_Personal.dart';
 
 class PersonalPage extends StatelessWidget {
@@ -28,7 +27,7 @@ class PersonalView extends StatelessWidget {
     final _tabController = Get.put(TabbarController());
     final _introductionKey = GlobalKey();
     late double oldIntroductionHeight = 0.0;
-    final personalController = Get.find<PersonalPageController>();
+    final personalController = Get.find<SelfPageController>();
 
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
@@ -274,7 +273,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   final double expandedHeight;
   final double tabbarHeight;
-  final PersonalPageController _personalPageController;
+  final SelfPageController _personalPageController;
 
   @override
   double get minExtent => 0;
@@ -282,6 +281,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => expandedHeight;
 
   @override
+  final loginController = Get.find<LoginController>();
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     Widget followerWidget(
@@ -386,7 +386,13 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Icon(Icons.more_horiz_outlined, color: Colors.white),
+                    child: InkWell(
+                      onTap: () {
+                        loginController.logout();
+                      },
+                      child:
+                          Icon(Icons.more_horiz_outlined, color: Colors.white),
+                    ),
                   )
                 ],
               ),

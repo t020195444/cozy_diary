@@ -10,7 +10,8 @@ import 'package:hive/hive.dart';
 import 'package:spincircle_bottom_bar/modals.dart';
 import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 
-import '../Personal/Page/personal_page.dart';
+import '../Personal/Self/Page/personal_page.dart';
+import 'UserData.dart';
 import 'controller/ChangePageController.dart';
 
 class HomePageTabbar extends StatelessWidget {

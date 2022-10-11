@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/PostJsonService.dart';
+import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -121,7 +122,7 @@ class PostController extends GetxController {
 
   void setPost() {
     postsContext = Post(
-        uid: "116177189475554672826",
+        uid: Hive.box("UidAndState").get("uid"),
         title: postTitle,
         content: postContent,
         likes: 0,

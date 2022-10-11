@@ -17,7 +17,7 @@ class PostService {
   static var postController = Get.put(PostController());
 
   static Map postDetailList = {};
-  static getPostDetail(int i) async {
+  static getPostDetail(String i) async {
     postDetailList = {};
     var getPostDetail = 'http://140.131.114.166:80/getPostDetail?pid=$i';
     var response = await dio.get(getPostDetail);

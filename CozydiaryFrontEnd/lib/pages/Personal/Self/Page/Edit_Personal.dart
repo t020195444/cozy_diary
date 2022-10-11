@@ -4,8 +4,8 @@ import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../data/dataResourse.dart';
-import '../userHeaderWidget.dart';
+import '../../../../Data/dataResourse.dart';
+import '../../userHeaderWidget.dart';
 
 class Edit_PersonalPage extends StatefulWidget {
   const Edit_PersonalPage({

@@ -1,19 +1,17 @@
-import 'package:cozydiary/Model/PostCoverModel.dart';
-import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import '../Data/dataResourse.dart';
-import '../pages/Personal/widget/buildCard_personal.dart';
+import '../../Self/widget/buildCard_personal.dart';
+import '../Controller/OtherPersonController.dart';
 
-class InitPostGridView extends StatelessWidget {
-  const InitPostGridView({
+class InitOtherPersonPostGridView extends StatelessWidget {
+  const InitOtherPersonPostGridView({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var personalPageController = Get.find<PersonalPageController>();
+    var personalPageController = Get.find<OtherPersonPageController>();
     return Obx(() {
       return MediaQuery.removePadding(
           context: context,

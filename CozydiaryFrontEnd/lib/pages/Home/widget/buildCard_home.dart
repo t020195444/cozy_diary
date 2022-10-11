@@ -1,11 +1,11 @@
 import 'package:cozydiary/Model/PostCoverModel.dart';
-import 'package:cozydiary/pages/Personal/controller/OtherPersonController.dart';
+import 'package:cozydiary/pages/Personal/OtherPerson/Controller/OtherPersonController.dart';
 import 'package:cozydiary/PostJsonService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import '../../../screen_widget/viewPostScreen.dart';
-import '../../Personal/Page/otherPersonPage.dart';
+import '../../Personal/OtherPerson/Page/OtherPersonPage.dart';
 
 class BuildCardHome extends StatelessWidget {
   final List<PostCoverData> PostCovers;
@@ -15,11 +15,10 @@ class BuildCardHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OtherPersonPageController otherPersonPageController =
-        Get.put(OtherPersonPageController());
     return InkWell(
       onTap: () async {
-        await PostService.getPostDetail(PostService.postPid[index]);
+        await PostService.getPostDetail(
+            key.toString().split(",")[1].replaceAll(RegExp(r"[^\s\w]"), ""));
         Get.to(
           ViewPostScreen(),
           transition: Transition.fadeIn,
@@ -69,8 +68,13 @@ class BuildCardHome extends StatelessWidget {
                                       NetworkImage(PostCovers[index].pic),
                                 ),
                                 onTap: () {
-                                  otherPersonPageController.otherUid =
-                                      "116177189475554672826";
+                                  OtherPersonPageController
+                                      otherPersonPageController =
+                                      Get.put(OtherPersonPageController());
+                                  otherPersonPageController.otherUid = key
+                                      .toString()
+                                      .split(",")[0]
+                                      .replaceAll(RegExp(r"[^\s\w]"), "");
 
                                   otherPersonPageController.getOtherUserData();
                                   otherPersonPageController.getUserPostCover();

@@ -6,9 +6,9 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseauth;
 
-import '../../../Model/PostCoverModel.dart';
+import '../../../../Model/PostCoverModel.dart';
 
-class PersonalPageController extends GetxController {
+class SelfPageController extends GetxController {
   var constraintsHeight = 0.0.obs;
   var readmore = true.obs;
   var difference = 0.0;

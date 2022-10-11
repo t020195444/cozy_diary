@@ -68,8 +68,10 @@ class LoginController extends GetxController {
       isLogin = true;
       print("login done. isLogin = " + isLogin.toString());
       // Get.to(HomePageTabbar());
-    } else
+    } else {
       isLogin = false;
+    }
+
     // Get.to(RegisterPage());
     return isLogin;
   }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cozydiary/Model/CatchPersonalModel.dart';
 import 'package:cozydiary/Model/trackerModel.dart';
-import 'package:get/get.dart' hide FormData, MultipartFile, Response;
+// import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 
 import '../../../Model/PostCoverModel.dart';

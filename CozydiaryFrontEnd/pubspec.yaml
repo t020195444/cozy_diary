@@ -78,15 +78,14 @@ dependencies:
   #狀態管理
   provider: ^6.0.0
   get: ^4.6.1
+  #請求套件
   dio: ^4.0.6
   path_provider: ^2.0.10
   gallery_saver:
   liquid_progress_indicator: ^0.4.0
   #圖片選擇
   fluttertoast: ^8.0.9
-
   photo_manager: ^2.1.2
-
   #LocalDB
   hive: ^2.2.3
   hive_flutter: ^1.1.0
