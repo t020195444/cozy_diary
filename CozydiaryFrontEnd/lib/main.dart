@@ -1,12 +1,11 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Page/personal_page.dart';
-import 'package:cozydiary/register_controller.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hive/hive.dart';
+
 import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
 import 'LocalDB/UidAndState.dart';
@@ -36,8 +35,6 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final registerController = Get.put(RegisterController());
-    final logincontroller = Get.put(LoginController());
     return GetMaterialApp(
       title: 'CozyDiary',
       theme: ThemeData(
@@ -97,7 +94,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final LoginController logincontroller = Get.find<LoginController>();
+  final LoginController logincontroller = Get.put(LoginController());
   late VideoPlayerController _controller;
   var box = Hive.box("UidAndState");
 
@@ -117,8 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var id = box.get("uid");
+
     return FutureBuilder(
-      future: logincontroller.login(id),
+      future:
+          id != null ? logincontroller.login(id) : logincontroller.login(""),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -139,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
     );
+
     // var id = box.get("uid");
     // if (id != null) {
     //   return HomePageTabbar();

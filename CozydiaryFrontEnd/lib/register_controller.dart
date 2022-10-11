@@ -27,6 +27,19 @@ class RegisterController extends GetxController {
 
   @override
   void onInit() {
+    // firebaseauth.FirebaseAuth.instance
+    //     .authStateChanges()
+    //     .listen((firebaseauth.User? user) {
+    //   googleId = user!.providerData[0].uid!;
+    //   email = user.providerData[0].email!;
+    //   name.value = user.providerData[0].displayName!;
+    //   pic.value = user.providerData[0].photoURL!;
+    //   print(googleId);
+    // });
+    super.onInit();
+  }
+
+  void adddata() async {
     firebaseauth.FirebaseAuth.instance
         .authStateChanges()
         .listen((firebaseauth.User? user) {
@@ -36,10 +49,6 @@ class RegisterController extends GetxController {
       pic.value = user.providerData[0].photoURL!;
       print(googleId);
     });
-    super.onInit();
-  }
-
-  void adddata() async {
     userData.clear();
     var picsplit = pic.value.split("/").last;
     userData.add(User(

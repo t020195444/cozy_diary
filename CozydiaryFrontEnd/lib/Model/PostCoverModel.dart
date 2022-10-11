@@ -2,7 +2,6 @@
 //
 //     final previewPostModule = previewPostModuleFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PostCoverModule postCoverModuleFromJson(String str) =>

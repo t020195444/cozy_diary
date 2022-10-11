@@ -1,12 +1,13 @@
+import 'package:cozydiary/pages/Activity/Map/GoogleMapPage.dart';
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/pages/Home/widget/HomeScreen_GridView.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import '../Personal/controller/PersonalController.dart';
-import '../Activity/Map/MapPage.dart';
 import 'controller/TopTabbarController.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
         children: <Widget>[
           Image(image: AssetImage('assets/images/user1.jpg')),
           NestedTabBar(),
-          MapPage()
+          GoogleMapPage()
         ],
         controller: topTabbarController.topController,
       ),

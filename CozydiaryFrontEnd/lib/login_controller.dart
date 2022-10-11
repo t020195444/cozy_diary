@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:cozydiary/Model/UserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,7 +54,7 @@ class LoginController extends GetxController {
     Get.to(const MyHomePage(
       title: '',
     ));
-    box.put("isLogin", false);
+    box.put("uid", "");
   }
 
   Future<bool> login(String id) async {
@@ -126,13 +125,6 @@ class LoginController extends GetxController {
     // if (responseBody != null) {
     //   Get.to(HomePageTabbar());
     // }
-  }
-
-  void testget() async {
-    var response = await http
-        .get(Uri.parse('http://yapi.smart-xwork.cn/mock/152435/userRegister'));
-    var responseBody = jsonDecode(response.body);
-    print(responseBody);
   }
 
   void printid() async {

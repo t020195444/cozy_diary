@@ -2,7 +2,6 @@
 //
 //     final writePostModule = writePostModuleFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 WritePostModule writePostModuleFromJson(String str) =>

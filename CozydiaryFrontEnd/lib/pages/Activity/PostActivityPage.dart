@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cozydiary/pages/Activity/ActivityArticlePage.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -63,6 +61,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                       ? postController.currPic[0]
                       : Container(
                           color: Colors.white,
+                          child: Center(child: Text("尚未選擇照片")),
                         ),
                 ),
               ),

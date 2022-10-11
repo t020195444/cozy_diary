@@ -1,15 +1,13 @@
 import 'package:cozydiary/pages/Personal/controller/PersonalController.dart';
 import 'package:cozydiary/pages/Personal/controller/TabbarController.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 import '../../../screen_widget/collect_GridView.dart';
 import '../../../screen_widget/post_GridView.dart';
-import '../DrawerWidget.dart';
-import 'Edit_Personal.dart';
 
-import '../userHeaderWidget.dart';
+import 'Edit_Personal.dart';
 
 class PersonalPage extends StatelessWidget {
   const PersonalPage({Key? key, required this.uid}) : super(key: key);
