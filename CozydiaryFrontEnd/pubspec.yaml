@@ -111,7 +111,7 @@ flutter_native_splash:
   http:
 
 dependency_overrides:
-  firebase_messaging_platform_interface: 3.1.6
+  firebase_messaging_platform_interface: ^3.1.6
 
 flutter_icons:
   android: "launcher_icon"

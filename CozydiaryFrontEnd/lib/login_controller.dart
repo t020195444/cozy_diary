@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'main.dart';
 import 'pages/Register/RegisterPage.dart';
+import 'register_controller.dart';
 
 class LoginController extends GetxController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);
@@ -22,22 +23,26 @@ class LoginController extends GetxController {
   late List<String> responseBody;
   var userData = <userdata.UserDataModel>[].obs;
   var box = Hive.box("UidAndState");
+  static Map tempData = {};
 
   void loginWithGoogle() async {
     googleAccount.value = await googleSignIn.signIn();
-    final googleAuth = await googleAccount.value!.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    final authResult = await _auth.signInWithCredential(credential);
-    final User? user = authResult.user;
-    googleuser = user;
+    final user = googleAccount.value;
+    // final googleAuth = await googleAccount.value!.authentication;
+    // final credential = GoogleAuthProvider.credential(
+    //   accessToken: googleAuth.accessToken,
+    //   idToken: googleAuth.idToken,
+    // );
+    // final authResult = await _auth.signInWithCredential(credential);
+    // final User? user = authResult.user;
+    // googleuser = user;
     id = googleSignIn.currentUser!.id;
     box.put("uid", id);
+    email = user!.email;
+    googlepic = user.photoUrl!;
 
-    email = user!.email!;
-    googlepic = user.providerData[0].photoURL!;
+    tempData = {'uid': id, 'email': email, 'pic': googlepic};
+    print(tempData);
 
     bool isLogin = await login(id);
     print(isLogin);
@@ -64,7 +69,8 @@ class LoginController extends GetxController {
     var responseBody = jsonDecode(response.body);
 
     if (responseBody['status'] == 200 &&
-        responseBody['data']['googleId'] == id) {
+        responseBody['data']['googleId'] == id &&
+        id != '') {
       isLogin = true;
       print("login done. isLogin = " + isLogin.toString());
       // Get.to(HomePageTabbar());
