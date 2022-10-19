@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cozydiary/Model/UserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/pages/Register/Page/RegisterPage.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'main.dart';
-import 'pages/Register/RegisterPage.dart';
 
 class LoginController extends GetxController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);
@@ -55,7 +55,7 @@ class LoginController extends GetxController {
     Get.to(const MyHomePage(
       title: '',
     ));
-    box.put("uid", "");
+    box.put("uid", null);
   }
 
   Future<bool> login(String id) async {

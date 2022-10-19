@@ -79,6 +79,8 @@ dependencies:
   flutter_spinkit: ^5.1.0
   #起始畫面
   flutter_native_splash: ^2.2.10
+  #NetworkImage
+  cached_network_image: ^3.2.2
   
 
 dev_dependencies:
@@ -132,6 +134,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/category/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

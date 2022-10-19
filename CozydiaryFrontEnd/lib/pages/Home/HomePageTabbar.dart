@@ -24,10 +24,12 @@ class HomePageTabbar extends StatelessWidget {
     final box = Hive.box("UidAndState");
     final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
         GlobalKey();
+    final uid = box.get("uid");
+
     final screens = [
       // MapPage(),
       HomePage(),
-      PersonalPage(uid: box.get("uid")),
+      PersonalPage(uid: uid),
       // UserDataPage(),
     ];
     final controller = Get.put(ChangePageTabbarController());

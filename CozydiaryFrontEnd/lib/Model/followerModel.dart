@@ -5,14 +5,14 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-AddTrackerModel addTrackerModelFromJson(String str) =>
-    AddTrackerModel.fromJson(json.decode(str));
+AddFollowerModel addFollowerModelFromJson(String str) =>
+    AddFollowerModel.fromJson(json.decode(str));
 
-String addTrackerModelToJson(AddTrackerModel data) =>
+String addFollowerModelToJson(AddFollowerModel data) =>
     json.encode(data.toJson());
 
-class AddTrackerModel {
-  AddTrackerModel({
+class AddFollowerModel {
+  AddFollowerModel({
     required this.follower1,
     required this.follower2,
   });
@@ -20,8 +20,8 @@ class AddTrackerModel {
   String follower1;
   String follower2;
 
-  factory AddTrackerModel.fromJson(Map<String, dynamic> json) =>
-      AddTrackerModel(
+  factory AddFollowerModel.fromJson(Map<String, dynamic> json) =>
+      AddFollowerModel(
         follower1: json["follower1"],
         follower2: json["follower2"],
       );

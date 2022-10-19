@@ -8,7 +8,7 @@ import "package:get/get.dart" hide FormData, MultipartFile, Response;
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
-class PostController extends GetxController {
+class HomePostController extends GetxController {
   var loginController = Get.put(LoginController());
   var postCover = <PostCoverData>[].obs;
   var isLoading = true.obs;
@@ -44,7 +44,6 @@ class PostController extends GetxController {
       if (Posts != null) {
         if (Posts.status == 200) {
           postCover.value = Posts.data;
-          print(postCover.value);
         }
       }
     } finally {
@@ -80,5 +79,13 @@ class PostController extends GetxController {
     });
 
     return formData;
+  }
+
+  @override
+  void refresh() {
+    getPostCover();
+    // TODO: implement refresh
+
+    super.refresh();
   }
 }

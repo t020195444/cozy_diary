@@ -1,6 +1,9 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/pages/Home/widget/PickPhotoPage.dart';
+import 'package:cozydiary/pages/Home/widget/PostController.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
+import 'package:cozydiary/pages/Register/Page/SelectLikePage.dart';
 import 'package:cozydiary/register_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +11,10 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:http/http.dart';
 import 'package:video_player/video_player.dart';
 import 'LocalDB/UidAndState.dart';
+import 'HomePostController.dart';
 import 'firebase/firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -29,6 +34,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UidAndStateAdapter());
   await Hive.openBox("UidAndState");
+  imageCache.clear();
   runApp(const MyApp());
 }
 
@@ -63,15 +69,15 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
-        primaryColor: Color.fromARGB(255, 202, 175, 154),
+        primaryColor: Color.fromRGBO(234, 230, 228, 1),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 202, 175, 154),
+          backgroundColor: Color.fromRGBO(234, 230, 228, 1),
         ),
         cardTheme: CardTheme(
             color: Colors.white,
             shape: Border.all(
-                color: Color.fromARGB(255, 195, 170, 150), width: 0.5)),
+                color: Color.fromRGBO(234, 230, 228, 1), width: 0.5)),
       ),
       routes: {
         "homepage": (context) => const HomePageTabbar(),
@@ -112,10 +118,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       });
     _controller.setLooping(true);
+    FlutterNativeSplash.remove();
   }
 
   @override
   Widget build(BuildContext context) {
+    // return SelectLikePage();
     var id = box.get("uid") ?? "";
 
     return FutureBuilder(
@@ -135,19 +143,10 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           }
         } else {
-          return Scaffold(
-            backgroundColor: Color(0xffcaaf9a),
-          );
+          return Container();
         }
       },
     );
-
-    // var id = box.get("uid");
-    // if (id != null) {
-    //   return HomePageTabbar();
-    // } else {
-    //   return Login(context);
-    // }
   }
 
   Scaffold Login(BuildContext context) {

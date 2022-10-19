@@ -1,4 +1,5 @@
 import 'package:cozydiary/login_controller.dart';
+import 'package:cozydiary/pages/Personal/TrackerPage/Page/trackerPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
@@ -24,11 +25,14 @@ class PersonalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //tabBar的控制器
     final _tabController = Get.put(TabbarController());
+    //介紹欄的key
     final _introductionKey = GlobalKey();
+    //原始介紹欄高度
     late double oldIntroductionHeight = 0.0;
     final personalController = Get.find<SelfPageController>();
-
+    //使用者頭貼照片
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
         pinned: true,
@@ -37,6 +41,7 @@ class PersonalView extends StatelessWidget {
       );
     }
 
+    //Tabbar
     Widget _buildTabbarWidget(var controller, var tab) {
       return SliverPersistentHeader(
           pinned: true,
@@ -54,22 +59,20 @@ class PersonalView extends StatelessWidget {
           ));
     }
 
-    double _getWidgetHeight(GlobalKey key) {
-      RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
-      return renderBox.size.height;
-    }
-
+    //獲取初始高度
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         personalController.constraintsHeight.value =
-            _getWidgetHeight(_introductionKey) + 18;
+            personalController.getWidgetHeight(_introductionKey) + 18;
       },
     );
 
+    //按下更多或減少的高度變化
     void _refreshHeight() {
       if (personalController.difference == 0.0) {
         personalController.difference =
-            _getWidgetHeight(_introductionKey) - oldIntroductionHeight;
+            personalController.getWidgetHeight(_introductionKey) -
+                oldIntroductionHeight;
         print(personalController.difference);
         personalController.increaseAppbarHeight();
       } else if (personalController.readmore.value) {
@@ -115,8 +118,8 @@ class PersonalView extends StatelessWidget {
                         color: Color.fromARGB(255, 65, 65, 65),
                       ),
                       callback: (isExpand) {
-                        oldIntroductionHeight =
-                            _getWidgetHeight(_introductionKey);
+                        oldIntroductionHeight = personalController
+                            .getWidgetHeight(_introductionKey);
                         personalController.onTabReadmore();
                         WidgetsBinding.instance.addPostFrameCallback(
                             (timeStamp) => _refreshHeight());
@@ -132,71 +135,6 @@ class PersonalView extends StatelessWidget {
             ],
           ),
         ),
-      );
-    }
-
-    Widget followerWidget(
-        int trackerCount, int followingCount, int postCount, eventCount) {
-      return Wrap(
-        spacing: 25,
-        children: <Widget>[
-          Column(children: <Widget>[
-            Text(
-              '$followingCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '追隨中',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$trackerCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '粉絲',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$postCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '貼文',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$eventCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '聚集數',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-        ],
       );
     }
 
@@ -284,74 +222,9 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   final loginController = Get.find<LoginController>();
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    Widget followerWidget(
-        int trackerCount, int followerCount, int postCount, eventCount) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(children: <Widget>[
-            Text(
-              '$trackerCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '追隨中',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$followerCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '粉絲',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$postCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '貼文',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$eventCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '聚集數',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-        ],
-      );
-    }
-
     return Obx(() => Stack(
           children: <Widget>[
-            _personalPageController.userData.value.pic == null
+            _personalPageController.userData.value.pic != ""
                 ? Image.network(
                     _personalPageController.userData.value.pic,
                     fit: BoxFit.cover,
@@ -461,6 +334,90 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 ))
           ],
         ));
+  }
+
+  Widget followerWidget(
+      int trackerCount, int followerCount, int postCount, eventCount) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        InkWell(
+          child: Column(children: <Widget>[
+            Text(
+              '$trackerCount',
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+            const Text(
+              '追隨中',
+              style:
+                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+          ]),
+          onTap: () {
+            _personalPageController.getTracker();
+            Get.to(
+                TrackerPage(
+                  trackerListData: _personalPageController.trackerList,
+                  index: 0,
+                ),
+                fullscreenDialog: true);
+          },
+        ),
+        InkWell(
+          onTap: (() {
+            Get.to(
+                TrackerPage(
+                  trackerListData: _personalPageController.trackerList,
+                  index: 1,
+                ),
+                fullscreenDialog: true);
+          }),
+          child: Column(children: <Widget>[
+            Text(
+              '$followerCount',
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+            const Text(
+              '粉絲',
+              style:
+                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+          ]),
+        ),
+        Column(children: <Widget>[
+          Text(
+            '$postCount',
+            style: const TextStyle(
+              fontSize: 18,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+          const Text(
+            '貼文',
+            style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+          ),
+        ]),
+        Column(children: <Widget>[
+          Text(
+            '$eventCount',
+            style: const TextStyle(
+              fontSize: 18,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+          const Text(
+            '活動數',
+            style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+          ),
+        ]),
+      ],
+    );
   }
 
   @override

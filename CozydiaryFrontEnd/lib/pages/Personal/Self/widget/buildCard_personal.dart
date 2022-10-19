@@ -35,48 +35,23 @@ class BuildCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
               child: Text(
                 userPostCover[index].title,
                 softWrap: true,
-                maxLines: 2,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Padding(
-                padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 5),
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundImage:
-                                NetworkImage(userPostCover[index].pic),
-                          ),
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              userPostCover[index].username,
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    LikeButton(
-                      likeCount: userPostCover[index].likes,
-                      isLiked: false,
-                      size: 15,
-                    )
-                  ],
-                ))
+              padding: const EdgeInsets.fromLTRB(0, 0, 15, 8),
+              child: LikeButton(
+                mainAxisAlignment: MainAxisAlignment.end,
+                likeCount: userPostCover[index].likes,
+                isLiked: false,
+                size: 15,
+              ),
+            )
           ],
         ),
       ),

@@ -299,20 +299,23 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Column(children: <Widget>[
-            Text(
-              '$trackerCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
+          InkWell(
+            child: Column(children: <Widget>[
+              Text(
+                '$trackerCount',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
               ),
-            ),
-            const Text(
-              '追隨中',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
+              const Text(
+                '追隨中',
+                style: TextStyle(
+                    fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+              ),
+            ]),
+            onTap: () => _otherPersonPageController.getTracker(),
+          ),
           Column(children: <Widget>[
             Text(
               '$followerCount',

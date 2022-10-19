@@ -3,7 +3,6 @@ import 'dart:io' as io;
 import 'package:cozydiary/Model/UserDataModel.dart';
 import 'package:cozydiary/data/dataResourse.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Register/SelectLikePage.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebaseauth;
 import 'package:get/get.dart' hide MultipartFile, FormData, Response;

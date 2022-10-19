@@ -37,36 +37,3 @@ class UserHeader extends StatelessWidget {
     );
   }
 }
-
-
-
-// class PhotoBackground extends StatelessWidget {
-//   const PhotoBackground({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: [
-//         Image.asset(
-//           'assets/image/photo.jpg',
-//           fit: BoxFit.cover,
-//           height: double.infinity,
-//           width: double.infinity,
-//         ),
-//         Container(
-//           width: double.infinity,
-//           decoration: BoxDecoration(
-//             gradient: LinearGradient(
-//               begin: Alignment.topCenter,
-//               end: Alignment.bottomCenter,
-//               colors: [
-//                 Theme.of(context).primaryColor.withOpacity(0.3),
-//                 Theme.of(context).primaryColor.withOpacity(0.8),
-//               ],
-//             ),
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }

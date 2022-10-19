@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import '../../../screen_widget/viewPostScreen.dart';
 import '../../Personal/OtherPerson/Page/OtherPersonPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BuildCardHome extends StatelessWidget {
   final List<PostCoverData> PostCovers;
@@ -34,15 +35,30 @@ class BuildCardHome extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FadeInImage(
-                image: NetworkImage(PostCovers[index].cover),
-                placeholder: AssetImage("assets/images/yunhan.jpg"),
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Image.asset('asset/images/logo/logoS.png',
-                      fit: BoxFit.fitWidth);
-                },
-                fit: BoxFit.fitWidth,
+              CachedNetworkImage(
+                imageUrl: PostCovers[index].cover,
+                fit: BoxFit.cover,
+                errorWidget: ((context, url, error) =>
+                    Image.asset("assets/images/yunhan.jpg", fit: BoxFit.cover)),
               ),
+              // Image.network(
+              //   PostCovers[index].cover,
+              //   errorBuilder: (context, error, stackTrace) {
+              //     return Image.asset("assets/images/yunhan.jpg",
+              //         fit: BoxFit.cover);
+              //   },
+              //   fit: BoxFit.cover,
+              // ),
+              // FadeInImage(
+              //   fadeInDuration: Duration(milliseconds: 100),
+              //   image: NetworkImage(PostCovers[index].cover),
+              //   placeholder: AssetImage("assets/images/yunhan.jpg"),
+              //   imageErrorBuilder: (context, error, stackTrace) {
+              //     return Image.asset('asset/images/logo/logoS.png',
+              //         fit: BoxFit.fitWidth);
+              //   },
+              //   fit: BoxFit.fitWidth,
+              // ),
               Padding(
                 padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
                 child: Text(PostCovers[index].title,

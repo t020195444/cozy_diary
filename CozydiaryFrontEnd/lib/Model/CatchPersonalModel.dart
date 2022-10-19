@@ -61,8 +61,8 @@ class Data {
   List<int> createTime;
   String email;
   List<dynamic> tracker;
-  List<dynamic> follower;
-  List<dynamic> userCategoryList;
+  List<Follower> follower;
+  List<UserCategoryList> userCategoryList;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         uid: json["uid"],
@@ -76,9 +76,10 @@ class Data {
         createTime: List<int>.from(json["create_time"].map((x) => x)),
         email: json["email"],
         tracker: List<dynamic>.from(json["tracker"].map((x) => x)),
-        follower: List<dynamic>.from(json["follower"].map((x) => x)),
-        userCategoryList:
-            List<dynamic>.from(json["userCategoryList"].map((x) => x)),
+        follower: List<Follower>.from(
+            json["follower"].map((x) => Follower.fromJson(x))),
+        userCategoryList: List<UserCategoryList>.from(
+            json["userCategoryList"].map((x) => UserCategoryList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -93,7 +94,57 @@ class Data {
         "create_time": List<dynamic>.from(createTime.map((x) => x)),
         "email": email,
         "tracker": List<dynamic>.from(tracker.map((x) => x)),
-        "follower": List<dynamic>.from(follower.map((x) => x)),
-        "userCategoryList": List<dynamic>.from(userCategoryList.map((x) => x)),
+        "follower": List<dynamic>.from(follower.map((x) => x.toJson())),
+        "userCategoryList":
+            List<dynamic>.from(userCategoryList.map((x) => x.toJson())),
+      };
+}
+
+class Follower {
+  Follower({
+    required this.fid,
+    required this.follower1,
+    required this.follower2,
+    required this.followTime,
+  });
+
+  int fid;
+  String follower1;
+  String follower2;
+  List<int> followTime;
+
+  factory Follower.fromJson(Map<String, dynamic> json) => Follower(
+        fid: json["fid"],
+        follower1: json["follower1"].toString(),
+        follower2: json["follower2"].toString(),
+        followTime: List<int>.from(json["follow_time"].map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fid": fid,
+        "follower1": follower1,
+        "follower2": follower2,
+        "follow_time": List<dynamic>.from(followTime.map((x) => x)),
+      };
+}
+
+class UserCategoryList {
+  UserCategoryList({
+    required this.uid,
+    required this.cid,
+  });
+
+  String uid;
+  int cid;
+
+  factory UserCategoryList.fromJson(Map<String, dynamic> json) =>
+      UserCategoryList(
+        uid: json["uid"],
+        cid: json["cid"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "cid": cid,
       };
 }

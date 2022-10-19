@@ -1,4 +1,6 @@
 import 'package:cozydiary/Model/CatchPersonalModel.dart';
+import 'package:cozydiary/Model/followerModel.dart';
+import 'package:cozydiary/Model/trackerListModel.dart';
 import 'package:cozydiary/pages/Personal/Service/PersonalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
@@ -31,6 +33,7 @@ class OtherPersonPageController extends GetxController {
       follower: [],
       userCategoryList: []).obs;
   var postCover = <PostCoverData>[].obs;
+  var trackerList = <TrackerList>[];
   @override
   void onInit() {
     checkedUid = Hive.box("UidAndState").get("uid");
@@ -45,7 +48,7 @@ class OtherPersonPageController extends GetxController {
         if (UserData.status == 200) {
           userData.value = UserData.data;
           for (var followers in userData.value.follower) {
-            if (followers == checkedUid) {
+            if (followers.follower2 == checkedUid) {
               isFollow.value = true;
             } else {
               isFollow.value = false;
@@ -91,18 +94,37 @@ class OtherPersonPageController extends GetxController {
     try {
       AddTrackerModel trackerModel =
           AddTrackerModel(tracker1: checkedUid, tracker2: otherUid);
+      var trackerJsonData = addTrackerModelToJson(trackerModel);
+      var trackerResponse = await PersonalService.addTracker(trackerJsonData);
 
-      var jsonData = addTrackerModelToJson(trackerModel);
-      var response = await PersonalService.addTracker(jsonData);
-      if (response.toString() == "新增追蹤成功") isFollow.value = true;
+      if (trackerResponse.toString() == "新增追蹤成功") isFollow.value = true;
     } finally {}
   }
 
   void deleteTracker() async {
     try {
-      var response = await PersonalService.deleteTracker("30");
-      isFollow.value = false;
-      print(response);
+      var fid = "0";
+      for (Follower follower in userData.value.follower) {
+        follower.follower2 == checkedUid ? fid == follower.fid : null;
+      }
+      if (fid != null) {
+        var trakerResponse = await PersonalService.deleteTracker(fid);
+        isFollow.value = false;
+      } else
+        print("沒有追蹤");
+    } finally {}
+  }
+
+  void getTracker() async {
+    try {
+      var trackerResponse = await PersonalService.getTracker(otherUid);
+
+      if (trackerResponse != null) {
+        if (trackerResponse.message == 200) {
+          trackerList = trackerResponse.data;
+          print(trackerList[0]);
+        }
+      }
     } finally {}
   }
 }

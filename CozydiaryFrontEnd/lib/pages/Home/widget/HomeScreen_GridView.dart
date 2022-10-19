@@ -1,4 +1,4 @@
-import 'package:cozydiary/PostController.dart';
+import 'package:cozydiary/HomePostController.dart';
 import 'package:cozydiary/pages/Home/widget/buildCard_home.dart';
 
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final postCoverController = Get.put(PostController());
+    final postCoverController = Get.put(HomePostController());
     return Obx(() {
       if (postCoverController.isLoading.value) {
         return Center(

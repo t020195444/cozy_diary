@@ -1,72 +1,36 @@
 import 'dart:io';
+import 'package:cozydiary/HomePostController.dart';
+import 'package:cozydiary/Model/EditUserModel.dart';
+import 'package:cozydiary/pages/Home/HomePage.dart';
+import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/pages/Home/widget/PostController.dart';
+import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/SelfController.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/editController.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../Data/dataResourse.dart';
 import '../../userHeaderWidget.dart';
 
-class Edit_PersonalPage extends StatefulWidget {
-  const Edit_PersonalPage({
+class Edit_PersonalPage extends StatelessWidget {
+  Edit_PersonalPage({
     Key? key,
   }) : super(key: key);
-
-  @override
-  State<Edit_PersonalPage> createState() => _Edit_PersonalPageState();
-}
-
-class _Edit_PersonalPageState extends State<Edit_PersonalPage> {
-  late TextEditingController _nameController;
-  late TextEditingController _IntroducionController;
   final GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _introductionFormKey = GlobalKey<FormState>();
-  final _imagePicker = ImagePicker();
-  late String? Oldname;
-  late DateTime OldbirthDay;
-  late String? birthDayText;
-  late String? OldIntroduction;
-  final birthday = PersonalValue_Map["birthDay"]!.split("-");
-  late File? OldImage;
-  late dynamic previewImage;
-  @override
-  void initState() {
-    OldImage = UserHeaderImage;
-    previewImage = UserHeaderImage != null
-        ? FileImage(UserHeaderImage!)
-        : NetworkImage(Image_List[3]);
-    ;
-    _nameController =
-        TextEditingController(text: PersonalValue_Map["UserName"]);
-    _IntroducionController =
-        TextEditingController(text: PersonalValue_Map["Introduction"]);
-    Oldname = PersonalValue_Map["UserName"];
-    birthDayText = PersonalValue_Map["birthDay"];
-    OldIntroduction = PersonalValue_Map["Introduction"];
-    OldbirthDay = DateTime(
-        int.parse(birthday[0]), int.parse(birthday[1]), int.parse(birthday[2]));
-    super.initState();
-  }
-
-  Future<void> _openImagePicker() async {
-    final XFile? pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      final image = File(pickedImage.path);
-      OldImage = image;
-      setState(() => previewImage = FileImage(image));
-    } else {
-      return;
-    }
-  }
+  final EditUserController editUserController = Get.put(EditUserController());
+  final selfPageController = Get.find<SelfPageController>();
 
   Widget nameTextField() {
     return TextFormField(
       autofocus: true,
       maxLength: 20,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onSaved: (String? value) => setState(() => Oldname = value!),
-      controller: _nameController,
+      onSaved: (String? value) => editUserController.oldname.value = value!,
+      controller: editUserController.nameController,
       style: TextStyle(color: Colors.black),
       textInputAction: TextInputAction.done,
       validator: (value) {
@@ -81,7 +45,7 @@ class _Edit_PersonalPageState extends State<Edit_PersonalPage> {
   Widget nameTitle() {
     return ListTile(
         title: Text(
-          Oldname!,
+          editUserController.oldname.value,
           style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
         ),
         dense: true,
@@ -98,95 +62,56 @@ class _Edit_PersonalPageState extends State<Edit_PersonalPage> {
             borderRadius: BorderRadius.circular(15)),
         tileColor: Colors.white,
         onTap: () {
-          _nameController =
-              TextEditingController(text: PersonalValue_Map["UserName"]);
-          showFlexibleBottomSheet(
-              context: context,
-              builder: _buildNameBottomSheet,
-              minHeight: 0,
-              initHeight: 0.9,
-              maxHeight: 0.9,
-              isSafeArea: false);
+          editUserController.setTextEditController();
+          //buttonSheet
+          Get.bottomSheet(
+              BottomSheet(onClosing: () {}, builder: _buildNameBottomSheet));
+          // showModalBottomSheet(
+          //     context: context, builder: _buildNameBottomSheet);
         });
   }
 
   Widget _buildNameBottomSheet(
     BuildContext context,
-    ScrollController scrollController,
-    double bottomSheetOffset,
   ) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            "取消",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              final isValid = _nameFormKey.currentState!.validate();
-              if (isValid) {
-                _nameFormKey.currentState!.save();
-                Navigator.pop(context);
-              }
-            },
-            child: Text(
-              "確認",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-                child: Form(key: _nameFormKey, child: nameTextField()),
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "取消",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  final isValid = _nameFormKey.currentState!.validate();
+                  if (isValid) {
+                    _nameFormKey.currentState!.save();
+                    Navigator.pop(context);
+                  }
+                },
+                child: Text(
+                  "確認",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
             ],
-          )),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Form(key: _nameFormKey, child: nameTextField()),
+        ),
+      ],
     );
-  }
-
-  Widget BirthDayTitle() {
-    return ListTile(
-        title: Text(
-          birthDayText!,
-          style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
-        ),
-        dense: true,
-        trailing: const Icon(
-          Icons.keyboard_arrow_right_outlined,
-          color: Colors.black,
-        ),
-        leading: const Text(
-          "生日",
-          style: TextStyle(color: Colors.black),
-        ),
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
-            borderRadius: BorderRadius.circular(15)),
-        tileColor: Colors.white,
-        onTap: () async {
-          DateTime? newDate = await showDatePicker(
-              context: context,
-              initialDate: OldbirthDay,
-              firstDate: DateTime(DateTime.now().year - 100),
-              lastDate: DateTime.now());
-
-          if (newDate == null) return;
-          setState(
-              () => birthDayText = DateFormat("yyyy-MM-dd").format(newDate));
-          OldbirthDay = newDate;
-        });
   }
 
   Widget IntroductionTitle() {
@@ -200,10 +125,10 @@ class _Edit_PersonalPageState extends State<Edit_PersonalPage> {
           return null;
         },
         onSaved: (String? value) {
-          OldIntroduction = value!;
+          editUserController.setIntroduction(value!);
         },
         maxLines: 10,
-        controller: _IntroducionController,
+        controller: editUserController.introducionController,
         maxLength: 300,
         decoration: InputDecoration(
             hintText: "打點什麼介紹自己吧~",
@@ -217,34 +142,122 @@ class _Edit_PersonalPageState extends State<Edit_PersonalPage> {
     );
   }
 
+  Widget SexTitle() {
+    return ListTile(
+      title: DropdownButton<String>(
+        items: editUserController.gender.map((value) {
+          return DropdownMenuItem(
+            child: Text(
+              value,
+              style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
+            ),
+            value: value,
+          );
+        }).toList(),
+        elevation: 2,
+        value: editUserController.currentSelect.value,
+        isExpanded: true,
+        underline: Container(
+          height: 0,
+        ),
+        icon: Icon(
+          Icons.keyboard_arrow_right_outlined,
+          color: Colors.black,
+        ),
+        onChanged: (String? value) {
+          editUserController.currentSelect.value = value!;
+          editUserController.oldSex = value == "女" ? 0 : 1;
+        },
+      ),
+      dense: true,
+      // trailing: Icon(
+      //   Icons.keyboard_arrow_right_outlined,
+      //   color: Colors.black,
+      // ),
+      leading: Text(
+        "性別",
+        style: TextStyle(color: Colors.black),
+      ),
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
+          borderRadius: BorderRadius.circular(15)),
+      tileColor: Colors.white,
+    );
+  }
+
+  Widget UserHeader() {
+    return Container(
+      height: 130,
+      width: 130,
+      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: editUserController.isImageChange.value
+                  ? editUserController.changedPreviewImage
+                  : editUserController.defaultPreviewImage,
+              fit: BoxFit.cover),
+          border: Border.all(color: Colors.white, width: 2.5),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black,
+                offset: Offset(0, 3),
+                blurRadius: 7,
+                spreadRadius: 0)
+          ]),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget BirthDayTitle() {
+      return ListTile(
+          title: Text(
+            editUserController.birthDayText.value,
+            style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
+          ),
+          dense: true,
+          trailing: const Icon(
+            Icons.keyboard_arrow_right_outlined,
+            color: Colors.black,
+          ),
+          leading: const Text(
+            "生日",
+            style: TextStyle(color: Colors.black),
+          ),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              borderRadius: BorderRadius.circular(15)),
+          tileColor: Colors.white,
+          onTap: () async {
+            DateTime? newDate = await showDatePicker(
+                context: context,
+                initialDate: editUserController.oldbirthDay,
+                firstDate: DateTime(DateTime.now().year - 100),
+                lastDate: DateTime.now());
+
+            if (newDate == null) return;
+            editUserController.setBirthDay(newDate);
+          });
+    }
+
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
-          // leading: IconButton(
-          //   icon: const Icon(Icons.chevron_left_outlined),
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          // ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 final isValid = _introductionFormKey.currentState!.validate();
                 if (isValid) {
                   _introductionFormKey.currentState!.save();
-                  setState(() {
-                    PersonalValue_Map.update(
-                        "birthDay",
-                        (value) =>
-                            DateFormat('yyyy-MM-dd').format(OldbirthDay));
-                    PersonalValue_Map["UserName"] = Oldname!;
-                    PersonalValue_Map["Introduction"] = OldIntroduction!;
-                    UserHeaderImage = OldImage;
-                  });
+                  EditUserModel finalUserData =
+                      editUserController.setEditData();
 
-                  Navigator.pop(context);
+                  selfPageController
+                      .updateUser(finalUserData)
+                      .then((String value) {
+                    Get.offAll(() => HomePageTabbar(), arguments: "hi");
+                  });
                 }
               },
               child: Text(
@@ -258,45 +271,48 @@ class _Edit_PersonalPageState extends State<Edit_PersonalPage> {
             style: TextStyle(color: Colors.black54),
           ),
         ),
-        body: ListView(
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+        body: Obx(
+          () {
+            return ListView(
               children: <Widget>[
-                UserHeader(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  image: previewImage,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    UserHeader(),
+                    TextButton(
+                        onPressed: () {
+                          editUserController.openImagePicker();
+                        },
+                        child: Text(
+                          "點擊更換頭貼",
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                        ))
+                  ],
                 ),
-                TextButton(
-                    onPressed: () {
-                      _openImagePicker();
-                    },
-                    child: Text(
-                      "點擊更換頭貼",
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
-                    ))
+                // Divider(
+                //   color: Color.fromARGB(132, 0, 0, 0),
+                //   indent: MediaQuery.of(context).size.width * 0.05,
+                //   endIndent: MediaQuery.of(context).size.width * 0.05,
+                // ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: nameTitle()),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: BirthDayTitle(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: SexTitle(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: IntroductionTitle(),
+                ),
               ],
-            ),
-            // Divider(
-            //   color: Color.fromARGB(132, 0, 0, 0),
-            //   indent: MediaQuery.of(context).size.width * 0.05,
-            //   endIndent: MediaQuery.of(context).size.width * 0.05,
-            // ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                child: nameTitle()),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: BirthDayTitle(),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: IntroductionTitle(),
-            )
-          ],
+            );
+          },
         ));
   }
 }

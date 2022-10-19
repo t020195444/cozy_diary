@@ -1,4 +1,4 @@
-import 'package:cozydiary/PostController.dart';
+import 'package:cozydiary/HomePostController.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Activity/widget/BuildCardActivity.dart';
 import 'package:cozydiary/pages/Home/widget/buildCard_home.dart';
