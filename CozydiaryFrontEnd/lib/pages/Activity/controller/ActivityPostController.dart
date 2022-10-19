@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
-import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:dio/dio.dart';
 
 class ActivityPostController extends GetxController {
   //variable
+  RxString activityTime = "2000-01-01".obs;
   int currentPage = 0;
   RxBool isPicked = false.obs;
 

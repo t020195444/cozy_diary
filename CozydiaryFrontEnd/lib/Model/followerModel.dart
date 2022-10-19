@@ -2,7 +2,6 @@
 //
 //     final addTrackerModel = addTrackerModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 AddFollowerModel addFollowerModelFromJson(String str) =>

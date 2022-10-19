@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>PhotoLibraryUsage</string>
+		<key>NSCameraUsageDescription</key>
+		<string>CameraUsage</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>MicrophoneUsage</string>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSAppTransportSecurity</key>
@@ -49,5 +55,18 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<!-- TODO Replace this value: -->
+					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+					<string>com.googleusercontent.apps.1084254307608-98r0d65htt5dd2b0u7000hcb1khllgrj</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
 </plist>

@@ -53,9 +53,6 @@ class UserDataPage extends StatelessWidget {
               child: const Text("發送"),
               onPressed: () => logincontroller.testpost()),
           CupertinoButton(
-              child: const Text("get"),
-              onPressed: () => logincontroller.testget()),
-          CupertinoButton(
               child: const Text("登出"),
               onPressed: () => logincontroller.logout()),
           CupertinoButton(

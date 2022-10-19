@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1084254307608:ios:ef4a371e5e15601857ca6d</string>
+	<string>1:1084254307608:ios:f54b541e69cf4fdb57ca6d</string>
 	<key>DATABASE_URL</key>
 	<string>https://cozydiary-22111-default-rtdb.firebaseio.com</string>
 </dict>

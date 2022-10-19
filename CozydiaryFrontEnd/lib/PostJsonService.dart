@@ -5,11 +5,21 @@ import 'package:cozydiary/HomePostController.dart';
 import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import 'api..dart';
 
 class PostService {
   static Dio dio = Dio();
+<<<<<<< HEAD
+=======
+  static var getPostCoverUri =
+      'http://140.131.114.166:80/getPostCoverByUserCategory?uid=';
+  static var getAllPostCoverUri = 'http://140.131.114.166:80/getAllPost';
+  static var writePostUri = 'http://140.131.114.166:80/addPost';
+
+  static var postController = Get.put(PostController());
+>>>>>>> e3ff656c8b7aab1328b5c5492bc1cb5e9cc3ca59
 
   static Map postDetailList = {};
   static getPostDetail(String i) async {
@@ -39,6 +49,20 @@ class PostService {
     // }
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+
+    return fromJsonValue;
+  }
+
+  static Future<PostCoverModule?> fetchAllPostCover() async {
+    var response = await dio.get(getAllPostCoverUri);
+
+    var jsonString = response.data;
+    // for (int i = 0; i < jsonString.length; i++) {
+    //   postPid.add(jsonString['data'][i]['pid']);
+    // }
+    var encodeJsonString = jsonEncode(jsonString);
+    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+
     return fromJsonValue;
   }
 

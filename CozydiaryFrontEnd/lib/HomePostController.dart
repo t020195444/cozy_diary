@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/login_controller.dart';
@@ -40,7 +42,7 @@ class HomePostController extends GetxController {
   void getPostCover() async {
     try {
       isLoading(true);
-      var Posts = await PostService.fetchPostCover(uid);
+      var Posts = await PostService.fetchAllPostCover();
       if (Posts != null) {
         if (Posts.status == 200) {
           postCover.value = Posts.data;

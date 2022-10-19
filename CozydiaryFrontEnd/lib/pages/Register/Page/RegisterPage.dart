@@ -1,6 +1,5 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/register_controller.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,7 @@ class RegisterPage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
-                    primary: registerController.sex.value == "0"
+                    backgroundColor: registerController.sex.value == "0"
                         ? const Color.fromARGB(255, 179, 141, 113)
                         : const Color.fromARGB(255, 255, 255, 255)),
                 child: const Icon(
@@ -57,7 +56,7 @@ class RegisterPage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
-                    primary: registerController.sex.value == "0"
+                    backgroundColor: registerController.sex.value == "0"
                         ? Color.fromARGB(255, 255, 255, 255)
                         : Color.fromARGB(255, 179, 141, 113)),
                 child: const Icon(
@@ -152,7 +151,7 @@ class RegisterPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(90),
                   ),
-                  primary: Color.fromARGB(255, 127, 236, 215),
+                  backgroundColor: Color.fromARGB(255, 127, 236, 215),
                 )),
           ),
         ),
