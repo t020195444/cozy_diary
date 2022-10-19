@@ -42,7 +42,7 @@ class HomePostController extends GetxController {
   void getPostCover() async {
     try {
       isLoading(true);
-      var Posts = await PostService.fetchAllPostCover();
+      var Posts = await PostService.fetchPostCover(uid);
       if (Posts != null) {
         if (Posts.status == 200) {
           postCover.value = Posts.data;

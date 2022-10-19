@@ -1,8 +1,6 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Home/HomePage.dart';
-
-import 'package:cozydiary/PostController.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:spincircle_bottom_bar/modals.dart';
 import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 
+import '../../HomePostController.dart';
 import '../Personal/Self/Page/personal_page.dart';
 import 'UserData.dart';
 import 'controller/ChangePageController.dart';
@@ -33,7 +32,7 @@ class HomePageTabbar extends StatelessWidget {
     final controller = Get.put(ChangePageTabbarController());
     final LoginController logincontroller = Get.put(LoginController());
     final ActivityController activityController = Get.put(ActivityController());
-    final PostController postController = Get.put(PostController());
+    final HomePostController postController = Get.put(HomePostController());
 
     return Scaffold(
         body: Obx((() => SpinCircleBottomBarHolder(

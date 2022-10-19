@@ -8,7 +8,7 @@ import 'package:cozydiary/Model/trackerModel.dart';
 import 'package:dio/dio.dart';
 
 import '../../../Model/PostCoverModel.dart';
-import '../../../api..dart';
+import '../../../api.dart';
 
 class PersonalService {
   static Dio dio = Dio();

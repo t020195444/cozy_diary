@@ -94,6 +94,8 @@ dependencies:
   flutter_native_splash: ^2.2.10
   #NetworkImage
   cached_network_image: ^3.2.2
+  #選擇時間
+  flutter_datetime_picker: ^1.5.1
   
 
 dev_dependencies:
