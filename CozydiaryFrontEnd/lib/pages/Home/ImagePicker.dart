@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'ImagePickGetX.dart';
+import 'imagePickGetX.dart';
 
 class ImagePickerPage extends GetView<ImagePickPageController> {
   ImagePickerPage({Key? key}) : super(key: key);

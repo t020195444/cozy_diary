@@ -4,8 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:readmore/readmore.dart';
 import '../Controller/OtherPersonController.dart';
 import '../Controller/OtherPersonTabbarController.dart';
-import '../Widget/OtherPerson_CollectGridView.dart';
-import '../Widget/OtherPerson_PostGridView.dart';
+import '../Widget/otherPerson_CollectGridView.dart';
+import '../Widget/otherPerson_PostGridView.dart';
 
 class OtherPersonalPage extends StatelessWidget {
   const OtherPersonalPage({Key? key}) : super(key: key);

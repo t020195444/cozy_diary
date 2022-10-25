@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'ArticlePage.dart';
-import 'PostController.dart';
+import '../controller/PostController.dart';
 
 class PickPhotoPage extends StatefulWidget {
   @override

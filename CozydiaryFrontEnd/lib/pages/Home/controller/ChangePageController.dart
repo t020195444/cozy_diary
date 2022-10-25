@@ -1,7 +1,5 @@
 import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
-import 'package:cozydiary/pages/Home/UserData.dart';
-import 'package:cozydiary/pages/Home/widget/PickPhotoPage.dart';
-import 'package:flutter/material.dart';
+import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
 import 'package:get/get.dart';
 
 class ChangePageTabbarController extends GetxController

@@ -1,7 +1,7 @@
 import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
+import 'package:cozydiary/pages/Activity/service/activityService.dart';
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
 
 class ActivityController extends GetxController {

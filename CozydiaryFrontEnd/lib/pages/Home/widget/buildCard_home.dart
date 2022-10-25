@@ -1,11 +1,11 @@
 import 'package:cozydiary/Model/PostCoverModel.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/OtherPersonController.dart';
-import 'package:cozydiary/PostJsonService.dart';
+import 'package:cozydiary/postJsonService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import '../../../screen_widget/viewPostScreen.dart';
-import '../../Personal/OtherPerson/Page/OtherPersonPage.dart';
+import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class BuildCardHome extends StatelessWidget {

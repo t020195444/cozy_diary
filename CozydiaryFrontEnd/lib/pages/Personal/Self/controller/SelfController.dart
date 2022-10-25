@@ -1,16 +1,10 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:cozydiary/Model/CatchPersonalModel.dart';
 import 'package:cozydiary/Model/EditUserModel.dart';
-import 'package:cozydiary/Model/PostReceiveModel.dart';
-import 'package:cozydiary/pages/Personal/Service/PersonalService.dart';
+import 'package:cozydiary/pages/Personal/Service/personalService.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebaseauth;
-
 import '../../../../Model/PostCoverModel.dart';
 import '../../../../Model/trackerListModel.dart';
 
@@ -44,7 +38,7 @@ class SelfPageController extends GetxController {
   var trackerList = <TrackerList>[];
   @override
   void onInit() {
-    uid = box.get("uid");
+    uid = Hive.box("UidAndState").get("uid");
 
     getUserData();
     getUserPostCover(uid);

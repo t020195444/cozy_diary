@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:cozydiary/HomePostController.dart';
+import 'package:cozydiary/pages/Home/controller/HomePostController.dart';
 import 'package:cozydiary/Model/EditUserModel.dart';
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Home/widget/PostController.dart';
+import 'package:cozydiary/pages/Home/controller/PostController.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
-import 'package:cozydiary/pages/Personal/Self/controller/SelfController.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:cozydiary/pages/Personal/Self/controller/editController.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';

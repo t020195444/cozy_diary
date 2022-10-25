@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../HomePageTabbar.dart';
-import 'PostController.dart';
+import '../controller/PostController.dart';
 
 class ArticlePage extends StatelessWidget {
   const ArticlePage({Key? key}) : super(key: key);

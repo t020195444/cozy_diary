@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WritePostModel.dart';
-import 'package:cozydiary/PostJsonService.dart';
+import 'package:cozydiary/postJsonService.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';

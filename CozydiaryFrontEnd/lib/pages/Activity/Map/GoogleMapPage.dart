@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityTabbarController.dart';
-import 'package:cozydiary/pages/Activity/widget/Activity_GridView.dart';
+import 'package:cozydiary/pages/Activity/widget/activity_GridView.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';

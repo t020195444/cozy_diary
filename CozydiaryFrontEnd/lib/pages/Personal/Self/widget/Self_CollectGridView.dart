@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../../../../Data/dataResourse.dart';
 import 'buildCard_personal.dart';
 
 class InitCollectGridView extends StatelessWidget {
@@ -13,7 +12,7 @@ class InitCollectGridView extends StatelessWidget {
         removeTop: true,
         child: MasonryGridView.count(
             crossAxisCount: 2,
-            itemCount: Image_List.length,
+            itemCount: 0,
             itemBuilder: (context, index) {
               return BuildCard(
                 index: index,

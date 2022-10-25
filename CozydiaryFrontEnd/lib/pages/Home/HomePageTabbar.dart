@@ -8,10 +8,9 @@ import 'package:hive/hive.dart';
 import 'package:spincircle_bottom_bar/modals.dart';
 import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 
-import '../../HomePostController.dart';
-import '../Personal/Self/Page/personal_page.dart';
-import 'UserData.dart';
 import 'controller/ChangePageController.dart';
+import 'controller/homePostController.dart';
+import '../Personal/Self/Page/personal_page.dart';
 
 class HomePageTabbar extends StatelessWidget {
   const HomePageTabbar({Key? key}) : super(key: key);

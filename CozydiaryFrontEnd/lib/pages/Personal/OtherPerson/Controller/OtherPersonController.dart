@@ -1,7 +1,7 @@
 import 'package:cozydiary/Model/CatchPersonalModel.dart';
 import 'package:cozydiary/Model/followerModel.dart';
 import 'package:cozydiary/Model/trackerListModel.dart';
-import 'package:cozydiary/pages/Personal/Service/PersonalService.dart';
+import 'package:cozydiary/pages/Personal/Service/personalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';

@@ -20,4 +20,10 @@ class Api {
   static String addPost = 'addPost';
   //抓取貼文詳細資訊
   static String getPostDetail = "getPostDetail?pid=";
+  //註冊使用者
+  static String userRegister = "userRegister";
+  //獲得類別名稱
+  static String getCategoryList = "getCategoryList";
+  //新增使用者類別
+  static String addCategory = "addUserCategory";
 }

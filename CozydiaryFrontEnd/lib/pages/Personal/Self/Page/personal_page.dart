@@ -1,13 +1,14 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Personal/TrackerPage/Page/trackerPage.dart';
+import 'package:cozydiary/pages/Personal/drawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
-import '../controller/SelfController.dart';
-import '../controller/TabbarController.dart';
-import '../widget/Self_CollectGridView.dart';
-import '../widget/Self_PostGridView.dart';
-import 'Edit_Personal.dart';
+import '../controller/selfController.dart';
+import '../controller/tabbarController.dart';
+import '../widget/self_CollectGridView.dart';
+import '../widget/self_PostGridView.dart';
+import 'edit_Personal.dart';
 
 class PersonalPage extends StatelessWidget {
   const PersonalPage({Key? key, required this.uid}) : super(key: key);
@@ -31,13 +32,13 @@ class PersonalView extends StatelessWidget {
     final _introductionKey = GlobalKey();
     //原始介紹欄高度
     late double oldIntroductionHeight = 0.0;
-    final personalController = Get.find<SelfPageController>();
+    final selfController = Get.find<SelfPageController>();
     //使用者頭貼照片
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
         pinned: true,
         delegate: _SliverHeaderDelegate(
-            MediaQuery.of(context).size.height * 0.5, 70, personalController),
+            MediaQuery.of(context).size.height * 0.5, 70, selfController),
       );
     }
 
@@ -62,23 +63,23 @@ class PersonalView extends StatelessWidget {
     //獲取初始高度
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        personalController.constraintsHeight.value =
-            personalController.getWidgetHeight(_introductionKey) + 18;
+        selfController.constraintsHeight.value =
+            selfController.getWidgetHeight(_introductionKey) + 18;
       },
     );
 
     //按下更多或減少的高度變化
     void _refreshHeight() {
-      if (personalController.difference == 0.0) {
-        personalController.difference =
-            personalController.getWidgetHeight(_introductionKey) -
+      if (selfController.difference == 0.0) {
+        selfController.difference =
+            selfController.getWidgetHeight(_introductionKey) -
                 oldIntroductionHeight;
-        print(personalController.difference);
-        personalController.increaseAppbarHeight();
-      } else if (personalController.readmore.value) {
-        personalController.reduceAppbarHeight();
+        print(selfController.difference);
+        selfController.increaseAppbarHeight();
+      } else if (selfController.readmore.value) {
+        selfController.reduceAppbarHeight();
       } else {
-        personalController.increaseAppbarHeight();
+        selfController.increaseAppbarHeight();
       }
     }
 
@@ -87,7 +88,7 @@ class PersonalView extends StatelessWidget {
         child: Container(
           constraints: BoxConstraints.tightFor(
               width: MediaQuery.of(context).size.width,
-              height: personalController.constraintsHeight.value),
+              height: selfController.constraintsHeight.value),
           color: Colors.white,
           height: 90,
           child: Column(
@@ -105,9 +106,9 @@ class PersonalView extends StatelessWidget {
                         maxWidth: MediaQuery.of(context).size.width * 0.8),
                     alignment: Alignment.centerLeft,
                     child: ReadMoreText(
-                      personalController.userData.value.introduction == ""
+                      selfController.userData.value.introduction == ""
                           ? "這個人很無聊，什麼都沒有留呢~"
-                          : personalController.userData.value.introduction,
+                          : selfController.userData.value.introduction,
                       key: _introductionKey,
                       colorClickableText: Color.fromARGB(255, 120, 118, 118),
                       trimLines: 3,
@@ -118,18 +119,18 @@ class PersonalView extends StatelessWidget {
                         color: Color.fromARGB(255, 65, 65, 65),
                       ),
                       callback: (isExpand) {
-                        oldIntroductionHeight = personalController
-                            .getWidgetHeight(_introductionKey);
-                        personalController.onTabReadmore();
+                        oldIntroductionHeight =
+                            selfController.getWidgetHeight(_introductionKey);
+                        selfController.onTabReadmore();
                         WidgetsBinding.instance.addPostFrameCallback(
                             (timeStamp) => _refreshHeight());
                       },
                     ),
                     // child: Introduction(
                     //     // "BOCAN選貨店《全館限時免運中》誠實賣場 只有全新公司貨營業時間：13:00-23:00//行銷徵才中 詳情請見精選限時//如何選購：小盒子私訊/7-11賣貨便有想要ㄉ鞋子沒在版上可以帶圖/尺寸 小盒子我們🛒《有任何問題或需求歡迎隨時小盒子》lkfgjofdsijglkfdsjglfsdjglkfdsjglkfdj;sh;jsg;ihojlgfdsjhlkfdsgmblfsgnjhjsrogjgfdoihjgfdihjogfdijsafkadjfkdsjfljsdgkdfgkldsgkljglkjgkfjdskgjkldsgjlskdjglkfdss",
-                    //     // personalController.userData.value.introduction == ""?
+                    //     // selfController.userData.value.introduction == ""?
                     //     "這個人很無聊，什麼都沒有留呢~",
-                    //     // : personalController.userData.value.introduction,
+                    //     // : selfController.userData.value.introduction,
                     //     3),
                   )),
             ],
@@ -141,6 +142,11 @@ class PersonalView extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
+      drawer: DrawerWidget(
+        userImageUrl: selfController.userData.value.pic,
+        userName: selfController.userData.value.name,
+        uid: selfController.uid,
+      ),
       body:
           // CustomScrollView(
           //   slivers: [
@@ -160,7 +166,7 @@ class PersonalView extends StatelessWidget {
               body: TabBarView(
                 controller: _tabController.controller,
                 children: [
-                  Obx(() => personalController.postCover.value.isEmpty
+                  Obx(() => selfController.postCover.value.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
@@ -206,12 +212,12 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   _SliverHeaderDelegate(
     this.expandedHeight,
     this.tabbarHeight,
-    this._personalPageController,
+    this._selfPageController,
   );
 
   final double expandedHeight;
   final double tabbarHeight;
-  final SelfPageController _personalPageController;
+  final SelfPageController _selfPageController;
 
   @override
   double get minExtent => 0;
@@ -219,14 +225,13 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => expandedHeight;
 
   @override
-  final loginController = Get.find<LoginController>();
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Obx(() => Stack(
           children: <Widget>[
-            _personalPageController.userData.value.pic != ""
+            _selfPageController.userData.value.pic != ""
                 ? Image.network(
-                    _personalPageController.userData.value.pic,
+                    _selfPageController.userData.value.pic,
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
                     height: expandedHeight,
@@ -252,16 +257,19 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.white,
+                    child: InkWell(
+                      onTap: () => Scaffold.of(context).openDrawer(),
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: InkWell(
                       onTap: () {
-                        loginController.logout();
+                        Get.find<LoginController>().logout();
                       },
                       child:
                           Icon(Icons.more_horiz_outlined, color: Colors.white),
@@ -288,9 +296,9 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 0.6),
                     child: followerWidget(
-                        _personalPageController.userData.value.tracker.length,
-                        _personalPageController.userData.value.follower.length,
-                        _personalPageController.postCover.value.length,
+                        _selfPageController.userData.value.tracker.length,
+                        _selfPageController.userData.value.follower.length,
+                        _selfPageController.postCover.value.length,
                         0),
                   ),
                 )),
@@ -302,14 +310,14 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 children: [
                   Text(
                     // "楊哲倫",
-                    _personalPageController.userData.value.name,
+                    _selfPageController.userData.value.name,
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "UID:" + _personalPageController.userData.value.googleId,
+                    "UID:" + _selfPageController.userData.value.googleId,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
@@ -357,10 +365,10 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
             ),
           ]),
           onTap: () {
-            _personalPageController.getTracker();
+            _selfPageController.getTracker();
             Get.to(
                 TrackerPage(
-                  trackerListData: _personalPageController.trackerList,
+                  trackerListData: _selfPageController.trackerList,
                   index: 0,
                 ),
                 fullscreenDialog: true);
@@ -370,7 +378,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
           onTap: (() {
             Get.to(
                 TrackerPage(
-                  trackerListData: _personalPageController.trackerList,
+                  trackerListData: _selfPageController.trackerList,
                   index: 1,
                 ),
                 fullscreenDialog: true);

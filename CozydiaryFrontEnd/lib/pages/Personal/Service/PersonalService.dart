@@ -12,10 +12,8 @@ import '../../../api.dart';
 
 class PersonalService {
   static Dio dio = Dio();
-
+  //利用uid抓取使用者資料
   static Future<UserModel?> fetchUserData(String id) async {
-    //測試資料
-    // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(Api.ipUrl + Api.getUser + id);
 
     var jsonString = response.data;
@@ -27,9 +25,8 @@ class PersonalService {
     return fromJsonValue;
   }
 
+  //抓取使用者貼文
   static Future<PostCoverModule?> fetchUserPostCover(String id) async {
-    //測試資料
-    // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response =
         await dio.get(Api.ipUrl + Api.getPostCoverForPersonalPage + id);
     var jsonString = response.data;
@@ -39,14 +36,17 @@ class PersonalService {
     return fromJsonValue;
   }
 
+  //追蹤
   static Future<dynamic> addTracker(String jsonData) async {
     return await dio.post(Api.ipUrl + Api.addTracker, data: jsonData);
   }
 
+  //取消追蹤
   static Future<dynamic> deleteTracker(String tid) async {
     return await dio.post(Api.ipUrl + Api.deleteTracker + tid);
   }
 
+  //獲取追蹤者清單
   static Future<TrackerListModel> getTracker(String uid) async {
     var response = await dio.get(Api.ipUrl + Api.getTrackerList + uid);
     var jsonString = response.data;
@@ -56,6 +56,7 @@ class PersonalService {
     return fromJsonValue;
   }
 
+  //編輯個人資料
   static Future<PostReceiveModel> updateUser(String jsonData) async {
     var response = await dio.post(Api.ipUrl + Api.updateUser, data: jsonData);
     var responseData = response.data;
@@ -64,6 +65,7 @@ class PersonalService {
     return returnData;
   }
 
+  //更改使用者圖片
   static Future<PostReceiveModel> changeProfilePic(
       FormData formData, String uid, String fileName) async {
     var response = await dio.post(

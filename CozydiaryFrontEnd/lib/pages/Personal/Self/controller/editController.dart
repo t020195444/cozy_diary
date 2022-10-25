@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:gallery_saver/files.dart';
 import 'package:intl/intl.dart';
-import 'package:cozydiary/pages/Personal/Self/controller/SelfController.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';

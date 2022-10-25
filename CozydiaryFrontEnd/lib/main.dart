@@ -1,10 +1,11 @@
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Home/widget/PickPhotoPage.dart';
-import 'package:cozydiary/pages/Home/widget/PostController.dart';
+import 'package:cozydiary/pages/Home/homePageTabbar.dart';
+import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
+import 'package:cozydiary/pages/Home/controller/postController.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
-import 'package:cozydiary/pages/Register/Page/SelectLikePage.dart';
-import 'package:cozydiary/register_controller.dart';
+import 'package:cozydiary/pages/Register/Page/selectLikePage.dart';
+import 'package:cozydiary/pages/Register/Controller/register_controller.dart';
+import 'package:cozydiary/pages/Register/Service/registerService.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart';
 import 'package:video_player/video_player.dart';
 import 'LocalDB/UidAndState.dart';
-import 'HomePostController.dart';
+import 'pages/Home/controller/homePostController.dart';
 import 'firebase/firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'CozyDiary',
       theme: ThemeData(
+        //輸入框的Theme
         inputDecorationTheme: const InputDecorationTheme(
           counterStyle: TextStyle(color: Colors.black),
           labelStyle: TextStyle(color: Colors.black45),
@@ -66,16 +68,23 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
+        //主題顏色(主要顏色)
         primaryColor: Color.fromRGBO(234, 230, 228, 1),
+        //預設Scaffold背景顏色
         scaffoldBackgroundColor: Colors.white,
+        //AppBar主題顏色
         appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(color: Colors.black54, fontSize: 20),
+          iconTheme: IconThemeData(color: Colors.black54),
           backgroundColor: Color.fromRGBO(234, 230, 228, 1),
         ),
+        //Card主題顏色
         cardTheme: CardTheme(
             color: Colors.white,
             shape: Border.all(
                 color: Color.fromRGBO(234, 230, 228, 1), width: 0.5)),
       ),
+      //路由
       routes: {
         "homepage": (context) => const HomePageTabbar(),
         "personalpage": (context) => PersonalPage(
@@ -85,6 +94,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(
         title: '',
       ),
+      //右上角Debug標籤
       debugShowCheckedModeBanner: false,
     );
   }
@@ -102,6 +112,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final LoginController logincontroller = Get.put(LoginController());
   late VideoPlayerController _controller;
+  //Hive(Local資料表套件)BOX建立
   var box = Hive.box("UidAndState");
 
   @override
@@ -123,6 +134,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // return SelectLikePage();
     var id = box.get("uid") ?? "";
 
+    /*先進行LOGIN的Future<funtion> -> 執行完會進行判斷->
+      -> 如果狀態為done(完成) -> 判斷是否有error -> 有：顯示Error；沒有：判斷回傳的Bool(是否為登入狀態與後端是否有此id資料)
+      -> 若為TRUE就進入主頁不用登入；False則進入登入頁面*/
+    // var registerController = Get.put(RegisterController());
+    // return Scaffold(
+    //   body: ElevatedButton(
+    //     onPressed: () => RegisterController().fetchCategoryList(),
+    //     child: Center(child: Text("Click")),
+    //   ),
+    // );
     return FutureBuilder(
       initialData: false,
       future: logincontroller.login(id),
@@ -149,6 +170,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Scaffold Login(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.logout_outlined),
+          onPressed: () => logincontroller.logout(),
+        ),
+      ),
       body: Center(
           child: Stack(
         children: <Widget>[

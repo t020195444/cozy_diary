@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cozydiary/HomePostController.dart';
+import 'package:cozydiary/pages/Home/controller/homePostController.dart';
 
 import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -18,10 +18,10 @@ class PostService {
   static var postController = Get.put(HomePostController());
 
   static Map postDetailList = {};
-  static getPostDetail(String i) async {
+  static getPostDetail(String pid) async {
     postDetailList = {};
 
-    var response = await dio.get(Api.ipUrl + Api.getPostDetail);
+    var response = await dio.get(Api.ipUrl + Api.getPostDetail + pid);
     var data = response.data;
     List tempPathList = [];
     for (int j = 0; j < data['data']['postFiles'].length; j++) {
@@ -35,20 +35,19 @@ class PostService {
 
   static List postPid = [];
 
+  //獲取主頁貼文預設圖
   static Future<PostCoverModule?> fetchPostCover(String uid) async {
     var response =
         await dio.get(Api.ipUrl + Api.getPostCoverByUserCategory + uid);
 
     var jsonString = response.data;
-    // for (int i = 0; i < jsonString.length; i++) {
-    //   postPid.add(jsonString['data'][i]['pid']);
-    // }
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
 
     return fromJsonValue;
   }
 
+  //獲取所有貼文
   static Future<PostCoverModule?> fetchAllPostCover() async {
     var response = await dio.get(getAllPostCoverUri);
 
@@ -62,6 +61,7 @@ class PostService {
     return fromJsonValue;
   }
 
+  //發文
   static Future<dynamic> postPostData(FormData formData) async {
     return await dio.post(Api.ipUrl + Api.addPost, data: formData);
   }

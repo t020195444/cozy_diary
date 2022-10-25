@@ -1,12 +1,13 @@
+import 'dart:developer';
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/register_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../Controller/register_controller.dart';
 
 class RegisterPage extends StatelessWidget {
   final registerController = Get.put(RegisterController());
-  final logincontroller = Get.put(LoginController());
+  final logincontroller = Get.find<LoginController>();
   final ScrollController scrollController = ScrollController();
   final controller = TextEditingController();
 
@@ -116,8 +117,8 @@ class RegisterPage extends StatelessWidget {
             margin: const EdgeInsets.fromLTRB(2, 20, 5, 15),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: registerController.previewImage.value == null
-                        ? NetworkImage(logincontroller.googlepic)
+                    image: registerController.previewImage.value?.path == ""
+                        ? AssetImage("assets/images/yunhan.jpg")
                         : FileImage(registerController.previewImage.value!)
                             as ImageProvider,
                     fit: BoxFit.cover),
@@ -161,7 +162,9 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //現在日期
     late DateTime currentBirth = DateTime.now();
+    //選擇生日欄位
     Widget BirthDayTitle() {
       return SizedBox(
         height: 35,
@@ -237,6 +240,7 @@ class RegisterPage extends StatelessWidget {
       );
     }
 
+    //主頁面架構
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 202, 175, 154),
       body: Form(
@@ -254,6 +258,7 @@ class RegisterPage extends StatelessWidget {
                     height: 80,
                     width: 100,
                   ),
+                  //標題
                   Text(
                     "歡迎來到CozyDiary~",
                     style: TextStyle(
@@ -272,14 +277,18 @@ class RegisterPage extends StatelessWidget {
                 ],
               ),
             ),
+            //間隔
             const Padding(
               padding: EdgeInsets.only(top: 10, bottom: 0),
             ),
+            //使用者照片
             userImage(),
+            //輸入名字欄位
             Padding(
               child: nameTextField(),
               padding: const EdgeInsets.fromLTRB(50, 10, 50, 0),
             ),
+
             const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -290,6 +299,7 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
+            //選擇性別按鈕
             Padding(
                 padding: const EdgeInsets.fromLTRB(80, 0, 80, 0),
                 child: choiceGender()),
@@ -303,6 +313,7 @@ class RegisterPage extends StatelessWidget {
                 // ),
               ),
             ),
+            //編輯生日欄位
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 0, 30, 0),
               child: BirthDayTitle(),
@@ -317,6 +328,8 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
+
+            //自我介紹欄位
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 0, 30, 0),
               child: introductionTitle(),
@@ -337,7 +350,8 @@ class RegisterPage extends StatelessWidget {
                 onPressed: () {
                   registerFormKey.currentState?.save();
                   if (registerController.name != "") {
-                    registerController.adddata();
+                    registerController.adddata(
+                        logincontroller.id, logincontroller.email);
                     registerController.register();
                   } else {
                     scrollTotop();

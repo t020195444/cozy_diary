@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
-import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
+import 'package:cozydiary/pages/Activity/service/activityPostService.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
