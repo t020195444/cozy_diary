@@ -1,7 +1,7 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
-import 'package:cozydiary/pages/Home/controller/postController.dart';
+import 'package:cozydiary/pages/Home/controller/createPostController.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:cozydiary/pages/Register/Page/selectLikePage.dart';
 import 'package:cozydiary/pages/Register/Controller/register_controller.dart';

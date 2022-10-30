@@ -26,4 +26,6 @@ class Api {
   static String getCategoryList = "getCategoryList";
   //新增使用者類別
   static String addCategory = "addUserCategory";
+  //新增留言
+  static String postComment = '/addComment';
 }

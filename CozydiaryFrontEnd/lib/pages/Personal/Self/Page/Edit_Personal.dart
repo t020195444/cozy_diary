@@ -3,7 +3,6 @@ import 'package:cozydiary/pages/Home/controller/HomePostController.dart';
 import 'package:cozydiary/Model/EditUserModel.dart';
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Home/controller/PostController.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:cozydiary/pages/Personal/Self/controller/editController.dart';
