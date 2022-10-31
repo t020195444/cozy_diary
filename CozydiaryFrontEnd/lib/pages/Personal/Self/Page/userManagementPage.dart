@@ -1,8 +1,5 @@
 import 'package:cozydiary/pages/Register/Page/selectLikePage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 class UserManagemenetPage extends StatelessWidget {
@@ -16,7 +13,9 @@ class UserManagemenetPage extends StatelessWidget {
           ListTile(
             title: Text("類別管理"),
             onTap: () {
-              Get.to(() => SelectLikePage());
+              Get.to(() => SelectLikePage(
+                    state: 1,
+                  ));
             },
           ),
           Divider(

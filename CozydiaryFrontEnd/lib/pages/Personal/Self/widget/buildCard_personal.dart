@@ -1,9 +1,8 @@
-import 'package:cozydiary/Model/PostCoverModel.dart';
+import 'package:cozydiary/Model/postCoverModel.dart';
 import 'package:cozydiary/screen_widget/viewPostScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
-import 'package:page_transition/page_transition.dart';
 
 class BuildCard extends StatelessWidget {
   final int index;

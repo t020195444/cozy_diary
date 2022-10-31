@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:cozydiary/pages/Home/controller/homePostController.dart';
 
-import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
-
+import 'Model/postCoverModel.dart';
 import 'api.dart';
 
 class PostService {

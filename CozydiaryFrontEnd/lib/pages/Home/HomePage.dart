@@ -10,9 +10,9 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   @override
-  final topTabbarController = Get.put(TopTabbarController());
-  final personalController = Get.put(SelfPageController());
   Widget build(BuildContext context) {
+    final topTabbarController = Get.put(TopTabbarController());
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -26,9 +26,8 @@ class HomePage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               controller: topTabbarController.topController,
-              labelColor: Colors.white,
               labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-              unselectedLabelColor: Color.fromARGB(150, 255, 255, 255),
+              unselectedLabelColor: Colors.black38,
               unselectedLabelStyle: TextStyle(fontSize: 15),
               tabs: topTabbarController.topTabs),
         ),
@@ -71,9 +70,8 @@ class NestedTabBar extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               controller: _nestedTabbarController.nestedController,
-              labelColor: Colors.white,
               labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-              unselectedLabelColor: Color.fromARGB(150, 255, 255, 255),
+              unselectedLabelColor: Colors.black38,
               unselectedLabelStyle: TextStyle(fontSize: 15),
               tabs: _nestedTabbarController.nestedTabs),
         ),

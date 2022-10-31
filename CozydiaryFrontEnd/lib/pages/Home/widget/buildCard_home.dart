@@ -1,4 +1,4 @@
-import 'package:cozydiary/Model/PostCoverModel.dart';
+import 'package:cozydiary/Model/postCoverModel.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/OtherPersonController.dart';
 import 'package:cozydiary/postJsonService.dart';
 import 'package:flutter/material.dart';

@@ -1,20 +1,25 @@
 import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
 import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChangePageTabbarController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final selectedIndex = 0.obs;
+  final buttonColor = Colors.black54.obs;
 
   @override
   void onInit() {
     super.onInit();
-    selectedIndex.value = 0;
   }
 
   void onItemTapped(int index) {
     selectedIndex.value = index;
-    update();
+    if (selectedIndex.value == 1) {
+      buttonColor.value = Colors.black87;
+    } else
+      buttonColor.value = Colors.black54;
+    print(buttonColor.value);
   }
 
   void oncircleItemsTapped() {

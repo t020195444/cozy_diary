@@ -22,10 +22,11 @@ class DrawerWidget extends StatelessWidget {
           SizedBox(
             height: 215,
             child: UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+              decoration:
+                  BoxDecoration(color: Theme.of(context).secondaryHeaderColor),
               accountName: Text(
                 userName,
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 30, color: Colors.black54),
               ),
               accountEmail: Text(
                 "UID：$uid",
@@ -37,11 +38,11 @@ class DrawerWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(userImageUrl), fit: BoxFit.cover),
-                    border: Border.all(color: Colors.white, width: 2.5),
+                    // border: Border.all(color: Colors.white, width: 2.5),
                     shape: BoxShape.circle,
                     boxShadow: const [
                       BoxShadow(
-                          color: Colors.black,
+                          // color: Colors.black,
                           offset: Offset(0, 2),
                           blurRadius: 5,
                           spreadRadius: 0)

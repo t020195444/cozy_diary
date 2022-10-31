@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:cozydiary/Model/userDataModel.dart' as userdata;
+import 'package:cozydiary/Model/registerUserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Register/Page/registerPage.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -11,20 +9,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'Model/registerUserDataModel.dart';
 import 'api.dart';
 import 'main.dart';
 
 class LoginController extends GetxController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);
   var googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   late User? googleuser;
   late String id = '';
   late String email = '';
   late String googlepic = "";
   late List<String> responseBody;
-  var userData = <userdata.UserDataModel>[].obs;
+  var userData = <RegisterUserDataModel>[].obs;
   var box = Hive.box("UidAndState");
   static Map tempData = {};
 
@@ -44,12 +42,13 @@ class LoginController extends GetxController {
       // final User? user = authResult.user;
       // googleuser = user;
       id = googleSignIn.currentUser!.id;
-      box.put("uid", id);
+
       email = user!.email;
 
       bool isLogin = await login(id);
       print(isLogin);
       if (isLogin) {
+        box.put("uid", id);
         Get.to(HomePageTabbar());
       } else {
         Get.to(RegisterPage());
@@ -64,6 +63,7 @@ class LoginController extends GetxController {
     Get.offAll(const MyHomePage(
       title: '',
     ));
+
     box.put("uid", null);
   }
 
@@ -122,6 +122,6 @@ class LoginController extends GetxController {
   }
 
   void printid() async {
-    print(userdata.User);
+    print(userdata.RegisterUserData);
   }
 }

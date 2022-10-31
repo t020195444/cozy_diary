@@ -1,10 +1,7 @@
 import 'dart:ui';
-
-import 'package:cozydiary/pages/Register/Controller/register_controller.dart';
+import 'package:cozydiary/pages/Register/Controller/categoryController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../Controller/categoryController_Button.dart';
 
 class SelectLike_ThemeCard extends StatelessWidget {
   const SelectLike_ThemeCard({
@@ -14,11 +11,8 @@ class SelectLike_ThemeCard extends StatelessWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
-    final registerController = Get.find<RegisterController>();
-    String assetsUrl = registerController.categoryAssetsList[index];
-    String categoryName = registerController.categoryList.value[index].category;
-    return GetBuilder<CategoryButtonController>(
-        init: CategoryButtonController(),
+    return GetBuilder<CategoryController>(
+        init: CategoryController(),
         builder: (controller) {
           return InkWell(
             child: Container(
@@ -28,25 +22,33 @@ class SelectLike_ThemeCard extends StatelessWidget {
                     imageFilter: ImageFilter.blur(
                         sigmaX: 0.5, sigmaY: 0.5, tileMode: TileMode.decal),
                     child: Image.asset(
-                      assetsUrl,
+                      controller.categoryAssetsList[index],
                       fit: BoxFit.cover,
                     ),
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color.fromARGB(148, 45, 45, 45),
-                            Color.fromARGB(28, 77, 75, 75)
-                          ]),
+                      gradient: controller.isChoice[index]
+                          ? LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                  Color.fromARGB(148, 45, 45, 45),
+                                  Color.fromARGB(78, 77, 75, 75)
+                                ])
+                          : LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                  Color.fromARGB(90, 45, 45, 45),
+                                  Color.fromARGB(28, 77, 75, 75)
+                                ]),
                       border: Border.all(width: 0.2, color: Colors.white),
                     ),
                   ),
                   Center(
                     child: Text(
-                      categoryName,
+                      controller.categoryList[index].category,
                       style: TextStyle(
                           color: Color.fromARGB(190, 231, 231, 231),
                           fontSize: 24),
@@ -67,7 +69,6 @@ class SelectLike_ThemeCard extends StatelessWidget {
               ),
             ),
             onTap: () {
-              registerController.tabCategory(index);
               controller.tabCategory(index);
             },
           );

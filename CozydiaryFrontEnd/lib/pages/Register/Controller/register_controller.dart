@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:io';
-import 'package:cozydiary/Model/UserDataModel.dart';
-import 'package:cozydiary/Model/categoryList.dart';
+import 'package:cozydiary/main.dart';
 import 'package:cozydiary/pages/Register/Page/selectLikePage.dart';
 import 'package:cozydiary/pages/Register/Service/registerService.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData, Response;
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../Model/registerUserDataModel.dart';
 
 class RegisterController extends GetxController {
   //value
@@ -34,16 +37,7 @@ class RegisterController extends GetxController {
   final _imagePicker = ImagePicker();
   late bool choicesex = true;
   //使用者資料
-  var userData = <User>[].obs;
-  //使用者類別清單
-  var categoryList = <Category>[].obs;
-  //類別照片路徑清單
-  var categoryAssetsList = [];
-  //最終清單
-  var finalCategoryList = <int>[];
-
-  //state
-  //類別選取List
+  var userData = <RegisterUserData>[].obs;
 
   @override
   void onInit() {
@@ -56,13 +50,6 @@ class RegisterController extends GetxController {
     //   pic.value = user.providerData[0].photoURL!;
     //   print(googleId);
     // });
-    categoryAssetsList = [
-      "assets/category/basketball_S.jpg",
-      "assets/category/dressStyle_S.jpg",
-      "assets/category/invest_S.jpg",
-      "assets/category/anime_S.jpg",
-      "assets/category/beauty_S.jpg"
-    ];
 
     super.onInit();
   }
@@ -71,7 +58,7 @@ class RegisterController extends GetxController {
   void adddata(String googleId, String email) async {
     var picsplit = pic.split("/").last;
 
-    userData.add(User(
+    userData.add(RegisterUserData(
         googleId: googleId,
         name: name.value,
         sex: sex.value,
@@ -106,8 +93,8 @@ class RegisterController extends GetxController {
 
   void register() async {
     try {
-      var dio = Dio();
-      var postUserData = UserDataModel(user: userData[0]);
+      Get.dialog(Center(child: CircularProgressIndicator()));
+      var postUserData = RegisterUserDataModel(user: userData[0]);
       var jsonData = jsonEncode(postUserData.toJson());
       var formData = FormData.fromMap({"jsondata": jsonData});
       formData.files
@@ -117,51 +104,19 @@ class RegisterController extends GetxController {
       int responseStatus = await RegisterService.registerUser(formData);
 
       if (responseStatus == 200) {
+        Get.back();
         print("成功");
-        fetchCategoryList();
-        Get.to(SelectLikePage());
+        Hive.box("UidAndState").put("uid", googleId);
+        Get.to(SelectLikePage(
+          state: 0,
+        ));
       } else {
+        Get.back();
+        Get.offAll(MyHomePage(title: ""));
         print("失敗");
       }
     } catch (e) {
       print(e);
-    }
-  }
-
-  void fetchCategoryList() async {
-    CategoryListModel response = await RegisterService.fetchCategoryList();
-    try {
-      if (response.status == 200) {
-        if (response.data != null) {
-          print(categoryList);
-          categoryList.value = response.data;
-        }
-      }
-    } catch (e) {
-      print(e);
-    } finally {}
-  }
-
-  void tabCategory(int index) {
-    var choiceId = categoryList.value[index].cid;
-    if (finalCategoryList.contains(choiceId)) {
-      finalCategoryList.remove(choiceId);
-    } else {
-      finalCategoryList.add(choiceId);
-    }
-    print(finalCategoryList);
-  }
-
-  void addCategory() async {
-    for (var id in finalCategoryList) {
-      Map<String, dynamic> postJsonData = {"uid": googleId, "cid": id};
-      int response =
-          await RegisterService.addCategory(jsonEncode(postJsonData));
-      if (response == 200) {
-      } else {
-        print("can't post");
-        break;
-      }
     }
   }
 }

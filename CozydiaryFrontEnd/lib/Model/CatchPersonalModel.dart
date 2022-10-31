@@ -15,12 +15,12 @@ class UserModel {
     required this.status,
   });
 
-  Data data;
+  UserData data;
   String message;
   int status;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        data: Data.fromJson(json["data"]),
+        data: UserData.fromJson(json["data"]),
         message: json["message"],
         status: json["status"],
       );
@@ -32,8 +32,8 @@ class UserModel {
       };
 }
 
-class Data {
-  Data({
+class UserData {
+  UserData({
     required this.uid,
     required this.googleId,
     required this.name,
@@ -59,11 +59,11 @@ class Data {
   List<int> birth;
   List<int> createTime;
   String email;
-  List<dynamic> tracker;
+  List<Follower> tracker;
   List<Follower> follower;
   List<UserCategoryList> userCategoryList;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         uid: json["uid"],
         googleId: json["googleId"],
         name: json["name"],
@@ -74,7 +74,8 @@ class Data {
         birth: List<int>.from(json["birth"].map((x) => x)),
         createTime: List<int>.from(json["create_time"].map((x) => x)),
         email: json["email"],
-        tracker: List<dynamic>.from(json["tracker"].map((x) => x)),
+        tracker: List<Follower>.from(
+            json["tracker"].map((x) => Follower.fromJson(x))),
         follower: List<Follower>.from(
             json["follower"].map((x) => Follower.fromJson(x))),
         userCategoryList: List<UserCategoryList>.from(
@@ -92,7 +93,7 @@ class Data {
         "birth": List<dynamic>.from(birth.map((x) => x)),
         "create_time": List<dynamic>.from(createTime.map((x) => x)),
         "email": email,
-        "tracker": List<dynamic>.from(tracker.map((x) => x)),
+        "tracker": List<dynamic>.from(tracker.map((x) => x.toJson())),
         "follower": List<dynamic>.from(follower.map((x) => x.toJson())),
         "userCategoryList":
             List<dynamic>.from(userCategoryList.map((x) => x.toJson())),
@@ -101,29 +102,29 @@ class Data {
 
 class Follower {
   Follower({
-    required this.fid,
-    required this.follower1,
-    required this.follower2,
-    required this.followTime,
+    required this.tid,
+    required this.tracker1,
+    required this.tracker2,
+    required this.trackTime,
   });
 
-  int fid;
-  String follower1;
-  String follower2;
-  List<int> followTime;
+  int tid;
+  String tracker1;
+  String tracker2;
+  List<int> trackTime;
 
   factory Follower.fromJson(Map<String, dynamic> json) => Follower(
-        fid: json["fid"],
-        follower1: json["follower1"].toString(),
-        follower2: json["follower2"].toString(),
-        followTime: List<int>.from(json["follow_time"].map((x) => x)),
+        tid: json["tid"],
+        tracker1: json["tracker1"],
+        tracker2: json["tracker2"],
+        trackTime: List<int>.from(json["trackTime"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "fid": fid,
-        "follower1": follower1,
-        "follower2": follower2,
-        "follow_time": List<dynamic>.from(followTime.map((x) => x)),
+        "tid": tid,
+        "tracker1": tracker1,
+        "tracker2": tracker2,
+        "trackTime": List<dynamic>.from(trackTime.map((x) => x)),
       };
 }
 

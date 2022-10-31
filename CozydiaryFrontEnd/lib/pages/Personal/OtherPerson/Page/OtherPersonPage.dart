@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:readmore/readmore.dart';
+
 import '../Controller/OtherPersonController.dart';
 import '../Controller/OtherPersonTabbarController.dart';
 import '../Widget/otherPerson_CollectGridView.dart';
@@ -20,13 +20,12 @@ class PersonalView extends StatelessWidget {
   const PersonalView({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final _tabController = Get.put(OtherPersonTabController());
     final _introductionKey = GlobalKey();
     late double oldIntroductionHeight = 0.0;
-    final otherPersonPageController = Get.find<OtherPersonPageController>();
+    final otherPersonPageController = Get.put(OtherPersonPageController());
 
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
@@ -138,71 +137,6 @@ class PersonalView extends StatelessWidget {
       );
     }
 
-    Widget followerWidget(
-        int trackerCount, int followingCount, int postCount, eventCount) {
-      return Wrap(
-        spacing: 25,
-        children: <Widget>[
-          Column(children: <Widget>[
-            Text(
-              '$followingCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '追隨中',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$trackerCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '粉絲',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$postCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '貼文',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$eventCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '聚集數',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-        ],
-      );
-    }
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -225,7 +159,7 @@ class PersonalView extends StatelessWidget {
               body: TabBarView(
                 controller: _tabController.controller,
                 children: [
-                  Obx(() => otherPersonPageController.postCover.value.isEmpty
+                  Obx(() => otherPersonPageController.postCover.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
@@ -234,7 +168,7 @@ class PersonalView extends StatelessWidget {
                           ),
                         ))
                       : InitOtherPersonPostGridView()),
-                  otherPersonPageController.postCover.value.isEmpty
+                  otherPersonPageController.postCover.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
@@ -353,7 +287,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
             const Text(
-              '聚集數',
+              '聚會',
               style:
                   TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
@@ -426,7 +360,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                             .userData.value.tracker.length,
                         _otherPersonPageController
                             .userData.value.follower.length,
-                        _otherPersonPageController.postCover.value.length,
+                        _otherPersonPageController.postCover.length,
                         0),
                   ),
                 )),

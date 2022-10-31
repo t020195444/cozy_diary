@@ -1,4 +1,3 @@
-import 'package:cozydiary/Model/PostCoverModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -21,7 +20,7 @@ class InitPostGridView extends StatelessWidget {
               crossAxisCount: 2,
 
               //依照資料長度數量
-              itemCount: personalPageController.postCover.value.length,
+              itemCount: personalPageController.postCover.length,
               itemBuilder: (context, index) {
                 return BuildCard(
                   index: index,

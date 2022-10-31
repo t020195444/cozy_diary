@@ -1,15 +1,16 @@
-import 'dart:io';
-import 'package:cozydiary/pages/Home/homePageTabbar.dart';
-import 'package:gallery_saver/files.dart';
+import 'package:cozydiary/Model/catchPersonalModel.dart';
+import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../Model/EditUserModel.dart';
+import '../../../../Model/editUserModel.dart';
+import '../../Service/personalService.dart';
 
 class EditUserController extends GetxController {
+  var uid = Hive.box("UidAndState").get("uid");
   var oldname = "".obs;
   DateTime oldbirthDay = DateTime(0);
   var birthDayText = "".obs;
@@ -21,23 +22,26 @@ class EditUserController extends GetxController {
   int oldSex = 0;
   List<String> gender = [];
   var currentSelect = "".obs;
-  SelfPageController selfPageController = Get.find<SelfPageController>();
+  // SelfPageController selfPageController = Get.find<SelfPageController>();
   late TextEditingController nameController;
   late TextEditingController introducionController;
   final imagePicker = ImagePicker();
   var isImageChange = false.obs;
+  late UserData userData;
 
   @override
   void onInit() {
-    oldImageUrl = selfPageController.userData.value.pic;
-    defaultPreviewImage = NetworkImage(oldImageUrl);
-    nameController =
-        TextEditingController(text: selfPageController.userData.value.name);
-    introducionController = TextEditingController(
-        text: selfPageController.userData.value.introduction);
+    super.onInit();
+  }
 
-    oldname.value = selfPageController.userData.value.name;
-    birthday = selfPageController.userData.value.birth;
+  void initData(UserData userData) {
+    oldImageUrl = userData.pic;
+    defaultPreviewImage = NetworkImage(oldImageUrl);
+    nameController = TextEditingController(text: userData.name);
+    introducionController = TextEditingController(text: userData.introduction);
+
+    oldname.value = userData.name;
+    birthday = userData.birth;
     String year = birthday[0].toString();
     String month =
         birthday[1] >= 10 ? birthday[1] : "0" + birthday[1].toString();
@@ -45,13 +49,22 @@ class EditUserController extends GetxController {
         ? birthday[2].toString()
         : "0" + birthday[2].toString();
     birthDayText.value = "$year-$month-$day";
-    oldIntroduction.value = selfPageController.userData.value.introduction;
+    oldIntroduction.value = userData.introduction;
     oldbirthDay = DateTime(birthday[0], birthday[1], birthday[2]);
-    oldSex = selfPageController.userData.value.sex;
+    oldSex = userData.sex;
     gender = ["女", "男"];
     currentSelect.value = oldSex == 0 ? "女" : "男";
-    // TODO: implement onInit
-    super.onInit();
+  }
+
+  Future<int> changeProfilePic(String picUrl) async {
+    FormData fileFormData = FormData();
+    String picName = picUrl.split("/").last;
+    fileFormData.files.add(MapEntry(
+        "file", await MultipartFile.fromFile(picUrl, filename: picName)));
+    var response =
+        await PersonalService.changeProfilePic(fileFormData, uid, picName);
+
+    return response.status;
   }
 
   Future<void> openImagePicker() async {
@@ -61,11 +74,11 @@ class EditUserController extends GetxController {
         oldImageUrl = value.path;
         // changedPreviewImage = FileImage(File(oldImageUrl));
         // isImageChange.value = true;
-        selfPageController.changeProfilePic(oldImageUrl).then((value) {
+        changeProfilePic(oldImageUrl).then((value) {
           print("value:$oldImageUrl");
           if (value == 200) {
             Get.back();
-            Get.delete<EditUserController>();
+            // Get.delete<EditUserController>();
 
             // throw "Unreachable";
           }
@@ -91,14 +104,8 @@ class EditUserController extends GetxController {
   }
 
   EditUserModel setEditData() {
-    String birth = oldbirthDay.year.toString() +
-        "-" +
-        oldbirthDay.month.toString() +
-        "-" +
-        oldbirthDay.day.toString();
-    DateTime currentTime = DateTime.now();
     EditUserModel finalUserData = EditUserModel(
-      googleId: selfPageController.uid,
+      googleId: uid,
       name: oldname.value,
       sex: oldSex.toString(),
       introduction: oldIntroduction.value,

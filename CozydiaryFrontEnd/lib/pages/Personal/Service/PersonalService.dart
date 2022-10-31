@@ -1,13 +1,11 @@
 import 'dart:convert';
-
-import 'package:cozydiary/Model/CatchPersonalModel.dart';
 import 'package:cozydiary/Model/PostReceiveModel.dart';
 import 'package:cozydiary/Model/trackerListModel.dart';
-import 'package:cozydiary/Model/trackerModel.dart';
 // import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 
-import '../../../Model/PostCoverModel.dart';
+import '../../../Model/catchPersonalModel.dart';
+import '../../../Model/postCoverModel.dart';
 import '../../../api.dart';
 
 class PersonalService {
@@ -52,7 +50,17 @@ class PersonalService {
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = trackerListModelFromJson(encodeJsonString);
+    print(response.data);
+    return fromJsonValue;
+  }
 
+  //獲取追蹤者清單
+  static Future<TrackerListModel> getFollower(String uid) async {
+    var response = await dio.get(Api.ipUrl + Api.getFollowerList + uid);
+    var jsonString = response.data;
+    var encodeJsonString = jsonEncode(jsonString);
+    var fromJsonValue = trackerListModelFromJson(encodeJsonString);
+    print(response.data);
     return fromJsonValue;
   }
 

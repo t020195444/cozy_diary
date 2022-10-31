@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:cozydiary/login_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -338,7 +337,7 @@ class RegisterPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: const Color.fromARGB(255, 135, 110, 95),
+                  backgroundColor: const Color.fromARGB(255, 135, 110, 95),
                   textStyle: const TextStyle(
                       color: Color.fromARGB(255, 135, 110, 95), fontSize: 16),
                   minimumSize:
@@ -352,7 +351,6 @@ class RegisterPage extends StatelessWidget {
                   if (registerController.name != "") {
                     registerController.adddata(
                         logincontroller.id, logincontroller.email);
-                    registerController.register();
                   } else {
                     scrollTotop();
                   }

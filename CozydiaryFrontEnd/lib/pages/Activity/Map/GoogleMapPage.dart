@@ -1,9 +1,5 @@
 import 'dart:async';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:custom_marker/marker_icon.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityTabbarController.dart';
@@ -50,7 +46,6 @@ const kGoogleApiKey = 'AIzaSyCFx2oYtAcaHgrxwBm9H5-oyQNMsVUeh-Y';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class GoogleMapPageState extends State<GoogleMapPage> {
-  Completer<GoogleMapController> _controller = Completer();
   final topTabbarController = Get.put(ActivityTabbarController());
   final postCoverController = Get.put(ActivityController());
 

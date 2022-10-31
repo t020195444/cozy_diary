@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'ArticlePage.dart';
 import '../controller/PostController.dart';
 

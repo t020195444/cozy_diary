@@ -15,7 +15,6 @@ class ActivityArticlePage extends StatelessWidget {
     final titleCtr = TextEditingController();
     final contentCtr = TextEditingController();
 
-    late DateTime currentBirth = DateTime.now();
     Widget BirthDayTitle() {
       return SizedBox(
         height: 35,

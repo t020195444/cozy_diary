@@ -1,13 +1,9 @@
-import 'package:cozydiary/Model/CatchPersonalModel.dart';
-import 'package:cozydiary/Model/followerModel.dart';
 import 'package:cozydiary/Model/trackerListModel.dart';
 import 'package:cozydiary/pages/Personal/Service/personalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
-import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
-import 'dart:convert';
-
-import '../../../../Model/PostCoverModel.dart';
+import '../../../../Model/catchPersonalModel.dart';
+import '../../../../Model/postCoverModel.dart';
 import '../../../../Model/trackerModel.dart';
 
 class OtherPersonPageController extends GetxController {
@@ -16,9 +12,9 @@ class OtherPersonPageController extends GetxController {
   var difference = 0.0;
   var isLoading = true.obs;
   var otherUid = "";
-  var checkedUid = "";
+  var userUid = "";
   var isFollow = false.obs;
-  var userData = Data(
+  var userData = UserData(
       uid: 0,
       googleId: "",
       name: "",
@@ -34,9 +30,11 @@ class OtherPersonPageController extends GetxController {
       userCategoryList: []).obs;
   var postCover = <PostCoverData>[].obs;
   var trackerList = <TrackerList>[];
+  int tid = -1;
   @override
   void onInit() {
-    checkedUid = Hive.box("UidAndState").get("uid");
+    userUid = Hive.box("UidAndState").get("uid");
+
     super.onInit();
   }
 
@@ -47,12 +45,16 @@ class OtherPersonPageController extends GetxController {
       if (UserData != null) {
         if (UserData.status == 200) {
           userData.value = UserData.data;
-          for (var followers in userData.value.follower) {
-            if (followers.follower2 == checkedUid) {
+
+          for (Follower follower in userData.value.follower) {
+            if (follower.tracker1 == userUid) {
+              tid = follower.tid;
               isFollow.value = true;
+              break;
             } else {
               isFollow.value = false;
             }
+            ;
           }
         }
       }
@@ -93,7 +95,7 @@ class OtherPersonPageController extends GetxController {
   void addTracker() async {
     try {
       AddTrackerModel trackerModel =
-          AddTrackerModel(tracker1: checkedUid, tracker2: otherUid);
+          AddTrackerModel(tracker1: userUid, tracker2: otherUid);
       var trackerJsonData = addTrackerModelToJson(trackerModel);
       var trackerResponse = await PersonalService.addTracker(trackerJsonData);
 
@@ -103,12 +105,10 @@ class OtherPersonPageController extends GetxController {
 
   void deleteTracker() async {
     try {
-      var fid = "0";
-      for (Follower follower in userData.value.follower) {
-        follower.follower2 == checkedUid ? fid == follower.fid : null;
-      }
-      if (fid != null) {
-        var trakerResponse = await PersonalService.deleteTracker(fid);
+      print(tid);
+      if (tid != -1) {
+        var trakerResponse =
+            await PersonalService.deleteTracker(tid.toString());
         isFollow.value = false;
       } else
         print("沒有追蹤");
