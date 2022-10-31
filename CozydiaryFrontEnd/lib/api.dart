@@ -30,4 +30,6 @@ class Api {
   static String addCategory = "addUserCategory";
   //抓取使用者類別
   static String userCategoryList = "userCategoryList?uid=";
+  //新增留言
+  static String postComment = '/addComment';
 }

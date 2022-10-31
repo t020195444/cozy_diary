@@ -5,6 +5,7 @@ import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 import 'Model/postCoverModel.dart';
 import 'api.dart';
+import 'screen_widget/viewPostController.dart';
 
 class PostService {
   static Dio dio = Dio();
@@ -28,15 +29,23 @@ class PostService {
     postDetailList['title'] = data['data']['title'];
     postDetailList['content'] = data['data']['content'];
     postDetailList['url'] = tempPathList;
-    print(data);
+    viewPostController.currViewPostDetial['pid'] = data['data']['pid'];
+    viewPostController.currViewPostDetial['title'] = data['data']['title'];
+    viewPostController.currViewPostDetial['content'] = data['data']['content'];
+    viewPostController.currViewPostDetial['url'] = tempPathList;
+    viewPostController.currViewPostDetial['likes'] = data['data']['likes'];
+    viewPostController.currViewPostDetial['collects'] =
+        data['data']['collects'];
+    viewPostController.currViewPostDetial['comments'] =
+        data['data']['comments'];
   }
 
   static List postPid = [];
 
   //獲取主頁貼文預設圖
   static Future<PostCoverModule?> fetchPostCover(String uid) async {
-    var response =
-        await dio.get(Api.ipUrl + Api.getPostCoverByUserCategory + uid);
+    var response = await dio.get(
+        Api.ipUrl + Api.getPostCoverByUserCategory + '116177189475554672826');
 
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
