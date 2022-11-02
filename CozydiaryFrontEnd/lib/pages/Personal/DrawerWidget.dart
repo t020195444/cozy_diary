@@ -1,66 +1,80 @@
-import 'package:cozydiary/Data/dataResourse.dart';
+import 'package:cozydiary/pages/Personal/Self/Page/userManagementPage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({Key? key}) : super(key: key);
-
+  const DrawerWidget(
+      {Key? key,
+      required this.userImageUrl,
+      required this.userName,
+      required this.uid})
+      : super(key: key);
+  final String userImageUrl;
+  final String userName;
+  final String uid;
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-        child: ListView(
-      shrinkWrap: true,
-      children: <Widget>[
-        Container(
-          height: 100,
-          child: DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.black26,
-            ),
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: CircleAvatar(
-                    radius: 35,
-                    backgroundImage: NetworkImage(Image_List[3]),
-                  ),
-                ),
-                Text(
-                  '許悅',
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        ListTile(
-          leading: Icon(
-            Icons.manage_accounts,
-            color: Colors.white,
-          ),
-          title: Text(
-            '管理帳戶',
-            style: TextStyle(
-              color: Colors.white,
+    return SafeArea(
+      child: Drawer(
+          child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          SizedBox(
+            height: 215,
+            child: UserAccountsDrawerHeader(
+              decoration:
+                  BoxDecoration(color: Theme.of(context).secondaryHeaderColor),
+              accountName: Text(
+                userName,
+                style: TextStyle(fontSize: 30, color: Colors.black54),
+              ),
+              accountEmail: Text(
+                "UID：$uid",
+                style: TextStyle(fontSize: 12, color: Colors.black45),
+              ),
+              currentAccountPictureSize: const Size.square(110),
+              currentAccountPicture: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(userImageUrl), fit: BoxFit.cover),
+                    // border: Border.all(color: Colors.white, width: 2.5),
+                    shape: BoxShape.circle,
+                    boxShadow: const [
+                      BoxShadow(
+                          // color: Colors.black,
+                          offset: Offset(0, 2),
+                          blurRadius: 5,
+                          spreadRadius: 0)
+                    ]),
+              ),
             ),
           ),
-          onTap: () {},
-        ),
-        const ListTile(
-          leading: Icon(
-            Icons.group_outlined,
-            color: Colors.white,
+          ListTile(
+            leading: Icon(
+              Icons.manage_accounts,
+            ),
+            title: Text(
+              '管理帳戶',
+              style: TextStyle(),
+            ),
+            onTap: () {
+              Get.bottomSheet(
+                UserManagemenetPage(),
+              );
+            },
           ),
-          title: Text(
-            '查看聚會',
-            style: TextStyle(
-              color: Colors.white,
+          const ListTile(
+            leading: Icon(
+              Icons.group_outlined,
+            ),
+            title: Text(
+              '查看聚會',
+              style: TextStyle(),
             ),
           ),
-        ),
-      ],
-    ));
+        ],
+      )),
+    );
   }
 }

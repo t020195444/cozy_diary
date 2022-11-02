@@ -2,7 +2,6 @@
 //
 //     final postReceiveModel = postReceiveModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PostReceiveModel postReceiveModelFromJson(String str) =>

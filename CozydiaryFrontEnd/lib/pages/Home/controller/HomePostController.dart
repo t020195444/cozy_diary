@@ -1,10 +1,12 @@
-import 'package:cozydiary/Model/WritePostModel.dart';
-import 'package:cozydiary/PostJsonService.dart';
+import 'package:cozydiary/Model/writePostModel.dart';
+import 'package:cozydiary/postJsonService.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:hive/hive.dart';
-import 'Model/PostCoverModel.dart';
+
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
+
+import '../../../Model/postCoverModel.dart';
 
 class HomePostController extends GetxController {
   var loginController = Get.put(LoginController());
@@ -82,8 +84,6 @@ class HomePostController extends GetxController {
   @override
   void refresh() {
     getPostCover();
-    // TODO: implement refresh
-
     super.refresh();
   }
 }

@@ -2,7 +2,6 @@
 //
 //     final editUserModel = editUserModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 EditUserModel editUserModelFromJson(String str) =>

@@ -1,23 +1,26 @@
-import 'package:cozydiary/Model/PostCoverModel.dart';
+import 'package:cozydiary/Model/postCoverModel.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/OtherPersonController.dart';
-import 'package:cozydiary/PostJsonService.dart';
+import 'package:cozydiary/postJsonService.dart';
+import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import '../../../screen_widget/viewPostScreen.dart';
-import '../../Personal/OtherPerson/Page/OtherPersonPage.dart';
+import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class BuildCardHome extends StatelessWidget {
   final List<PostCoverData> PostCovers;
   final int index;
-  const BuildCardHome({Key? key, required this.PostCovers, required this.index})
+  BuildCardHome({Key? key, required this.PostCovers, required this.index})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        viewPostController.currViewPostID =
+            key.toString().split(",")[1].replaceAll(RegExp(r"[^\s\w]"), "");
         await PostService.getPostDetail(
             key.toString().split(",")[1].replaceAll(RegExp(r"[^\s\w]"), ""));
         Get.to(

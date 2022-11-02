@@ -1,11 +1,7 @@
 import 'dart:convert';
-
 import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
-import 'package:cozydiary/Model/PostCoverModel.dart';
-import 'package:cozydiary/HomePostController.dart';
 import 'package:cozydiary/api.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
-
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 

@@ -12,6 +12,8 @@ class Api {
   static String deleteTracker = "deleteTracker?tid=";
   //抓取追蹤清單(Get)
   static String getTrackerList = "getTrackerList?uid=";
+  //抓取粉絲清單(Get)
+  static String getFollowerList = "getFollowerList?uid=";
   //更新使用者資料(Post)
   static String updateUser = "updateUser";
   //依類別抓取貼文主頁預設圖(Get)
@@ -23,4 +25,14 @@ class Api {
 
   //抓取貼文詳細資訊
   static String getActivityDetail = "getActivityDetail?aid=";
+  //註冊使用者
+  static String userRegister = "userRegister";
+  //獲得全部類別名稱
+  static String getCategoryList = "getCategoryList";
+  //新增使用者類別
+  static String addCategory = "addUserCategory";
+  //抓取使用者類別
+  static String userCategoryList = "userCategoryList?uid=";
+  //新增留言
+  static String postComment = '/addComment';
 }

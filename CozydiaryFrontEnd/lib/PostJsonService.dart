@@ -1,12 +1,11 @@
 import 'dart:convert';
+import 'package:cozydiary/pages/Home/controller/homePostController.dart';
 
-import 'package:cozydiary/HomePostController.dart';
-
-import 'Model/PostCoverModel.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
-
+import 'Model/postCoverModel.dart';
 import 'api.dart';
+import 'screen_widget/viewPostController.dart';
 
 class PostService {
   static Dio dio = Dio();
@@ -18,9 +17,10 @@ class PostService {
   static var postController = Get.put(HomePostController());
 
   static Map postDetailList = {};
-  static getPostDetail(String i) async {
+  static getPostDetail(String pid) async {
     postDetailList = {};
-    var response = await dio.get(Api.ipUrl + Api.getPostDetail + i);
+
+    var response = await dio.get(Api.ipUrl + Api.getPostDetail + pid);
     var data = response.data;
     List tempPathList = [];
     for (int j = 0; j < data['data']['postFiles'].length; j++) {
@@ -29,25 +29,32 @@ class PostService {
     postDetailList['title'] = data['data']['title'];
     postDetailList['content'] = data['data']['content'];
     postDetailList['url'] = tempPathList;
-    print(data);
+    viewPostController.currViewPostDetial['pid'] = data['data']['pid'];
+    viewPostController.currViewPostDetial['title'] = data['data']['title'];
+    viewPostController.currViewPostDetial['content'] = data['data']['content'];
+    viewPostController.currViewPostDetial['url'] = tempPathList;
+    viewPostController.currViewPostDetial['likes'] = data['data']['likes'];
+    viewPostController.currViewPostDetial['collects'] =
+        data['data']['collects'];
+    viewPostController.currViewPostDetial['comments'] =
+        data['data']['comments'];
   }
 
   static List postPid = [];
 
+  //獲取主頁貼文預設圖
   static Future<PostCoverModule?> fetchPostCover(String uid) async {
     var response = await dio.get(
-        Api.ipUrl + Api.getPostCoverByUserCategory + "116177189475554672826");
+        Api.ipUrl + Api.getPostCoverByUserCategory + '116177189475554672826');
 
     var jsonString = response.data;
-    for (int i = 0; i < jsonString.length; i++) {
-      postPid.add(jsonString['data'][i]['pid']);
-    }
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
 
     return fromJsonValue;
   }
 
+  //獲取所有貼文
   static Future<PostCoverModule?> fetchAllPostCover() async {
     var response = await dio.get(getAllPostCoverUri);
 
@@ -61,6 +68,7 @@ class PostService {
     return fromJsonValue;
   }
 
+  //發文
   static Future<dynamic> postPostData(FormData formData) async {
     return await dio.post(Api.ipUrl + Api.addPost, data: formData);
   }

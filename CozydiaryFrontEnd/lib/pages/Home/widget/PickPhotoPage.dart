@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../controller/createPostController.dart';
 import 'ArticlePage.dart';
-import 'PostController.dart';
 
 class PickPhotoPage extends StatefulWidget {
   @override
@@ -16,10 +13,11 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
   @override
   Widget build(BuildContext context) {
     //Controller
-    final postController = new PostController();
+    final _createPostController = CreatePostController();
 
     //initState
-    postController.fetchMedia();
+    _createPostController.fetchMedia();
+    _createPostController.getList();
 
     return SafeArea(
       child: Scaffold(
@@ -27,7 +25,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
           actions: [
             TextButton(
                 onPressed: () {
-                  if (PostController.pickedList.isEmpty) {
+                  if (CreatePostController.pickedList.isEmpty) {
                     Fluttertoast.showToast(
                         msg: '沒選照片',
                         toastLength: Toast.LENGTH_SHORT,
@@ -37,7 +35,6 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                         textColor: Colors.white,
                         fontSize: 16.0);
                   } else {
-                    print(PostController.pickedList);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -60,8 +57,8 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
               flex: 4,
               child: Obx(
                 () => Container(
-                  child: postController.isPicked == true
-                      ? postController.currPic[0]
+                  child: _createPostController.isPicked == true
+                      ? _createPostController.currPic[0]
                       : Container(
                           color: Colors.white,
                         ),
@@ -72,20 +69,20 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
               () => Expanded(
                 flex: 6,
                 child: GridView.builder(
-                    itemCount: PostController.mediaList.length,
+                    itemCount: CreatePostController.mediaList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3),
                     itemBuilder: (BuildContext context, int i) {
                       return Obx(
                         () => GestureDetector(
                             onTap: () {
-                              postController.isPicked.value = true;
-                              postController.changeCurrPic(i);
+                              _createPostController.isPicked.value = true;
+                              _createPostController.changeCurrPic(i);
                             },
                             child: Stack(
                               children: [
                                 Container(
-                                  child: PostController.mediaList[i],
+                                  child: CreatePostController.mediaList[i],
                                 ),
                                 Align(
                                   alignment: Alignment.topRight,
@@ -99,7 +96,8 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20)),
                                       ),
-                                      child: PostController.checkBox[i] == true
+                                      child: CreatePostController.checkBox[i] ==
+                                              true
                                           ? Icon(Icons.check_circle,
                                               color: Colors.blue)
                                           : null,

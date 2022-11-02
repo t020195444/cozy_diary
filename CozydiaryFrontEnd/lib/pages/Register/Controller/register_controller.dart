@@ -1,35 +1,43 @@
 import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:io';
-import 'package:cozydiary/Model/UserDataModel.dart';
-import 'package:cozydiary/data/dataResourse.dart';
-import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/main.dart';
+import 'package:cozydiary/pages/Register/Page/selectLikePage.dart';
+import 'package:cozydiary/pages/Register/Service/registerService.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData, Response;
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+
+import '../../../Model/registerUserDataModel.dart';
 
 class RegisterController extends GetxController {
-  //controller
-  final _loginController = LoginController();
+  //value
 
+  //goolgeid 用於傳給後端
   String googleId = "";
+  //使用者名字
   RxString name = "".obs;
+  //使用者性別 預設為男生
   RxString sex = "1".obs;
+  //自我介紹
   RxString introduction = "".obs;
+  //生日
   RxString birth = "2000-01-01".obs;
+  //email 用於傳入後端
   String email = "";
-  RxString pic = "".obs;
-  RxString picorigin = "".obs;
+  //使用者照片
+  String pic = "";
+  //google帳戶的照片
+  String picOrigin = "";
   RxList f = [].obs;
-  late Rx<io.File?> previewImage = UserHeaderImage.obs;
+  //預覽照片
+  late Rx<io.File?> previewImage = File("").obs;
   final _imagePicker = ImagePicker();
-
   late bool choicesex = true;
-  var userData = <User>[].obs;
+  //使用者資料
+  var userData = <RegisterUserData>[].obs;
 
   @override
   void onInit() {
@@ -42,20 +50,15 @@ class RegisterController extends GetxController {
     //   pic.value = user.providerData[0].photoURL!;
     //   print(googleId);
     // });
+
     super.onInit();
   }
 
-  void adddata() async {
-    googleId = LoginController.tempData['uid'];
-    email = LoginController.tempData['email'];
-    // name.value = user.providerData[0].displayName!;
-    pic.value = LoginController.tempData['pic'];
-    userData.clear();
-    // final picFile = await getImage(url: pic.value);
+  //註冊使用者
+  void adddata(String googleId, String email) async {
+    var picsplit = pic.split("/").last;
 
-    var picsplit = pic.value.split("/").last;
-    print(picsplit);
-    userData.add(User(
+    userData.add(RegisterUserData(
         googleId: googleId,
         name: name.value,
         sex: sex.value,
@@ -63,9 +66,7 @@ class RegisterController extends GetxController {
         birth: DateTime.parse(birth.value),
         email: email,
         pic: picsplit));
-    print(LoginController.tempData);
-    print(googleId + email);
-    print(userData[0].toJson());
+
     register();
   }
 
@@ -83,8 +84,8 @@ class RegisterController extends GetxController {
     if (pickedImage != null) {
       final image = io.File(pickedImage.path);
       previewImage.value = image;
-      pic.value = pickedImage.path;
-      picorigin.value = pickedImage.path;
+      pic = pickedImage.path;
+      picOrigin = pickedImage.path;
     } else {
       return;
     }
@@ -92,25 +93,28 @@ class RegisterController extends GetxController {
 
   void register() async {
     try {
-      var dio = Dio();
-      var postUserData = UserDataModel(user: userData[0]);
+      Get.dialog(Center(child: CircularProgressIndicator()));
+      var postUserData = RegisterUserDataModel(user: userData[0]);
       var jsonData = jsonEncode(postUserData.toJson());
       var formData = FormData.fromMap({"jsondata": jsonData});
       formData.files
-          .add(MapEntry("file", await MultipartFile.fromFile(picorigin.value)));
-      print(formData.files);
-      print(picorigin);
-      var response = (await dio.post('http://140.131.114.166:80/userRegister',
-          data: formData));
+          .add(MapEntry("file", await MultipartFile.fromFile(picOrigin)));
+      print(formData);
+      print(picOrigin);
+      int responseStatus = await RegisterService.registerUser(formData);
 
-      if (response.statusCode == 200) {
+      if (responseStatus == 200) {
+        Get.back();
         print("成功");
-
-        Get.to(HomePageTabbar());
+        Hive.box("UidAndState").put("uid", googleId);
+        Get.to(SelectLikePage(
+          state: 0,
+        ));
       } else {
+        Get.back();
+        Get.offAll(MyHomePage(title: ""));
         print("失敗");
       }
-      print(response.statusCode);
     } catch (e) {
       print(e);
     }

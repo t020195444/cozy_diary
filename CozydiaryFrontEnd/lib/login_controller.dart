@@ -1,72 +1,76 @@
 import 'dart:convert';
-import 'package:cozydiary/Model/UserDataModel.dart' as userdata;
+import 'package:cozydiary/Model/registerUserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Register/Page/RegisterPage.dart';
+import 'package:cozydiary/pages/Register/Page/registerPage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'Model/registerUserDataModel.dart';
+import 'api.dart';
 import 'main.dart';
 
 class LoginController extends GetxController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);
   var googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   late User? googleuser;
   late String id = '';
   late String email = '';
   late String googlepic = "";
   late List<String> responseBody;
-  var userData = <userdata.UserDataModel>[].obs;
+  var userData = <RegisterUserDataModel>[].obs;
   var box = Hive.box("UidAndState");
 
   static Map tempData = {};
 
   void loginWithGoogle() async {
-    googleAccount.value = await googleSignIn.signIn();
-    final googleAuth = await googleAccount.value!.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    print(credential);
-    final authResult = await _auth.signInWithCredential(credential);
-    final User? user = authResult.user;
-    googleuser = user;
-    id = googleSignIn.currentUser!.id;
-    box.put("uid", id);
-    email = user!.email!;
-    googlepic = user.photoURL!;
+    googleAccount.value = await googleSignIn
+        .signIn()
+        .catchError((onError) => Fluttertoast.showToast(msg: "$onError"));
 
-    tempData = {'uid': id, 'email': email, 'pic': googlepic};
-    print(tempData);
+    if (googleAccount != null) {
+      final user = googleAccount.value;
+      // final googleAuth = await googleAccount.value!.authentication;
+      // final credential = GoogleAuthProvider.credential(
+      //   accessToken: googleAuth.accessToken,
+      //   idToken: googleAuth.idToken,
+      // );
+      // final authResult = await _auth.signInWithCredential(credential);
+      // final User? user = authResult.user;
+      // googleuser = user;
+      id = googleSignIn.currentUser!.id;
 
-    bool isLogin = await login(id);
-    print(isLogin);
-    if (isLogin) {
-      Get.to(HomePageTabbar());
-    } else {
-      Get.to(RegisterPage());
+      email = user!.email;
+
+      bool isLogin = await login(id);
+      print(isLogin);
+      if (isLogin) {
+        box.put("uid", id);
+        Get.to(HomePageTabbar());
+      } else {
+        Get.to(RegisterPage());
+      }
+
+      // toregisterpage();
     }
-    // toregisterpage();
   }
 
   void logout() async {
     googleAccount.value = await googleSignIn.signOut();
-    Get.to(const MyHomePage(
+    Get.offAll(const MyHomePage(
       title: '',
     ));
+
     box.put("uid", null);
   }
 
   Future<bool> login(String id) async {
     bool isLogin = false;
-
-    var response = await http
-        .get(Uri.parse('http://140.131.114.166:80/getUser?gid=' + id));
+    var response = await http.get(Uri.parse(Api.ipUrl + Api.getUser + id));
     var responseBody = jsonDecode(response.body);
 
     if (responseBody['status'] == 200 &&
@@ -78,24 +82,6 @@ class LoginController extends GetxController {
       isLogin = false;
     }
     return isLogin;
-  }
-
-  void post() async {
-    http.post(
-      Uri.parse('http://172.20.10.3:8080/userRegister'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        "google_id": id,
-        "name": "tim",
-        "sex": "1",
-        "introduction": "我是usdt暴徒",
-        "birth": "2001-01-30",
-        "email": "10846036@ntub.edu.tw",
-        "pic": "ddsfdsfdsfds"
-      }),
-    );
   }
 
   //因後端還未上伺服器 這邊先使用跳頁方法
@@ -134,6 +120,6 @@ class LoginController extends GetxController {
   }
 
   void printid() async {
-    print(userdata.User);
+    print(userdata.RegisterUserData);
   }
 }

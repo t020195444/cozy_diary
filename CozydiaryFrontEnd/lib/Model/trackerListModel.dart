@@ -2,7 +2,6 @@
 //
 //     final trackerListModel = trackerListModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 TrackerListModel trackerListModelFromJson(String str) =>

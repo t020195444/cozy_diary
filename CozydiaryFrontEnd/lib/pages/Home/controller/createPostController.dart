@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WritePostModel.dart';
-import 'package:cozydiary/PostJsonService.dart';
+import 'package:cozydiary/api.dart';
+import 'package:cozydiary/postJsonService.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,9 @@ import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:photo_manager/photo_manager.dart';
 import 'package:dio/dio.dart';
 
-class PostController extends GetxController {
+class CreatePostController extends GetxController {
   //variable
+
   int currentPage = 0;
   RxBool isPicked = false.obs;
 
@@ -18,6 +20,7 @@ class PostController extends GetxController {
       List.generate(mediaList.length, (_) => false.obs);
 
   //function
+
   static List fileList = [].obs;
   static RxList mediaList = [].obs;
   fetchMedia() async {
@@ -112,7 +115,8 @@ class PostController extends GetxController {
   void goToDataBase() async {
     // reset Data
     checkBox = [];
-    checkBox = List.generate(PostController.mediaList.length, (_) => false.obs);
+    checkBox =
+        List.generate(CreatePostController.mediaList.length, (_) => false.obs);
 
     // Post
     var formdata = writePost();
@@ -151,5 +155,12 @@ class PostController extends GetxController {
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
     }
     return formData;
+  }
+
+  static Map categoryList = {}.obs;
+  getList() async {
+    var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
+    categoryList = response.data;
+    print(categoryList);
   }
 }

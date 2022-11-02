@@ -1,11 +1,10 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:readmore/readmore.dart';
 import '../Controller/OtherPersonController.dart';
 import '../Controller/OtherPersonTabbarController.dart';
-import '../Widget/OtherPerson_CollectGridView.dart';
-import '../Widget/OtherPerson_PostGridView.dart';
+import '../Widget/otherPerson_CollectGridView.dart';
+import '../Widget/otherPerson_PostGridView.dart';
 
 class OtherPersonalPage extends StatelessWidget {
   const OtherPersonalPage({Key? key}) : super(key: key);
@@ -20,13 +19,10 @@ class PersonalView extends StatelessWidget {
   const PersonalView({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final _tabController = Get.put(OtherPersonTabController());
-    final _introductionKey = GlobalKey();
-    late double oldIntroductionHeight = 0.0;
-    final otherPersonPageController = Get.find<OtherPersonPageController>();
+    final otherPersonPageController = Get.put(OtherPersonPageController());
 
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
@@ -55,151 +51,44 @@ class PersonalView extends StatelessWidget {
           ));
     }
 
-    double _getWidgetHeight(GlobalKey key) {
-      RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
-      return renderBox.size.height;
-    }
-
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        otherPersonPageController.constraintsHeight.value =
-            _getWidgetHeight(_introductionKey) + 18;
-      },
-    );
-
-    void _refreshHeight() {
-      if (otherPersonPageController.difference == 0.0) {
-        otherPersonPageController.difference =
-            _getWidgetHeight(_introductionKey) - oldIntroductionHeight;
-        print(otherPersonPageController.difference);
-        otherPersonPageController.increaseAppbarHeight();
-      } else if (otherPersonPageController.readmore.value) {
-        otherPersonPageController.reduceAppbarHeight();
-      } else {
-        otherPersonPageController.increaseAppbarHeight();
-      }
-    }
-
     Widget _DetailSliverWidget() {
       return SliverToBoxAdapter(
-        child: Container(
-          constraints: BoxConstraints.tightFor(
-              width: MediaQuery.of(context).size.width,
-              height: otherPersonPageController.constraintsHeight.value),
-          color: Colors.white,
-          height: 90,
-          child: Column(
-            children: <Widget>[
-              Divider(
-                color: Colors.black54,
-                indent: 40,
-                endIndent: 40,
-                height: 3,
-              ),
-              Padding(
+        child: Column(
+          children: <Widget>[
+            Divider(
+              color: Colors.black54,
+              indent: 40,
+              endIndent: 40,
+              height: 3,
+            ),
+            ExpandableNotifier(
+              child: Container(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.8),
+                  alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  child: Container(
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.8),
-                    alignment: Alignment.centerLeft,
-                    child: ReadMoreText(
-                      otherPersonPageController.userData.value.introduction ==
-                              ""
-                          ? "這個人很無聊，什麼都沒有留呢~"
-                          : otherPersonPageController
-                              .userData.value.introduction,
-                      key: _introductionKey,
-                      colorClickableText: Color.fromARGB(255, 120, 118, 118),
-                      trimLines: 3,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: "更多",
-                      trimExpandedText: "減少",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 65, 65, 65),
+                  child: ExpandableButton(
+                    child: ExpandablePanel(
+                      theme: ExpandableThemeData(
+                        hasIcon: false,
                       ),
-                      callback: (isExpand) {
-                        oldIntroductionHeight =
-                            _getWidgetHeight(_introductionKey);
-                        otherPersonPageController.onTabReadmore();
-                        WidgetsBinding.instance.addPostFrameCallback(
-                            (timeStamp) => _refreshHeight());
-                      },
+                      collapsed: Text(
+                        otherPersonPageController.userData.value.introduction,
+                        maxLines: 3,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      expanded: Text(otherPersonPageController
+                          .userData.value.introduction),
+                      builder: (_, collapsed, expanded) => Expandable(
+                        collapsed: collapsed,
+                        expanded: expanded,
+                      ),
                     ),
-                    // child: Introduction(
-                    //     // "BOCAN選貨店《全館限時免運中》誠實賣場 只有全新公司貨營業時間：13:00-23:00//行銷徵才中 詳情請見精選限時//如何選購：小盒子私訊/7-11賣貨便有想要ㄉ鞋子沒在版上可以帶圖/尺寸 小盒子我們🛒《有任何問題或需求歡迎隨時小盒子》lkfgjofdsijglkfdsjglfsdjglkfdsjglkfdj;sh;jsg;ihojlgfdsjhlkfdsgmblfsgnjhjsrogjgfdoihjgfdihjogfdijsafkadjfkdsjfljsdgkdfgkldsgkljglkjgkfjdskgjkldsgjlskdjglkfdss",
-                    //     // otherPersonPageController.userData.value.introduction == ""?
-                    //     "這個人很無聊，什麼都沒有留呢~",
-                    //     // : otherPersonPageController.userData.value.introduction,
-                    //     3),
                   )),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    }
-
-    Widget followerWidget(
-        int trackerCount, int followingCount, int postCount, eventCount) {
-      return Wrap(
-        spacing: 25,
-        children: <Widget>[
-          Column(children: <Widget>[
-            Text(
-              '$followingCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '追隨中',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$trackerCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '粉絲',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$postCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '貼文',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-          Column(children: <Widget>[
-            Text(
-              '$eventCount',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            const Text(
-              '聚集數',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
-        ],
       );
     }
 
@@ -225,7 +114,7 @@ class PersonalView extends StatelessWidget {
               body: TabBarView(
                 controller: _tabController.controller,
                 children: [
-                  Obx(() => otherPersonPageController.postCover.value.isEmpty
+                  Obx(() => otherPersonPageController.postCover.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
@@ -234,7 +123,7 @@ class PersonalView extends StatelessWidget {
                           ),
                         ))
                       : InitOtherPersonPostGridView()),
-                  otherPersonPageController.postCover.value.isEmpty
+                  otherPersonPageController.postCover.isEmpty
                       ? Center(
                           child: Container(
                           child: Icon(
@@ -353,7 +242,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
             const Text(
-              '聚集數',
+              '聚會',
               style:
                   TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
@@ -426,7 +315,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                             .userData.value.tracker.length,
                         _otherPersonPageController
                             .userData.value.follower.length,
-                        _otherPersonPageController.postCover.value.length,
+                        _otherPersonPageController.postCover.length,
                         0),
                   ),
                 )),
@@ -464,11 +353,14 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                         : _otherPersonPageController.addTracker();
                   },
                   child: _otherPersonPageController.isFollow.value
-                      ? Text("已追蹤")
-                      : Text("追蹤"),
+                      ? Text(
+                          "已追蹤",
+                          style: TextStyle(color: Colors.black54),
+                        )
+                      : Text("追蹤", style: TextStyle(color: Colors.black54)),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: _otherPersonPageController.isFollow.value
-                          ? Color.fromARGB(255, 149, 147, 147)
+                          ? Color.fromARGB(176, 149, 147, 147)
                           : Color.fromARGB(176, 202, 175, 154),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),

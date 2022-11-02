@@ -18,7 +18,7 @@ class InitOtherPersonPostGridView extends StatelessWidget {
           removeTop: true,
           child: MasonryGridView.count(
               crossAxisCount: 2,
-              itemCount: personalPageController.postCover.value.length,
+              itemCount: personalPageController.postCover.length,
               itemBuilder: (context, index) {
                 return BuildCard(
                   index: index,
