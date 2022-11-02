@@ -37,6 +37,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'CozyDiary',
+      //所有主題顏色與框架都是用這個套件調整，若要細部調整，用以下網址
+      //https://rydmike.com/flexcolorscheme/themesplayground-v6/#/
       theme: FlexThemeData.light(
         scheme: FlexScheme.gold,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
@@ -55,8 +57,6 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        // To use the playground font, add GoogleFonts package and uncomment
-        // fontFamily: GoogleFonts.notoSans().fontFamily,
       ),
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.gold,
@@ -74,8 +74,6 @@ class MyApp extends StatelessWidget {
         ),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        // To use the playground font, add GoogleFonts package and uncomment
-        // fontFamily: GoogleFonts.notoSans().fontFamily,
       ),
 // If you do not have a themeMode switch, uncomment this line
 // to let the device system mode control the theme mode:
@@ -125,6 +123,7 @@ class MyApp extends StatelessWidget {
       //       shape: Border.all(
       //           color: Color.fromRGBO(234, 230, 228, 1), width: 0.5)),
       // ),
+
       //路由
       routes: {
         "homepage": (context) => const HomePageTabbar(),

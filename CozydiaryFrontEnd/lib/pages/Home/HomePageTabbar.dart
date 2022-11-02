@@ -1,10 +1,9 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/changePageController.dart';
+import 'package:cozydiary/pages/Home/postRequestPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:spincircle_bottom_bar/modals.dart';
-import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 import 'controller/homePostController.dart';
 import '../Personal/Self/Page/personal_page.dart';
 
@@ -19,9 +18,7 @@ class HomePageTabbar extends StatelessWidget {
     final screens = [
       // MapPage(),
       HomePage(),
-      Scaffold(
-        appBar: AppBar(title: Text("發文")),
-      ),
+      PostRequestPage(),
       PersonalPage(uid: uid),
       // UserDataPage(),
     ];

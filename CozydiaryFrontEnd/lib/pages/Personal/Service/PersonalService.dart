@@ -35,8 +35,9 @@ class PersonalService {
   }
 
   //追蹤
-  static Future<dynamic> addTracker(String jsonData) async {
-    return await dio.post(Api.ipUrl + Api.addTracker, data: jsonData);
+  static Future<int> addTracker(String jsonData) async {
+    var response = await dio.post(Api.ipUrl + Api.addTracker, data: jsonData);
+    return response.statusCode!;
   }
 
   //取消追蹤

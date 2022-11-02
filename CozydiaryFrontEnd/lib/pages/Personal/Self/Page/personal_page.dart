@@ -3,7 +3,6 @@ import 'package:cozydiary/pages/Personal/TrackerPage/Page/trackerPage.dart';
 import 'package:cozydiary/pages/Personal/drawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readmore/readmore.dart';
 import '../controller/selfController.dart';
 import '../controller/tabbarController.dart';
 import '../widget/self_CollectGridView.dart';
@@ -62,28 +61,6 @@ class PersonalView extends StatelessWidget {
           ));
     }
 
-    //獲取初始高度
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (timeStamp) {
-    //     selfController.constraintsHeight.value =
-    //         selfController.getWidgetHeight(_introductionKey) + 18;
-    //   },
-    // );
-
-    //按下更多或減少的高度變化
-    void _refreshHeight() {
-      if (selfController.difference == 0.0) {
-        selfController.difference =
-            selfController.getWidgetHeight(_introductionKey) -
-                oldIntroductionHeight;
-        selfController.increaseAppbarHeight();
-      } else if (selfController.readmore.value) {
-        selfController.reduceAppbarHeight();
-      } else {
-        selfController.increaseAppbarHeight();
-      }
-    }
-
     Widget _DetailSliverWidget() {
       return SliverToBoxAdapter(
         child: Column(
@@ -133,36 +110,28 @@ class PersonalView extends StatelessWidget {
         userName: selfController.userData.value.name,
         uid: selfController.uid,
       ),
-      body:
-          // CustomScrollView(
-          //   slivers: [
-          //     SliverPersistentHeaderWidget(
-          //         _tabController.controller, _tabController.tabs),
-          //   ],
-          // )
-          NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  _buildSliverHeaderWidget(),
-                  Obx(() => _DetailSliverWidget()),
-                  _buildTabbarWidget(
-                      _tabController.controller, _tabController.tabs)
-                ];
-              },
-              body: TabBarView(
-                controller: _tabController.controller,
-                children: [
-                  Obx(() => selfController.postCover.isEmpty
-                      ? Center(
-                          child: Container(
-                          child: Icon(
-                            Icons.image_rounded,
-                          ),
-                        ))
-                      : InitPostGridView()),
-                  InitCollectGridView()
-                ],
-              )),
+      body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              _buildSliverHeaderWidget(),
+              Obx(() => _DetailSliverWidget()),
+              _buildTabbarWidget(_tabController.controller, _tabController.tabs)
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController.controller,
+            children: [
+              Obx(() => selfController.postCover.isEmpty
+                  ? Center(
+                      child: Container(
+                      child: Icon(
+                        Icons.image_rounded,
+                      ),
+                    ))
+                  : InitPostGridView()),
+              InitCollectGridView()
+            ],
+          )),
     );
   }
 }
@@ -323,7 +292,10 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                     Get.to(Edit_PersonalPage(),
                         transition: Transition.rightToLeft);
                   },
-                  child: Text("編輯個人資料"),
+                  child: Text(
+                    "編輯個人資料",
+                    style: TextStyle(color: Colors.black54),
+                  ),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(176, 202, 175, 154),
                       shape: RoundedRectangleBorder(

@@ -3,7 +3,6 @@ import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/pages/Home/widget/HomeScreen_GridView.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../Personal/Self/controller/selfController.dart';
 import 'controller/TopTabbarController.dart';
 
 class HomePage extends StatelessWidget {

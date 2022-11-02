@@ -1,12 +1,9 @@
-import 'package:cozydiary/postJsonService.dart';
 import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:like_button/like_button.dart';
-import 'viewPostController.dart';
 
 class ViewPostScreen extends StatelessWidget {
   //Controller

@@ -241,7 +241,7 @@ class RegisterPage extends StatelessWidget {
 
     //主頁面架構
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 202, 175, 154),
+      backgroundColor: Color(0xFFF5E8DE),
       body: Form(
         key: registerFormKey,
         child: SingleChildScrollView(
@@ -262,7 +262,7 @@ class RegisterPage extends StatelessWidget {
                     "歡迎來到CozyDiary~",
                     style: TextStyle(
                       color: Colors.black87,
-                      fontSize: 20,
+                      fontSize: 30,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

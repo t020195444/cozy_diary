@@ -14,7 +14,7 @@ class SelectLikePage extends StatelessWidget {
         init: CategoryController(),
         builder: (categoryController) {
           return Scaffold(
-            backgroundColor: Color.fromRGBO(234, 230, 228, 1),
+            // backgroundColor: Color.fromRGBO(234, 230, 228, 1),
             appBar: AppBar(
               centerTitle: true,
               elevation: 0,

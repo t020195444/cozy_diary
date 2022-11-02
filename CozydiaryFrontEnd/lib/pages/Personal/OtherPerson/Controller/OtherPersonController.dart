@@ -99,7 +99,7 @@ class OtherPersonPageController extends GetxController {
       var trackerJsonData = addTrackerModelToJson(trackerModel);
       var trackerResponse = await PersonalService.addTracker(trackerJsonData);
 
-      if (trackerResponse.toString() == "新增追蹤成功") isFollow.value = true;
+      if (trackerResponse == 200) isFollow.value = true;
     } finally {}
   }
 
