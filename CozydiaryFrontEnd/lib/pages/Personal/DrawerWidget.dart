@@ -8,6 +8,7 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
         child: ListView(
+      shrinkWrap: true,
       children: <Widget>[
         Container(
           height: 100,

@@ -54,7 +54,7 @@ class RegisterController extends GetxController {
     // final picFile = await getImage(url: pic.value);
 
     var picsplit = pic.value.split("/").last;
-
+    print(picsplit);
     userData.add(User(
         googleId: googleId,
         name: name.value,
@@ -98,13 +98,14 @@ class RegisterController extends GetxController {
       var formData = FormData.fromMap({"jsondata": jsonData});
       formData.files
           .add(MapEntry("file", await MultipartFile.fromFile(picorigin.value)));
-      print(formData);
-      print(picorigin.value);
+      print(formData.files);
+      print(picorigin);
       var response = (await dio.post('http://140.131.114.166:80/userRegister',
           data: formData));
 
       if (response.statusCode == 200) {
         print("成功");
+
         Get.to(HomePageTabbar());
       } else {
         print("失敗");

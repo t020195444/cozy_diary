@@ -10,7 +10,6 @@ import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 
 import '../../HomePostController.dart';
 import '../Personal/Self/Page/personal_page.dart';
-import 'UserData.dart';
 import 'controller/ChangePageController.dart';
 
 class HomePageTabbar extends StatelessWidget {
@@ -85,7 +84,7 @@ class HomePageTabbar extends StatelessWidget {
                     SCItem(
                         icon: Icon(Icons.map),
                         onPressed: () {
-                          postController.getPostCover();
+                          logincontroller.logout();
                         }),
                   ],
                   bnbHeight: 80 // Suggested Height 80

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
 import 'package:cozydiary/Model/PostCoverModel.dart';
 import 'package:cozydiary/HomePostController.dart';
+import 'package:cozydiary/api.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -15,6 +16,24 @@ class ActivityPostService {
   static var writeActivityPostUri = 'http://140.131.114.166:80/addActivity';
 
   static var postController = Get.put(ActivityPostController());
+
+  static Map activityDetailList = {};
+
+  static getActivityDetail(String i) async {
+    activityDetailList = {};
+    var response = await dio.get(Api.ipUrl + Api.getActivityDetail + i);
+    var data = response.data;
+    List tempPathList = [];
+    for (int j = 0; j < data['data']['activityFiles'].length; j++) {
+      tempPathList.add(data['data']['activityFiles'][j]['activityUrl']);
+    }
+    activityDetailList['title'] = data['data']['activityName'];
+    activityDetailList['content'] = data['data']['content'];
+    activityDetailList['url'] = tempPathList;
+    print(data);
+  }
+
+  static List postPid = [];
 
   static Future<ActivityPostCoverModule> fetchPostCover() async {
     //測試資料

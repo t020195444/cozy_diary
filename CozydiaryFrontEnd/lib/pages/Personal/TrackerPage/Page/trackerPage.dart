@@ -39,6 +39,7 @@ class TrackerPage extends StatelessWidget {
 
   Widget trackerList() {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: 15,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),

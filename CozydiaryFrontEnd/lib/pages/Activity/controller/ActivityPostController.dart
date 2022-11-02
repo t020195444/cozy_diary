@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
+import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,84 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:dio/dio.dart';
 
 class ActivityPostController extends GetxController {
+  var loginController = Get.put(LoginController());
   //variable
-  RxString activityTime = "2000-01-01".obs;
+  RxString activityTitle = "".obs;
+  RxString activityContent = "".obs;
+  RxString activityTime = DateTime.now().toString().obs;
+  RxString activityDeadlineTime = DateTime.now().toString().obs;
+  RxDouble activityLat = 0.0.obs;
+  RxDouble activityLng = 0.0.obs;
+  RxString activityLocation = "".obs;
+  RxInt activityPeople = 2.obs;
+  RxInt activityPayment = 0.obs;
+  RxInt activitybudget = 0.obs;
+  RxInt actId = 0.obs;
   int currentPage = 0;
   RxBool isPicked = false.obs;
+  RxInt selectActType = 1.obs;
+  RxInt selectActPayment = 1.obs;
+
+  selectActPaymentPuls() {
+    if (selectActPayment.value != actPayment.length) {
+      selectActPayment.value = selectActPayment.value + 1;
+    } else {
+      selectActPayment.value = 1;
+    }
+    update();
+  }
+
+  selectActPaymentSubtractions() {
+    if (selectActPayment.value != 1) {
+      selectActPayment.value = selectActPayment.value - 1;
+    } else {
+      selectActPayment.value = actPayment.length;
+    }
+    update();
+  }
+
+  selectActTypePuls() {
+    if (selectActType.value != actType.length) {
+      selectActType.value = selectActType.value + 1;
+    } else {
+      selectActType.value = 1;
+    }
+    update();
+  }
+
+  selectActTypeSubtractions() {
+    if (selectActType.value != 1) {
+      selectActType.value = selectActType.value - 1;
+    } else {
+      selectActType.value = actType.length;
+    }
+    update();
+  }
+
+  Map actType = {
+    1: "旅遊",
+    2: "收藏",
+    3: "社交",
+    4: "戶外",
+    5: "運動",
+    6: "創作",
+    7: "娛樂",
+    8: "服務",
+  };
+  Map actPayment = {
+    1: "我來請客",
+    2: "你來買單",
+    3: "各付各的",
+    4: "平均分攤",
+  };
+
+  updateActivityLocation(value) {
+    activityLocation.value = value.formattedAddress!.toString();
+    activityLat.value = double.parse(value.geometry!.location!.lat);
+    activityLng.value = double.parse(value.geometry!.location!.lng);
+
+    update();
+  }
 
   static late List<RxBool> checkBox =
       List.generate(mediaList.length, (_) => false.obs);
@@ -96,8 +171,6 @@ class ActivityPostController extends GetxController {
   //create post
   late Post postsContext;
   late Activity postsActivityContext;
-  // static String finalTitle = '';
-  // static String finalContent = '';
   var postFiles = <ActivityPostFile>[];
   List allPicName = [];
 
@@ -109,19 +182,18 @@ class ActivityPostController extends GetxController {
 
   void setPost() {
     postsActivityContext = Activity(
-      holder: "116177189475554672826",
-      placeLng: 121.5259613226078,
-      placeLat: 25.042202549516645,
-      likes: 1,
-      activityName: "來去夏威夷",
+      holder: loginController.id,
+      placeLng: activityLat.value,
+      placeLat: activityLng.value,
+      likes: 0,
+      activityName: activityTitle.value,
       cover: basename(pickedList[0].path),
-      activityTime: "2022-10-05T21:53:01.102021",
-      auditTime: "2022-09-05T21:53:01.102021",
-      payment: 1,
-      budget: 20000,
-      content: "測試",
-      actId: 1,
-      // postFiles: postFiles
+      activityTime: activityTime.value,
+      auditTime: DateTime.now().toString(),
+      payment: activityPayment.value,
+      budget: activitybudget.value,
+      content: activityContent.value,
+      actId: actId.value,
     );
   }
 
@@ -142,6 +214,7 @@ class ActivityPostController extends GetxController {
     });
 
     setPost();
+
     WriteActivityPostModel writePost =
         WriteActivityPostModel(activity: postsActivityContext);
     var jsonString = jsonEncode(writePost.toJson());

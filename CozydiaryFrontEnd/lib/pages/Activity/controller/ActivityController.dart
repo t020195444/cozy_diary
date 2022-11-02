@@ -21,6 +21,7 @@ class ActivityController extends GetxController {
     getPostCover();
 
     Activity(
+      aid: 0,
       username: "",
       placeLng: 0,
       placeLat: 0,
@@ -33,7 +34,7 @@ class ActivityController extends GetxController {
     super.onInit();
   }
 
-  void getPostCover() async {
+  getPostCover() async {
     try {
       isLoading(true);
       var Posts = await ActivityService.fetchPostCover();

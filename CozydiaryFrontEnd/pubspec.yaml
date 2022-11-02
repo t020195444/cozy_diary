@@ -96,7 +96,8 @@ dependencies:
   cached_network_image: ^3.2.2
   #選擇時間
   flutter_datetime_picker: ^1.5.1
-  
+  flutter_picker:
+  google_place: ^0.4.7
 
 dev_dependencies:
   flutter_test:

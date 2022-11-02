@@ -274,6 +274,7 @@ class Edit_PersonalPage extends StatelessWidget {
         body: Obx(
           () {
             return ListView(
+              shrinkWrap: true,
               children: <Widget>[
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,

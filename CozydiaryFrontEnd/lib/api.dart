@@ -20,4 +20,7 @@ class Api {
   static String addPost = 'addPost';
   //抓取貼文詳細資訊
   static String getPostDetail = "getPostDetail?pid=";
+
+  //抓取貼文詳細資訊
+  static String getActivityDetail = "getActivityDetail?aid=";
 }

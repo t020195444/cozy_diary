@@ -7,6 +7,7 @@ import 'package:cozydiary/pages/Register/Page/SelectLikePage.dart';
 import 'package:cozydiary/register_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:get/get.dart';
 
 import 'package:hive_flutter/adapters.dart';
@@ -42,6 +43,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      localizationsDelegates: [
+        PickerLocalizationsDelegate.delegate, // 如果要使用本地化，请添加此行，则可以显示中文按钮
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('zh', 'CH'),
+        const Locale('ko', 'KO'),
+        const Locale('it', 'IT'),
+        const Locale('ar', 'AR'),
+        const Locale('tr', 'TR')
+      ],
       title: 'CozyDiary',
       theme: ThemeData(
         inputDecorationTheme: const InputDecorationTheme(
@@ -49,6 +61,10 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.black45),
           filled: true,
           fillColor: Colors.white,
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black54),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+          ),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.all(Radius.circular(15)),

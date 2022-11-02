@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:hive/hive.dart';
-import 'package:image_picker/image_picker.dart';
 import 'Model/PostCoverModel.dart';
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
-import 'dart:convert';
 import 'package:dio/dio.dart';
 
 class HomePostController extends GetxController {

@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
+import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
 import 'package:custom_marker/marker_icon.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -54,14 +57,11 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   final topTabbarController = Get.put(ActivityTabbarController());
   final postCoverController = Get.put(ActivityController());
 
-  final Mode _mode = Mode.overlay;
-
   Set<Marker> markersList = Set();
 
-  loadData() async {
+  postcover() async {
     double lat = 0;
     double lng = 0;
-
     for (int i = 0; i < postCoverController.postCover.length; i++) {
       if (lat != postCoverController.postCover[i].placeLat ||
           lng != postCoverController.postCover[i].placeLng) {
@@ -81,6 +81,11 @@ class GoogleMapPageState extends State<GoogleMapPage> {
       }
     }
     ;
+  }
+
+  loadData() async {
+    await postCoverController.getPostCover();
+    await postcover();
     setState(() {
       //refresh UI
     });
@@ -96,6 +101,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   @override
   void initState() {
     GeolocatorService()._determinePosition();
+
     loadData();
 
     super.initState();
@@ -142,37 +148,12 @@ class GoogleMapPageState extends State<GoogleMapPage> {
                 ),
               ),
             ),
-            ElevatedButton(
-                onPressed: _handlePressButton,
-                child: const Text("Search Places")),
           ]),
           ActivityScreen(),
         ],
         controller: topTabbarController.topController,
       ),
     );
-  }
-
-  Future<void> _handlePressButton() async {
-    Prediction? p = await PlacesAutocomplete.show(
-        context: context,
-        apiKey: kGoogleApiKey,
-        onError: onError,
-        mode: _mode,
-        language: 'en',
-        strictbounds: false,
-        types: [""],
-        decoration: InputDecoration(
-            hintText: 'Search',
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Colors.white))),
-        components: [
-          Component(Component.country, "pk"),
-          Component(Component.country, "tw")
-        ]);
-
-    displayPrediction(p!, homeScaffoldKey.currentState);
   }
 
   void onError(PlacesAutocompleteResponse response) {

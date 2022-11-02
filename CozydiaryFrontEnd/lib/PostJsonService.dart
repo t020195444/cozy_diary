@@ -20,8 +20,7 @@ class PostService {
   static Map postDetailList = {};
   static getPostDetail(String i) async {
     postDetailList = {};
-
-    var response = await dio.get(Api.ipUrl + Api.getPostDetail);
+    var response = await dio.get(Api.ipUrl + Api.getPostDetail + i);
     var data = response.data;
     List tempPathList = [];
     for (int j = 0; j < data['data']['postFiles'].length; j++) {
@@ -36,13 +35,13 @@ class PostService {
   static List postPid = [];
 
   static Future<PostCoverModule?> fetchPostCover(String uid) async {
-    var response =
-        await dio.get(Api.ipUrl + Api.getPostCoverByUserCategory + uid);
+    var response = await dio.get(
+        Api.ipUrl + Api.getPostCoverByUserCategory + "116177189475554672826");
 
     var jsonString = response.data;
-    // for (int i = 0; i < jsonString.length; i++) {
-    //   postPid.add(jsonString['data'][i]['pid']);
-    // }
+    for (int i = 0; i < jsonString.length; i++) {
+      postPid.add(jsonString['data'][i]['pid']);
+    }
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
 

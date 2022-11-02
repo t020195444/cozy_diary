@@ -23,10 +23,6 @@ class ViewPostScreen extends StatelessWidget {
       )),
       body: Column(
         children: [
-          // Expanded(
-          //   flex: 5,
-          //   child: Container(),
-          // ),
           Expanded(
               flex: 5,
               child: GestureDetector(
@@ -115,6 +111,7 @@ class _viewPostPic extends StatelessWidget {
         child: Hero(
           tag: 'pic',
           child: ListView.builder(
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             key: UniqueKey(),
             itemBuilder: (BuildContext context, int index) {

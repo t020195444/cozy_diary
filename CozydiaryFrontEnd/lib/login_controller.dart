@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:cozydiary/Model/UserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Register/Page/RegisterPage.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,23 +22,24 @@ class LoginController extends GetxController {
   late List<String> responseBody;
   var userData = <userdata.UserDataModel>[].obs;
   var box = Hive.box("UidAndState");
+
   static Map tempData = {};
 
   void loginWithGoogle() async {
     googleAccount.value = await googleSignIn.signIn();
-    final user = googleAccount.value;
-    // final googleAuth = await googleAccount.value!.authentication;
-    // final credential = GoogleAuthProvider.credential(
-    //   accessToken: googleAuth.accessToken,
-    //   idToken: googleAuth.idToken,
-    // );
-    // final authResult = await _auth.signInWithCredential(credential);
-    // final User? user = authResult.user;
-    // googleuser = user;
+    final googleAuth = await googleAccount.value!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    print(credential);
+    final authResult = await _auth.signInWithCredential(credential);
+    final User? user = authResult.user;
+    googleuser = user;
     id = googleSignIn.currentUser!.id;
     box.put("uid", id);
-    email = user!.email;
-    googlepic = user.photoUrl!;
+    email = user!.email!;
+    googlepic = user.photoURL!;
 
     tempData = {'uid': id, 'email': email, 'pic': googlepic};
     print(tempData);
@@ -64,21 +64,19 @@ class LoginController extends GetxController {
 
   Future<bool> login(String id) async {
     bool isLogin = false;
+
     var response = await http
         .get(Uri.parse('http://140.131.114.166:80/getUser?gid=' + id));
     var responseBody = jsonDecode(response.body);
 
     if (responseBody['status'] == 200 &&
         responseBody['data']['googleId'] == id &&
-        id != '') {
+        id != "") {
       isLogin = true;
       print("login done. isLogin = " + isLogin.toString());
-      // Get.to(HomePageTabbar());
     } else {
       isLogin = false;
     }
-
-    // Get.to(RegisterPage());
     return isLogin;
   }
 
