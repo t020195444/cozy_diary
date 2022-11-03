@@ -2,24 +2,43 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:hive/hive.dart';
 
+import '../Model/postDetailModel.dart';
 import '../PostJsonService.dart';
 import '../api.dart';
 
-class viewPostController extends GetxController {
+class ViewPostController extends GetxController {
   Dio dio = Dio();
 
-  static String currViewPostID = '';
-  static RxMap currViewPostDetial = {}.obs;
+  String currViewPostID = '';
+  var currViewPostDetial = PostDetail(
+      pid: 0,
+      uid: "",
+      title: "",
+      content: "",
+      likes: 0,
+      collects: 0,
+      postTime: DateTime(0),
+      modifyTime: 0,
+      cover: "",
+      cid: 0,
+      postLng: 0,
+      postLat: 0,
+      postFiles: <PostFile>[],
+      comments: <Comment>[]).obs;
+  var isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
   postComments(String comment) async {
-    print(currViewPostDetial);
     var uid = Hive.box("UidAndState").get('uid');
     var commentJson = {};
     commentJson = {'text': comment, 'uid': uid, 'pid': currViewPostID};
-    print(commentJson);
     postCommentData(commentJson);
     PostService.getPostDetail(currViewPostID);
     currViewPostDetial.refresh();
-    print(currViewPostDetial);
   }
 
   Future<dynamic> postCommentData(Map formData) async {
@@ -27,14 +46,23 @@ class viewPostController extends GetxController {
   }
 
   getCommentTime(int i) {
-    print(currViewPostDetial['data']['comments']);
-    var commentTime = currViewPostDetial['data']['comments'][i]['commentTime'];
-    var parseTime = DateTime.parse(commentTime);
-    var now = DateTime.now();
-    print(commentTime);
-    print(parseTime);
-    print(now);
+    var commentTime = currViewPostDetial.value.comments[i].commentTime;
 
-    print(now.difference(parseTime).inHours);
+    var now = DateTime.now();
+  }
+
+  void getPostDetail() async {
+    isLoading(true);
+    try {
+      PostDetailModel data = await PostService.getPostDetail(currViewPostID);
+      // print(postDetailModelToJson(data));
+      if (data.status == 200) {
+        if (data != null) {
+          currViewPostDetial.value = data.data;
+        }
+      }
+    } finally {
+      isLoading(false);
+    }
   }
 }

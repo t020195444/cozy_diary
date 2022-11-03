@@ -11,7 +11,7 @@ class InitPostGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var personalPageController = Get.find<SelfPageController>();
+    var selfPageController = Get.find<SelfPageController>();
     return Obx(() {
       return MediaQuery.removePadding(
           context: context,
@@ -20,11 +20,11 @@ class InitPostGridView extends StatelessWidget {
               crossAxisCount: 2,
 
               //依照資料長度數量
-              itemCount: personalPageController.postCover.length,
+              itemCount: selfPageController.postCover.length,
               itemBuilder: (context, index) {
                 return BuildCard(
                   index: index,
-                  userPostCover: personalPageController.postCover.value,
+                  userPostCover: selfPageController.postCover.value,
                 );
               }));
     });

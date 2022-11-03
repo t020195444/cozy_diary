@@ -15,10 +15,10 @@ class BuildCardActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(
-          ViewPostScreen(),
-          transition: Transition.fadeIn,
-        );
+        // Get.to(
+        //   ViewPostScreen(pid: PostCovers[index].,),
+        //   transition: Transition.fadeIn,
+        // );
       },
       child: Hero(
         tag: PostCovers[index].cover,

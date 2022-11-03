@@ -98,8 +98,13 @@ class OtherPersonPageController extends GetxController {
           AddTrackerModel(tracker1: userUid, tracker2: otherUid);
       var trackerJsonData = addTrackerModelToJson(trackerModel);
       var trackerResponse = await PersonalService.addTracker(trackerJsonData);
-
-      if (trackerResponse == 200) isFollow.value = true;
+      if (trackerResponse == 200) {
+        if (isFollow.value) {
+          isFollow.value = false;
+        } else
+          isFollow.value = true;
+      }
+      ;
     } finally {}
   }
 

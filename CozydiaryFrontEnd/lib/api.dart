@@ -32,4 +32,6 @@ class Api {
   static String userCategoryList = "userCategoryList?uid=";
   //新增留言
   static String postComment = '/addComment';
+  //獲取全部語言
+  static String getAllPost = "/getAllPost";
 }

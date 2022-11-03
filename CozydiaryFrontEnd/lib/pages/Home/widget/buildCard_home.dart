@@ -10,21 +10,19 @@ import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class BuildCardHome extends StatelessWidget {
-  final List<PostCoverData> PostCovers;
+  final List<PostCoverData> postCovers;
   final int index;
-  BuildCardHome({Key? key, required this.PostCovers, required this.index})
+  BuildCardHome({Key? key, required this.postCovers, required this.index})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        viewPostController.currViewPostID =
-            key.toString().split(",")[1].replaceAll(RegExp(r"[^\s\w]"), "");
-        await PostService.getPostDetail(
-            key.toString().split(",")[1].replaceAll(RegExp(r"[^\s\w]"), ""));
         Get.to(
-          ViewPostScreen(),
+          () => ViewPostScreen(
+            pid: postCovers[index].pid.toString(),
+          ),
           transition: Transition.fadeIn,
         );
       },
@@ -39,7 +37,7 @@ class BuildCardHome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: PostCovers[index].cover,
+                imageUrl: postCovers[index].cover,
                 fit: BoxFit.cover,
                 errorWidget: ((context, url, error) =>
                     Image.asset("assets/images/yunhan.jpg", fit: BoxFit.cover)),
@@ -64,7 +62,7 @@ class BuildCardHome extends StatelessWidget {
               // ),
               Padding(
                 padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
-                child: Text(PostCovers[index].title,
+                child: Text(postCovers[index].title,
                     softWrap: true,
                     maxLines: 2,
                     style: TextStyle(
@@ -84,7 +82,7 @@ class BuildCardHome extends StatelessWidget {
                                 child: CircleAvatar(
                                   radius: 12,
                                   backgroundImage:
-                                      NetworkImage(PostCovers[index].pic),
+                                      NetworkImage(postCovers[index].pic),
                                 ),
                                 onTap: () {
                                   OtherPersonPageController
@@ -105,7 +103,7 @@ class BuildCardHome extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                PostCovers[index].username,
+                                postCovers[index].username,
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -116,7 +114,7 @@ class BuildCardHome extends StatelessWidget {
                         ],
                       ),
                       LikeButton(
-                        likeCount: PostCovers[index].likes,
+                        likeCount: postCovers[index].likes,
                         isLiked: false,
                         size: 15,
                       )

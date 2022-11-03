@@ -14,7 +14,7 @@ class BuildCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.to(
-          ViewPostScreen(),
+          ViewPostScreen(pid: userPostCover[index].pid.toString()),
           transition: Transition.fadeIn,
         );
       },
