@@ -18,7 +18,6 @@ class PersonalService {
 
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
     var fromJsonValue = userModelFromJson(encodeJsonString);
-    print(response.data);
     return fromJsonValue;
   }
 
@@ -50,7 +49,6 @@ class PersonalService {
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = trackerListModelFromJson(encodeJsonString);
-    print(response.data);
     return fromJsonValue;
   }
 
@@ -60,7 +58,6 @@ class PersonalService {
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = trackerListModelFromJson(encodeJsonString);
-    print(response.data);
     return fromJsonValue;
   }
 

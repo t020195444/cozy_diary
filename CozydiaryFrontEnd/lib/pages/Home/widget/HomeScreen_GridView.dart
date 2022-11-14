@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                       postCoverController.postCover.value[index].uid,
                       postCoverController.postCover.value[index].pid
                     }),
-                    PostCovers: postCoverController.postCover.value,
+                    postCovers: postCoverController.postCover.value,
                     index: index,
                   );
                 }));

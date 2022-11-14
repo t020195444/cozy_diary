@@ -1,5 +1,7 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
+import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -74,13 +76,14 @@ class EditUserController extends GetxController {
         oldImageUrl = value.path;
         // changedPreviewImage = FileImage(File(oldImageUrl));
         // isImageChange.value = true;
+        Get.dialog(Center(
+          child: CircularProgressIndicator(),
+        ));
         changeProfilePic(oldImageUrl).then((value) {
           print("value:$oldImageUrl");
           if (value == 200) {
             Get.back();
-            // Get.delete<EditUserController>();
-
-            // throw "Unreachable";
+            Get.back();
           }
         }).catchError((error) => print("Error$error"));
       }

@@ -290,7 +290,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 child: ElevatedButton(
                   onPressed: () {
                     Get.to(Edit_PersonalPage(),
-                        transition: Transition.rightToLeft);
+                        transition: Transition.downToUp);
                   },
                   child: Text(
                     "編輯個人資料",

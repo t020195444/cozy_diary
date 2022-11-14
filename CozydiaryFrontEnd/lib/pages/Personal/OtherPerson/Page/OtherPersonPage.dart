@@ -348,9 +348,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 right: 20,
                 child: ElevatedButton(
                   onPressed: () {
-                    _otherPersonPageController.isFollow.value
-                        ? _otherPersonPageController.deleteTracker()
-                        : _otherPersonPageController.addTracker();
+                    _otherPersonPageController.addTracker();
                   },
                   child: _otherPersonPageController.isFollow.value
                       ? Text(

@@ -1,7 +1,6 @@
 import 'package:cozydiary/Model/editUserModel.dart';
 import 'package:cozydiary/pages/Personal/Service/personalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../../../../Model/catchPersonalModel.dart';
 import '../../../../Model/postCoverModel.dart';
@@ -64,30 +63,6 @@ class SelfPageController extends GetxController {
     } finally {
       isLoading(false);
     }
-  }
-
-  double getWidgetHeight(GlobalKey key) {
-    RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
-    print(renderBox.size.height);
-    return renderBox.size.height;
-  }
-
-  void getConstraintsHeight(var height) {
-    constraintsHeight.value = height;
-    update();
-  }
-
-  void onTabReadmore() {
-    readmore.value = !readmore.value;
-    print(readmore.value);
-  }
-
-  void increaseAppbarHeight() {
-    constraintsHeight.value = constraintsHeight.value + difference;
-  }
-
-  void reduceAppbarHeight() {
-    constraintsHeight.value = constraintsHeight.value - difference;
   }
 
   Future<String> updateUser(EditUserModel editUserModel) async {
