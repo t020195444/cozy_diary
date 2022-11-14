@@ -70,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 focusNode: startFocusNode,
                 style: TextStyle(fontSize: 16),
                 decoration: InputDecoration(
-                    hintText: 'SearchLocation',
+                    hintText: '搜尋地點',
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w500, fontSize: 16),
                     filled: true,
@@ -135,9 +135,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           }
 
                           if (startPosition != null) {
-                            await postController
+                            postController
                                 .updateActivityLocation(startPosition);
-
                             Get.back();
                           }
                         }

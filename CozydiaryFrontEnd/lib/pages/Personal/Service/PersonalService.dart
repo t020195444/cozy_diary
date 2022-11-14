@@ -13,7 +13,6 @@ class PersonalService {
   //利用uid抓取使用者資料
   static Future<UserModel?> fetchUserData(String id) async {
     var response = await dio.get(Api.ipUrl + Api.getUser + id);
-
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
 

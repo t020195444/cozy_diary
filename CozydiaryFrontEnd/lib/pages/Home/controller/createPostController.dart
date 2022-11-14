@@ -149,7 +149,7 @@ class CreatePostController extends GetxController {
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
     formData = FormData.fromMap({"jsondata": jsonString});
-    print(formData);
+    print(formData.fields.toString());
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);

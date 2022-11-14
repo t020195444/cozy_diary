@@ -1,12 +1,17 @@
 import 'package:cozydiary/pages/Activity/ActivityLocationSearch.dart';
+import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
-import 'package:flutter_picker/flutter_picker.dart';
+import 'package:intl/intl.dart';
+
+var peopleList = [for (var i = 1; i <= 30; i++) Text(i.toString())];
+var priceList = [for (var i = 1; i <= 50; i++) Text((i * 50).toString())];
 
 class ActivityArticlePage extends StatelessWidget {
   const ActivityArticlePage({Key? key}) : super(key: key);
@@ -16,16 +21,10 @@ class ActivityArticlePage extends StatelessWidget {
     //Controller
     final ActivityPostController postController =
         Get.put(ActivityPostController());
-    final titleCtr = TextEditingController();
-    final contentCtr = TextEditingController();
-    final maxPeopleCtr = TextEditingController(
-        text: postController.activityPeople.value.toString());
-    final budgetCtr = TextEditingController(
-        text: postController.activitybudget.value.toString());
-    final activityTimeCtr =
-        TextEditingController(text: postController.activityTime.value);
-    final activityDeadlineTimeCtr =
-        TextEditingController(text: postController.activityDeadlineTime.value);
+    final titleCtr = TextEditingController(
+        text: postController.activityTitle.value.toString());
+    final contentCtr = TextEditingController(
+        text: postController.activityContent.value.toString());
 
     postController.onInit();
 
@@ -50,130 +49,159 @@ class ActivityArticlePage extends StatelessWidget {
             borderRadius: BorderRadius.circular(30)),
         tileColor: Colors.white,
         onTap: () async {
-          // showModalBottomSheet(
-          //     isScrollControlled: true,
-          //     context: context,
-          //     builder: (context) => Padding(
-          //           padding: EdgeInsets.only(
-          //               bottom: MediaQuery.of(context).viewInsets.bottom),
-          //           child: Container(
-          //               height: 200,
-          //               color: Color.fromARGB(255, 215, 199, 194),
-          //               child: Center(
-          //                   child: Row(
-          //                 mainAxisSize: MainAxisSize.min,
-          //                 children: <Widget>[
-          //                   Expanded(
-          //                     child: Center(
-          //                       child: Container(
-          //                           child: Column(
-          //                         mainAxisSize: MainAxisSize.min,
-          //                         children: [
-          //                           Container(child: Text("活動開始時間")),
-          //                           Container(
-          //                               padding: EdgeInsets.only(top: 20),
-          //                               child: Text("活動結束時間")),
-          //                         ],
-          //                       )),
-          //                     ),
-          //                   ),
-          //                   Expanded(
-          //                     child: Center(
-          //                       child: Container(
-          //                           child: Column(
-          //                         mainAxisSize: MainAxisSize.min,
-          //                         children: [
-          //                           Obx(() => OutlinedButton(
-          //                                 child: Text(postController
-          //                                     .activityTime.value),
-          //                                 onPressed: () async {
-          //                                   DateTime? newDateTime =
-          //                                       await DatePicker
-          //                                           .showDateTimePicker(
-          //                                               context,
-          //                                               showTitleActions: true,
-          //                                               minTime: DateTime.now(),
-          //                                               maxTime:
-          //                                                   DateTime(
-          //                                                       2023,
-          //                                                       12,
-          //                                                       31,
-          //                                                       00,
-          //                                                       00), onChanged:
-          //                                                   (date) {
-          //                                     print('change $date');
-          //                                   }, onConfirm: (date) {
-          //                                     print('confirm $date');
-          //                                   },
-          //                                               currentTime:
-          //                                                   DateTime.now(),
-          //                                               locale: LocaleType.en);
-          //                                   if (newDateTime == null) return;
-          //                                   postController.activityTime.value =
-          //                                       newDateTime.toString();
-          //                                 },
-          //                                 style: OutlinedButton.styleFrom(
-          //                                   fixedSize: Size(195, 25),
-          //                                   backgroundColor: Colors.white,
-          //                                   foregroundColor: Colors.black,
-          //                                   shape: RoundedRectangleBorder(
-          //                                     borderRadius: BorderRadius.all(
-          //                                         Radius.circular(15)),
-          //                                   ),
-          //                                   side: BorderSide(
-          //                                       width: 1,
-          //                                       color: Colors.black54),
-          //                                 ),
-          //                               )),
-          //                           Obx(() => OutlinedButton(
-          //                                 child: Text(postController
-          //                                     .activityDeadlineTime.value),
-          //                                 onPressed: () async {
-          //                                   DateTime? newDateTime =
-          //                                       await DatePicker
-          //                                           .showDateTimePicker(
-          //                                               context,
-          //                                               showTitleActions: true,
-          //                                               minTime: DateTime.now(),
-          //                                               maxTime:
-          //                                                   DateTime(
-          //                                                       2023,
-          //                                                       12,
-          //                                                       31,
-          //                                                       00,
-          //                                                       00), onChanged:
-          //                                                   (date) {
-          //                                     print('change $date');
-          //                                   }, onConfirm: (date) {
-          //                                     print('confirm $date');
-          //                                   },
-          //                                               currentTime:
-          //                                                   DateTime.now(),
-          //                                               locale: LocaleType.en);
-          //                                   if (newDateTime == null) return;
-          //                                   postController.activityDeadlineTime
-          //                                       .value = newDateTime.toString();
-          //                                 },
-          //                                 style: OutlinedButton.styleFrom(
-          //                                   fixedSize: Size(195, 25),
-          //                                   backgroundColor: Colors.white,
-          //                                   foregroundColor: Colors.black,
-          //                                   shape: RoundedRectangleBorder(
-          //                                     borderRadius: BorderRadius.all(
-          //                                         Radius.circular(15)),
-          //                                   ),
-          //                                   side: BorderSide(
-          //                                       width: 1,
-          //                                       color: Colors.black54),
-          //                                 ),
-          //                               )),
-          //                         ],
-          //                       )),
-          //                     ),
-          //                   )
-          //                 ],
-          //               ))),
-          //         ));
+          showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) => Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Container(
+                        height: 200,
+                        color: Color.fromARGB(255, 215, 199, 194),
+                        child: Center(
+                            child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Expanded(
+                              child: Center(
+                                child: Container(
+                                    child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(child: Text("活動時間")),
+                                    Container(
+                                        padding: EdgeInsets.only(top: 20),
+                                        child: Text("活動審核時間時間")),
+                                  ],
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Center(
+                                child: Container(
+                                    child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: 180,
+                                      height: 30,
+                                      child: Obx(() => OutlinedButton(
+                                            child: Text(postController
+                                                .activityTimeview.value),
+                                            onPressed: () async {
+                                              DateTime? newDateTime =
+                                                  await DatePicker
+                                                      .showDateTimePicker(
+                                                          context,
+                                                          showTitleActions:
+                                                              true,
+                                                          minTime: DateTime
+                                                              .now(),
+                                                          maxTime: DateTime(
+                                                              2023,
+                                                              12,
+                                                              31,
+                                                              00,
+                                                              00),
+                                                          onChanged: (date) {
+                                                print('change $date');
+                                              }, onConfirm: (date) {
+                                                print('confirm $date');
+                                              },
+                                                          currentTime:
+                                                              DateTime.now(),
+                                                          locale:
+                                                              LocaleType.en);
+                                              if (newDateTime == null) return;
+
+                                              postController.activityTime
+                                                  .value = DateFormat(
+                                                      'yyyy-MM-ddTHH:mm:ss.000')
+                                                  .format(newDateTime);
+                                              String formattedDate = DateFormat(
+                                                      'yyyy-MM-dd – HH:mm')
+                                                  .format(newDateTime);
+                                              postController
+                                                      .activityTimeview.value =
+                                                  formattedDate.toString();
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              fixedSize: Size(195, 25),
+                                              backgroundColor: Colors.white,
+                                              foregroundColor: Colors.black,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                              ),
+                                              side: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.black54),
+                                            ),
+                                          )),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      width: 180,
+                                      height: 30,
+                                      child: Obx(() => OutlinedButton(
+                                            child: Text(postController
+                                                .activityDeadlineTimeview
+                                                .value),
+                                            onPressed: () async {
+                                              DateTime? newDateTime =
+                                                  await DatePicker
+                                                      .showDateTimePicker(
+                                                          context,
+                                                          showTitleActions:
+                                                              true,
+                                                          minTime:
+                                                              DateTime.now(),
+                                                          maxTime: DateTime(
+                                                              2023,
+                                                              12,
+                                                              31,
+                                                              00,
+                                                              00),
+                                                          onChanged: (date) {},
+                                                          currentTime:
+                                                              DateTime.now(),
+                                                          locale:
+                                                              LocaleType.en);
+                                              if (newDateTime == null) return;
+                                              postController
+                                                  .activityDeadlineTime
+                                                  .value = DateFormat(
+                                                      'yyyy-MM-ddTHH:mm:ss.000')
+                                                  .format(newDateTime);
+                                              String formattedDate = DateFormat(
+                                                      'yyyy-MM-dd - HH:mm')
+                                                  .format(newDateTime);
+                                              postController
+                                                      .activityDeadlineTimeview
+                                                      .value =
+                                                  formattedDate.toString();
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              fixedSize: Size(195, 25),
+                                              backgroundColor: Colors.white,
+                                              foregroundColor: Colors.black,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                              ),
+                                              side: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.black54),
+                                            ),
+                                          )),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                            )
+                          ],
+                        ))),
+                  ));
         },
       );
     }
@@ -238,18 +266,50 @@ class ActivityArticlePage extends StatelessWidget {
                                     child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    //活動人數
                                     Container(
-                                      width: 100,
-                                      height: 25,
-                                      child: TextField(
-                                        controller: maxPeopleCtr,
-                                        textAlign: TextAlign.center,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ], // Only numbers can be entered
-                                      ),
-                                    ),
+                                        width: 100,
+                                        height: 25,
+                                        child: OutlinedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.white)),
+                                          onPressed: () {
+                                            showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (_) => SizedBox(
+                                                      width: double.infinity,
+                                                      height: 200,
+                                                      child: CupertinoPicker(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        itemExtent: 30,
+                                                        scrollController:
+                                                            FixedExtentScrollController(
+                                                          initialItem: 0,
+                                                        ),
+                                                        onSelectedItemChanged:
+                                                            (int value) {
+                                                          postController
+                                                              .activityPeople
+                                                              .value = value + 1;
+                                                        },
+                                                        children: peopleList,
+                                                      ),
+                                                    ));
+                                          },
+                                          child: Obx(
+                                            () => Text(
+                                              postController
+                                                  .activityPeople.value
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        )),
+                                    //活動類別
                                     Obx((() => Container(
                                         margin: EdgeInsets.only(top: 15),
                                         padding: EdgeInsets.only(left: 60),
@@ -257,7 +317,8 @@ class ActivityArticlePage extends StatelessWidget {
                                           children: [
                                             InkWell(
                                               onTap: () => postController
-                                                  .selectActTypeSubtractions(),
+                                                  .selectActTypeSubtractions(
+                                                      postController.actId),
                                               child: Icon(
                                                 Icons.arrow_left,
                                                 size: 24.0,
@@ -268,7 +329,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                     .selectActType.value]),
                                             InkWell(
                                               onTap: () => postController
-                                                  .selectActTypePuls(),
+                                                  .selectActTypePuls(
+                                                      postController.actId),
                                               child: Icon(
                                                 Icons.arrow_right,
                                                 size: 24.0,
@@ -276,6 +338,7 @@ class ActivityArticlePage extends StatelessWidget {
                                             ),
                                           ],
                                         )))),
+                                    //活動支付方式
                                     Obx(
                                       () => Container(
                                           margin: EdgeInsets.only(top: 20),
@@ -284,7 +347,9 @@ class ActivityArticlePage extends StatelessWidget {
                                             children: [
                                               InkWell(
                                                 onTap: () => postController
-                                                    .selectActPaymentSubtractions(),
+                                                    .selectActPaymentSubtractions(
+                                                        postController
+                                                            .actPayment),
                                                 child: Icon(
                                                   Icons.arrow_left,
                                                   size: 24.0,
@@ -295,7 +360,9 @@ class ActivityArticlePage extends StatelessWidget {
                                                       .selectActPayment]),
                                               InkWell(
                                                 onTap: () => postController
-                                                    .selectActPaymentPuls(),
+                                                    .selectActPaymentPuls(
+                                                        postController
+                                                            .actPayment),
                                                 child: Icon(
                                                   Icons.arrow_right,
                                                   size: 24.0,
@@ -304,19 +371,53 @@ class ActivityArticlePage extends StatelessWidget {
                                             ],
                                           )),
                                     ),
+
+                                    //活動預算
                                     Container(
-                                      width: 100,
-                                      height: 25,
-                                      margin: EdgeInsets.only(top: 20),
-                                      child: TextField(
-                                        controller: budgetCtr,
-                                        textAlign: TextAlign.center,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ], // Only numbers can be entered
-                                      ),
-                                    ),
+                                        margin: EdgeInsets.only(top: 20),
+                                        width: 100,
+                                        height: 25,
+                                        child: OutlinedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.white)),
+                                          onPressed: () {
+                                            showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (_) => SizedBox(
+                                                      width: double.infinity,
+                                                      height: 200,
+                                                      child: CupertinoPicker(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        itemExtent: 30,
+                                                        scrollController:
+                                                            FixedExtentScrollController(
+                                                          initialItem: 0,
+                                                        ),
+                                                        onSelectedItemChanged:
+                                                            (int value) {
+                                                          postController
+                                                              .activitybudget
+                                                              .value = (value +
+                                                                  1) *
+                                                              50;
+                                                        },
+                                                        children: priceList,
+                                                      ),
+                                                    ));
+                                          },
+                                          child: Obx(
+                                            () => Text(
+                                              postController
+                                                  .activitybudget.value
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        )),
                                   ],
                                 )),
                               ),
@@ -375,6 +476,7 @@ class ActivityArticlePage extends StatelessWidget {
           TextButton(
               onPressed: () {
                 postController.goToDataBase();
+                Get.to(() => HomePageTabbar());
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -409,10 +511,13 @@ class ActivityArticlePage extends StatelessWidget {
                   ),
                 )),
             Container(
-              height: 50,
+              height: 60,
               child: Padding(
                 padding: const EdgeInsets.only(right: 20, left: 20),
                 child: TextField(
+                  onChanged: (value) {
+                    postController.activityTitle.value = value;
+                  },
                   controller: titleCtr,
                   maxLines: 1,
                   maxLength: 15,
@@ -427,6 +532,9 @@ class ActivityArticlePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 20, left: 20),
                 child: TextField(
+                  onChanged: (value) {
+                    postController.activityContent.value = value;
+                  },
                   controller: contentCtr,
                   cursorColor: Colors.red,
                   maxLines: 7,

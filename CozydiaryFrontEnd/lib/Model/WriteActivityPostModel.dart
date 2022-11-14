@@ -41,6 +41,7 @@ class Activity {
     required this.budget,
     required this.content,
     required this.actId,
+    // required this.activityFiles,
   });
 
   String holder;
@@ -55,6 +56,7 @@ class Activity {
   int budget;
   String content;
   int actId;
+  // List<ActivityPostFile> activityFiles;
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
         holder: json["holder"],
@@ -69,6 +71,8 @@ class Activity {
         budget: json["budget"],
         content: json["content"],
         actId: json["actId"],
+        // activityFiles: List<ActivityPostFile>.from(
+        //     json["activityFiles"].map((x) => ActivityPostFile.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -84,6 +88,8 @@ class Activity {
         "budget": budget,
         "content": content,
         "actId": actId,
+        // "activityFiles":
+        //     List<dynamic>.from(activityFiles.map((x) => x.toJson())),
       };
 }
 

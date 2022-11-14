@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
 import 'package:cozydiary/api.dart';
-import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
+import 'package:cozydiary/pages/Activity/controller/ActivityGetPostController.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 
@@ -11,7 +11,7 @@ class ActivityPostService {
       'http://140.131.114.166:80/getPostCoverByUserCategory?uid=116177189475554672826';
   static var writeActivityPostUri = 'http://140.131.114.166:80/addActivity';
 
-  static var postController = Get.put(ActivityPostController());
+  static var getpostController = Get.put(ActivityGetPostController());
 
   static Map activityDetailList = {};
 
@@ -23,10 +23,24 @@ class ActivityPostService {
     for (int j = 0; j < data['data']['activityFiles'].length; j++) {
       tempPathList.add(data['data']['activityFiles'][j]['activityUrl']);
     }
-    activityDetailList['title'] = data['data']['activityName'];
+    getpostController.getHolder(data['data']['holder'].toString());
+    getpostController.setPost(data);
+
+    activityDetailList['holder'] = data['data']['holder'];
+    activityDetailList['activityName'] = data['data']['activityName'];
+    activityDetailList['placeLng'] = data['data']['placeLng'];
+    activityDetailList['placeLat'] = data['data']['placeLat'];
+    activityDetailList['likes'] = data['data']['likes'];
+    activityDetailList['cover'] = data['data']['cover'];
+    activityDetailList['actId'] = data['data']['actId'];
+    activityDetailList['payment'] = data['data']['payment'];
+    activityDetailList['budget'] = data['data']['budget'];
+    activityDetailList['activityTime'] = data['data']['activityTime'];
+    activityDetailList['auditTime'] = data['data']['auditTime'];
+    activityDetailList['participants'] = data['data']['participants'];
     activityDetailList['content'] = data['data']['content'];
+
     activityDetailList['url'] = tempPathList;
-    print(data);
   }
 
   static List postPid = [];
@@ -44,7 +58,15 @@ class ActivityPostService {
   }
 
   static Future<dynamic> postPostData(FormData formData) async {
-    print(formData);
-    return await dio.post(writeActivityPostUri, data: formData);
+    try {
+      var response =
+          await dio.post(Api.ipUrl + Api.addActivity, data: formData);
+
+      print("User activity：" + response.data.toString());
+    } catch (e) {
+      print("Error creating  $e");
+    }
+
+    return formData;
   }
 }

@@ -4,6 +4,7 @@ import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
+import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -15,52 +16,62 @@ class ActivityPostController extends GetxController {
   //variable
   RxString activityTitle = "".obs;
   RxString activityContent = "".obs;
-  RxString activityTime = DateTime.now().toString().obs;
-  RxString activityDeadlineTime = DateTime.now().toString().obs;
+  RxString activityTime = "".obs;
+  RxString activityTimeview = "".obs;
+  RxString activityDeadlineTime = "".obs;
+  RxString activityDeadlineTimeview = "".obs;
   RxDouble activityLat = 0.0.obs;
   RxDouble activityLng = 0.0.obs;
   RxString activityLocation = "".obs;
   RxInt activityPeople = 2.obs;
   RxInt activityPayment = 0.obs;
   RxInt activitybudget = 0.obs;
-  RxInt actId = 0.obs;
+  RxInt actId = 1.obs;
   int currentPage = 0;
   RxBool isPicked = false.obs;
   RxInt selectActType = 1.obs;
   RxInt selectActPayment = 1.obs;
 
-  selectActPaymentPuls() {
+  selectActPaymentPuls(value) {
     if (selectActPayment.value != actPayment.length) {
       selectActPayment.value = selectActPayment.value + 1;
+      value = selectActPayment.value;
     } else {
       selectActPayment.value = 1;
+      value = selectActPayment.value;
     }
     update();
   }
 
-  selectActPaymentSubtractions() {
+  selectActPaymentSubtractions(value) {
     if (selectActPayment.value != 1) {
       selectActPayment.value = selectActPayment.value - 1;
+      value = selectActPayment.value;
     } else {
       selectActPayment.value = actPayment.length;
+      value = selectActPayment.value;
     }
     update();
   }
 
-  selectActTypePuls() {
+  selectActTypePuls(value) {
     if (selectActType.value != actType.length) {
       selectActType.value = selectActType.value + 1;
+      value = selectActType.value;
     } else {
       selectActType.value = 1;
+      value = selectActType.value;
     }
     update();
   }
 
-  selectActTypeSubtractions() {
+  selectActTypeSubtractions(value) {
     if (selectActType.value != 1) {
       selectActType.value = selectActType.value - 1;
+      value = selectActType.value;
     } else {
       selectActType.value = actType.length;
+      value = selectActType.value;
     }
     update();
   }
@@ -84,8 +95,8 @@ class ActivityPostController extends GetxController {
 
   updateActivityLocation(value) {
     activityLocation.value = value.formattedAddress!.toString();
-    activityLat.value = double.parse(value.geometry!.location!.lat);
-    activityLng.value = double.parse(value.geometry!.location!.lng);
+    activityLat.value = value.geometry!.location!.lat;
+    activityLng.value = value.geometry!.location!.lng;
 
     update();
   }
@@ -148,6 +159,7 @@ class ActivityPostController extends GetxController {
   }
 
   RxList currPic = [].obs;
+
   changeCurrPic(int i) {
     //設置目前顯示照片
     currPic.value = [];
@@ -157,6 +169,7 @@ class ActivityPostController extends GetxController {
   }
 
   static List pickedList = [];
+
   setPicList(int i) {
     File tempFile = fileList[i];
     if (pickedList.contains(tempFile)) {
@@ -171,59 +184,51 @@ class ActivityPostController extends GetxController {
   //create post
   late Post postsContext;
   late Activity postsActivityContext;
-  var postFiles = <ActivityPostFile>[];
+  var activityFiles = <ActivityPostFile>[];
   List allPicName = [];
 
   void goToDataBase() async {
-    var formdata = writePost();
-    print(await formdata.toString());
+    checkBox = [];
+    checkBox = List.generate(
+        ActivityPostController.mediaList.length, (_) => false.obs);
+
+    var formdata = await writePost();
     await ActivityPostService.postPostData(await formdata);
+    print(await formdata);
   }
 
   void setPost() {
     postsActivityContext = Activity(
-      holder: loginController.id,
-      placeLng: activityLat.value,
-      placeLat: activityLng.value,
+      holder: Hive.box("UidAndState").get("uid"),
+      placeLng: activityLng.value.toDouble(),
+      placeLat: activityLat.value.toDouble(),
       likes: 0,
-      activityName: activityTitle.value,
+      activityName: activityTitle.value.toString(),
       cover: basename(pickedList[0].path),
       activityTime: activityTime.value,
-      auditTime: DateTime.now().toString(),
-      payment: activityPayment.value,
-      budget: activitybudget.value,
-      content: activityContent.value,
-      actId: actId.value,
+      auditTime: activityDeadlineTime.value,
+      payment: selectActPayment.value.toInt(),
+      budget: activitybudget.value.toInt(),
+      content: activityContent.value.toString(),
+      actId: selectActType.value.toInt(),
     );
   }
 
   Future<FormData> writePost() async {
-    print(pickedList);
-
-    print("-------");
-
     FormData formData = FormData();
-    // int index = 1;
-    for (int i = 0; i < pickedList.length; i++) {
-      allPicName.add(basename(pickedList[i].path));
-    }
-    print(allPicName);
-
-    allPicName.asMap().forEach((key, value) async {
-      postFiles.add(ActivityPostFile(postUrl: value));
-    });
-
     setPost();
 
     WriteActivityPostModel writePost =
         WriteActivityPostModel(activity: postsActivityContext);
     var jsonString = jsonEncode(writePost.toJson());
+
     formData = FormData.fromMap({"jsondata": jsonString});
-    print(formData);
+    print(formData.fields.toList());
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
     }
+    print(formData.files.toString());
     return formData;
   }
 }

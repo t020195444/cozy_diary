@@ -20,6 +20,9 @@ class Api {
   static String getPostCoverByUserCategory = 'getPostCoverByUserCategory?uid=';
   //新增貼文
   static String addPost = 'addPost';
+  //新增貼文
+  static String addActivity = 'addActivity';
+
   //抓取貼文詳細資訊
   static String getPostDetail = "getPostDetail?pid=";
 

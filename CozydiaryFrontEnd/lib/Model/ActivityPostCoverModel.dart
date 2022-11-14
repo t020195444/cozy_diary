@@ -58,7 +58,6 @@ class Activity {
   String cover;
   String pic;
   List<int> activityTime;
-  // List<ActivityPostFile> postFiles;
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
         username: json["username"],

@@ -13,7 +13,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
   @override
   Widget build(BuildContext context) {
     //Controller
-    final postController = new ActivityPostController();
+    final postController = Get.put(ActivityPostController());
 
     //initState
     postController.fetchMedia();
@@ -35,7 +35,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                         textColor: Colors.white,
                         fontSize: 16.0);
                   } else {
-                    Get.to(ActivityArticlePage());
+                    Get.to(() => ActivityArticlePage());
                   }
                 },
                 child: Padding(
