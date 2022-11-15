@@ -47,6 +47,7 @@ class UserData {
     required this.tracker,
     required this.follower,
     required this.userCategoryList,
+    required this.picResize,
   });
 
   int uid;
@@ -62,25 +63,26 @@ class UserData {
   List<Follower> tracker;
   List<Follower> follower;
   List<UserCategoryList> userCategoryList;
+  String picResize;
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        uid: json["uid"],
-        googleId: json["googleId"],
-        name: json["name"],
-        age: json["age"],
-        sex: json["sex"],
-        introduction: json["introduction"],
-        pic: json["pic"],
-        birth: List<int>.from(json["birth"].map((x) => x)),
-        createTime: List<int>.from(json["create_time"].map((x) => x)),
-        email: json["email"],
-        tracker: List<Follower>.from(
-            json["tracker"].map((x) => Follower.fromJson(x))),
-        follower: List<Follower>.from(
-            json["follower"].map((x) => Follower.fromJson(x))),
-        userCategoryList: List<UserCategoryList>.from(
-            json["userCategoryList"].map((x) => UserCategoryList.fromJson(x))),
-      );
+      uid: json["uid"],
+      googleId: json["googleId"],
+      name: json["name"],
+      age: json["age"],
+      sex: json["sex"],
+      introduction: json["introduction"],
+      pic: json["pic"],
+      birth: List<int>.from(json["birth"].map((x) => x)),
+      createTime: List<int>.from(json["create_time"].map((x) => x)),
+      email: json["email"],
+      tracker:
+          List<Follower>.from(json["tracker"].map((x) => Follower.fromJson(x))),
+      follower: List<Follower>.from(
+          json["follower"].map((x) => Follower.fromJson(x))),
+      userCategoryList: List<UserCategoryList>.from(
+          json["userCategoryList"].map((x) => UserCategoryList.fromJson(x))),
+      picResize: json["picResize"]);
 
   Map<String, dynamic> toJson() => {
         "uid": uid,
@@ -97,6 +99,7 @@ class UserData {
         "follower": List<dynamic>.from(follower.map((x) => x.toJson())),
         "userCategoryList":
             List<dynamic>.from(userCategoryList.map((x) => x.toJson())),
+        "picResize": picResize
       };
 }
 

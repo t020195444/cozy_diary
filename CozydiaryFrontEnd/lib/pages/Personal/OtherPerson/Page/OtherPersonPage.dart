@@ -102,37 +102,43 @@ class PersonalView extends StatelessWidget {
           //         _tabController.controller, _tabController.tabs),
           //   ],
           // )
-          NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  _buildSliverHeaderWidget(),
-                  Obx(() => _DetailSliverWidget()),
-                  _buildTabbarWidget(
-                      _tabController.controller, _tabController.tabs)
-                ];
-              },
-              body: TabBarView(
-                controller: _tabController.controller,
-                children: [
-                  Obx(() => otherPersonPageController.postCover.isEmpty
-                      ? Center(
-                          child: Container(
-                          child: Icon(
-                            Icons.image_rounded,
-                            size: MediaQuery.of(context).size.width * 0.3,
-                          ),
-                        ))
-                      : InitOtherPersonPostGridView()),
-                  otherPersonPageController.postCover.isEmpty
-                      ? Center(
-                          child: Container(
-                          child: Icon(
-                            Icons.image_rounded,
-                          ),
-                        ))
-                      : InitOtherPersonCollectGridView()
-                ],
-              )),
+          RefreshIndicator(
+        onRefresh: (() async {
+          otherPersonPageController.getOtherUserData();
+          otherPersonPageController.getUserPostCover();
+        }),
+        child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                _buildSliverHeaderWidget(),
+                Obx(() => _DetailSliverWidget()),
+                _buildTabbarWidget(
+                    _tabController.controller, _tabController.tabs)
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController.controller,
+              children: [
+                Obx(() => otherPersonPageController.postCover.isEmpty
+                    ? Center(
+                        child: Container(
+                        child: Icon(
+                          Icons.image_rounded,
+                          size: MediaQuery.of(context).size.width * 0.3,
+                        ),
+                      ))
+                    : InitOtherPersonPostGridView()),
+                otherPersonPageController.postCover.isEmpty
+                    ? Center(
+                        child: Container(
+                        child: Icon(
+                          Icons.image_rounded,
+                        ),
+                      ))
+                    : InitOtherPersonCollectGridView()
+              ],
+            )),
+      ),
     );
   }
 }

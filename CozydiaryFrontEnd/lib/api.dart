@@ -34,4 +34,6 @@ class Api {
   static String postComment = '/addComment';
   //獲取全部語言
   static String getAllPost = "/getAllPost";
+  //依照類別抓貼文
+  static String getPostCoverByCategory = "/getPostCoverByCategory?cid=";
 }

@@ -56,8 +56,7 @@ class CategoryController extends GetxController {
       CategoryListModel response =
           await RegisterService.fetchUserCategoryList(uid);
       if (response.status == 200) {
-        if (response.data != null) {
-          print(response.data);
+        if (response.data != null && response.data != []) {
           response.data.forEach((element) {
             finalCategoryList.add(element.cid);
           });

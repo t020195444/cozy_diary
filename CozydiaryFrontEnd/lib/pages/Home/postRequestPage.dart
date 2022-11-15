@@ -21,7 +21,7 @@ class PostRequestPage extends StatelessWidget {
                 child: Text(
                   "貼文",
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 28,
                   ),
                 ),
               ),
@@ -34,7 +34,7 @@ class PostRequestPage extends StatelessWidget {
                 leading: Container(
                   child: Icon(
                     Icons.post_add,
-                    size: 64,
+                    size: 40,
                   ),
                 ),
                 title: Padding(
@@ -59,7 +59,7 @@ class PostRequestPage extends StatelessWidget {
                 child: Text(
                   "活動",
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 28,
                   ),
                 ),
               ),
@@ -72,7 +72,7 @@ class PostRequestPage extends StatelessWidget {
                 leading: Container(
                   child: Icon(
                     Icons.post_add,
-                    size: 64,
+                    size: 40,
                   ),
                 ),
                 title: Padding(

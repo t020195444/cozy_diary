@@ -4,8 +4,6 @@ import 'package:like_button/like_button.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../Model/postDetailModel.dart';
-
 class ViewPostScreen extends StatelessWidget {
   const ViewPostScreen({Key? key, required this.pid}) : super(key: key);
   final String pid;
