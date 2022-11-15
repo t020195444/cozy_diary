@@ -39,6 +39,7 @@ class ActivityGetPostController extends GetxController {
       email: "",
       tracker: [],
       follower: [],
+      picResize: "",
       userCategoryList: []).obs;
 
   getHolder(data) async {
