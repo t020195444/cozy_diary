@@ -476,7 +476,7 @@ class ActivityArticlePage extends StatelessWidget {
           TextButton(
               onPressed: () {
                 postController.goToDataBase();
-                Get.to(() => HomePageTabbar());
+                Get.offAll(() => HomePageTabbar());
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

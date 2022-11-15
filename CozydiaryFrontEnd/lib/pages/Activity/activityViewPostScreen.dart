@@ -3,6 +3,7 @@ import 'package:cozydiary/pages/Activity/controller/ActivityGetPostController.da
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 // ignore: must_be_immutable
 class ActivityViewPostScreen extends StatelessWidget {
@@ -14,6 +15,9 @@ class ActivityViewPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final contentCtr = TextEditingController(
+        text: getPostController.participantContent.value.toString());
+    //主畫面
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
@@ -32,8 +36,13 @@ class ActivityViewPostScreen extends StatelessWidget {
                   margin: const EdgeInsets.fromLTRB(2, 20, 5, 15),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image:
-                            NetworkImage(getPostController.userData.value.pic)),
+                        image: getPostController.isLoding.value
+                            ? AssetImage(
+                                    'CozydiaryFrontEnd/assets/images/Black.png')
+                                as ImageProvider
+                            : NetworkImage(
+                                getPostController.userData.value.pic,
+                              )),
                     border: Border.all(color: Colors.white, width: 2.5),
                     shape: BoxShape.circle,
                   ),
@@ -61,6 +70,18 @@ class ActivityViewPostScreen extends StatelessWidget {
                         child: Image.network(
                           ActivityPostService.activityDetailList['url'][0],
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
                         )),
                   ),
                 ),
@@ -116,29 +137,51 @@ class ActivityViewPostScreen extends StatelessWidget {
                         ),
                       )),
                   Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 10, top: 10),
+                        child: GestureDetector(
+                          onTap: () => Get.to(ShowActivityLocation()),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                  child: Icon(
+                                Icons.location_pin,
+                                size: 35,
+                                color: Color.fromARGB(255, 255, 77, 77),
+                              )),
+                              Text(
+                                "活動地點",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                  Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, top: 10),
                         child: Text(
                           "最後審核時間：" +
                               ActivityPostService
-                                  .activityDetailList['activityTime'][0]
+                                  .activityDetailList['auditTime'][0]
                                   .toString() +
                               "年" +
                               ActivityPostService
-                                  .activityDetailList['activityTime'][1]
+                                  .activityDetailList['auditTime'][1]
                                   .toString() +
                               "月" +
                               ActivityPostService
-                                  .activityDetailList['activityTime'][2]
+                                  .activityDetailList['auditTime'][2]
                                   .toString() +
                               "日" +
                               ActivityPostService
-                                  .activityDetailList['activityTime'][3]
+                                  .activityDetailList['auditTime'][3]
                                   .toString() +
                               "點" +
                               ActivityPostService
-                                  .activityDetailList['activityTime'][4]
+                                  .activityDetailList['auditTime'][4]
                                   .toString() +
                               "分",
                           style: TextStyle(
@@ -167,7 +210,116 @@ class ActivityViewPostScreen extends StatelessWidget {
                               "審核",
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {}),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) => Padding(
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: Container(
+                                            height: 200,
+                                            color: Color.fromARGB(
+                                                255, 215, 199, 194),
+                                            child: Center(
+                                                child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                  Expanded(
+                                                    child: Container(
+                                                        child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          height: 100,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 20,
+                                                                    left: 20),
+                                                            child: TextField(
+                                                              onChanged:
+                                                                  (value) {
+                                                                getPostController
+                                                                    .participantContent
+                                                                    .value = value;
+                                                              },
+                                                              controller:
+                                                                  contentCtr,
+                                                              cursorColor:
+                                                                  Colors.white,
+                                                              maxLines: 7,
+                                                              maxLength: 100,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                border:
+                                                                    InputBorder
+                                                                        .none,
+                                                                hintText:
+                                                                    '跟主辦方說說您想參加的理由...',
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0,
+                                                                        top:
+                                                                            10),
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  style: ElevatedButton
+                                                                      .styleFrom(
+                                                                    backgroundColor:
+                                                                        const Color.fromARGB(
+                                                                            255,
+                                                                            135,
+                                                                            110,
+                                                                            95),
+                                                                    textStyle: const TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16),
+                                                                    minimumSize: Size(
+                                                                        MediaQuery.of(context).size.width *
+                                                                            0.8,
+                                                                        40),
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(30)),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    getPostController
+                                                                        .setUpdateParticipantData();
+                                                                    Get.back();
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                    "報名",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ))),
+                                                      ],
+                                                    )),
+                                                  ),
+                                                ]))),
+                                      ));
+                            }),
                       )),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -189,26 +341,6 @@ class ActivityViewPostScreen extends StatelessWidget {
                         child: Text(
                           ActivityPostService.activityDetailList['content'],
                           style: TextStyle(fontSize: 16),
-                        )),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 10, top: 10),
-                        child: Row(
-                          children: [
-                            InkWell(
-                                onTap: () => Get.to(ShowActivityLocation()),
-                                child: Icon(
-                                  Icons.location_pin,
-                                  size: 35,
-                                  color: Color.fromARGB(255, 255, 77, 77),
-                                )),
-                            Text(
-                                getPostController.activityLng.value.toString() +
-                                    ","),
-                            Text(getPostController.activityLat.value.toString())
-                          ],
                         )),
                   ),
                   Align(

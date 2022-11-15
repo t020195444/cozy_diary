@@ -22,8 +22,8 @@ class PostService {
 
   //獲取主頁貼文預設圖
   static Future<PostCoverModule?> fetchPostCover(String uid) async {
-    var response = await dio.get(
-        Api.ipUrl + Api.getPostCoverByUserCategory + '116177189475554672826');
+    var response =
+        await dio.get(Api.ipUrl + Api.getPostCoverByUserCategory + uid);
 
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);

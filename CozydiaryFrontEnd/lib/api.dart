@@ -40,4 +40,6 @@ class Api {
   static String postComment = '/addComment';
   //獲取全部語言
   static String getAllPost = "/getAllPost";
+  //報名活動
+  static String updateParticipant = "/updateParticipant";
 }
