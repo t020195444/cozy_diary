@@ -27,6 +27,6 @@ class ChangePageTabbarController extends GetxController
   }
 
   void oncircleItemsTappeduser() {
-    Get.to(PostActivityPage());
+    Get.to(() => PostActivityPage());
   }
 }

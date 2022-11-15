@@ -1,8 +1,10 @@
 import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
+import 'package:cozydiary/pages/Activity/ActivityViewPostScreen.dart';
+import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
-import '../../../screen_widget/viewPostScreen.dart';
 
 class BuildCardActivity extends StatelessWidget {
   final List<Activity> PostCovers;
@@ -14,14 +16,17 @@ class BuildCardActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Get.to(
-        //   ViewPostScreen(pid: PostCovers[index].,),
-        //   transition: Transition.fadeIn,
-        // );
+      onTap: () async {
+        await ActivityPostService.getActivityDetail(
+            key.toString().replaceAll(RegExp(r"[^\s\w]"), ""));
+
+        Get.to(
+          ActivityViewPostScreen(),
+          transition: Transition.fadeIn,
+        );
       },
       child: Hero(
-        tag: PostCovers[index].cover,
+        tag: index.toString(),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),

@@ -3,6 +3,7 @@ import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
@@ -36,6 +37,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      localizationsDelegates: [
+        PickerLocalizationsDelegate.delegate, // 如果要使用本地化，请添加此行，则可以显示中文按钮
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('zh', 'CH'),
+        const Locale('ko', 'KO'),
+        const Locale('it', 'IT'),
+        const Locale('ar', 'AR'),
+        const Locale('tr', 'TR')
+      ],
       title: 'CozyDiary',
       //所有主題顏色與框架都是用這個套件調整，若要細部調整，用以下網址
       //https://rydmike.com/flexcolorscheme/themesplayground-v6/#/

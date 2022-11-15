@@ -13,7 +13,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
   @override
   Widget build(BuildContext context) {
     //Controller
-    final postController = new ActivityPostController();
+    final postController = Get.put(ActivityPostController());
 
     //initState
     postController.fetchMedia();
@@ -21,6 +21,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('發起活動'),
           actions: [
             TextButton(
                 onPressed: () {
@@ -34,12 +35,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                         textColor: Colors.white,
                         fontSize: 16.0);
                   } else {
-                    print(ActivityPostController.pickedList);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ActivityArticlePage()),
-                    );
+                    Get.to(() => ActivityArticlePage());
                   }
                 },
                 child: Padding(

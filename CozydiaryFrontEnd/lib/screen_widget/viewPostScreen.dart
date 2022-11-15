@@ -190,6 +190,7 @@ class _viewPostPic extends StatelessWidget {
         child: Hero(
           tag: 'pic',
           child: ListView.builder(
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             key: UniqueKey(),
             itemBuilder: (BuildContext context, int index) {

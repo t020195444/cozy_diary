@@ -1,3 +1,4 @@
+import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
 import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

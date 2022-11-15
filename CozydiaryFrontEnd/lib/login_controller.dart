@@ -24,6 +24,7 @@ class LoginController extends GetxController {
   late List<String> responseBody;
   var userData = <RegisterUserDataModel>[].obs;
   var box = Hive.box("UidAndState");
+
   static Map tempData = {};
 
   void loginWithGoogle() async {
@@ -74,15 +75,12 @@ class LoginController extends GetxController {
 
     if (responseBody['status'] == 200 &&
         responseBody['data']['googleId'] == id &&
-        id != '') {
+        id != "") {
       isLogin = true;
       print("login done. isLogin = " + isLogin.toString());
-      // Get.to(HomePageTabbar());
     } else {
       isLogin = false;
     }
-
-    // Get.to(RegisterPage());
     return isLogin;
   }
 

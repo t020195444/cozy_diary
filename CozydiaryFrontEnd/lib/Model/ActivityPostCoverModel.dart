@@ -37,6 +37,7 @@ class ActivityPostCoverModule {
 
 class Activity {
   Activity({
+    required this.aid,
     required this.username,
     required this.placeLng,
     required this.placeLat,
@@ -48,7 +49,7 @@ class Activity {
 
     // required this.postFiles,
   });
-
+  int aid;
   String username;
   double placeLng;
   double placeLat;
@@ -57,13 +58,13 @@ class Activity {
   String cover;
   String pic;
   List<int> activityTime;
-  // List<ActivityPostFile> postFiles;
 
   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
         username: json["username"],
         placeLng: json["placeLng"].toDouble(),
         placeLat: json["placeLat"].toDouble(),
         likes: json["likes"],
+        aid: json["aid"],
         pic: json["pic"],
         activityName: json["activityName"],
         cover: json["cover"],
@@ -78,6 +79,7 @@ class Activity {
         "placeLat": placeLat,
         "pic": pic,
         "likes": likes,
+        "aid": aid,
         "activityName": activityName,
         "cover": cover,
         "activityTime": List<int>.from(activityTime.map((x) => x)),

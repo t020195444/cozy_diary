@@ -28,6 +28,9 @@ class ActivityScreen extends StatelessWidget {
                 itemCount: postCoverController.postCover.length,
                 itemBuilder: (context, index) {
                   return BuildCardActivity(
+                    key: ValueKey({
+                      postCoverController.postCover.value[index].aid,
+                    }),
                     PostCovers: postCoverController.postCover,
                     index: index,
                   );
