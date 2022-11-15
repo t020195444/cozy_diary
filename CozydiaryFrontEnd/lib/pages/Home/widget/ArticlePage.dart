@@ -20,10 +20,11 @@ class ArticlePage extends StatelessWidget {
       appBar: AppBar(
         actions: [
           TextButton(
-              onPressed: () {
+              onPressed: () async {
                 _createPostController.setContent(
                     titleCtr.text, contentCtr.text);
-                _createPostController.goToDataBase();
+                await _createPostController.goToDataBase();
+
                 Get.to(HomePageTabbar());
               },
               child: Padding(

@@ -112,7 +112,7 @@ class CreatePostController extends GetxController {
   var postFiles = <PostFile>[];
   static List allPicName = [];
 
-  void goToDataBase() async {
+  goToDataBase() async {
     // reset Data
     checkBox = [];
     checkBox =
@@ -121,7 +121,6 @@ class CreatePostController extends GetxController {
     // Post
     var formdata = writePost();
     await PostService.postPostData(await formdata);
-    print(await formdata);
   }
 
   void setPost() {

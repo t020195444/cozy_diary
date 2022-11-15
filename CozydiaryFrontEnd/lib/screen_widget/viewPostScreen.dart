@@ -1,142 +1,202 @@
+import 'package:cozydiary/LocalDB/UidAndState.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:like_button/like_button.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ViewPostScreen extends StatelessWidget {
-  const ViewPostScreen({Key? key, required this.pid}) : super(key: key);
+  ViewPostScreen({Key? key, required this.pid}) : super(key: key);
   final String pid;
+  final commentCtr = TextEditingController();
+  final viewPostController = Get.put(ViewPostController());
 
   @override
   Widget build(BuildContext context) {
-    final commentCtr = TextEditingController();
-    var viewPostController = Get.put(ViewPostController());
     viewPostController.currViewPostID = pid;
-    // key.toString().split(",")[1].replaceAll(RegExp(r"[^\s\w]"), "");
     viewPostController.getPostDetail();
-    return Obx((() {
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-              leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Get.back();
-            },
-          )),
-          body: viewPostController.isLoading.value
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+            leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.back();
+          },
+        )),
+        body: SingleChildScrollView(
+          child: Obx((() => viewPostController.isLoading.value
               ? Center(
                   child: CircularProgressIndicator(),
                 )
               : Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisSize: MainAxisSize.max,
+                  // mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
-                        flex: 5,
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.to(() => _viewPostPic());
-                          },
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Hero(
-                                  tag: 'pic',
-                                  child: Image.network(
-                                    viewPostController.currViewPostDetial.value
-                                        .postFiles[0].postUrl,
-                                    fit: BoxFit.cover,
-                                  )),
-                            ),
-                          ),
-                        )),
-                    Divider(
-                      thickness: 2,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, top: 10),
-                                  child: Text(viewPostController
-                                      .currViewPostDetial.value.title),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.to(() => _viewPostPic());
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Hero(
+                                tag: 'pic',
+                                child: Image.network(
+                                  viewPostController.currViewPostDetial
+                                      .value['postFiles'][0]['postUrl'],
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  },
                                 )),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                  padding: EdgeInsets.only(left: 10, top: 10),
-                                  child: Text(viewPostController
-                                      .currViewPostDetial.value.content)),
-                            )
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                    viewPostController.currViewPostDetial.value.comments.isEmpty
-                        ? Expanded(
-                            flex: 4,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 10, top: 10),
-                                child: Container(
-                                  child: Text('目前還沒有人留言'),
-                                ),
-                              ),
-                            ))
-                        : Obx(
-                            () => Expanded(
-                                flex: 4,
-                                child: ListView.builder(
-                                    itemCount: viewPostController
-                                        .currViewPostDetial
-                                        .value
-                                        .comments
-                                        .length,
-                                    itemBuilder: ((context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ListTile(
-                                          leading: CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                'https://cdn.realsport101.com/images/ncavvykf/epicstream/89bba69c108a1c7a718b8e3cb8831e6fba8925da-1920x1080.jpg?rect=0,0,1919,1080&w=686&h=386&auto=format&dpr=2'),
-                                          ),
-                                          title: Text(viewPostController
-                                              .currViewPostDetial
-                                              .value
-                                              .comments[index]
-                                              .uid),
-                                          subtitle: Text(
-                                            viewPostController
-                                                .currViewPostDetial
-                                                .value
-                                                .comments[index]
-                                                .text,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          trailing: SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.1,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            child: LikeButton(),
-                                          ),
-                                        ),
-                                      );
-                                    }))),
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                ViewPostController.currPostCover.pic),
                           ),
-                    Expanded(
-                      flex: 1,
+                          title: Text(viewPostController
+                              .currViewPostDetial.value['title']),
+                          subtitle: Text(viewPostController
+                              .currViewPostDetial.value['content']),
+                          trailing: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            width: MediaQuery.of(context).size.width * 0.1,
+                            child: Hive.box('UidAndState').get('uid') ==
+                                    viewPostController.currViewPostDetial['uid']
+                                ? IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.edit)) //編輯貼文
+                                : Container(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      thickness: 2,
+                    ),
+                    if (viewPostController
+                        .currViewPostDetial.value['comments'].isEmpty)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, top: 10),
+                          child: Container(
+                            child: Text('目前還沒有人留言'),
+                          ),
+                        ),
+                      )
+                    else
+                      Obx(
+                        () => Expanded(
+                          child: ListView.builder(
+                              itemCount: viewPostController
+                                  .currViewPostDetial.value['comments'].length,
+                              itemBuilder: ((context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, right: 8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      //去使用者頁面
+                                    },
+                                    onLongPress: () {
+                                      var uid =
+                                          Hive.box("UidAndState").get('uid');
+                                      if (uid ==
+                                          viewPostController.currViewPostDetial[
+                                              'comments'][index]['uid']) {
+                                        showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text('編輯留言'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context, '編輯');
+                                                },
+                                                child: const Text('編輯'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  viewPostController.deleteComment(
+                                                      viewPostController
+                                                                  .currViewPostDetial[
+                                                              'comments'][index]
+                                                          ['commentId']);
+                                                  Navigator.pop(context, '刪除');
+                                                },
+                                                child: const Text('刪除'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            viewPostController
+                                                    .currViewPostDetial
+                                                    .value['comments'][index]
+                                                ['pic']),
+                                      ),
+                                      title: Text(
+                                        viewPostController.currViewPostDetial
+                                                .value['comments'][index]
+                                            ['username'],
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      subtitle: Text(
+                                        viewPostController.currViewPostDetial
+                                            .value['comments'][index]['text'],
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      trailing: SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.1,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.1,
+                                        child: LikeButton(),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              })),
+                        ),
+                      ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
                       child: Container(
+                        height: MediaQuery.of(context).size.height * 0.1,
                         child: Padding(
                           padding: const EdgeInsets.only(right: 20, left: 20),
                           child: TextField(
@@ -169,12 +229,12 @@ class ViewPostScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
-                ),
+                ))),
         ),
-      );
-    }));
+      ),
+    );
   }
 }
 
@@ -200,12 +260,25 @@ class _viewPostPic extends StatelessWidget {
                 height: 50,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
-                    child: Image.network(viewPostController
-                        .currViewPostDetial.value.postFiles[index].postUrl)),
+                    child: Image.network(
+                      viewPostController.currViewPostDetial.value['postFiles']
+                          [index]['postUrl'],
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
+                    )),
               );
             },
             itemCount:
-                viewPostController.currViewPostDetial.value.postFiles.length,
+                viewPostController.currViewPostDetial.value['postFiles'].length,
           ),
         ),
       ),

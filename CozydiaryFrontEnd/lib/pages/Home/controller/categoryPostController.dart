@@ -32,7 +32,7 @@ class CategoryPostController extends GetxController {
   }
 
   Future<void> getPostCover(String cid) async {
-    print(cid);
+    // print(cid);
     if (cid == "") {
       try {
         isLoading(true);
@@ -40,7 +40,7 @@ class CategoryPostController extends GetxController {
         if (Posts != null) {
           if (Posts.status == 200) {
             postCover.value = Posts.data;
-            print("userCategory：" + Posts.data.toString());
+            // print("userCategory：" + Posts.data.toString());
             // update(['推薦']);
           }
         }
@@ -54,7 +54,7 @@ class CategoryPostController extends GetxController {
         if (Posts != null) {
           if (Posts.status == 200) {
             postCover.value = Posts.data;
-            print("Category：" + Posts.data.toString());
+            // print("Category：" + Posts.data.toString());
             // update([cid.toString()]);
           }
         }
