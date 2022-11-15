@@ -13,19 +13,21 @@ class SelfPageController extends GetxController {
   var isLoading = true.obs; //是否再載入
   var uid = ""; //使用者id
   var userData = UserData(
-      uid: 0,
-      googleId: "",
-      name: "",
-      age: 0,
-      sex: 0,
-      introduction: "",
-      pic: "",
-      birth: [],
-      createTime: [],
-      email: "",
-      tracker: [],
-      follower: [],
-      userCategoryList: []).obs; //使用者資料暫存
+          uid: 0,
+          googleId: "",
+          name: "",
+          age: 0,
+          sex: 0,
+          introduction: "",
+          pic: "",
+          birth: [],
+          createTime: [],
+          email: "",
+          tracker: [],
+          follower: [],
+          userCategoryList: [],
+          picResize: "")
+      .obs; //使用者資料暫存
   var postCover = <PostCoverData>[].obs;
   var box = Hive.box("UidAndState");
   var trackerList = <TrackerList>[];
@@ -39,7 +41,7 @@ class SelfPageController extends GetxController {
     super.onInit();
   }
 
-  void getUserData() async {
+  Future<void> getUserData() async {
     try {
       isLoading(true);
 
@@ -52,7 +54,7 @@ class SelfPageController extends GetxController {
     } finally {}
   }
 
-  void getUserPostCover(String uid) async {
+  Future<void> getUserPostCover(String uid) async {
     try {
       var Posts = await PersonalService.fetchUserPostCover(uid);
       if (Posts != null) {

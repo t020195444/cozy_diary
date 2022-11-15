@@ -4,6 +4,7 @@
 	<dict>
 	<key>io.flutter.embedded_views_preview</key>
 <true/>
+		<string>GoogleMap</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>PhotoLibraryUsage</string>
 		<key>NSCameraUsageDescription</key>

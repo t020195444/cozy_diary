@@ -15,19 +15,21 @@ class OtherPersonPageController extends GetxController {
   var userUid = "";
   var isFollow = false.obs;
   var userData = UserData(
-      uid: 0,
-      googleId: "",
-      name: "",
-      age: 0,
-      sex: 0,
-      introduction: "",
-      pic: "",
-      birth: [],
-      createTime: [],
-      email: "",
-      tracker: [],
-      follower: [],
-      userCategoryList: []).obs;
+          uid: 0,
+          googleId: "",
+          name: "",
+          age: 0,
+          sex: 0,
+          introduction: "",
+          pic: "",
+          birth: [],
+          createTime: [],
+          email: "",
+          tracker: [],
+          follower: [],
+          userCategoryList: [],
+          picResize: "")
+      .obs;
   var postCover = <PostCoverData>[].obs;
   var trackerList = <TrackerList>[];
   int tid = -1;
@@ -38,7 +40,7 @@ class OtherPersonPageController extends GetxController {
     super.onInit();
   }
 
-  void getOtherUserData() async {
+  Future<void> getOtherUserData() async {
     try {
       isLoading(true);
       var UserData = await PersonalService.fetchUserData(otherUid);
@@ -74,24 +76,6 @@ class OtherPersonPageController extends GetxController {
     }
   }
 
-  void getConstraintsHeight(var height) {
-    constraintsHeight.value = height;
-    update();
-  }
-
-  void onTabReadmore() {
-    readmore.value = !readmore.value;
-    print(readmore.value);
-  }
-
-  void increaseAppbarHeight() {
-    constraintsHeight.value = constraintsHeight.value + difference;
-  }
-
-  void reduceAppbarHeight() {
-    constraintsHeight.value = constraintsHeight.value - difference;
-  }
-
   void addTracker() async {
     try {
       AddTrackerModel trackerModel =
@@ -105,18 +89,6 @@ class OtherPersonPageController extends GetxController {
           isFollow.value = true;
       }
       ;
-    } finally {}
-  }
-
-  void deleteTracker() async {
-    try {
-      print(tid);
-      if (tid != -1) {
-        var trakerResponse =
-            await PersonalService.deleteTracker(tid.toString());
-        isFollow.value = false;
-      } else
-        print("沒有追蹤");
     } finally {}
   }
 

@@ -32,6 +32,17 @@ class PostService {
     return fromJsonValue;
   }
 
+  //依照類別獲取貼文預設圖
+  static Future<PostCoverModule?> fetchCategoryPostCover(String cid) async {
+    var response = await dio.get(Api.ipUrl + Api.getPostCoverByCategory + cid);
+
+    var jsonString = response.data;
+    var encodeJsonString = jsonEncode(jsonString);
+    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+
+    return fromJsonValue;
+  }
+
   //獲取所有貼文
   static Future<PostCoverModule?> fetchAllPostCover() async {
     var response = await dio.get(Api.ipUrl + Api.getAllPost);

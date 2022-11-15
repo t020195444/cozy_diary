@@ -28,10 +28,6 @@ class PersonalView extends StatelessWidget {
   Widget build(BuildContext context) {
     //tabBar的控制器
     final _tabController = Get.put(TabbarController());
-    //介紹欄的key
-    final _introductionKey = GlobalKey();
-    //原始介紹欄高度
-    late double oldIntroductionHeight = 0.0;
     final selfController = Get.put(SelfPageController());
 
     //使用者頭貼照片
@@ -103,35 +99,46 @@ class PersonalView extends StatelessWidget {
     }
 
     return Scaffold(
+      key: GlobalKey<RefreshIndicatorState>(),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       drawer: DrawerWidget(
-        userImageUrl: selfController.userData.value.pic,
+        userImageUrl: selfController.userData.value.picResize,
         userName: selfController.userData.value.name,
         uid: selfController.uid,
       ),
-      body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              _buildSliverHeaderWidget(),
-              Obx(() => _DetailSliverWidget()),
-              _buildTabbarWidget(_tabController.controller, _tabController.tabs)
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController.controller,
-            children: [
-              Obx(() => selfController.postCover.isEmpty
-                  ? Center(
-                      child: Container(
-                      child: Icon(
-                        Icons.image_rounded,
-                      ),
-                    ))
-                  : InitPostGridView()),
-              InitCollectGridView()
-            ],
-          )),
+      body: RefreshIndicator(
+        notificationPredicate: ((notification) {
+          return true;
+        }),
+        onRefresh: (() async {
+          await selfController.getUserData();
+          await selfController.getUserPostCover(uid);
+        }),
+        child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                _buildSliverHeaderWidget(),
+                Obx(() => _DetailSliverWidget()),
+                _buildTabbarWidget(
+                    _tabController.controller, _tabController.tabs)
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController.controller,
+              children: [
+                Obx(() => selfController.postCover.isEmpty
+                    ? Center(
+                        child: Container(
+                        child: Icon(
+                          Icons.image_rounded,
+                        ),
+                      ))
+                    : InitPostGridView()),
+                InitCollectGridView()
+              ],
+            )),
+      ),
     );
   }
 }

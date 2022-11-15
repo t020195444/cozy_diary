@@ -38,8 +38,12 @@ class Api {
   static String userCategoryList = "userCategoryList?uid=";
   //新增留言
   static String postComment = '/addComment';
+  //刪除留言
+  static String deleteComment = 'deleteComment?cid=';
   //獲取全部語言
   static String getAllPost = "/getAllPost";
   //報名活動
   static String updateParticipant = "/updateParticipant";
+  //依照類別抓貼文
+  static String getPostCoverByCategory = "/getPostCoverByCategory?cid=";
 }

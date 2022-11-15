@@ -1,29 +1,31 @@
 import 'package:cozydiary/Model/writePostModel.dart';
-import 'package:cozydiary/postJsonService.dart';
-import 'package:cozydiary/login_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
-
+import '../../../Model/categoryList.dart';
 import '../../../Model/postCoverModel.dart';
+import '../../../PostJsonService.dart';
+import '../../Register/Service/registerService.dart';
 
 class HomePostController extends GetxController {
-  var loginController = Get.put(LoginController());
   var postCover = <PostCoverData>[].obs;
   var isLoading = true.obs;
   late Post postsContext;
   var title = "".obs;
   var content = "".obs;
   var cover = "".obs;
-  var postFiles = <PostFile>[];
+  var postFiles = <PostFile>[].obs;
   var cid = 0.obs;
   var imageFile = <String>[].obs;
+  var userCategory = <Category>[];
+  late List<Tab> nestedTabs = <Tab>[];
+  late List<Widget> screen = <Widget>[];
   String uid = Hive.box("UidAndState").get("uid");
 
   @override
   void onInit() {
-    getPostCover();
+    setUserCategory();
     Post(
         uid: "",
         title: "",
@@ -37,23 +39,49 @@ class HomePostController extends GetxController {
     super.onInit();
   }
 
-  void getPostCover() async {
+  // Future<void> getPostCover(String cid) async {
+  //   print(cid);
+  //   if (cid == "") {
+  //     try {
+  //       isLoading(true);
+  //       var Posts = await PostService.fetchPostCover(uid);
+  //       if (Posts != null) {
+  //         if (Posts.status == 200) {
+  //           postCover.value = Posts.data;
+  //           print("userCategory：" + Posts.data.toString());
+  //         }
+  //       }
+  //     } finally {
+  //       isLoading.value = false;
+  //     }
+  //   } else {
+  //     try {
+  //       isLoading(true);
+  //       var Posts = await PostService.fetchCategoryPostCover(cid);
+  //       if (Posts != null) {
+  //         if (Posts.status == 200) {
+  //           postCover.value = Posts.data;
+  //           print("Category：" + Posts.data.toString());
+  //         }
+  //       }
+  //     } finally {
+  //       isLoading.value = false;
+  //     }
+  //   }
+  // }
+
+  Future<void> setUserCategory() async {
+    CategoryListModel category = await RegisterService.fetchCategoryList();
     try {
-      isLoading(true);
-      var Posts = await PostService.fetchPostCover(uid);
-      if (Posts != null) {
-        if (Posts.status == 200) {
-          postCover.value = Posts.data;
-        }
+      if (category.status == 200) {
+        userCategory = category.data;
       }
-    } finally {
-      isLoading.value = false;
-    }
+    } finally {}
   }
 
   void setPost() {
     postsContext = Post(
-        uid: loginController.id,
+        uid: uid,
         title: title.value,
         content: content.value,
         likes: 0,
@@ -79,11 +107,5 @@ class HomePostController extends GetxController {
     });
 
     return formData;
-  }
-
-  @override
-  void refresh() {
-    getPostCover();
-    super.refresh();
   }
 }

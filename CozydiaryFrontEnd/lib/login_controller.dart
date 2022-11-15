@@ -77,7 +77,7 @@ class LoginController extends GetxController {
         responseBody['data']['googleId'] == id &&
         id != "") {
       isLogin = true;
-      print("login done. isLogin = " + isLogin.toString());
+      // print("login done. isLogin = " + isLogin.toString());
     } else {
       isLogin = false;
     }
@@ -111,8 +111,8 @@ class LoginController extends GetxController {
       }),
     );
     var responseBody = jsonDecode(response.body);
-    print(responseBody['id']);
-    print(responseBody['messenge']);
+    // print(responseBody['id']);
+    // print(responseBody['messenge']);
 
     // if (responseBody != null) {
     //   Get.to(HomePageTabbar());
@@ -120,6 +120,6 @@ class LoginController extends GetxController {
   }
 
   void printid() async {
-    print(userdata.RegisterUserData);
+    // print(userdata.RegisterUserData);
   }
 }

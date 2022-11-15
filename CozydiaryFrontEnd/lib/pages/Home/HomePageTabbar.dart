@@ -23,7 +23,6 @@ class HomePageTabbar extends StatelessWidget {
       // UserDataPage(),
     ];
     final controller = Get.put(ChangePageTabbarController());
-    final HomePostController postController = Get.put(HomePostController());
 
     return Obx((() => Scaffold(
           body: screens[controller.selectedIndex.value]
