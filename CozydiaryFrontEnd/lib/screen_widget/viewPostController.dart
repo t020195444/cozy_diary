@@ -56,4 +56,17 @@ class ViewPostController extends GetxController {
     await dio.post(Api.ipUrl + Api.deleteComment + cid.toString());
     await getPostDetail();
   }
+
+  updateComment(String cid, String text) async {
+    await dio.post(
+        Api.ipUrl + Api.updateComment + 'cid=' + cid + '&' + 'text=' + text);
+    await getPostDetail();
+  }
+
+  updatePost(String pid, String title, String content) async {
+    var updateJson = {};
+    updateJson = {'pid': pid, 'title': title, 'content': content};
+    await dio.post(Api.ipUrl + Api.updatePost, data: updateJson);
+    await getPostDetail();
+  }
 }
