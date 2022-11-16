@@ -61,6 +61,7 @@ class LoginController extends GetxController {
 
   void logout() async {
     googleAccount.value = await googleSignIn.signOut();
+    Get.close(1);
     Get.offAll(const MyHomePage(
       title: '',
     ));

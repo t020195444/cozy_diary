@@ -1,13 +1,10 @@
-import 'package:cozydiary/pages/Activity/ActivityLocationSearch.dart';
-import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
+import 'package:cozydiary/pages/Activity/Post/ActivityLocationSearch.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 var peopleList = [for (var i = 1; i <= 30; i++) Text(i.toString())];

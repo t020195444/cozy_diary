@@ -46,4 +46,6 @@ class Api {
   static String updateParticipant = "/updateParticipant";
   //依照類別抓貼文
   static String getPostCoverByCategory = "/getPostCoverByCategory?cid=";
+  //審核貼文列表
+  static String getParticipantList = "/getParticipantList?aid=";
 }

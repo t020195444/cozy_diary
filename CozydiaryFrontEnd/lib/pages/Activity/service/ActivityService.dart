@@ -10,13 +10,19 @@ class ActivityService {
   static var getActivityUri =
       'http://140.131.114.166:80/getActivityCover?option=2';
 
-  addActivity(jsonString) async {
-    await updateParticipant(jsonString);
-  }
-
-  //報名活動
+  //報名活動API
   Future<dynamic> updateParticipant(Map formData) async {
     return await dio.post(Api.ipUrl + Api.updateParticipant, data: formData);
+  }
+
+  //審核列表API
+  Future<dynamic> getParticipantList(String i) async {
+    var response = await dio.get(Api.ipUrl + Api.getParticipantList + i);
+
+    var jsonString = response.data;
+    print(jsonString['data'].toString());
+
+    return jsonString['data'];
   }
 
   static Future<UserModel?> fetchActivityData() async {

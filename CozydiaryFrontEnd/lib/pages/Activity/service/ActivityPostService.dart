@@ -25,7 +25,6 @@ class ActivityPostService {
     }
     getpostController.getHolder(data['data']['holder'].toString());
     getpostController.setPost(data);
-
     activityDetailList['holder'] = data['data']['holder'];
     activityDetailList['activityName'] = data['data']['activityName'];
     activityDetailList['placeLng'] = data['data']['placeLng'];

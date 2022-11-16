@@ -11,6 +11,7 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final postCoverController = Get.put(ActivityController());
+
     return Obx(() {
       if (postCoverController.isLoading.value) {
         return Center(

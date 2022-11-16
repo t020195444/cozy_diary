@@ -1,5 +1,6 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
 import 'package:cozydiary/login_controller.dart';
+import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
 import 'package:cozydiary/pages/Personal/Service/PersonalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -18,7 +19,7 @@ class ActivityGetPostController extends GetxController {
   RxDouble activityLng = 0.0.obs;
   RxString activityLocation = "".obs;
   RxInt activityLike = 0.obs;
-  // RxList<dynamic> activityPeople = [].obs;
+  RxInt activityPeople = 0.obs;
   RxInt activityPayment = 0.obs;
   RxInt activitybudget = 0.obs;
   RxInt actId = 1.obs;
@@ -30,17 +31,39 @@ class ActivityGetPostController extends GetxController {
   RxBool isLoding = true.obs;
   RxString participantContent = "".obs;
   RxBool isParticipant = false.obs;
+  RxList<dynamic> activityParticipant = [].obs; //參加人列表
+  RxList<dynamic> checkActivityParticipant = [].obs; //審核列表
 
-  Map updateParticipantData = {};
+  Map updateParticipantData = {}; //參加人資料
 
+  //獲取審核列表
+  getActivityParticipantList() async {
+    checkActivityParticipant.value =
+        await ActivityService().getParticipantList(activityId.value.toString());
+  }
+
+  //判斷是否已經報名
+  isActivityParticipant() async {
+    for (var i = 0; i < activityParticipant.length; i++) {
+      if (activityParticipant[i]["participant"] ==
+          Hive.box("UidAndState").get("uid")) {
+        isParticipant.value = true;
+        break;
+      }
+    }
+  }
+
+  //報名活動
   setUpdateParticipantData() async {
     updateParticipantData = {
       "participant": Hive.box("UidAndState").get("uid"),
       "reason": participantContent.value.toString(),
       "aid": activityId.value,
     };
-    print(updateParticipantData.toString());
-    await ActivityService().addActivity(updateParticipantData);
+    await ActivityService().updateParticipant(updateParticipantData); //呼叫報名API
+    await ActivityPostService.getActivityDetail(
+        activityId.value.toString()); //重新拉活動資訊
+    update(); //更新
   }
 
   late final userData = UserData(
@@ -100,11 +123,13 @@ class ActivityGetPostController extends GetxController {
     activityLat.value = data['data']['placeLat'];
     activityLng.value = data['data']['placeLng'];
     activityLike.value = data['data']['likes'];
-    // activityPeople.value = data['data']['participants'];
+    activityPeople.value = data['data']['participants'];
     activityPayment.value = data['data']['payment'];
     activitybudget.value = data['data']['budget'];
     actId.value = data['data']['actId'];
     selectActPayment.value = data['data']['payment'];
+    activityParticipant.value = data['data']["participant"];
     isLoding.value = false;
+    await isActivityParticipant();
   }
 }

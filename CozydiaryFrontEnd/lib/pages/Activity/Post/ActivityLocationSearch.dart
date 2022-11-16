@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:cozydiary/pages/Activity/ActivityArticlePage.dart';
+import 'package:cozydiary/pages/Activity/Post/ActivityArticlePage.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

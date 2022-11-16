@@ -1,5 +1,5 @@
 import 'package:cozydiary/Model/ActivityPostCoverModel.dart';
-import 'package:cozydiary/pages/Activity/ActivityViewPostScreen.dart';
+import 'package:cozydiary/pages/Activity/Screen/ActivityViewPostScreen.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 
 import 'package:flutter/material.dart';

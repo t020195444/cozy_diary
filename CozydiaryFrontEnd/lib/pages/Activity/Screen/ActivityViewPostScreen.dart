@@ -1,4 +1,5 @@
 import 'package:cozydiary/pages/Activity/Map/ShowActivityLocation.dart';
+import 'package:cozydiary/pages/Activity/Screen/ActivityParticipantListScreen.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityGetPostController.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:flutter/material.dart';
@@ -191,136 +192,189 @@ class ActivityViewPostScreen extends StatelessWidget {
                           ),
                         ),
                       )),
-                  Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0, top: 10),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 135, 110, 95),
-                              textStyle: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
-                              minimumSize: Size(
-                                  MediaQuery.of(context).size.width * 0.8, 40),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                            ),
-                            child: const Text(
-                              "審核",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (context) => Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: MediaQuery.of(context)
-                                                .viewInsets
-                                                .bottom),
-                                        child: Container(
-                                            height: 200,
-                                            color: Color.fromARGB(
-                                                255, 215, 199, 194),
-                                            child: Center(
-                                                child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: <Widget>[
-                                                  Expanded(
-                                                    child: Container(
-                                                        child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Container(
-                                                          height: 100,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 20,
-                                                                    left: 20),
-                                                            child: TextField(
-                                                              onChanged:
-                                                                  (value) {
-                                                                getPostController
-                                                                    .participantContent
-                                                                    .value = value;
-                                                              },
-                                                              controller:
-                                                                  contentCtr,
-                                                              cursorColor:
-                                                                  Colors.white,
-                                                              maxLines: 7,
-                                                              maxLength: 100,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                border:
-                                                                    InputBorder
-                                                                        .none,
-                                                                hintText:
-                                                                    '跟主辦方說說您想參加的理由...',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10.0,
-                                                                        top:
-                                                                            10),
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    backgroundColor:
-                                                                        const Color.fromARGB(
-                                                                            255,
-                                                                            135,
-                                                                            110,
-                                                                            95),
-                                                                    textStyle: const TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            16),
-                                                                    minimumSize: Size(
-                                                                        MediaQuery.of(context).size.width *
-                                                                            0.8,
-                                                                        40),
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(30)),
-                                                                  ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    getPostController
-                                                                        .setUpdateParticipantData();
-                                                                    Get.back();
-                                                                  },
+                  getPostController.activityHolder ==
+                          Hive.box("UidAndState").get("uid")
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, top: 10),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 135, 110, 95),
+                                  textStyle: const TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                  minimumSize: Size(
+                                      MediaQuery.of(context).size.width * 0.8,
+                                      40),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                ),
+                                onPressed: () async {
+                                  await getPostController
+                                      .getActivityParticipantList();
+                                  await Get.to(
+                                      () => ActivityParticipantListScreen());
+                                },
+                                child: const Text(
+                                  "審核",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )))
+                      : getPostController.isParticipant == true
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, top: 10),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 169, 168, 168),
+                                      textStyle: const TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width *
+                                              0.8,
+                                          40),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                    ),
+                                    onPressed: null,
+                                    child: const Text(
+                                      "已報名",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )))
+                          : Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10.0, top: 10),
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 135, 110, 95),
+                                      textStyle: const TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width *
+                                              0.8,
+                                          40),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                    ),
+                                    child: const Text(
+                                      "報名",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (context) => Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom:
+                                                        MediaQuery.of(context)
+                                                            .viewInsets
+                                                            .bottom),
+                                                child: Container(
+                                                    height: 200,
+                                                    color: Color.fromARGB(
+                                                        255, 215, 199, 194),
+                                                    child: Center(
+                                                        child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: <Widget>[
+                                                          Expanded(
+                                                            child: Container(
+                                                                child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Container(
+                                                                  height: 100,
                                                                   child:
-                                                                      const Text(
-                                                                    "報名",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white),
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            20,
+                                                                        left:
+                                                                            20),
+                                                                    child:
+                                                                        TextField(
+                                                                      onChanged:
+                                                                          (value) {
+                                                                        getPostController
+                                                                            .participantContent
+                                                                            .value = value;
+                                                                      },
+                                                                      controller:
+                                                                          contentCtr,
+                                                                      cursorColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      maxLines:
+                                                                          7,
+                                                                      maxLength:
+                                                                          100,
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        border:
+                                                                            InputBorder.none,
+                                                                        hintText:
+                                                                            '跟主辦方說說您想參加的理由...',
+                                                                      ),
+                                                                    ),
                                                                   ),
-                                                                ))),
-                                                      ],
-                                                    )),
-                                                  ),
-                                                ]))),
-                                      ));
-                            }),
-                      )),
+                                                                ),
+                                                                Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: Padding(
+                                                                        padding: const EdgeInsets.only(left: 10.0, top: 10),
+                                                                        child: ElevatedButton(
+                                                                          style:
+                                                                              ElevatedButton.styleFrom(
+                                                                            backgroundColor: const Color.fromARGB(
+                                                                                255,
+                                                                                135,
+                                                                                110,
+                                                                                95),
+                                                                            textStyle:
+                                                                                const TextStyle(color: Colors.white, fontSize: 16),
+                                                                            minimumSize:
+                                                                                Size(MediaQuery.of(context).size.width * 0.8, 40),
+                                                                            shape:
+                                                                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            getPostController.setUpdateParticipantData();
+                                                                            Get.back();
+                                                                          },
+                                                                          child:
+                                                                              const Text(
+                                                                            "報名",
+                                                                            style:
+                                                                                TextStyle(color: Colors.white),
+                                                                          ),
+                                                                        ))),
+                                                              ],
+                                                            )),
+                                                          ),
+                                                        ]))),
+                                              ));
+                                    }),
+                              )),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
