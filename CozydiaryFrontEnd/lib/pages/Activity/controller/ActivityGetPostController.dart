@@ -1,11 +1,14 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
 import 'package:cozydiary/login_controller.dart';
+import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
 import 'package:cozydiary/pages/Personal/Service/PersonalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
+import 'package:hive_flutter/hive_flutter.dart';
 
 class ActivityGetPostController extends GetxController {
   var loginController = Get.put(LoginController());
   //variable
+  RxInt activityId = 0.obs;
   RxString activityHolder = "".obs;
   RxString activityTitle = "".obs;
   RxString activityContent = "".obs;
@@ -23,8 +26,22 @@ class ActivityGetPostController extends GetxController {
   RxBool isPicked = false.obs;
   RxInt selectActType = 1.obs;
   RxInt selectActPayment = 1.obs;
-
   RxBool isLike = false.obs;
+  RxBool isLoding = true.obs;
+  RxString participantContent = "".obs;
+  RxBool isParticipant = false.obs;
+
+  Map updateParticipantData = {};
+
+  setUpdateParticipantData() async {
+    updateParticipantData = {
+      "participant": Hive.box("UidAndState").get("uid"),
+      "reason": participantContent.value.toString(),
+      "aid": activityId.value,
+    };
+    print(updateParticipantData.toString());
+    await ActivityService().addActivity(updateParticipantData);
+  }
 
   late final userData = UserData(
       uid: 0,
@@ -74,6 +91,7 @@ class ActivityGetPostController extends GetxController {
   };
 
   void setPost(data) async {
+    activityId.value = data['data']['aid'];
     activityHolder.value = data['data']['holder'];
     activityTitle.value = data['data']['activityName'];
     activityContent.value = data['data']['holder'];
@@ -87,5 +105,6 @@ class ActivityGetPostController extends GetxController {
     activitybudget.value = data['data']['budget'];
     actId.value = data['data']['actId'];
     selectActPayment.value = data['data']['payment'];
+    isLoding.value = false;
   }
 }
