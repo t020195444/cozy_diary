@@ -1,4 +1,6 @@
 import 'package:cozydiary/LocalDB/UidAndState.dart';
+import 'package:cozydiary/PostJsonService.dart';
+import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -22,15 +24,172 @@ class ViewPostScreen extends StatelessWidget {
     viewPostController.currViewPostID = pid;
     viewPostController.getPostDetail();
 
+    Future<bool> onLikeButtonTapped(bool isLiked) async {
+      var uid = Hive.box('UidAndState').get('uid');
+      viewPostController.updateLikes(pid, uid);
+      viewPostController.likeButtonCheck();
+      return !isLiked;
+    }
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
             leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back();
-          },
-        )),
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            actions: [
+              Hive.box('UidAndState').get('uid') ==
+                      ViewPostController.currPostCover.uid
+                  ? IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SimpleDialog(
+                                title: Center(child: Text('請選擇動作')),
+                                children: [
+                                  SimpleDialogOption(
+                                    onPressed: () {
+                                      //initState
+                                      updateTitleCtr.text = viewPostController
+                                          .currViewPostDetial['title'];
+                                      updateContentCtr.text = viewPostController
+                                          .currViewPostDetial['content'];
+                                      Navigator.pop(context, '編輯貼文');
+                                      showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                                title: const Text('修改貼文'),
+                                                content: Container(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      TextFormField(
+                                                        controller:
+                                                            updateTitleCtr,
+                                                        maxLines: 1,
+                                                        maxLength: 15,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          hintText: '修改標題...',
+                                                        ),
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            updateContentCtr,
+                                                        maxLines: 1,
+                                                        maxLength: 30,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              InputBorder.none,
+                                                          hintText: '修改內文...',
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      if (updateTitleCtr.text ==
+                                                              '' ||
+                                                          updateContentCtr
+                                                                  .text ==
+                                                              '') {
+                                                        Fluttertoast.showToast(
+                                                            msg: "標題或內文不可為空白",
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .CENTER,
+                                                            timeInSecForIosWeb:
+                                                                1,
+                                                            backgroundColor:
+                                                                Colors.blue,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 16.0);
+                                                      } else {
+                                                        viewPostController
+                                                            .updatePost(
+                                                                pid,
+                                                                updateTitleCtr
+                                                                    .text,
+                                                                updateContentCtr
+                                                                    .text);
+                                                        Navigator.pop(
+                                                            context, '確認');
+                                                      }
+                                                    },
+                                                    child: const Text('確認'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(
+                                                          context, '取消');
+                                                    },
+                                                    child: const Text('取消'),
+                                                  ),
+                                                ],
+                                              ));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 6),
+                                      child: Center(child: Text('編輯貼文')),
+                                    ),
+                                  ),
+                                  SimpleDialogOption(
+                                    onPressed: () {
+                                      Navigator.pop(context, '刪除貼文');
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('確定要刪除貼文嗎'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () async {
+                                                await viewPostController
+                                                    .deletePost(pid);
+
+                                                Navigator.pop(context, '確認');
+                                                Get.to(HomePageTabbar());
+                                              },
+                                              child: const Text('確認'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, '取消');
+                                              },
+                                              child: const Text('取消'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 6),
+                                      child: Center(child: Text('刪除貼文')),
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      icon: Icon(Icons.more_horiz))
+                  : Container()
+            ]),
         body: Obx((() => viewPostController.isLoading.value
             ? Center(
                 child: CircularProgressIndicator(),
@@ -38,14 +197,14 @@ class ViewPostScreen extends StatelessWidget {
             : Column(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
+                    // height: MediaQuery.of(context).size.height * 0.3,
                     child: GestureDetector(
                       onTap: () {
                         Get.to(() => _viewPostPic());
                       },
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(bottom: 5.0),
                           child: Hero(
                               tag: 'pic',
                               child: Image.network(
@@ -88,95 +247,15 @@ class ViewPostScreen extends StatelessWidget {
                         trailing: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.1,
                           width: MediaQuery.of(context).size.width * 0.1,
-                          child: Hive.box('UidAndState').get('uid') ==
-                                  viewPostController.currViewPostDetial['uid']
-                              ? IconButton(
-                                  onPressed: () {
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        title: const Text('修改貼文'),
-                                        content: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.2,
-                                          child: Column(
-                                            children: [
-                                              TextField(
-                                                controller: updateTitleCtr,
-                                                maxLines: 1,
-                                                maxLength: 15,
-                                                decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: '修改標題...',
-                                                ),
-                                              ),
-                                              TextField(
-                                                controller: updateContentCtr,
-                                                maxLines: 1,
-                                                maxLength: 30,
-                                                decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: '修改內文...',
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              if (updateTitleCtr.text != '' &&
-                                                  updateContentCtr.text != '') {
-                                                viewPostController.updatePost(
-                                                    pid,
-                                                    updateTitleCtr.text,
-                                                    updateContentCtr.text);
-
-                                                Navigator.pop(context, '確認');
-                                              } else if (updateTitleCtr.text !=
-                                                  '') {
-                                                viewPostController.updatePost(
-                                                    pid,
-                                                    updateTitleCtr.text,
-                                                    viewPostController
-                                                            .currViewPostDetial[
-                                                        'content']);
-                                                Navigator.pop(context, '確認');
-                                              } else if (updateContentCtr
-                                                      .text !=
-                                                  '') {
-                                                viewPostController.updatePost(
-                                                    pid,
-                                                    viewPostController
-                                                            .currViewPostDetial[
-                                                        'title'],
-                                                    updateContentCtr.text);
-                                                Navigator.pop(context, '確認');
-                                              } else if (updateTitleCtr.text ==
-                                                      '' &&
-                                                  updateContentCtr.text == '') {
-                                                Navigator.pop(context, '確認');
-                                              }
-                                              updateTitleCtr.clear();
-                                              updateContentCtr.clear();
-                                            },
-                                            child: const Text('確認'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context, '取消');
-                                            },
-                                            child: const Text('取消'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  icon: Icon(Icons.edit)) //編輯貼文
-                              : null,
+                          child: Obx(
+                            () => LikeButton(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                likeCount: viewPostController
+                                    .currViewPostDetial['likes'],
+                                isLiked: viewPostController.buttonIsLiked.value,
+                                size: 25,
+                                onTap: onLikeButtonTapped),
+                          ),
                         ),
                       ),
                     ),
@@ -339,7 +418,9 @@ class ViewPostScreen extends StatelessWidget {
                                               0.1,
                                       width: MediaQuery.of(context).size.width *
                                           0.1,
-                                      child: LikeButton(),
+                                      child: LikeButton(
+                                        size: 25,
+                                      ),
                                     ),
                                   ),
                                 ),

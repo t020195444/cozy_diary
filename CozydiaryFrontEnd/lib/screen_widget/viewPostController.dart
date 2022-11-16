@@ -45,6 +45,7 @@ class ViewPostController extends GetxController {
           print(currViewPostDetial);
           currViewPostDetial.refresh();
         }
+        likeButtonCheck();
       }
       isLoading(true);
     } finally {
@@ -68,5 +69,27 @@ class ViewPostController extends GetxController {
     updateJson = {'pid': pid, 'title': title, 'content': content};
     await dio.post(Api.ipUrl + Api.updatePost, data: updateJson);
     await getPostDetail();
+  }
+
+  updateLikes(String pid, String uid) async {
+    await dio
+        .post(Api.ipUrl + Api.updatePostLikes + 'pid=' + pid + '&uid=' + uid);
+    likeButtonCheck();
+    getPostDetail();
+  }
+
+  deletePost(String pid) async {
+    await dio.post(Api.ipUrl + Api.deletePost + pid);
+  }
+
+  RxBool buttonIsLiked = false.obs;
+  likeButtonCheck() {
+    var uid = Hive.box("UidAndState").get('uid');
+    for (int i = 0; i < currViewPostDetial['likeList'].length; i++) {
+      if (currViewPostDetial['likeList'][i]['uid'] == uid ||
+          currViewPostDetial['likeList'][i]['type'] == 0) {
+        buttonIsLiked.value = true;
+      }
+    }
   }
 }

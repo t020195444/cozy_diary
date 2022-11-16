@@ -20,8 +20,12 @@ class Api {
   static String getPostCoverByUserCategory = 'getPostCoverByUserCategory?uid=';
   //新增貼文
   static String addPost = 'addPost';
+  //刪除貼文
+  static String deletePost = 'deletePost?pid=';
   //修改貼文
   static String updatePost = 'updatePost';
+  //修改貼文按讚
+  static String updatePostLikes = 'updatePostLikes?';
   //新增活動
   static String addActivity = 'addActivity';
 
