@@ -20,7 +20,9 @@ class Api {
   static String getPostCoverByUserCategory = 'getPostCoverByUserCategory?uid=';
   //新增貼文
   static String addPost = 'addPost';
-  //新增貼文
+  //修改貼文
+  static String updatePost = 'updatePost';
+  //新增活動
   static String addActivity = 'addActivity';
 
   //抓取貼文詳細資訊
@@ -40,6 +42,8 @@ class Api {
   static String postComment = '/addComment';
   //刪除留言
   static String deleteComment = 'deleteComment?cid=';
+  //更新留言
+  static String updateComment = 'updateComment?';
   //獲取全部語言
   static String getAllPost = "/getAllPost";
   //報名活動
