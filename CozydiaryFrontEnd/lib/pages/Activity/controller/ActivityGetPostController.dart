@@ -36,10 +36,24 @@ class ActivityGetPostController extends GetxController {
 
   Map updateParticipantData = {}; //參加人資料
 
+  //按讚
+  checkLike(String uid) async {
+    await ActivityService().checkLike(uid, activityId.value.toString());
+    await ActivityPostService.getActivityDetail(activityId.value.toString());
+    update();
+  }
+
+  //審核 通過/未審核
+  checkParticipant(String uid) async {
+    await ActivityService().checkParticipant(uid, activityId.value.toString());
+    update();
+  }
+
   //獲取審核列表
   getActivityParticipantList() async {
     checkActivityParticipant.value =
         await ActivityService().getParticipantList(activityId.value.toString());
+    update();
   }
 
   //判斷是否已經報名

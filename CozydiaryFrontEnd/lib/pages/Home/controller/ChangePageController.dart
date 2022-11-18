@@ -19,7 +19,6 @@ class ChangePageTabbarController extends GetxController
       buttonColor.value = Colors.black87;
     } else
       buttonColor.value = Colors.black54;
-    print(buttonColor.value);
   }
 
   void oncircleItemsTapped() {

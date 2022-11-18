@@ -92,19 +92,14 @@ class ActivityArticlePage extends StatelessWidget {
                                                           context,
                                                           showTitleActions:
                                                               true,
-                                                          minTime: DateTime
-                                                              .now(),
+                                                          minTime:
+                                                              DateTime.now(),
                                                           maxTime: DateTime(
                                                               2023,
                                                               12,
                                                               31,
                                                               00,
                                                               00),
-                                                          onChanged: (date) {
-                                                print('change $date');
-                                              }, onConfirm: (date) {
-                                                print('confirm $date');
-                                              },
                                                           currentTime:
                                                               DateTime.now(),
                                                           locale:

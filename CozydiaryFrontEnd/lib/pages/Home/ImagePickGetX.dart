@@ -16,7 +16,6 @@ class ImagePickPageController extends GetxController {
     XFile? pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       imageFilePath = pickedFile.path;
-      print(imageFilePath);
     }
   }
 }

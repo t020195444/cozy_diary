@@ -10,6 +10,12 @@ class ActivityService {
   static var getActivityUri =
       'http://140.131.114.166:80/getActivityCover?option=2';
 
+  //活動按讚
+  Future<dynamic> checkLike(String uid, String aid) async {
+    return await dio.post(
+        Api.ipUrl + Api.updateActivityLikes + "?aid=" + aid + "&uid=" + uid);
+  }
+
   //報名活動API
   Future<dynamic> updateParticipant(Map formData) async {
     return await dio.post(Api.ipUrl + Api.updateParticipant, data: formData);
@@ -20,14 +26,18 @@ class ActivityService {
     var response = await dio.get(Api.ipUrl + Api.getParticipantList + i);
 
     var jsonString = response.data;
-    print(jsonString['data'].toString());
 
     return jsonString['data'];
   }
 
+  //審核通過/不通過API
+  Future<dynamic> checkParticipant(String uid, String aid) async {
+    return await dio.post(
+        Api.ipUrl + Api.updateApplication + "?uid=" + uid + "&aid=" + aid);
+  }
+
   static Future<UserModel?> fetchActivityData() async {
     var response = await dio.get(getActivityUri);
-    print(response.data);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
@@ -39,7 +49,6 @@ class ActivityService {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(getActivityUri);
-    print(response.data.toString());
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);

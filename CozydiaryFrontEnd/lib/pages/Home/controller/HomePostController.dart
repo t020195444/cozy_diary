@@ -39,37 +39,6 @@ class HomePostController extends GetxController {
     super.onInit();
   }
 
-  // Future<void> getPostCover(String cid) async {
-  //   print(cid);
-  //   if (cid == "") {
-  //     try {
-  //       isLoading(true);
-  //       var Posts = await PostService.fetchPostCover(uid);
-  //       if (Posts != null) {
-  //         if (Posts.status == 200) {
-  //           postCover.value = Posts.data;
-  //           print("userCategory：" + Posts.data.toString());
-  //         }
-  //       }
-  //     } finally {
-  //       isLoading.value = false;
-  //     }
-  //   } else {
-  //     try {
-  //       isLoading(true);
-  //       var Posts = await PostService.fetchCategoryPostCover(cid);
-  //       if (Posts != null) {
-  //         if (Posts.status == 200) {
-  //           postCover.value = Posts.data;
-  //           print("Category：" + Posts.data.toString());
-  //         }
-  //       }
-  //     } finally {
-  //       isLoading.value = false;
-  //     }
-  //   }
-  // }
-
   Future<void> setUserCategory() async {
     CategoryListModel category = await RegisterService.fetchCategoryList();
     try {

@@ -80,7 +80,6 @@ class EditUserController extends GetxController {
           child: CircularProgressIndicator(),
         ));
         changeProfilePic(oldImageUrl).then((value) {
-          print("value:$oldImageUrl");
           if (value == 200) {
             Get.back();
             Get.back();

@@ -47,4 +47,6 @@ class ActivityController extends GetxController {
       isLoading(false);
     }
   }
+
+  like() async {}
 }

@@ -3,7 +3,6 @@ import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';

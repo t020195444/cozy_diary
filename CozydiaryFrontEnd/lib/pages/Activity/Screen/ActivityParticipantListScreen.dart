@@ -15,6 +15,7 @@ class ActivityParticipantListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getPostController.getActivityParticipantList();
     //主畫面
     return Scaffold(
       appBar: AppBar(
@@ -50,26 +51,48 @@ class ActivityParticipantListScreen extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     trailing: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 135, 110, 95),
-                          textStyle: const TextStyle(
-                              color: Colors.white, fontSize: 14),
-                          minimumSize:
-                              Size(MediaQuery.of(context).size.width * 0.8, 40),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)),
-                        ),
-                        onPressed: () async {},
-                        child: const Text(
-                          "確認通過",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: Obx(
+                          () => ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 135, 110, 95),
+                                textStyle: const TextStyle(
+                                    color: Colors.white, fontSize: 14),
+                                minimumSize: Size(
+                                    MediaQuery.of(context).size.width * 0.8,
+                                    40),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
+                              onPressed: getPostController
+                                          .checkActivityParticipant
+                                          .value[index]['qualified'] ==
+                                      0
+                                  ? () async {
+                                      await getPostController.checkParticipant(
+                                          getPostController
+                                              .checkActivityParticipant
+                                              .value[index]['participant']
+                                              .toString());
+
+                                      await getPostController
+                                          .getActivityParticipantList();
+                                    }
+                                  : null,
+                              child: Obx(
+                                () => getPostController.checkActivityParticipant
+                                            .value[index]['qualified'] ==
+                                        0
+                                    ? const Text("確認通過",
+                                        style: TextStyle(color: Colors.white))
+                                    : const Text(
+                                        "已通過",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                              )),
+                        )),
                   ),
                 ));
           })),

@@ -121,9 +121,7 @@ class ShowActivityLocationState extends State<ShowActivityLocation> {
     PlacesDetailsResponse detail = await places.getDetailsByPlaceId(p.placeId!);
 
     final lat = detail.result.geometry!.location.lat;
-    print(lat);
     final lng = detail.result.geometry!.location.lng;
-    print(lng);
 
     markersList.add(Marker(
         markerId: const MarkerId("0"),

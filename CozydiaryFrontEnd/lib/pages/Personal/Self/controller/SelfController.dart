@@ -48,7 +48,6 @@ class SelfPageController extends GetxController {
       if (UserData != null) {
         if (UserData.status == 200) {
           userData.value = UserData.data;
-          print(userData.value.toString());
         }
       }
     } finally {}

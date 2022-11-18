@@ -38,7 +38,6 @@ class CreatePostController extends GetxController {
       pickedList = [];
 
       for (var asset in media) {
-        print(isLoading.value);
         fileList.add(await asset.file);
         temp.add(
           FutureBuilder(
@@ -151,7 +150,6 @@ class CreatePostController extends GetxController {
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
     formData = FormData.fromMap({"jsondata": jsonString});
-    print(formData.fields.toString());
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
@@ -163,6 +161,5 @@ class CreatePostController extends GetxController {
   getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
-    print(categoryList);
   }
 }

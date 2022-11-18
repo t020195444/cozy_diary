@@ -1,4 +1,5 @@
 import 'package:cozydiary/pages/Activity/Map/GoogleMapPage.dart';
+import 'package:cozydiary/pages/Activity/widget/activity_GridView.dart';
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +36,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: TabBarView(
-        children: <Widget>[
-          Image(image: AssetImage('assets/images/user1.jpg')),
-          NestedTabBar(),
-          GoogleMapPage()
-        ],
+        children: <Widget>[ActivityScreen(), NestedTabBar(), GoogleMapPage()],
         controller: topTabbarController.topController,
       ),
     );

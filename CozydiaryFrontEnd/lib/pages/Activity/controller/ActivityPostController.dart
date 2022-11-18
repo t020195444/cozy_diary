@@ -194,7 +194,6 @@ class ActivityPostController extends GetxController {
 
     var formdata = await writePost();
     await ActivityPostService.postPostData(await formdata);
-    print(await formdata);
   }
 
   void setPost() {
@@ -223,12 +222,10 @@ class ActivityPostController extends GetxController {
     var jsonString = jsonEncode(writePost.toJson());
 
     formData = FormData.fromMap({"jsondata": jsonString});
-    print(formData.fields.toList());
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
     }
-    print(formData.files.toString());
     return formData;
   }
 }

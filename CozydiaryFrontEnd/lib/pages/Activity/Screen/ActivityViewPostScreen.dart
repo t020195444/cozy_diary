@@ -61,7 +61,7 @@ class ActivityViewPostScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Get.to(_viewPostPic());
+                  Get.to(() => _viewPostPic());
                 },
                 child: Center(
                   child: Padding(
@@ -69,7 +69,7 @@ class ActivityViewPostScreen extends StatelessWidget {
                     child: Hero(
                         tag: 'pic',
                         child: Image.network(
-                          ActivityPostService.activityDetailList['url'][0],
+                          ActivityPostService.activityDetailList['url'][0]!,
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -381,10 +381,10 @@ class ActivityViewPostScreen extends StatelessWidget {
                         padding: EdgeInsets.only(left: 10, top: 10),
                         child: Text(
                           "目前已有" +
-                              "0"
-                                  // getPostController.activityPeople.value
-                                  //     .toString() +
-                                  '人參加',
+                              getPostController.activityPeople.toString() +
+                              // getPostController.activityPeople.value
+                              //     .toString() +
+                              '人參加',
                           style: TextStyle(fontSize: 15),
                         )),
                   ),
@@ -460,8 +460,10 @@ class ActivityViewPostScreen extends StatelessWidget {
                                 Obx(
                                   () => InkWell(
                                     onTap: () => getPostController.isLike.value
-                                        ? getPostController.isLike.value = false
-                                        : getPostController.isLike.value = true,
+                                        ? getPostController.checkLike(
+                                            Hive.box("UidAndState").get("uid"))
+                                        : getPostController.checkLike(
+                                            Hive.box("UidAndState").get("uid")),
                                     child: Icon(
                                       getPostController.isLike.value
                                           ? Icons.favorite
@@ -475,11 +477,13 @@ class ActivityViewPostScreen extends StatelessWidget {
                                   "按讚活動",
                                   style: TextStyle(fontSize: 13),
                                 ),
-                                Text(
-                                  getPostController.activityLike.value
-                                      .toString(),
-                                  style: TextStyle(fontSize: 15),
-                                ),
+                                Obx(
+                                  () => Text(
+                                    getPostController.activityLike.value
+                                        .toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                )
                               ],
                             ),
                           ],

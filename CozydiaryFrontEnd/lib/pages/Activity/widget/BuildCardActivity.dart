@@ -35,9 +35,11 @@ class BuildCardActivity extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Image.network(
-                PostCovers[index].cover,
-                fit: BoxFit.cover,
+              Center(
+                child: Image.network(
+                  PostCovers[index].cover,
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
@@ -45,6 +47,26 @@ class BuildCardActivity extends StatelessWidget {
                     softWrap: true,
                     maxLines: 2,
                     style: TextStyle(
+                      color: Colors.black,
+                    )),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
+                child: Text(
+                    PostCovers[index].activityTime[0].toString() +
+                        "年" +
+                        PostCovers[index].activityTime[1].toString() +
+                        "月" +
+                        PostCovers[index].activityTime[2].toString() +
+                        "日" +
+                        PostCovers[index].activityTime[3].toString() +
+                        "時" +
+                        PostCovers[index].activityTime[4].toString() +
+                        "分",
+                    softWrap: true,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 12,
                       color: Colors.black,
                     )),
               ),
@@ -70,7 +92,7 @@ class BuildCardActivity extends StatelessWidget {
                               Text(
                                 PostCovers[index].username,
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               )
@@ -78,11 +100,15 @@ class BuildCardActivity extends StatelessWidget {
                           )
                         ],
                       ),
-                      LikeButton(
-                        likeCount: PostCovers[index].likes,
-                        isLiked: false,
-                        size: 15,
-                      )
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.whatshot,
+                            color: Color.fromARGB(255, 255, 128, 128),
+                          ),
+                          Text(PostCovers[index].likes.toString())
+                        ],
+                      ),
                     ],
                   ))
             ],

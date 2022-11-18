@@ -105,7 +105,6 @@ class RegisterController extends GetxController {
 
       if (responseStatus == 200) {
         Get.back();
-        print("成功");
         Hive.box("UidAndState").put("uid", googleId);
         Get.to(SelectLikePage(
           state: 0,
@@ -113,7 +112,6 @@ class RegisterController extends GetxController {
       } else {
         Get.back();
         Get.offAll(MyHomePage(title: ""));
-        print("失敗");
       }
     } catch (e) {
       print(e);
