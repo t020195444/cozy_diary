@@ -27,7 +27,6 @@ class ViewPostScreen extends StatelessWidget {
     Future<bool> onLikeButtonTapped(bool isLiked) async {
       var uid = Hive.box('UidAndState').get('uid');
       viewPostController.updateLikes(pid, uid);
-      viewPostController.likeButtonCheck();
       return !isLiked;
     }
 
@@ -39,6 +38,19 @@ class ViewPostScreen extends StatelessWidget {
               onPressed: () {
                 Get.back();
               },
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundImage:
+                      NetworkImage(ViewPostController.currPostCover.pic),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(ViewPostController.currPostCover.username),
+                )
+              ],
             ),
             actions: [
               Hive.box('UidAndState').get('uid') ==
@@ -197,7 +209,7 @@ class ViewPostScreen extends StatelessWidget {
             : Column(
                 children: [
                   Container(
-                    // height: MediaQuery.of(context).size.height * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     child: GestureDetector(
                       onTap: () {
                         Get.to(() => _viewPostPic());
@@ -230,10 +242,6 @@ class ViewPostScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                       child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              ViewPostController.currPostCover.pic),
-                        ),
                         title: Text(viewPostController
                             .currViewPostDetial.value['title']),
                         subtitle: Text(viewPostController
@@ -282,130 +290,238 @@ class ViewPostScreen extends StatelessWidget {
                                   onTap: () {
                                     //去使用者頁面
                                   },
-                                  onLongPress: () {
-                                    var uid =
-                                        Hive.box("UidAndState").get('uid');
-                                    if (uid ==
-                                        viewPostController
-                                                .currViewPostDetial['comments']
-                                            [index]['uid']) {
-                                      showDialog<String>(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          title: const Text('編輯留言'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context, '編輯');
-                                                showDialog<String>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          AlertDialog(
-                                                    title: const Text('修改留言'),
-                                                    content: TextField(
-                                                      controller:
-                                                          updateCommentCtr,
-                                                      maxLines: 1,
-                                                      maxLength: 30,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            InputBorder.none,
-                                                        hintText: '修改留言...',
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          if (updateCommentCtr
-                                                                  .text !=
-                                                              '') {
-                                                            viewPostController.updateComment(
-                                                                viewPostController
-                                                                    .currViewPostDetial[
-                                                                        'comments']
-                                                                        [index][
-                                                                        'commentId']
-                                                                    .toString(),
-                                                                updateCommentCtr
-                                                                    .text);
-                                                            updateCommentCtr
-                                                                .clear();
-                                                          } else {
-                                                            viewPostController.deleteComment(
-                                                                viewPostController
-                                                                            .currViewPostDetial[
-                                                                        'comments'][index]
-                                                                    [
-                                                                    'commentId']);
-                                                            Fluttertoast.showToast(
-                                                                msg: "已刪除留言",
-                                                                toastLength: Toast
-                                                                    .LENGTH_SHORT,
-                                                                gravity:
-                                                                    ToastGravity
-                                                                        .CENTER,
-                                                                timeInSecForIosWeb:
-                                                                    1,
-                                                                backgroundColor:
-                                                                    Colors.blue,
-                                                                textColor:
-                                                                    Colors
-                                                                        .white,
-                                                                fontSize: 16.0);
-                                                          }
-                                                          Navigator.pop(
-                                                              context, '確認');
-                                                        },
-                                                        child: const Text('確認'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context, '取消');
-                                                        },
-                                                        child: const Text('取消'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text('編輯'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                viewPostController.deleteComment(
-                                                    viewPostController
-                                                                .currViewPostDetial[
-                                                            'comments'][index]
-                                                        ['commentId']);
-                                                Navigator.pop(context, '刪除');
-                                              },
-                                              child: const Text('刪除'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  },
                                   child: ListTile(
                                     leading: CircleAvatar(
                                       backgroundImage: NetworkImage(
                                           viewPostController.currViewPostDetial
                                               .value['comments'][index]['pic']),
                                     ),
-                                    title: Text(
-                                      viewPostController.currViewPostDetial
-                                          .value['comments'][index]['username'],
-                                      overflow: TextOverflow.ellipsis,
+                                    title: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          viewPostController.currViewPostDetial
+                                                  .value['comments'][index]
+                                              ['username'],
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 12.0),
+                                          child: Text(
+                                            viewPostController
+                                                    .currViewPostDetial
+                                                    .value['comments'][index]
+                                                ['text'],
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                // fontSize: 15,
+                                                color: Color.fromARGB(
+                                                    255, 218, 196, 183)),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    subtitle: Text(
-                                      viewPostController.currViewPostDetial
-                                          .value['comments'][index]['text'],
-                                      overflow: TextOverflow.ellipsis,
+                                    subtitle: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 40,
+                                          width: 45,
+                                          child: TextButton(
+                                              onPressed: () {
+                                                viewPostController
+                                                    .postAdditionComment(
+                                                        '測試',
+                                                        viewPostController
+                                                            .currViewPostDetial
+                                                            .value['comments']
+                                                                [index]
+                                                                ['commentId']
+                                                            .toString());
+                                              },
+                                              child: Text('回覆',
+                                                  style:
+                                                      TextStyle(fontSize: 12))),
+                                        ),
+                                        viewPostController.currViewPostDetial[
+                                                            'comments'][index]
+                                                        ['uid'] ==
+                                                    Hive.box("UidAndState")
+                                                        .get('uid') ||
+                                                viewPostController
+                                                            .currViewPostDetial[
+                                                        'uid'] ==
+                                                    Hive.box("UidAndState")
+                                                        .get('uid')
+                                            ? SizedBox(
+                                                height: 40,
+                                                width: 45,
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      var uid = Hive.box(
+                                                              "UidAndState")
+                                                          .get('uid');
+                                                      if (uid ==
+                                                          viewPostController
+                                                                      .currViewPostDetial[
+                                                                  'comments']
+                                                              [index]['uid']) {
+                                                        updateCommentCtr.text =
+                                                            viewPostController
+                                                                        .currViewPostDetial[
+                                                                    'comments']
+                                                                [index]['text'];
+                                                        showDialog<String>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              AlertDialog(
+                                                            title: const Text(
+                                                                '編輯留言'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      '編輯');
+                                                                  showDialog<
+                                                                      String>(
+                                                                    context:
+                                                                        context,
+                                                                    builder: (BuildContext
+                                                                            context) =>
+                                                                        AlertDialog(
+                                                                      title: const Text(
+                                                                          '修改留言'),
+                                                                      content:
+                                                                          TextField(
+                                                                        controller:
+                                                                            updateCommentCtr,
+                                                                        maxLines:
+                                                                            1,
+                                                                        maxLength:
+                                                                            30,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border:
+                                                                              InputBorder.none,
+                                                                          hintText:
+                                                                              '修改留言...',
+                                                                        ),
+                                                                      ),
+                                                                      actions: <
+                                                                          Widget>[
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            if (updateCommentCtr.text !=
+                                                                                '') {
+                                                                              viewPostController.updateComment(viewPostController.currViewPostDetial['comments'][index]['commentId'].toString(), updateCommentCtr.text);
+                                                                              updateCommentCtr.clear();
+                                                                            } else {
+                                                                              viewPostController.deleteComment(viewPostController.currViewPostDetial['comments'][index]['commentId']);
+                                                                              Fluttertoast.showToast(msg: "已刪除留言", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
+                                                                            }
+                                                                            Navigator.pop(context,
+                                                                                '確認');
+                                                                          },
+                                                                          child:
+                                                                              const Text('確認'),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context,
+                                                                                '取消');
+                                                                          },
+                                                                          child:
+                                                                              const Text('取消'),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        '編輯'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  viewPostController.deleteComment(
+                                                                      viewPostController.currViewPostDetial['comments']
+                                                                              [
+                                                                              index]
+                                                                          [
+                                                                          'commentId']);
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      '刪除');
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        '刪除'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      } else if (viewPostController
+                                                                  .currViewPostDetial[
+                                                              'uid'] ==
+                                                          Hive.box(
+                                                                  "UidAndState")
+                                                              .get('uid')) {
+                                                        showDialog<String>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              AlertDialog(
+                                                            title: const Text(
+                                                                '刪除留言'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  viewPostController.deleteComment(
+                                                                      viewPostController.currViewPostDetial['comments']
+                                                                              [
+                                                                              index]
+                                                                          [
+                                                                          'commentId']);
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      '刪除');
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        '刪除'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context,
+                                                                      '取消');
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        '取消'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                    child: Text(
+                                                      '編輯',
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    )),
+                                              )
+                                            : Container()
+                                      ],
                                     ),
+                                    // dense: true,
                                     trailing: SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height *
