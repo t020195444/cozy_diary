@@ -23,6 +23,7 @@ class CreatePostController extends GetxController {
 
   static List fileList = [].obs;
   static RxList mediaList = [].obs;
+  RxBool isLoading = true.obs;
   fetchMedia() async {
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
@@ -30,13 +31,14 @@ class CreatePostController extends GetxController {
           await PhotoManager.getAssetPathList(onlyAll: true);
 
       List media =
-          await albums[0].getAssetListPaged(size: 60, page: currentPage);
+          await albums[0].getAssetListPaged(size: 30, page: currentPage);
 
       mediaList.value = [];
       List<Widget> temp = [];
       pickedList = [];
 
       for (var asset in media) {
+        print(isLoading.value);
         fileList.add(await asset.file);
         temp.add(
           FutureBuilder(
@@ -75,6 +77,7 @@ class CreatePostController extends GetxController {
       //default Pic
       currPic.add(mediaList[0]);
     } else {}
+    isLoading.value = false;
   }
 
   RxList currPic = [].obs;
@@ -112,7 +115,7 @@ class CreatePostController extends GetxController {
   var postFiles = <PostFile>[];
   static List allPicName = [];
 
-  void goToDataBase() async {
+  goToDataBase() async {
     // reset Data
     checkBox = [];
     checkBox =
@@ -121,7 +124,6 @@ class CreatePostController extends GetxController {
     // Post
     var formdata = writePost();
     await PostService.postPostData(await formdata);
-    print(await formdata);
   }
 
   void setPost() {

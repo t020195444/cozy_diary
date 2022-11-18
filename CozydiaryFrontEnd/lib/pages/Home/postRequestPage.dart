@@ -69,7 +69,7 @@ class PostRequestPage extends StatelessWidget {
                 endIndent: 16,
               ),
               ListTile(
-                onTap: () => Get.to(PickPhotoPage()),
+                onTap: () => Get.to(PostActivityPage()),
                 leading: Container(
                   child: Icon(
                     Icons.post_add,

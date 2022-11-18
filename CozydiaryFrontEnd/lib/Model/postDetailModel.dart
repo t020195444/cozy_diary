@@ -36,22 +36,22 @@ class PostDetailModel {
 }
 
 class PostDetail {
-  PostDetail({
-    required this.pid,
-    required this.uid,
-    required this.title,
-    required this.content,
-    required this.likes,
-    required this.collects,
-    required this.postTime,
-    required this.modifyTime,
-    required this.cover,
-    required this.cid,
-    required this.postLng,
-    required this.postLat,
-    required this.postFiles,
-    required this.comments,
-  });
+  PostDetail(
+      {required this.pid,
+      required this.uid,
+      required this.title,
+      required this.content,
+      required this.likes,
+      required this.collects,
+      required this.postTime,
+      required this.modifyTime,
+      required this.cover,
+      required this.cid,
+      required this.postLng,
+      required this.postLat,
+      required this.postFiles,
+      required this.comments,
+      required this.likeList});
 
   int pid;
   String uid;
@@ -67,25 +67,27 @@ class PostDetail {
   double postLat;
   List<PostFile> postFiles;
   List<Comment> comments;
+  List<LikeList> likeList;
 
   factory PostDetail.fromJson(Map<String, dynamic> json) => PostDetail(
-        pid: json["pid"],
-        uid: json["uid"],
-        title: json["title"],
-        content: json["content"],
-        likes: json["likes"],
-        collects: json["collects"],
-        postTime: DateTime.parse(json["post_time"]),
-        modifyTime: json["modify_time"],
-        cover: json["cover"],
-        cid: json["cid"],
-        postLng: json["postLng"],
-        postLat: json["postLat"],
-        postFiles: List<PostFile>.from(
-            json["postFiles"].map((x) => PostFile.fromJson(x))),
-        comments: List<Comment>.from(
-            json["comments"].map((x) => Comment.fromJson(x))),
-      );
+      pid: json["pid"],
+      uid: json["uid"],
+      title: json["title"],
+      content: json["content"],
+      likes: json["likes"],
+      collects: json["collects"],
+      postTime: DateTime.parse(json["post_time"]),
+      modifyTime: json["modify_time"],
+      cover: json["cover"],
+      cid: json["cid"],
+      postLng: json["postLng"],
+      postLat: json["postLat"],
+      postFiles: List<PostFile>.from(
+          json["postFiles"].map((x) => PostFile.fromJson(x))),
+      comments:
+          List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
+      likeList: List<LikeList>.from(
+          json["likeList"].map((x) => LikeList.fromJson(x))));
 
   Map<String, dynamic> toJson() => {
         "pid": pid,
@@ -102,6 +104,7 @@ class PostDetail {
         "postLat": postLat,
         "postFiles": List<dynamic>.from(postFiles.map((x) => x.toJson())),
         "comments": List<dynamic>.from(comments.map((x) => x.toJson())),
+        "likeList": List<dynamic>.from(likeList.map((x) => x.toJson())),
       };
 }
 
@@ -172,4 +175,26 @@ class PostFile {
         "fid": fid,
         "postUrl": postUrl,
       };
+}
+
+class LikeList {
+  LikeList(
+      {required this.pid,
+      required this.uid,
+      required this.like_time,
+      required this.type});
+
+  int pid;
+  String uid;
+  String like_time;
+  int type;
+
+  factory LikeList.fromJson(Map<String, dynamic> json) => LikeList(
+      pid: json["pid"],
+      uid: json["uid"],
+      like_time: json["like_time"],
+      type: json['type']);
+
+  Map<String, dynamic> toJson() =>
+      {"pid": pid, "uid": uid, "like_time": like_time, "type": type};
 }

@@ -22,6 +22,8 @@ class BuildCardHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        ViewPostController.currPostCover = postCovers[index];
+
         Get.to(
           () => ViewPostScreen(
             pid: postCovers[index].pid.toString(),

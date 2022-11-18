@@ -20,7 +20,13 @@ class Api {
   static String getPostCoverByUserCategory = 'getPostCoverByUserCategory?uid=';
   //新增貼文
   static String addPost = 'addPost';
-  //新增貼文
+  //刪除貼文
+  static String deletePost = 'deletePost?pid=';
+  //修改貼文
+  static String updatePost = 'updatePost';
+  //修改貼文按讚
+  static String updatePostLikes = 'updatePostLikes?';
+  //新增活動
   static String addActivity = 'addActivity';
 
   //抓取貼文詳細資訊
@@ -38,8 +44,14 @@ class Api {
   static String userCategoryList = "userCategoryList?uid=";
   //新增留言
   static String postComment = '/addComment';
+  //刪除留言
+  static String deleteComment = 'deleteComment?cid=';
+  //更新留言
+  static String updateComment = 'updateComment?';
   //獲取全部語言
   static String getAllPost = "/getAllPost";
+  //報名活動
+  static String updateParticipant = "/updateParticipant";
   //依照類別抓貼文
   static String getPostCoverByCategory = "/getPostCoverByCategory?cid=";
 }
