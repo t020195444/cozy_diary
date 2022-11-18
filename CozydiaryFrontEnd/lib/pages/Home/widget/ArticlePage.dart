@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../../api.dart';
@@ -21,11 +22,31 @@ class ArticlePage extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () async {
-                _createPostController.setContent(
-                    titleCtr.text, contentCtr.text);
-                await _createPostController.goToDataBase();
+                if (titleCtr.text == '' || contentCtr.text == '') {
+                  Fluttertoast.showToast(
+                      msg: "標題或內文不可為空白",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                } else if (_createPostController.selectedMap.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "請選擇類別",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                } else {
+                  _createPostController.setContent(
+                      titleCtr.text, contentCtr.text);
 
-                Get.to(HomePageTabbar());
+                  await _createPostController.goToDataBase();
+                  Get.to(HomePageTabbar());
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -75,27 +96,33 @@ class ArticlePage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: CreatePostController.categoryList['data'].length,
                 itemBuilder: ((context, index) {
-                  return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _createPostController.getList();
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                side: BorderSide(color: Colors.black, width: 2),
-                                backgroundColor:
-                                    Color.fromARGB(255, 239, 239, 239)),
-                            child: Text(
-                              CreatePostController.categoryList['data'][index]
-                                  ['category'],
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
-                            ),
-                          )));
+                  return Obx(
+                    () => Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _createPostController.selectCategory(index);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  side: BorderSide(width: 2),
+                                  backgroundColor: CreatePostController
+                                              .categoryList['data'][index] ==
+                                          _createPostController
+                                              .selectedMap.value
+                                      ? Colors.red
+                                      : null),
+                              child: Text(
+                                CreatePostController.categoryList['data'][index]
+                                    ['category'],
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ))),
+                  );
                 })),
           ),
           Expanded(flex: 3, child: Container())
