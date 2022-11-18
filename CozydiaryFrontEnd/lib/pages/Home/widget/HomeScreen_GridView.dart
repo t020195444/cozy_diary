@@ -39,6 +39,7 @@ class HomeScreen extends StatelessWidget {
                       key: ValueKey({categoryController.postCover[index].pid}),
                       postCovers: categoryController.postCover,
                       index: index,
+                      pid: categoryController.postCover[index].pid.toString(),
                       uid: categoryController.postCover[index].uid,
                     );
                   }),
