@@ -1,10 +1,10 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/changePageController.dart';
 import 'package:cozydiary/pages/Home/postRequestPage.dart';
+import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'controller/homePostController.dart';
 import '../Personal/Self/Page/personal_page.dart';
 
 class HomePageTabbar extends StatelessWidget {
@@ -83,31 +83,35 @@ class HomePageTabbar extends StatelessWidget {
           //         ),
           //     child: Obx((() => screens[controller.selectedIndex.value])))
           ,
-          bottomNavigationBar: NavigationBar(
-            destinations: [
-              NavigationDestination(
-                icon: Icon(Icons.home),
-                label: "首頁",
-              ),
-              IconButton(
-                style: IconButton.styleFrom(
-                    shape: CircleBorder(),
-                    backgroundColor: controller.buttonColor.value),
-                onPressed: () => controller.onItemTapped(1),
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
+          bottomNavigationBar: KeepAliveWrapper(
+            keepAlive: true,
+            child: NavigationBar(
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(Icons.home),
+                  label: "首頁",
                 ),
-              ),
-              NavigationDestination(
-                icon: Icon(
-                  Icons.person,
+                IconButton(
+                  style: IconButton.styleFrom(
+                      shape: CircleBorder(),
+                      backgroundColor: controller.buttonColor.value),
+                  onPressed: () => controller.onItemTapped(1),
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
                 ),
-                label: "個人",
-              )
-            ],
-            onDestinationSelected: ((value) => controller.onItemTapped(value)),
-            selectedIndex: controller.selectedIndex.value,
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.person,
+                  ),
+                  label: "個人",
+                )
+              ],
+              onDestinationSelected: ((value) =>
+                  controller.onItemTapped(value)),
+              selectedIndex: controller.selectedIndex.value,
+            ),
           ),
         )));
   }

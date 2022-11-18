@@ -1,7 +1,5 @@
 import 'package:cozydiary/Model/postCoverModel.dart';
-import 'package:cozydiary/pages/Personal/OtherPerson/Controller/OtherPersonController.dart';
-import 'package:cozydiary/postJsonService.dart';
-import 'package:cozydiary/screen_widget/viewPostController.dart';
+import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
@@ -10,9 +8,14 @@ import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class BuildCardHome extends StatelessWidget {
+  final String uid;
   final List<PostCoverData> postCovers;
   final int index;
-  BuildCardHome({Key? key, required this.postCovers, required this.index})
+  BuildCardHome(
+      {Key? key,
+      required this.postCovers,
+      required this.index,
+      required this.uid})
       : super(key: key);
 
   @override
@@ -85,17 +88,16 @@ class BuildCardHome extends StatelessWidget {
                                       NetworkImage(postCovers[index].pic),
                                 ),
                                 onTap: () {
-                                  OtherPersonPageController
-                                      otherPersonPageController =
-                                      Get.put(OtherPersonPageController());
-                                  otherPersonPageController.otherUid = key
-                                      .toString()
-                                      .split(",")[0]
-                                      .replaceAll(RegExp(r"[^\s\w]"), "");
-
-                                  otherPersonPageController.getOtherUserData();
-                                  otherPersonPageController.getUserPostCover();
-                                  Get.to(() => OtherPersonalPage());
+                                  Get.to(() =>
+                                      // OtherPersonalPage(
+                                      //         key: UniqueKey(), uid: uid)
+                                      GetBuilder<OtherPersonPageController>(
+                                          init: OtherPersonPageController(
+                                              otherUid: uid),
+                                          builder: (otherPersonPageController) {
+                                            return OtherPersonalPage(
+                                                key: UniqueKey(), uid: uid);
+                                          }));
                                 },
                               )),
                           Column(

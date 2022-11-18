@@ -10,13 +10,12 @@ import '../../Register/Service/registerService.dart';
 
 class CategoryPostController extends GetxController {
   var postCover = <PostCoverData>[].obs;
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   var userCategory = <Category>[];
   String uid = Hive.box("UidAndState").get("uid");
 
   @override
   void onInit() {
-    getPostCover("");
     setUserCategory();
     Post(
         uid: "",
@@ -32,34 +31,28 @@ class CategoryPostController extends GetxController {
   }
 
   Future<void> getPostCover(String cid) async {
-    print(cid);
+    isLoading(true);
     if (cid == "") {
       try {
-        isLoading(true);
         var Posts = await PostService.fetchPostCover(uid);
         if (Posts != null) {
           if (Posts.status == 200) {
             postCover.value = Posts.data;
-            print("userCategory：" + Posts.data.toString());
-            // update(['推薦']);
           }
         }
       } finally {
-        isLoading.value = false;
+        isLoading(false);
       }
     } else {
       try {
-        isLoading(true);
         var Posts = await PostService.fetchCategoryPostCover(cid);
         if (Posts != null) {
           if (Posts.status == 200) {
             postCover.value = Posts.data;
-            print("Category：" + Posts.data.toString());
-            // update([cid.toString()]);
           }
         }
       } finally {
-        isLoading.value = false;
+        isLoading(false);
       }
     }
   }

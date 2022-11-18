@@ -2,31 +2,11 @@ import 'package:cozydiary/pages/Home/widget/homeScreen_GridView.dart';
 import 'package:cozydiary/pages/Register/Service/registerService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/categoryPostController.dart';
 import '../../../Model/categoryList.dart';
 
 class NestedTabbarController extends GetxController
     with GetSingleTickerProviderStateMixin {
-  List<Tab> nestedTabs = <Tab>[
-    Tab(
-      child: Text("推薦"),
-    ),
-    Tab(
-      child: Text("籃球"),
-    ),
-    Tab(
-      child: Text("穿搭"),
-    ),
-    Tab(
-      child: Text("投資"),
-    ),
-    Tab(
-      child: Text("動漫"),
-    ),
-    Tab(
-      child: Text("美女"),
-    )
-  ];
+  late List<Tab> nestedTabs = <Tab>[];
   late List<Widget> screen = <Widget>[];
   var isLoading = false.obs;
 
@@ -34,39 +14,44 @@ class NestedTabbarController extends GetxController
   @override
   void onInit() {
     setCategoryTab();
-    nestedController = TabController(length: nestedTabs.length, vsync: this);
     super.onInit();
   }
 
   Future<void> setCategoryTab() async {
     isLoading(true);
-    screen.add(GetBuilder<CategoryPostController>(
-        id: "推薦",
-        init: CategoryPostController(),
-        builder: (controller) {
-          controller.getPostCover("");
-          update();
-          return HomeScreen(homePostCover: controller.postCover);
-        }));
-    for (int i = 0; i < nestedTabs.length - 1; i++) {
-      screen.add(GetBuilder<CategoryPostController>(
-          id: "",
-          init: CategoryPostController(),
-          builder: (controller) {
-            controller.getPostCover("");
-            update();
-            return HomeScreen(
-              homePostCover: controller.postCover,
-              key: ValueKey(""),
-            );
-          }));
+
+    CategoryListModel category = await RegisterService.fetchCategoryList();
+    try {
+      if (category.status == 200) {
+        nestedTabs.add(Tab(
+          child: Text("推薦"),
+        ));
+        screen.add(HomeScreen(
+          key: UniqueKey(),
+          category: "推薦",
+          cid: "",
+        ));
+        category.data.forEach((element) {
+          nestedTabs.add(Tab(
+            child: Text(element.category),
+          ));
+          screen.add(HomeScreen(
+            key: UniqueKey(),
+            cid: element.cid.toString(),
+            category: element.category,
+          ));
+        });
+
+        nestedController =
+            TabController(length: nestedTabs.length, vsync: this);
+      }
+    } finally {
+      isLoading(false);
     }
-    isLoading(false);
   }
 
   @override
   void onClose() {
-    nestedController.dispose();
     super.onClose();
   }
 }

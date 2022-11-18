@@ -31,8 +31,6 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
                         fontSize: 16.0);
                   } else {
                     Navigator.push(
@@ -46,7 +44,6 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     '下一步',
-                    style: TextStyle(color: Colors.white),
                   ),
                 ))
           ],

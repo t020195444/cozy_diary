@@ -1,28 +1,37 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import '../Controller/OtherPersonController.dart';
-import '../Controller/OtherPersonTabbarController.dart';
+import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
+import '../Controller/otherPersonController.dart';
+import '../Controller/otherPersonTabbarController.dart';
 import '../Widget/otherPerson_CollectGridView.dart';
 import '../Widget/otherPerson_PostGridView.dart';
 
 class OtherPersonalPage extends StatelessWidget {
-  const OtherPersonalPage({Key? key}) : super(key: key);
-
+  const OtherPersonalPage({Key? key, required this.uid}) : super(key: key);
+  final String uid;
   @override
   Widget build(BuildContext context) {
-    return PersonalView();
+    print(uid);
+    return PersonalView(
+      uid: uid,
+    );
   }
 }
 
 class PersonalView extends StatelessWidget {
   const PersonalView({
     Key? key,
+    required this.uid,
   }) : super(key: key);
+  final String uid;
+
   @override
   Widget build(BuildContext context) {
+    final otherPersonPageController =
+        Get.put(OtherPersonPageController(otherUid: uid), tag: uid);
     final _tabController = Get.put(OtherPersonTabController());
-    final otherPersonPageController = Get.put(OtherPersonPageController());
 
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
@@ -92,54 +101,52 @@ class PersonalView extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.white,
-      body:
-          // CustomScrollView(
-          //   slivers: [
-          //     SliverPersistentHeaderWidget(
-          //         _tabController.controller, _tabController.tabs),
-          //   ],
-          // )
-          RefreshIndicator(
-        onRefresh: (() async {
-          otherPersonPageController.getOtherUserData();
-          otherPersonPageController.getUserPostCover();
-        }),
-        child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                _buildSliverHeaderWidget(),
-                Obx(() => _DetailSliverWidget()),
-                _buildTabbarWidget(
-                    _tabController.controller, _tabController.tabs)
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController.controller,
-              children: [
-                Obx(() => otherPersonPageController.postCover.isEmpty
-                    ? Center(
-                        child: Container(
-                        child: Icon(
-                          Icons.image_rounded,
-                          size: MediaQuery.of(context).size.width * 0.3,
-                        ),
-                      ))
-                    : InitOtherPersonPostGridView()),
-                otherPersonPageController.postCover.isEmpty
-                    ? Center(
-                        child: Container(
-                        child: Icon(
-                          Icons.image_rounded,
-                        ),
-                      ))
-                    : InitOtherPersonCollectGridView()
-              ],
-            )),
-      ),
-    );
+    return Obx((() => otherPersonPageController.isLoading.value
+        ? SpinKitFadingCircle(
+            size: 50,
+            color: Colors.black,
+          )
+        : Scaffold(
+            extendBodyBehindAppBar: true,
+            backgroundColor: Colors.white,
+            body: RefreshIndicator(
+              onRefresh: (() async {
+                otherPersonPageController.getOtherUserData();
+                otherPersonPageController.getUserPostCover();
+              }),
+              child: NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      _buildSliverHeaderWidget(),
+                      Obx(() => _DetailSliverWidget()),
+                      _buildTabbarWidget(
+                          _tabController.controller, _tabController.tabs)
+                    ];
+                  },
+                  body: TabBarView(
+                    controller: _tabController.controller,
+                    children: [
+                      Obx(() => otherPersonPageController.postCover.isEmpty
+                          ? Center(
+                              child: Container(
+                              child: Icon(
+                                Icons.image_rounded,
+                                size: MediaQuery.of(context).size.width * 0.3,
+                              ),
+                            ))
+                          : InitOtherPersonPostGridView()),
+                      otherPersonPageController.postCover.isEmpty
+                          ? Center(
+                              child: Container(
+                              child: Icon(
+                                Icons.image_rounded,
+                              ),
+                            ))
+                          : InitOtherPersonCollectGridView()
+                    ],
+                  )),
+            ),
+          )));
   }
 }
 
@@ -209,22 +216,44 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                     fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
               ),
             ]),
-            onTap: () => _otherPersonPageController.getTracker(),
+            onTap: () {
+              Get.to(
+                TrackerPage(uid: _otherPersonPageController.otherUid, index: 0),
+                // TrackerAndFollowerPage(
+                //   uid: _otherPersonPageController.otherUid,
+                //   index: 0,
+                // ),
+                transition: Transition.rightToLeft,
+              );
+            },
           ),
-          Column(children: <Widget>[
-            Text(
-              '$followerCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
+          InkWell(
+            onTap: (() {
+              print(_otherPersonPageController.otherUid);
+              Get.to(
+                  TrackerPage(
+                      uid: _otherPersonPageController.otherUid, index: 1),
+                  // TrackerAndFollowerPage(
+                  //   uid: _otherPersonPageController.otherUid,
+                  //   index: 1,
+                  // ),
+                  fullscreenDialog: true);
+            }),
+            child: Column(children: <Widget>[
+              Text(
+                '$followerCount',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
               ),
-            ),
-            const Text(
-              '粉絲',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ]),
+              const Text(
+                '粉絲',
+                style: TextStyle(
+                    fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+              ),
+            ]),
+          ),
           Column(children: <Widget>[
             Text(
               '$postCount',
@@ -285,11 +314,14 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.white,
+                  InkWell(
+                    onTap: () => Get.back(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Padding(
