@@ -7,12 +7,14 @@ import '../../../../Model/postCoverModel.dart';
 import '../../../../Model/trackerModel.dart';
 
 class OtherPersonPageController extends GetxController {
+  OtherPersonPageController({required this.otherUid});
+
   var constraintsHeight = 0.0.obs;
   var readmore = true.obs;
   var difference = 0.0;
   var isLoading = true.obs;
-  var otherUid = "";
-  var userUid = "";
+  final String otherUid;
+  var userUid;
   var isFollow = false.obs;
   var userData = UserData(
           uid: 0,
@@ -33,10 +35,12 @@ class OtherPersonPageController extends GetxController {
   var postCover = <PostCoverData>[].obs;
   var trackerList = <TrackerList>[];
   int tid = -1;
+
   @override
   void onInit() {
     userUid = Hive.box("UidAndState").get("uid");
-
+    getOtherUserData();
+    getUserPostCover();
     super.onInit();
   }
 
@@ -47,16 +51,19 @@ class OtherPersonPageController extends GetxController {
       if (UserData != null) {
         if (UserData.status == 200) {
           userData.value = UserData.data;
-
-          for (Follower follower in userData.value.follower) {
-            if (follower.tracker1 == userUid) {
-              tid = follower.tid;
-              isFollow.value = true;
-              break;
-            } else {
-              isFollow.value = false;
+          if (userData.value.follower.isEmpty) {
+            isFollow(false);
+          } else {
+            for (Follower follower in userData.value.follower) {
+              if (follower.tracker1 == userUid) {
+                tid = follower.tid;
+                isFollow.value = true;
+                break;
+              } else {
+                isFollow.value = false;
+              }
+              ;
             }
-            ;
           }
         }
       }

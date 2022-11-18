@@ -33,7 +33,8 @@ class SelfPageController extends GetxController {
   var trackerList = <TrackerList>[];
   @override
   void onInit() {
-    uid = Hive.box("UidAndState").get("uid");
+    uid = box.get("uid");
+
     getUserData();
     getUserPostCover(uid);
 

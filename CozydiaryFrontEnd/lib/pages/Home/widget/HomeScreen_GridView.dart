@@ -1,6 +1,4 @@
-import 'package:cozydiary/Model/categoryList.dart';
-import 'package:cozydiary/Model/postCoverModel.dart';
-import 'package:cozydiary/pages/Home/controller/HomePostController.dart';
+import 'package:cozydiary/pages/Home/controller/categoryPostController.dart';
 import 'package:cozydiary/pages/Home/widget/buildCard_home.dart';
 import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:flutter/material.dart';
@@ -11,29 +9,39 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
     Key? key,
-    required this.homePostCover,
+    required this.category,
+    required this.cid,
   }) : super(key: key);
-  final List<PostCoverData> homePostCover;
+  final String category;
+  final String cid;
 
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: KeepAliveWrapper(
-          keepAlive: true,
-          child: MasonryGridView.count(
-              crossAxisSpacing: 0,
-              crossAxisCount: 2,
-              itemCount: homePostCover.length,
-              itemBuilder: (context, index) {
-                return BuildCardHome(
-                  key: ValueKey(
-                      {homePostCover[index].uid, homePostCover[index].pid}),
-                  postCovers: homePostCover,
-                  index: index,
-                );
-              }),
-        ));
+    final CategoryPostController categoryController =
+        Get.put(CategoryPostController(), tag: category);
+    categoryController.getPostCover(cid);
+    return Obx(() => categoryController.isLoading.value
+        ? SpinKitFadingCircle(
+            size: 50,
+            color: Colors.black,
+          )
+        : MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: KeepAliveWrapper(
+              keepAlive: true,
+              child: MasonryGridView.count(
+                  crossAxisSpacing: 0,
+                  crossAxisCount: 2,
+                  itemCount: categoryController.postCover.length,
+                  itemBuilder: (context, index) {
+                    return BuildCardHome(
+                      key: ValueKey({categoryController.postCover[index].pid}),
+                      postCovers: categoryController.postCover,
+                      index: index,
+                      uid: categoryController.postCover[index].uid,
+                    );
+                  }),
+            )));
   }
 }

@@ -1,8 +1,9 @@
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Personal/TrackerPage/Page/trackerPage.dart';
 import 'package:cozydiary/pages/Personal/drawerWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
 import '../controller/selfController.dart';
 import '../controller/tabbarController.dart';
 import '../widget/self_CollectGridView.dart';
@@ -68,78 +69,87 @@ class PersonalView extends StatelessWidget {
               endIndent: 40,
               height: 3,
             ),
-            ExpandableNotifier(
-              child: Container(
-                  constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.8),
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                  child: ExpandableButton(
-                    child: ExpandablePanel(
-                      theme: ExpandableThemeData(
-                        hasIcon: false,
+            Obx(
+              () => ExpandableNotifier(
+                child: Container(
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.8),
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    child: ExpandableButton(
+                      child: ExpandablePanel(
+                        theme: ExpandableThemeData(
+                          hasIcon: false,
+                        ),
+                        collapsed: Text(
+                          selfController.userData.value.introduction,
+                          maxLines: 3,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        expanded:
+                            Text(selfController.userData.value.introduction),
+                        builder: (_, collapsed, expanded) => Expandable(
+                          collapsed: collapsed,
+                          expanded: expanded,
+                        ),
                       ),
-                      collapsed: Text(
-                        selfController.userData.value.introduction,
-                        maxLines: 3,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      expanded:
-                          Text(selfController.userData.value.introduction),
-                      builder: (_, collapsed, expanded) => Expandable(
-                        collapsed: collapsed,
-                        expanded: expanded,
-                      ),
-                    ),
-                  )),
+                    )),
+              ),
             ),
           ],
         ),
       );
     }
 
-    return Scaffold(
-      key: GlobalKey<RefreshIndicatorState>(),
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.white,
-      drawer: DrawerWidget(
-        userImageUrl: selfController.userData.value.picResize,
-        userName: selfController.userData.value.name,
-        uid: selfController.uid,
-      ),
-      body: RefreshIndicator(
-        notificationPredicate: ((notification) {
-          return true;
-        }),
-        onRefresh: (() async {
-          await selfController.getUserData();
-          await selfController.getUserPostCover(uid);
-        }),
-        child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                _buildSliverHeaderWidget(),
-                Obx(() => _DetailSliverWidget()),
-                _buildTabbarWidget(
-                    _tabController.controller, _tabController.tabs)
-              ];
-            },
-            body: TabBarView(
-              controller: _tabController.controller,
-              children: [
-                Obx(() => selfController.postCover.isEmpty
-                    ? Center(
-                        child: Container(
-                        child: Icon(
-                          Icons.image_rounded,
-                        ),
-                      ))
-                    : InitPostGridView()),
-                InitCollectGridView()
-              ],
-            )),
-      ),
+    return Obx(
+      () => selfController.isLoading.value
+          ? SpinKitFadingCircle(
+              size: 50,
+              color: Colors.black,
+            )
+          : Scaffold(
+              key: GlobalKey<RefreshIndicatorState>(),
+              extendBodyBehindAppBar: true,
+              backgroundColor: Colors.white,
+              drawer: DrawerWidget(
+                userImageUrl: selfController.userData.value.picResize,
+                userName: selfController.userData.value.name,
+                uid: selfController.uid,
+              ),
+              body: RefreshIndicator(
+                notificationPredicate: ((notification) {
+                  return true;
+                }),
+                onRefresh: (() async {
+                  await selfController.getUserData();
+                  await selfController.getUserPostCover(uid);
+                }),
+                child: NestedScrollView(
+                    headerSliverBuilder: (context, innerBoxIsScrolled) {
+                      return [
+                        _buildSliverHeaderWidget(),
+                        _DetailSliverWidget(),
+                        _buildTabbarWidget(
+                            _tabController.controller, _tabController.tabs)
+                      ];
+                    },
+                    body: TabBarView(
+                      controller: _tabController.controller,
+                      children: [
+                        Obx(() => selfController.postCover.isEmpty
+                            ? Center(
+                                child: Container(
+                                child: Icon(
+                                  Icons.image_rounded,
+                                ),
+                              ))
+                            : InitPostGridView()),
+                        InitCollectGridView()
+                      ],
+                    )),
+              ),
+            ),
     );
   }
 }
@@ -190,85 +200,84 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Obx(() => Stack(
-          children: <Widget>[
-            _selfPageController.userData.value.pic != ""
-                ? Image.network(
-                    _selfPageController.userData.value.pic,
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                    height: expandedHeight,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Text("pic Network Error"),
-                  )
-                : Image.asset(
-                    "assets/images/yunhan.jpg",
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                    height: expandedHeight,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Text("pic Network Error"),
-                  ),
-            Container(
-              color: Color.fromARGB(100, 0, 0, 0),
-              height: expandedHeight,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: InkWell(
-                      onTap: () => Scaffold.of(context).openDrawer(),
-                      child: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: PopupMenuButton(
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          child: Text("登出"),
-                          onTap: () => Get.find<LoginController>().logout(),
-                        )
-                      ],
-                      child:
-                          Icon(Icons.more_horiz_outlined, color: Colors.white),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-                top: expandedHeight - tabbarHeight - shrinkOffset,
-                left: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: tabbarHeight,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
+    return Stack(
+      children: <Widget>[
+        Obx(() => _selfPageController.userData.value.pic != ""
+            ? Image.network(
+                _selfPageController.userData.value.pic,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: expandedHeight,
+                errorBuilder: (context, error, stackTrace) =>
+                    Text("pic Network Error"),
+              )
+            : Image.asset(
+                "assets/images/yunhan.jpg",
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+                height: expandedHeight,
+                errorBuilder: (context, error, stackTrace) =>
+                    Text("pic Network Error"),
+              )),
+        Container(
+          color: Color.fromARGB(100, 0, 0, 0),
+          height: expandedHeight,
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: InkWell(
+                  onTap: () => Scaffold.of(context).openDrawer(),
+                  child: Icon(
+                    Icons.menu,
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(45),
-                        topRight: Radius.circular(45)),
                   ),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 15),
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.6),
-                    child: followerWidget(
-                        _selfPageController.userData.value.tracker.length,
-                        _selfPageController.userData.value.follower.length,
-                        _selfPageController.postCover.length,
-                        0),
-                  ),
-                )),
-            Positioned(
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: PopupMenuButton(
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      child: Text("登出"),
+                      onTap: () => Get.find<LoginController>().logout(),
+                    )
+                  ],
+                  child: Icon(Icons.more_horiz_outlined, color: Colors.white),
+                ),
+              )
+            ],
+          ),
+        ),
+        Positioned(
+            top: expandedHeight - tabbarHeight - shrinkOffset,
+            left: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: tabbarHeight,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(45),
+                    topRight: Radius.circular(45)),
+              ),
+              child: Container(
+                padding: EdgeInsets.only(top: 15),
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.6),
+                child: Obx(() => followerWidget(
+                    _selfPageController.userData.value.tracker.length,
+                    _selfPageController.userData.value.follower.length,
+                    _selfPageController.postCover.length,
+                    0)),
+              ),
+            )),
+        Obx(() => Positioned(
               top: (expandedHeight - tabbarHeight) * 0.8 - shrinkOffset,
               left: 30,
               child: Column(
@@ -291,26 +300,25 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                   )
                 ],
               ),
-            ),
-            Positioned(
-                top: (expandedHeight - tabbarHeight) * 0.8 - shrinkOffset,
-                right: 20,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(Edit_PersonalPage(),
-                        transition: Transition.downToUp);
-                  },
-                  child: Text(
-                    "編輯個人資料",
-                    style: TextStyle(color: Colors.black54),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(176, 202, 175, 154),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30))),
-                ))
-          ],
-        ));
+            )),
+        Positioned(
+            top: (expandedHeight - tabbarHeight) * 0.8 - shrinkOffset,
+            right: 20,
+            child: ElevatedButton(
+              onPressed: () {
+                Get.to(Edit_PersonalPage(), transition: Transition.downToUp);
+              },
+              child: Text(
+                "編輯個人資料",
+                style: TextStyle(color: Colors.black54),
+              ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(176, 202, 175, 154),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30))),
+            ))
+      ],
+    );
   }
 
   Widget followerWidget(
@@ -335,18 +343,21 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
           ]),
           onTap: () {
             Get.to(
-                TrackerPage(
-                  index: 0,
-                ),
-                fullscreenDialog: true);
+              TrackerPage(
+                index: 0,
+                uid: _selfPageController.uid,
+              ),
+              // TrackerAndFollowerPage(
+              //   uid: _selfPageController.uid,
+              //   index: 0,
+              // ),
+              transition: Transition.rightToLeft,
+            );
           },
         ),
         InkWell(
           onTap: (() {
-            Get.to(
-                TrackerPage(
-                  index: 1,
-                ),
+            Get.to(TrackerPage(index: 1, uid: _selfPageController.uid),
                 fullscreenDialog: true);
           }),
           child: Column(children: <Widget>[

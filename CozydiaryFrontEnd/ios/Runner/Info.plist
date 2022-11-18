@@ -2,8 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-	<key>io.flutter.embedded_views_preview</key>
-<true/>
+		<key>io.flutter.embedded_views_preview</key>
 		<string>GoogleMap</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>PhotoLibraryUsage</string>
@@ -13,8 +12,8 @@
 		<string>MicrophoneUsage</string>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
-		<key>NSAppTransportSecurity</key>
-		<string>TransportSecurity</string>
+		<!-- <key>NSAppTransportSecurity</key>
+		<string>TransportSecurity</string> -->
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleExecutable</key>
