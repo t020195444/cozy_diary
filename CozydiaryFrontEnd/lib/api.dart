@@ -48,6 +48,12 @@ class Api {
   static String deleteComment = 'deleteComment?cid=';
   //更新留言
   static String updateComment = 'updateComment?';
+  //新增附屬留言
+  static String postAdditionComment = 'addRepliesComment';
+  //刪除附屬留言
+  static String deleteAdditionComment = 'deleteRepliesComment?rid=';
+  //更新附屬留言
+  static String updateAdditionComment = 'updateRepliesComment?';
   //獲取全部語言
   static String getAllPost = "/getAllPost";
   //報名活動
