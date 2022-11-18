@@ -15,6 +15,7 @@ class PersonalService {
     var response = await dio.get(Api.ipUrl + Api.getUser + id);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
+    print(encodeJsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
     var fromJsonValue = userModelFromJson(encodeJsonString);
     return fromJsonValue;
@@ -26,7 +27,7 @@ class PersonalService {
         await dio.get(Api.ipUrl + Api.getPostCoverForPersonalPage + id);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
-    print(encodeJsonString);
+
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
     var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
     return fromJsonValue;
@@ -48,6 +49,7 @@ class PersonalService {
     var response = await dio.get(Api.ipUrl + Api.getTrackerList + uid);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
+    print(encodeJsonString);
     var fromJsonValue = trackerListModelFromJson(encodeJsonString);
     return fromJsonValue;
   }
@@ -57,6 +59,7 @@ class PersonalService {
     var response = await dio.get(Api.ipUrl + Api.getFollowerList + uid);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
+    print(encodeJsonString);
     var fromJsonValue = trackerListModelFromJson(encodeJsonString);
     return fromJsonValue;
   }
