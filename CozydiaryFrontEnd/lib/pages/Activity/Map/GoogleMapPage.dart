@@ -1,19 +1,12 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 import 'package:cozydiary/pages/Activity/Map/LocalActivityList/LocalActivityList_GridView.dart';
-import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
-import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
 import 'package:custom_marker/marker_icon.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityTabbarController.dart';
-import 'package:cozydiary/pages/Activity/widget/activity_GridView.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -67,8 +60,11 @@ class GoogleMapPageState extends State<GoogleMapPage> {
         lng = postCoverController.postCover[i].placeLng;
         String imgurl = postCoverController.postCover[i].cover;
         markersList.add(Marker(
-            onTap: (() =>
-                Get.to(LocalActivityList(lat.toString(), lng.toString()))),
+            onTap: (() => Get.to(
+                  LocalActivityList(lat.toString(), lng.toString()),
+                  transition: Transition.fade,
+                  duration: Duration(seconds: 1),
+                )),
             markerId: const MarkerId("0"),
             position: LatLng(lat, lng),
             icon: await MarkerIcon.downloadResizePictureCircle(imgurl,

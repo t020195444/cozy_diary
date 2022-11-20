@@ -10,8 +10,6 @@ import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:photo_manager/photo_manager.dart';
 import 'package:dio/dio.dart';
 
-import '../HomePageTabbar.dart';
-
 class CreatePostController extends GetxController {
   //variable
 

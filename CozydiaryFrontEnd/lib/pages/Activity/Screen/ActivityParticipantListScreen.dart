@@ -1,9 +1,6 @@
-import 'package:cozydiary/pages/Activity/Map/ShowActivityLocation.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityGetPostController.dart';
-import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 // ignore: must_be_immutable
 class ActivityParticipantListScreen extends StatelessWidget {

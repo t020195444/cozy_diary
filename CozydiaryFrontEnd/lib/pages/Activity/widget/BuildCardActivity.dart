@@ -4,7 +4,6 @@ import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 
 class BuildCardActivity extends StatelessWidget {
   final List<Activity> PostCovers;

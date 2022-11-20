@@ -5,7 +5,6 @@ import "package:get/get.dart" hide FormData, MultipartFile, Response;
 import 'package:dio/dio.dart';
 import '../../../Model/categoryList.dart';
 import '../../../Model/postCoverModel.dart';
-import '../../../PostJsonService.dart';
 import '../../Register/Service/registerService.dart';
 
 class HomePostController extends GetxController {

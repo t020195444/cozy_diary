@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cozydiary/Model/registerUserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Register/Page/registerPage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
