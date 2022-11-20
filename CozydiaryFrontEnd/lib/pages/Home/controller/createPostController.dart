@@ -10,6 +10,8 @@ import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:photo_manager/photo_manager.dart';
 import 'package:dio/dio.dart';
 
+import '../HomePageTabbar.dart';
+
 class CreatePostController extends GetxController {
   //variable
 
@@ -38,6 +40,7 @@ class CreatePostController extends GetxController {
       pickedList = [];
 
       for (var asset in media) {
+        // print(isLoading.value);
         fileList.add(await asset.file);
         temp.add(
           FutureBuilder(
@@ -114,6 +117,7 @@ class CreatePostController extends GetxController {
   var postFiles = <PostFile>[];
   static List allPicName = [];
 
+  RxBool isPosting = true.obs;
   goToDataBase() async {
     // reset Data
     checkBox = [];
@@ -133,7 +137,7 @@ class CreatePostController extends GetxController {
         likes: 0,
         collects: 0,
         cover: basename(pickedList[0].path),
-        cid: 1,
+        cid: selectedMap['cid'],
         postFiles: postFiles);
   }
 
@@ -150,6 +154,7 @@ class CreatePostController extends GetxController {
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
     formData = FormData.fromMap({"jsondata": jsonString});
+    // print(formData.fields.toString());
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
@@ -161,5 +166,10 @@ class CreatePostController extends GetxController {
   getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
+  }
+
+  RxMap selectedMap = {}.obs;
+  selectCategory(int index) {
+    selectedMap.value = categoryList['data'][index];
   }
 }
