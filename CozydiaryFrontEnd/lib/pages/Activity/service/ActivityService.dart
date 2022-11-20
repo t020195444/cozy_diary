@@ -46,12 +46,22 @@ class ActivityService {
   }
 
   static Future<ActivityPostCoverModule?> fetchPostCover() async {
-    //測試資料
-    // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(getActivityUri);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
-    // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
+    var fromJsonValue = activityPostCoverModuleFromJson(encodeJsonString);
+    return fromJsonValue;
+  }
+
+  static Future<ActivityPostCoverModule?> fetchLocalPostCover(
+      String placeLat, String placeLng) async {
+    var response = await dio.get(Api.ipUrl +
+        Api.getActivityCoverByPlace +
+        placeLat +
+        "&placeLng=" +
+        placeLng);
+    var jsonString = response.data;
+    var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = activityPostCoverModuleFromJson(encodeJsonString);
     return fromJsonValue;
   }

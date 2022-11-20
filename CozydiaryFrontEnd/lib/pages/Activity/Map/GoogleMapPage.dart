@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:cozydiary/pages/Activity/Map/LocalActivityList/LocalActivityList_GridView.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
 import 'package:custom_marker/marker_icon.dart';
@@ -52,7 +53,7 @@ final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class GoogleMapPageState extends State<GoogleMapPage> {
   final topTabbarController = Get.put(ActivityTabbarController());
-  final postCoverController = Get.put(ActivityController());
+  ActivityController postCoverController = Get.put(ActivityController());
 
   Set<Marker> markersList = Set();
 
@@ -66,6 +67,8 @@ class GoogleMapPageState extends State<GoogleMapPage> {
         lng = postCoverController.postCover[i].placeLng;
         String imgurl = postCoverController.postCover[i].cover;
         markersList.add(Marker(
+            onTap: (() =>
+                Get.to(LocalActivityList(lat.toString(), lng.toString()))),
             markerId: const MarkerId("0"),
             position: LatLng(lat, lng),
             icon: await MarkerIcon.downloadResizePictureCircle(imgurl,
