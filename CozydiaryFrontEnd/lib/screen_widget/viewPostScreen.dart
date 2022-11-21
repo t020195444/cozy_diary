@@ -587,45 +587,41 @@ class ViewPostScreen extends StatelessWidget {
                             })),
                       ),
                     ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20, left: 20),
-                        child: TextField(
-                          controller: commentCtr,
-                          maxLines: 1,
-                          maxLength: 30,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.send),
-                              onPressed: () {
-                                if (commentCtr.text != '') {
-                                  viewPostController
-                                      .postComments(commentCtr.text);
-                                  commentCtr.clear();
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg: "留言不可為空白",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.blue,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }
-                              },
-                            ),
-                            border: InputBorder.none,
-                            hintText: '發表言論...',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ))),
+        bottomSheet: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20, left: 20),
+            child: TextField(
+              controller: commentCtr,
+              maxLines: 1,
+              maxLength: 30,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    if (commentCtr.text != '') {
+                      viewPostController.postComments(commentCtr.text);
+                      commentCtr.clear();
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "留言不可為空白",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
+                ),
+                border: InputBorder.none,
+                hintText: '發表言論...',
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
