@@ -24,7 +24,7 @@ class InitPostGridView extends StatelessWidget {
               itemBuilder: (context, index) {
                 return BuildCard(
                   index: index,
-                  userPostCover: selfPageController.postCover.value,
+                  userPostCover: selfPageController.postCover,
                 );
               }));
     });

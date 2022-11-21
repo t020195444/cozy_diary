@@ -1,10 +1,8 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
-import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
 
@@ -70,6 +68,7 @@ class EditUserController extends GetxController {
   }
 
   Future<void> openImagePicker() async {
+    // ignore: unused_local_variable
     final XFile? pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery).then((value) {
       if (value != null) {
@@ -84,8 +83,10 @@ class EditUserController extends GetxController {
             Get.back();
             Get.back();
           }
+          // ignore: invalid_return_type_for_catch_error
         }).catchError((error) => print("Error$error"));
       }
+      return null;
     });
   }
 

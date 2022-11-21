@@ -103,10 +103,8 @@ class OtherPersonPageController extends GetxController {
     try {
       var trackerResponse = await PersonalService.getTracker(otherUid);
 
-      if (trackerResponse != null) {
-        if (trackerResponse.message == 200) {
-          trackerList = trackerResponse.data;
-        }
+      if (trackerResponse.message == 200) {
+        trackerList = trackerResponse.data;
       }
     } finally {}
   }

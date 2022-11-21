@@ -35,15 +35,14 @@ class ActivityParticipantListScreen extends StatelessWidget {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(getPostController
-                          .checkActivityParticipant.value[index]['pic']),
+                          .checkActivityParticipant[index]['pic']),
                     ),
                     title: Text(
-                      getPostController.checkActivityParticipant.value[index]
-                          ['name'],
+                      getPostController.checkActivityParticipant[index]['name'],
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                      getPostController.checkActivityParticipant.value[index]
+                      getPostController.checkActivityParticipant[index]
                           ['reason'],
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -64,14 +63,14 @@ class ActivityParticipantListScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(30)),
                               ),
                               onPressed: getPostController
-                                          .checkActivityParticipant
-                                          .value[index]['qualified'] ==
+                                              .checkActivityParticipant[index]
+                                          ['qualified'] ==
                                       0
                                   ? () async {
                                       await getPostController.checkParticipant(
                                           getPostController
-                                              .checkActivityParticipant
-                                              .value[index]['participant']
+                                              .checkActivityParticipant[index]
+                                                  ['participant']
                                               .toString());
 
                                       await getPostController
@@ -79,8 +78,9 @@ class ActivityParticipantListScreen extends StatelessWidget {
                                     }
                                   : null,
                               child: Obx(
-                                () => getPostController.checkActivityParticipant
-                                            .value[index]['qualified'] ==
+                                () => getPostController
+                                                .checkActivityParticipant[index]
+                                            ['qualified'] ==
                                         0
                                     ? const Text("確認通過",
                                         style: TextStyle(color: Colors.white))

@@ -111,8 +111,7 @@ class ArticlePage extends StatelessWidget {
                                   side: BorderSide(width: 2),
                                   backgroundColor: CreatePostController
                                               .categoryList['data'][index] ==
-                                          _createPostController
-                                              .selectedMap.value
+                                          _createPostController.selectedMap
                                       ? Colors.red
                                       : null),
                               child: Text(

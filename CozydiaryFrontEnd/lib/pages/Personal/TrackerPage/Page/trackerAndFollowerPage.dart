@@ -187,10 +187,6 @@ class TrackerPage extends StatelessWidget {
                     : ElevatedButton(
                         child: Text("移除粉絲"),
                         onPressed: () {
-                          var message = followerController.deleteFollower(
-                              followerController.trackerList[index].tracker1,
-                              followerController.trackerList[index].tracker2,
-                              index);
                           followerController.trackerList.removeAt(index);
                         },
                         style: ElevatedButton.styleFrom(

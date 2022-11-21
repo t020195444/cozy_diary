@@ -1,5 +1,3 @@
-import 'package:cozydiary/LocalDB/UidAndState.dart';
-import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
