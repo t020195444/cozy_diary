@@ -1,4 +1,4 @@
-import 'package:cozydiary/pages/Activity/PostActivityPage.dart';
+import 'package:cozydiary/pages/Activity/Post/PostActivityPage.dart';
 import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +19,6 @@ class ChangePageTabbarController extends GetxController
       buttonColor.value = Colors.black87;
     } else
       buttonColor.value = Colors.black54;
-    print(buttonColor.value);
   }
 
   void oncircleItemsTapped() {

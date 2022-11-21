@@ -1,18 +1,12 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
-import 'package:cozydiary/pages/Activity/service/ActivityService.dart';
+import 'package:cozydiary/pages/Activity/Map/LocalActivityList/LocalActivityList_GridView.dart';
 import 'package:custom_marker/marker_icon.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityTabbarController.dart';
-import 'package:cozydiary/pages/Activity/widget/activity_GridView.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -52,7 +46,7 @@ final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class GoogleMapPageState extends State<GoogleMapPage> {
   final topTabbarController = Get.put(ActivityTabbarController());
-  final postCoverController = Get.put(ActivityController());
+  ActivityController postCoverController = Get.put(ActivityController());
 
   Set<Marker> markersList = Set();
 
@@ -66,6 +60,11 @@ class GoogleMapPageState extends State<GoogleMapPage> {
         lng = postCoverController.postCover[i].placeLng;
         String imgurl = postCoverController.postCover[i].cover;
         markersList.add(Marker(
+            onTap: (() => Get.to(
+                  LocalActivityList(lat.toString(), lng.toString()),
+                  transition: Transition.fade,
+                  duration: Duration(seconds: 1),
+                )),
             markerId: const MarkerId("0"),
             position: LatLng(lat, lng),
             icon: await MarkerIcon.downloadResizePictureCircle(imgurl,
@@ -108,48 +107,23 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: homeScaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        title: Center(
-          child: TabBar(
-              isScrollable: true,
-              indicatorSize: TabBarIndicatorSize.label,
-              labelStyle: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
-              controller: topTabbarController.topController,
-              labelColor: Colors.white,
-              labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-              unselectedLabelColor: Color.fromARGB(150, 255, 255, 255),
-              unselectedLabelStyle: TextStyle(fontSize: 13),
-              tabs: topTabbarController.topTabs),
-        ),
-      ),
-      body: TabBarView(
-        children: <Widget>[
-          Stack(children: [
-            Center(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: GoogleMap(
-                  markers: markersList,
-                  mapType: MapType.normal,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
-                    googleMapController = controller;
-                  },
-                  myLocationEnabled: true,
-                ),
-              ),
+      body: Stack(children: [
+        Center(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: GoogleMap(
+              markers: markersList,
+              mapType: MapType.normal,
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                googleMapController = controller;
+              },
+              myLocationEnabled: true,
             ),
-          ]),
-          ActivityScreen(),
-        ],
-        controller: topTabbarController.topController,
-      ),
+          ),
+        ),
+      ]),
     );
   }
 
@@ -177,10 +151,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
     PlacesDetailsResponse detail = await places.getDetailsByPlaceId(p.placeId!);
 
     final lat = detail.result.geometry!.location.lat;
-    print(lat);
     final lng = detail.result.geometry!.location.lng;
-    print(lng);
-
     // markersList.clear();
     markersList.add(Marker(
         markerId: const MarkerId("0"),

@@ -19,13 +19,13 @@ class ViewPostScreen extends StatelessWidget {
   final updateCommentCtr = TextEditingController();
   final updateTitleCtr = TextEditingController();
   final updateContentCtr = TextEditingController();
-  final viewPostController = Get.put(ViewPostController());
-  var uid = Hive.box('UidAndState').get('uid');
-
+  // final viewPostController = Get.put(ViewPostController());
+  var uid = Hive.box("UidAndState").get('uid');
   @override
   Widget build(BuildContext context) {
-    viewPostController.currViewPostID = pid;
-    viewPostController.getPostDetail();
+    // viewPostController.currViewPostID = pid;
+    // viewPostController.getPostDetail();
+    final viewPostController = Get.put(ViewPostController(pid: pid));
 
     Future<bool> onLikeButtonTapped(bool isLiked) async {
       viewPostController.updateLikes(pid, uid);
@@ -535,42 +535,30 @@ class ViewPostScreen extends StatelessWidget {
                                                                   "UidAndState")
                                                               .get('uid')) {
                                                         showDialog<String>(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              AlertDialog(
-                                                            title: const Text(
-                                                                '刪除留言'),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  viewPostController.deleteComment(viewPostController
-                                                                      .currViewPostDetial
-                                                                      .value
-                                                                      .comments[
-                                                                          index]
-                                                                      .commentId);
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      '刪除');
-                                                                },
-                                                                child:
-                                                                    const Text(
-                                                                        '刪除'),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context,
-                                                                      '取消');
-                                                                },
-                                                                child:
-                                                                    const Text(
-                                                                        '取消'),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
+                                                            context: context,
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                AlertDialog(
+                                                                    title: const Text(
+                                                                        '刪除留言'),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          viewPostController.deleteComment(viewPostController
+                                                                              .currViewPostDetial
+                                                                              .value
+                                                                              .comments[index]
+                                                                              .commentId);
+                                                                          Navigator.pop(
+                                                                              context,
+                                                                              '刪除');
+                                                                        },
+                                                                        child: const Text(
+                                                                            '刪除'),
+                                                                      ),
+                                                                    ]));
                                                       }
                                                     },
                                                     child: Text(
@@ -599,78 +587,45 @@ class ViewPostScreen extends StatelessWidget {
                             })),
                       ),
                     ),
-                  // Align(
-                  //   alignment: Alignment.bottomCenter,
-                  //   child: Container(
-                  //     height: MediaQuery.of(context).size.height * 0.1,
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.only(right: 20, left: 20),
-                  //       child: TextField(
-                  //         controller: commentCtr,
-                  //         maxLines: 1,
-                  //         maxLength: 30,
-                  //         decoration: InputDecoration(
-                  //           suffixIcon: IconButton(
-                  //             icon: Icon(Icons.send),
-                  //             onPressed: () {
-                  //               if (commentCtr.text != '') {
-                  //                 viewPostController
-                  //                     .postComments(commentCtr.text);
-                  //                 commentCtr.clear();
-                  //               } else {
-                  //                 Fluttertoast.showToast(
-                  //                     msg: "留言不可為空白",
-                  //                     toastLength: Toast.LENGTH_SHORT,
-                  //                     gravity: ToastGravity.CENTER,
-                  //                     timeInSecForIosWeb: 1,
-                  //                     backgroundColor: Colors.blue,
-                  //                     textColor: Colors.white,
-                  //                     fontSize: 16.0);
-                  //               }
-                  //             },
-                  //           ),
-                  //           border: InputBorder.none,
-                  //           hintText: '發表言論...',
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20, left: 20),
+                        child: TextField(
+                          controller: commentCtr,
+                          maxLines: 1,
+                          maxLength: 30,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.send),
+                              onPressed: () {
+                                if (commentCtr.text != '') {
+                                  viewPostController
+                                      .postComments(commentCtr.text);
+                                  commentCtr.clear();
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "留言不可為空白",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              },
+                            ),
+                            border: InputBorder.none,
+                            hintText: '發表言論...',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ))),
-        bottomSheet: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 20, left: 20),
-            child: TextField(
-              controller: commentCtr,
-              maxLines: 1,
-              maxLength: 30,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    if (commentCtr.text != '') {
-                      viewPostController.postComments(commentCtr.text);
-                      commentCtr.clear();
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "留言不可為空白",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  },
-                ),
-                border: InputBorder.none,
-                hintText: '發表言論...',
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

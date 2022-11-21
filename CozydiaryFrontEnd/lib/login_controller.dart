@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cozydiary/Model/registerUserDataModel.dart' as userdata;
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/pages/Register/Page/registerPage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,6 +60,7 @@ class LoginController extends GetxController {
 
   void logout() async {
     googleAccount.value = await googleSignIn.signOut();
+    Get.close(1);
     Get.offAll(const MyHomePage(
       title: '',
     ));

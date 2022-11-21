@@ -1,5 +1,6 @@
 import 'package:cozydiary/Model/postCoverModel.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
+import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';

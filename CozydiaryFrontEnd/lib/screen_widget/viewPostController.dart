@@ -36,9 +36,13 @@ class ViewPostController extends GetxController {
   RxBool buttonIsLiked = false.obs;
   var buttonIsCollected = false.obs;
   static var currPostCover;
+  final String pid;
+  ViewPostController({required this.pid});
 
   @override
-  void onInit() {
+  void onInit() async {
+    currViewPostID = pid;
+    await getPostDetail();
     super.onInit();
   }
 
@@ -46,12 +50,14 @@ class ViewPostController extends GetxController {
   getPostDetail() async {
     try {
       PostDetailModel data = await PostService.getPostDetail(currViewPostID);
+
       if (data.status == 200) {
         if (data != null) {
           currViewPostDetial.value = data.data;
           print(postDetailModelToJson(data));
           currViewPostDetial.refresh();
         }
+        print(currViewPostDetial);
         likeButtonCheck();
       }
       isLoading(true);

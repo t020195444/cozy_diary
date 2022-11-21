@@ -1,3 +1,4 @@
+import 'package:cozydiary/pages/Personal/OtherPerson/Widget/otherPerson_PostGridView.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -6,7 +7,6 @@ import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
 import '../Controller/otherPersonController.dart';
 import '../Controller/otherPersonTabbarController.dart';
 import '../Widget/otherPerson_CollectGridView.dart';
-import '../Widget/otherPerson_PostGridView.dart';
 
 class OtherPersonalPage extends StatelessWidget {
   const OtherPersonalPage({Key? key, required this.uid}) : super(key: key);

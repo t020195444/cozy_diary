@@ -115,6 +115,7 @@ class CreatePostController extends GetxController {
   var postFiles = <PostFile>[];
   static List allPicName = [];
 
+  RxBool isPosting = true.obs;
   goToDataBase() async {
     // reset Data
     checkBox = [];
@@ -134,7 +135,7 @@ class CreatePostController extends GetxController {
         likes: 0,
         collects: 0,
         cover: basename(pickedList[0].path),
-        cid: 1,
+        cid: selectedMap['cid'],
         postFiles: postFiles);
   }
 
@@ -151,7 +152,7 @@ class CreatePostController extends GetxController {
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
     formData = FormData.fromMap({"jsondata": jsonString});
-    print(formData.fields.toString());
+    // print(formData.fields.toString());
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
@@ -163,6 +164,10 @@ class CreatePostController extends GetxController {
   getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
-    print(categoryList);
+  }
+
+  RxMap selectedMap = {}.obs;
+  selectCategory(int index) {
+    selectedMap.value = categoryList['data'][index];
   }
 }

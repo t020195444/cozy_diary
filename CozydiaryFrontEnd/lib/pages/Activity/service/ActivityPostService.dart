@@ -25,7 +25,6 @@ class ActivityPostService {
     }
     getpostController.getHolder(data['data']['holder'].toString());
     getpostController.setPost(data);
-
     activityDetailList['holder'] = data['data']['holder'];
     activityDetailList['activityName'] = data['data']['activityName'];
     activityDetailList['placeLng'] = data['data']['placeLng'];
@@ -49,7 +48,7 @@ class ActivityPostService {
     //測試資料
     // return postCoverModuleFromJson(json.encode(jsonDATA));
     var response = await dio.get(getPostCoverUri);
-    print(response.data.toString());
+    ;
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     // var utf8JsonString = utf8Decoder.convert(response.bodyBytes);
@@ -61,11 +60,7 @@ class ActivityPostService {
     try {
       var response =
           await dio.post(Api.ipUrl + Api.addActivity, data: formData);
-
-      print("User activity：" + response.data.toString());
-    } catch (e) {
-      print("Error creating  $e");
-    }
+    } catch (e) {}
 
     return formData;
   }

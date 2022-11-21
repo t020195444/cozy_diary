@@ -32,6 +32,7 @@ class PersonalView extends StatelessWidget {
     //tabBar的控制器
     final _tabController = Get.put(TabbarController());
     final selfController = Get.find<SelfPageController>();
+    selfController.onInit();
 
     //使用者頭貼照片
     Widget _buildSliverHeaderWidget() {

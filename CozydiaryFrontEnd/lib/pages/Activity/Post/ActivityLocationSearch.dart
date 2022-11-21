@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:cozydiary/pages/Activity/ActivityArticlePage.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +36,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     startFocusNode.dispose();
   }

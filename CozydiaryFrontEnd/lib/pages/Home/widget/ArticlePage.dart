@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-import '../../../api.dart';
 import '../HomePageTabbar.dart';
 import '../controller/createPostController.dart';
 
@@ -21,11 +21,31 @@ class ArticlePage extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () async {
-                _createPostController.setContent(
-                    titleCtr.text, contentCtr.text);
-                await _createPostController.goToDataBase();
+                if (titleCtr.text == '' || contentCtr.text == '') {
+                  Fluttertoast.showToast(
+                      msg: "標題或內文不可為空白",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                } else if (_createPostController.selectedMap.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "請選擇類別",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                } else {
+                  _createPostController.setContent(
+                      titleCtr.text, contentCtr.text);
 
-                Get.offAll(HomePageTabbar());
+                  await _createPostController.goToDataBase();
+                  Get.offAll(HomePageTabbar());
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

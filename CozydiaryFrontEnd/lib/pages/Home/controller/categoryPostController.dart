@@ -1,8 +1,6 @@
 import 'package:cozydiary/Model/writePostModel.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
-import 'package:dio/dio.dart';
 import '../../../Model/categoryList.dart';
 import '../../../Model/postCoverModel.dart';
 import '../../../PostJsonService.dart';

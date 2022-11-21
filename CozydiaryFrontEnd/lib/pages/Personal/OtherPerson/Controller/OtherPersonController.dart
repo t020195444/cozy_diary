@@ -106,7 +106,6 @@ class OtherPersonPageController extends GetxController {
       if (trackerResponse != null) {
         if (trackerResponse.message == 200) {
           trackerList = trackerResponse.data;
-          print(trackerList[0]);
         }
       }
     } finally {}
