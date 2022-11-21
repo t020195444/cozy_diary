@@ -119,7 +119,7 @@ class RegisterPage extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: registerController.previewImage.value?.path == ""
-                        ? AssetImage("assets/images/yunhan.jpg")
+                        ? AssetImage("assets/images/Logo/logo1024.png")
                         : FileImage(registerController.previewImage.value!)
                             as ImageProvider,
                     fit: BoxFit.cover),
@@ -127,10 +127,7 @@ class RegisterPage extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: const [
                   BoxShadow(
-                      color: Colors.black,
-                      offset: Offset(2, 6),
-                      blurRadius: 5,
-                      spreadRadius: 0)
+                      offset: Offset(2, 6), blurRadius: 5, spreadRadius: 0)
                 ]),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:cozydiary/pages/Activity/Post/PostActivityPage.dart';
 import 'package:cozydiary/pages/Home/widget/pickPhotoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PostRequestPage extends StatelessWidget {
   const PostRequestPage({Key? key}) : super(key: key);

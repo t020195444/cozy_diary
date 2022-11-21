@@ -3,6 +3,7 @@ import 'package:cozydiary/pages/Personal/drawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
 import '../controller/selfController.dart';
 import '../controller/tabbarController.dart';
@@ -32,7 +33,7 @@ class PersonalView extends StatelessWidget {
     //tabBar的控制器
     final _tabController = Get.put(TabbarController());
     final selfController = Get.find<SelfPageController>();
-    selfController.onInit();
+    // selfController.onInit();
 
     //使用者頭貼照片
     Widget _buildSliverHeaderWidget() {
@@ -105,99 +106,93 @@ class PersonalView extends StatelessWidget {
     }
 
     return Obx(
-      () => selfController.isLoading.value
-          ? SpinKitFadingCircle(
-              size: 50,
-              color: Colors.black,
-            )
-          : Scaffold(
-              key: GlobalKey<RefreshIndicatorState>(),
-              extendBodyBehindAppBar: true,
-              drawer: DrawerWidget(
-                userImageUrl: selfController.userData.value.picResize,
-                userName: selfController.userData.value.name,
-                uid: selfController.uid,
-              ),
-              body: RefreshIndicator(
-                notificationPredicate: ((notification) {
-                  return true;
-                }),
-                onRefresh: (() async {
-                  await selfController.getUserData();
-                  await selfController.getUserPostCover(uid);
-                }),
-                child: NestedScrollView(
-                    headerSliverBuilder: (context, innerBoxIsScrolled) {
-                      return [
-                        _buildSliverHeaderWidget(),
-                        _DetailSliverWidget(),
-                        _buildTabbarWidget(
-                            _tabController.controller, _tabController.tabs)
-                      ];
-                    },
-                    body: TabBarView(
-                      controller: _tabController.controller,
-                      children: [
-                        Obx(() => selfController.postCover.isEmpty
-                            ? Center(
-                                child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Opacity(
-                                    opacity: 0.5,
-                                    child: Expanded(
-                                      child: Icon(Icons.image_rounded,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.3,
-                                          color: Theme.of(context)
-                                              .iconTheme
-                                              .color),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "你尚未發文章喔~\n快點分享你的生活吧！",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  )
-                                ],
-                              ))
-                            : InitPostGridView()),
-                        Obx(() => selfController.postCover.isEmpty
-                            ? Center(
-                                child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Opacity(
-                                    opacity: 0.5,
-                                    child: Expanded(
-                                      child: Icon(Icons.image_rounded,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.3,
-                                          color: Theme.of(context)
-                                              .iconTheme
-                                              .color),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "尚未收藏貼文",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  )
-                                ],
-                              ))
-                            : InitCollectGridView())
-                      ],
-                    )),
-              ),
-            ),
+      () =>
+          // selfController.isLoading.value
+          //     ? SpinKitFadingCircle(
+          //         size: 50,
+          //         color: Colors.black,
+          //       )
+          //     :
+          Scaffold(
+        key: GlobalKey<RefreshIndicatorState>(),
+        extendBodyBehindAppBar: true,
+        drawer: DrawerWidget(
+          userImageUrl: selfController.userData.value.picResize,
+          userName: selfController.userData.value.name,
+          uid: selfController.uid,
+        ),
+        body: RefreshIndicator(
+          notificationPredicate: ((notification) {
+            return true;
+          }),
+          onRefresh: (() async {
+            await selfController.getUserData();
+            await selfController.getUserPostCover(uid);
+          }),
+          child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  _buildSliverHeaderWidget(),
+                  _DetailSliverWidget(),
+                  _buildTabbarWidget(
+                      _tabController.controller, _tabController.tabs)
+                ];
+              },
+              body: TabBarView(
+                controller: _tabController.controller,
+                children: [
+                  Obx(() => selfController.postCover.isEmpty
+                      ? Center(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Opacity(
+                              opacity: 0.5,
+                              child: Expanded(
+                                child: Icon(Icons.image_rounded,
+                                    size:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    color: Theme.of(context).iconTheme.color),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                "你尚未發文章喔~\n快點分享你的生活吧！",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            )
+                          ],
+                        ))
+                      : InitPostGridView()),
+                  Obx(() => selfController.postCover.isEmpty
+                      ? Center(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Opacity(
+                              opacity: 0.5,
+                              child: Expanded(
+                                child: Icon(Icons.image_rounded,
+                                    size:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    color: Theme.of(context).iconTheme.color),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                "尚未收藏貼文",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            )
+                          ],
+                        ))
+                      : InitCollectGridView())
+                ],
+              )),
+        ),
+      ),
     );
   }
 }
@@ -251,21 +246,32 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Stack(
       children: <Widget>[
         Obx(() => _selfPageController.userData.value.pic != ""
-            ? Image.network(
-                _selfPageController.userData.value.pic,
+            ? Image.network(_selfPageController.userData.value.pic,
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: expandedHeight,
                 errorBuilder: (context, error, stackTrace) =>
                     Text("pic Network Error"),
-              )
-            : Image.asset(
-                "assets/images/yunhan.jpg",
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width,
-                height: expandedHeight,
-                errorBuilder: (context, error, stackTrace) =>
-                    Text("pic Network Error"),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      color: Colors.grey[100],
+                      width: MediaQuery.of(context).size.width,
+                      height: expandedHeight,
+                    ),
+                  );
+                })
+            : Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  color: Colors.grey[100],
+                  width: MediaQuery.of(context).size.width,
+                  height: expandedHeight,
+                ),
               )),
         Container(
           color: Color.fromARGB(100, 0, 0, 0),

@@ -3,6 +3,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
 import '../Controller/otherPersonController.dart';
 import '../Controller/otherPersonTabbarController.dart';
@@ -314,14 +315,24 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                     height: expandedHeight,
                     errorBuilder: (context, error, stackTrace) =>
                         Text("pic Network Error"),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[400]!,
+                        highlightColor: Colors.grey[300]!,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: expandedHeight,
+                        ),
+                      );
+                    },
                   )
-                : Image.asset(
-                    "assets/images/yunhan.jpg",
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                    height: expandedHeight,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Text("pic Network Error"),
+                : Shimmer.fromColors(
+                    baseColor: Colors.grey[400]!,
+                    highlightColor: Colors.grey[300]!,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: expandedHeight,
+                    ),
                   ),
             Container(
               color: Color.fromARGB(100, 0, 0, 0),
