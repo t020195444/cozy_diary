@@ -7,7 +7,6 @@ class RegisterService {
   static Future<int> registerUser(FormData formData) async {
     var response =
         await Dio().post(Api.ipUrl + Api.userRegister, data: formData);
-    print(response.data);
     return response.statusCode!;
   }
 
@@ -22,7 +21,6 @@ class RegisterService {
   static Future<int> addCategory(String postData) async {
     var response =
         await Dio().post(Api.ipUrl + Api.addCategory, data: postData);
-    print(response.data);
     return response.statusCode!;
   }
 

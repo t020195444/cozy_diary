@@ -66,7 +66,6 @@ class LoginController extends GetxController {
     Get.offAll(const MyHomePage(
       title: '',
     ));
-
     box.put("uid", null);
   }
 

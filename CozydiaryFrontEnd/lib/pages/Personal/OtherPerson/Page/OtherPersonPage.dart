@@ -51,8 +51,6 @@ class PersonalView extends StatelessWidget {
             TabBar(
                 controller: controller,
                 indicatorWeight: 2,
-                indicatorColor: Color.fromARGB(255, 175, 152, 100),
-                labelColor: Colors.black,
                 indicatorSize: TabBarIndicatorSize.label,
                 isScrollable: true,
                 labelPadding: EdgeInsets.symmetric(horizontal: 40),
@@ -65,7 +63,6 @@ class PersonalView extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Divider(
-              color: Colors.black54,
               indent: 40,
               endIndent: 40,
               height: 3,
@@ -108,7 +105,6 @@ class PersonalView extends StatelessWidget {
           )
         : Scaffold(
             extendBodyBehindAppBar: true,
-            backgroundColor: Colors.white,
             body: RefreshIndicator(
               onRefresh: (() async {
                 otherPersonPageController.getOtherUserData();
@@ -128,19 +124,54 @@ class PersonalView extends StatelessWidget {
                     children: [
                       Obx(() => otherPersonPageController.postCover.isEmpty
                           ? Center(
-                              child: Container(
-                              child: Icon(
-                                Icons.image_rounded,
-                                size: MediaQuery.of(context).size.width * 0.3,
-                              ),
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Opacity(
+                                  opacity: 0.5,
+                                  child: Expanded(
+                                    child: Icon(Icons.image_rounded,
+                                        size:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        color:
+                                            Theme.of(context).iconTheme.color),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "此人目前無貼文",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                )
+                              ],
                             ))
                           : InitOtherPersonPostGridView()),
                       otherPersonPageController.postCover.isEmpty
                           ? Center(
-                              child: Container(
-                              child: Icon(
-                                Icons.image_rounded,
-                              ),
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Opacity(
+                                  opacity: 0.5,
+                                  child: Expanded(
+                                    child: Icon(Icons.image_rounded,
+                                        size:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        color:
+                                            Theme.of(context).iconTheme.color),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "尚未收藏貼文",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                )
+                              ],
                             ))
                           : InitOtherPersonCollectGridView()
                     ],
@@ -160,7 +191,6 @@ class _TabbarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.white,
       child: Center(child: tab),
     );
   }
@@ -207,18 +237,18 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 '$trackerCount',
                 style: const TextStyle(
                   fontSize: 18,
-                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
               const Text(
                 '追隨中',
-                style: TextStyle(
-                    fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
               ),
             ]),
             onTap: () {
               Get.to(
-                TrackerPage(uid: _otherPersonPageController.otherUid, index: 0),
+                TrackerPage(
+                    key: UniqueKey(),
+                    uid: _otherPersonPageController.otherUid,
+                    index: 0),
                 // TrackerAndFollowerPage(
                 //   uid: _otherPersonPageController.otherUid,
                 //   index: 0,
@@ -244,13 +274,10 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 '$followerCount',
                 style: const TextStyle(
                   fontSize: 18,
-                  color: Color.fromARGB(255, 0, 0, 0),
                 ),
               ),
               const Text(
                 '粉絲',
-                style: TextStyle(
-                    fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
               ),
             ]),
           ),
@@ -259,27 +286,18 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               '$postCount',
               style: const TextStyle(
                 fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '貼文',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ]),
           Column(children: <Widget>[
             Text(
               '$eventCount',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
             ),
             const Text(
               '聚會',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
             ),
           ]),
         ],
@@ -326,7 +344,10 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Icon(Icons.more_horiz_outlined, color: Colors.white),
+                    child: Icon(
+                      Icons.more_horiz_outlined,
+                      color: Colors.white,
+                    ),
                   )
                 ],
               ),
@@ -339,7 +360,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                   height: tabbarHeight,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(45),
                         topRight: Radius.circular(45)),
@@ -391,13 +412,14 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                   child: _otherPersonPageController.isFollow.value
                       ? Text(
                           "已追蹤",
-                          style: TextStyle(color: Colors.black54),
                         )
-                      : Text("追蹤", style: TextStyle(color: Colors.black54)),
+                      : Text(
+                          "追蹤",
+                        ),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: _otherPersonPageController.isFollow.value
                           ? Color.fromARGB(176, 149, 147, 147)
-                          : Color.fromARGB(176, 202, 175, 154),
+                          : Color.fromARGB(174, 164, 131, 106),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ))

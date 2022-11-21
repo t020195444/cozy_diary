@@ -23,8 +23,9 @@ class CreatePostController extends GetxController {
 
   static List fileList = [].obs;
   static RxList mediaList = [].obs;
-  RxBool isLoading = true.obs;
+  RxBool isLoading = false.obs;
   fetchMedia() async {
+    isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
       List<AssetPathEntity> albums =
@@ -38,7 +39,6 @@ class CreatePostController extends GetxController {
       pickedList = [];
 
       for (var asset in media) {
-        // print(isLoading.value);
         fileList.add(await asset.file);
         temp.add(
           FutureBuilder(

@@ -1,6 +1,7 @@
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/changePageController.dart';
 import 'package:cozydiary/pages/Home/postRequestPage.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ class HomePageTabbar extends StatelessWidget {
       // UserDataPage(),
     ];
     final controller = Get.put(ChangePageTabbarController());
+    final selfController = Get.put(SelfPageController());
 
     return Obx((() => Scaffold(
           body: screens[controller.selectedIndex.value]

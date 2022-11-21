@@ -26,6 +26,8 @@ class Api {
   static String updatePost = 'updatePost';
   //修改貼文按讚
   static String updatePostLikes = 'updatePostLikes?';
+  //修改收藏貼文
+  static String updateCollects = "updateCollects?";
   //新增活動
   static String addActivity = 'addActivity';
 

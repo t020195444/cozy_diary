@@ -28,20 +28,30 @@ class HomeScreen extends StatelessWidget {
         : MediaQuery.removePadding(
             context: context,
             removeTop: true,
-            child: KeepAliveWrapper(
-              keepAlive: true,
-              child: MasonryGridView.count(
-                  crossAxisSpacing: 0,
-                  crossAxisCount: 2,
-                  itemCount: categoryController.postCover.length,
-                  itemBuilder: (context, index) {
-                    return BuildCardHome(
-                      key: ValueKey({categoryController.postCover[index].pid}),
-                      postCovers: categoryController.postCover,
-                      index: index,
-                      uid: categoryController.postCover[index].uid,
-                    );
-                  }),
-            )));
+            child: RefreshIndicator(
+                notificationPredicate: (notification) {
+                  return true;
+                },
+                onRefresh: () async {
+                  categoryController.getPostCover(cid);
+                },
+                child: KeepAliveWrapper(
+                  keepAlive: true,
+                  child: MasonryGridView.count(
+                      crossAxisSpacing: 0,
+                      crossAxisCount: 2,
+                      itemCount: categoryController.postCover.length,
+                      itemBuilder: (context, index) {
+                        return BuildCardHome(
+                          key: ValueKey(
+                              {categoryController.postCover[index].pid}),
+                          postCovers: categoryController.postCover,
+                          index: index,
+                          pid: categoryController.postCover[index].pid
+                              .toString(),
+                          uid: categoryController.postCover[index].uid,
+                        );
+                      }),
+                ))));
   }
 }

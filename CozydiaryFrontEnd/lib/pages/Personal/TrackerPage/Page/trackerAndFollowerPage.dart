@@ -1,71 +1,3 @@
-// import 'package:cozydiary/pages/Personal/TrackerPage/Controller/trakerController.dart';
-// import 'package:cozydiary/pages/Personal/TrackerPage/Page/followerPage.dart';
-// import 'package:cozydiary/pages/Personal/TrackerPage/Page/trackerPage.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-
-// class TrackerAndFollowerPage extends StatelessWidget {
-//   const TrackerAndFollowerPage(
-//       {Key? key, required this.index, required this.uid})
-//       : super(key: key);
-//   final int index;
-//   final String uid;
-
-//   //tabbar物件
-//   Widget buildTabbarWidget(var controller, var tab) {
-//     return TabBar(
-//         controller: controller,
-//         indicatorWeight: 2,
-//         indicatorColor: Color.fromARGB(255, 175, 152, 100),
-//         labelColor: Colors.black,
-//         indicatorSize: TabBarIndicatorSize.label,
-//         isScrollable: true,
-//         labelPadding: EdgeInsets.symmetric(horizontal: 40),
-//         tabs: tab);
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     TrackerTabbarController tabbarController =
-//         Get.put(TrackerTabbarController());
-//     TrackerController trackerController = Get.put(TrackerController());
-//     tabbarController.controller.index = index;
-//     return Scaffold(
-//       extendBodyBehindAppBar: true,
-//       appBar: AppBar(
-//         elevation: 0,
-//         leading: IconButton(
-//           icon: Icon(Icons.close),
-//           color: Colors.black,
-//           onPressed: () {
-//             Get.back();
-//           },
-//         ),
-//         title: buildTabbarWidget(
-//             tabbarController.controller, tabbarController.tabs),
-//         backgroundColor: Colors.transparent,
-//       ),
-//       body: SafeArea(
-//           child: TabBarView(
-//         controller: tabbarController.controller,
-//         children: [
-//           TrackerPage(uid), FollowerPage(uid)
-//           // GetBuilder<TrackerController>(
-//           //     init: TrackerController(),
-//           //     builder: (controller) {
-//           //       return TrackerPage(uid);
-//           //     }),
-//           // GetBuilder<FollowerController>(
-//           //   init: FollowerController(),
-//           //   builder: (controller) {
-//           //     return FollowerPage(uid);
-//           //   }
-//           // )
-//         ],
-//       )),
-//     );
-//   }
-// }
 import 'package:cozydiary/pages/Personal/TrackerPage/Controller/trakerController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,8 +16,6 @@ class TrackerPage extends StatelessWidget {
     return TabBar(
         controller: controller,
         indicatorWeight: 2,
-        indicatorColor: Color.fromARGB(255, 175, 152, 100),
-        labelColor: Colors.black,
         indicatorSize: TabBarIndicatorSize.label,
         isScrollable: true,
         labelPadding: EdgeInsets.symmetric(horizontal: 40),
@@ -94,6 +24,7 @@ class TrackerPage extends StatelessWidget {
 
   Widget trackerList() {
     return GetBuilder<TrackerController>(
+        tag: uid,
         init: TrackerController(uid: uid),
         autoRemove: false,
         builder: (trackerController) {
@@ -130,15 +61,15 @@ class TrackerPage extends StatelessWidget {
                       ? Text("取消追蹤")
                       : Text("追蹤"),
                   onPressed: () {
-                    // trackerController.tapTracker(
-                    //     trackerController.trackerList[index].tracker1,
-                    //     trackerController.trackerList[index].tracker2,
-                    //     index);
+                    trackerController.tapTracker(
+                        trackerController.trackerList[index].tracker1,
+                        trackerController.trackerList[index].tracker2,
+                        index);
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: trackerController.state[index]
-                          ? Color.fromARGB(148, 149, 147, 147)
-                          : Color.fromARGB(176, 202, 175, 154),
+                          ? Color.fromARGB(176, 149, 147, 147)
+                          : Color.fromARGB(174, 164, 131, 106),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ),
@@ -150,6 +81,7 @@ class TrackerPage extends StatelessWidget {
 
   Widget followerList() {
     return GetBuilder<FollowerController>(
+        tag: uid,
         init: FollowerController(uid: uid),
         autoRemove: false,
         builder: (followerController) {
@@ -187,10 +119,34 @@ class TrackerPage extends StatelessWidget {
                     : ElevatedButton(
                         child: Text("移除粉絲"),
                         onPressed: () {
-                          followerController.trackerList.removeAt(index);
+                          Get.defaultDialog(
+                            title: "通知",
+                            textCancel: "取消",
+                            textConfirm: "確認",
+                            content: Text(
+                              "確定要刪除？",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            contentPadding: EdgeInsets.all(30),
+                            onConfirm: () {
+                              var message = followerController.deleteFollower(
+                                  followerController
+                                      .trackerList[index].tracker1,
+                                  followerController
+                                      .trackerList[index].tracker2,
+                                  index);
+                              if (message == "刪除成功") {
+                                followerController.trackerList.removeAt(index);
+                              } else if (message == "刪除失敗") {
+                                Get.showSnackbar(GetSnackBar(
+                                  messageText: Text("移除失敗"),
+                                ));
+                              }
+                            },
+                          );
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(148, 149, 147, 147),
+                            backgroundColor: Color.fromARGB(176, 149, 147, 147),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30))),
                       ),
@@ -211,7 +167,6 @@ class TrackerPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close),
-          color: Colors.black,
           onPressed: () {
             Get.back();
           },

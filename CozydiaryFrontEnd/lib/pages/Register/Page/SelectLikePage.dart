@@ -22,10 +22,7 @@ class SelectLikePage extends StatelessWidget {
               title: SafeArea(
                   child: Text(
                 "選擇主題",
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Color.fromARGB(255, 147, 147, 147),
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               )),
               leading: SafeArea(
                 child: IconButton(
@@ -33,7 +30,6 @@ class SelectLikePage extends StatelessWidget {
                   onPressed: () {
                     Get.back();
                   },
-                  color: Color.fromARGB(255, 132, 132, 132),
                 ),
               ),
               bottom: PreferredSize(
@@ -43,7 +39,6 @@ class SelectLikePage extends StatelessWidget {
                       "至少選擇一個平常會關注的主題吧！",
                       style: TextStyle(
                         fontSize: 20,
-                        color: Color.fromARGB(255, 163, 163, 163),
                       ),
                     ),
                   ],

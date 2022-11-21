@@ -54,41 +54,34 @@ class NestedTabBar extends StatelessWidget {
             size: 50,
             color: Colors.black,
           )
-        : RefreshIndicator(
-            notificationPredicate: (notification) {
-              return true;
-            },
-            onRefresh: () async {},
-            child: NestedScrollView(
-                controller: _scrollViewController,
-                headerSliverBuilder: (context, bool) => [
-                      SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        primary: true,
-                        floating: false,
-                        pinned: true,
-                        snap: false,
-                        expandedHeight: 0,
-                        title: KeepAliveWrapper(
-                          child: TabBar(
-                              isScrollable: true,
-                              indicatorSize: TabBarIndicatorSize.label,
-                              labelStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              controller:
-                                  _nestedTabbarController.nestedController,
-                              labelPadding:
-                                  EdgeInsets.symmetric(horizontal: 15.0),
-                              // unselectedLabelColor: Colors.black38,
-                              // unselectedLabelStyle: TextStyle(fontSize: 15),
-                              tabs: _nestedTabbarController.nestedTabs),
-                        ),
-                      ),
-                    ],
-                body: TabBarView(
-                    controller: _nestedTabbarController.nestedController,
-                    children: _nestedTabbarController.screen))));
+        : NestedScrollView(
+            controller: _scrollViewController,
+            headerSliverBuilder: (context, bool) => [
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    primary: true,
+                    floating: false,
+                    pinned: true,
+                    snap: false,
+                    expandedHeight: 0,
+                    title: KeepAliveWrapper(
+                      child: TabBar(
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          labelStyle: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          controller: _nestedTabbarController.nestedController,
+                          labelPadding: EdgeInsets.symmetric(horizontal: 15.0),
+                          // unselectedLabelColor: Colors.black38,
+                          // unselectedLabelStyle: TextStyle(fontSize: 15),
+                          tabs: _nestedTabbarController.nestedTabs),
+                    ),
+                  ),
+                ],
+            body: TabBarView(
+                controller: _nestedTabbarController.nestedController,
+                children: _nestedTabbarController.screen)));
   }
 }
