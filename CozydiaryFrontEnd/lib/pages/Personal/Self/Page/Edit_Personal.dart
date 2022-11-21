@@ -1,6 +1,8 @@
+import 'package:cozydiary/Model/catchPersonalModel.dart';
 import 'package:cozydiary/Model/editUserModel.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import '../controller/editController.dart';
 import '../controller/selfController.dart';
@@ -8,15 +10,17 @@ import '../controller/selfController.dart';
 class Edit_PersonalPage extends StatelessWidget {
   Edit_PersonalPage({
     Key? key,
+    required this.userData,
   }) : super(key: key);
   final GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _introductionFormKey = GlobalKey<FormState>();
+  final UserData userData;
 
   @override
   Widget build(BuildContext context) {
     final EditUserController editUserController = Get.put(EditUserController());
-    final selfPageController = Get.find<SelfPageController>();
-    editUserController.initData(selfPageController.userData.value);
+
+    editUserController.initData(userData);
     Widget nameTextField() {
       return TextFormField(
         autofocus: true,
@@ -24,7 +28,6 @@ class Edit_PersonalPage extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         onSaved: (String? value) => editUserController.oldname.value = value!,
         controller: editUserController.nameController,
-        style: TextStyle(color: Colors.black),
         textInputAction: TextInputAction.done,
         validator: (value) {
           if (value!.isEmpty) {
@@ -39,21 +42,14 @@ class Edit_PersonalPage extends StatelessWidget {
       return ListTile(
           title: Text(
             editUserController.oldname.value,
-            style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
           ),
           dense: true,
           trailing: Icon(
             Icons.keyboard_arrow_right_outlined,
-            color: Colors.black,
           ),
           leading: Text(
             "姓名",
-            style: TextStyle(color: Colors.black),
           ),
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
-              borderRadius: BorderRadius.circular(15)),
-          tileColor: Colors.white,
           onTap: () {
             editUserController.setTextEditController();
             //buttonSheet
@@ -72,7 +68,6 @@ class Edit_PersonalPage extends StatelessWidget {
                                 },
                                 child: Text(
                                   "取消",
-                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               TextButton(
@@ -86,7 +81,6 @@ class Edit_PersonalPage extends StatelessWidget {
                                 },
                                 child: Text(
                                   "確認",
-                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                             ],
@@ -99,8 +93,6 @@ class Edit_PersonalPage extends StatelessWidget {
                         ),
                       ],
                     ))));
-            // showModalBottomSheet(
-            //     context: context, builder: _buildNameBottomSheet);
           });
     }
 
@@ -119,14 +111,11 @@ class Edit_PersonalPage extends StatelessWidget {
           },
           maxLines: 10,
           controller: editUserController.introducionController,
-          maxLength: 300,
+          maxLength: 200,
           decoration: InputDecoration(
               hintText: "打點什麼介紹自己吧~",
-              hintStyle: TextStyle(color: Colors.black38),
               label: Text("簡介"),
-              labelStyle: TextStyle(color: Colors.black, fontSize: 16),
               floatingLabelBehavior: FloatingLabelBehavior.always),
-          style: TextStyle(color: Colors.black, fontSize: 14),
           textInputAction: TextInputAction.done,
         ),
       );
@@ -139,7 +128,6 @@ class Edit_PersonalPage extends StatelessWidget {
             return DropdownMenuItem(
               child: Text(
                 value,
-                style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
               ),
               value: value,
             );
@@ -152,7 +140,7 @@ class Edit_PersonalPage extends StatelessWidget {
           ),
           icon: Icon(
             Icons.keyboard_arrow_right_outlined,
-            color: Colors.black,
+            // color: Colors.black,
           ),
           onChanged: (String? value) {
             editUserController.currentSelect.value = value!;
@@ -160,18 +148,9 @@ class Edit_PersonalPage extends StatelessWidget {
           },
         ),
         dense: true,
-        // trailing: Icon(
-        //   Icons.keyboard_arrow_right_outlined,
-        //   color: Colors.black,
-        // ),
         leading: Text(
           "性別",
-          style: TextStyle(color: Colors.black),
         ),
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
-            borderRadius: BorderRadius.circular(15)),
-        tileColor: Colors.white,
       );
     }
 
@@ -189,11 +168,7 @@ class Edit_PersonalPage extends StatelessWidget {
             border: Border.all(color: Colors.white, width: 2.5),
             shape: BoxShape.circle,
             boxShadow: [
-              BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(0, 3),
-                  blurRadius: 7,
-                  spreadRadius: 0)
+              BoxShadow(offset: Offset(0, 3), blurRadius: 7, spreadRadius: 0)
             ]),
       );
     }
@@ -202,21 +177,18 @@ class Edit_PersonalPage extends StatelessWidget {
       return ListTile(
           title: Text(
             editUserController.birthDayText.value,
-            style: TextStyle(color: Color.fromARGB(130, 0, 0, 0)),
           ),
           dense: true,
           trailing: const Icon(
             Icons.keyboard_arrow_right_outlined,
-            color: Colors.black,
           ),
           leading: const Text(
             "生日",
-            style: TextStyle(color: Colors.black),
           ),
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
-              borderRadius: BorderRadius.circular(15)),
-          tileColor: Colors.white,
+          // shape: RoundedRectangleBorder(
+          //     side: BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
+          //     borderRadius: BorderRadius.circular(15)),
+          // tileColor: Colors.white,
           onTap: () async {
             DateTime? newDate = await showDatePicker(
                 context: context,
@@ -230,7 +202,6 @@ class Edit_PersonalPage extends StatelessWidget {
     }
 
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           actions: [
             TextButton(
@@ -240,23 +211,26 @@ class Edit_PersonalPage extends StatelessWidget {
                   _introductionFormKey.currentState!.save();
                   EditUserModel finalUserData =
                       editUserController.setEditData();
-
-                  selfPageController
+                  Get.dialog(SpinKitFadingCircle(
+                    size: 50,
+                    color: Colors.black,
+                  ));
+                  editUserController
                       .updateUser(finalUserData)
                       .then((String value) {
-                    Get.offAll(() => HomePageTabbar());
+                    print(value);
+                    Get.back();
+                    Get.back(result: value);
                   });
                 }
               },
               child: Text(
                 "確認",
-                style: TextStyle(color: Colors.black),
               ),
             ),
           ],
           title: const Text(
             '編輯個人資料',
-            style: TextStyle(color: Colors.black54),
           ),
         ),
         body: Obx(
@@ -274,7 +248,6 @@ class Edit_PersonalPage extends StatelessWidget {
                         },
                         child: Text(
                           "點擊更換頭貼",
-                          style: TextStyle(fontSize: 16, color: Colors.black87),
                         ))
                   ],
                 ),

@@ -81,8 +81,8 @@ class BuildCardHome extends StatelessWidget {
                   softWrap: true,
                   maxLines: 2,
                   style: TextStyle(
-                    color: Colors.black,
-                  )),
+                      // color: Colors.black,
+                      )),
             ),
             Padding(
                 padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
@@ -119,9 +119,10 @@ class BuildCardHome extends StatelessWidget {
                             Text(
                               postCovers[index].username,
                               style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                // color: Colors.black
+                              ),
                             )
                           ],
                         )

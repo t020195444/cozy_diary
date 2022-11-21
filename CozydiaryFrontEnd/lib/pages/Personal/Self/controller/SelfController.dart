@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cozydiary/Model/editUserModel.dart';
 import 'package:cozydiary/pages/Personal/Service/personalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -51,11 +53,14 @@ class SelfPageController extends GetxController {
           userData.value = UserData.data;
         }
       }
-    } finally {}
+    } finally {
+      isLoading(false);
+    }
   }
 
   Future<void> getUserPostCover(String uid) async {
     try {
+      isLoading(true);
       var Posts = await PersonalService.fetchUserPostCover(uid);
       if (Posts != null) {
         if (Posts.status == 200) {
@@ -66,14 +71,7 @@ class SelfPageController extends GetxController {
       isLoading(false);
     }
   }
+  // Bool checkIsCollect(String pid) async {
 
-  Future<String> updateUser(EditUserModel editUserModel) async {
-    String updateUserJsonData = editUserModelToJson(editUserModel);
-    var response = await PersonalService.updateUser(updateUserJsonData);
-
-    if (response.status == 200) {
-      getUserData();
-    }
-    return response.message;
-  }
+  // }
 }

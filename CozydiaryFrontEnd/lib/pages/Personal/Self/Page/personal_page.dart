@@ -8,8 +8,10 @@ import '../controller/selfController.dart';
 import '../controller/tabbarController.dart';
 import '../widget/self_CollectGridView.dart';
 import '../widget/self_PostGridView.dart';
-import 'edit_Personal.dart';
+
 import 'package:expandable/expandable.dart';
+
+import 'edit_Personal.dart';
 
 class PersonalPage extends StatelessWidget {
   const PersonalPage({Key? key, required this.uid}) : super(key: key);
@@ -29,7 +31,7 @@ class PersonalView extends StatelessWidget {
   Widget build(BuildContext context) {
     //tabBar的控制器
     final _tabController = Get.put(TabbarController());
-    final selfController = Get.put(SelfPageController());
+    final selfController = Get.find<SelfPageController>();
 
     //使用者頭貼照片
     Widget _buildSliverHeaderWidget() {
@@ -49,8 +51,8 @@ class PersonalView extends StatelessWidget {
             TabBar(
                 controller: controller,
                 indicatorWeight: 2,
-                indicatorColor: Color.fromARGB(255, 175, 152, 100),
-                labelColor: Colors.black,
+                // indicatorColor: Color.fromARGB(255, 175, 152, 100),
+                // labelColor: Colors.black,
                 indicatorSize: TabBarIndicatorSize.label,
                 isScrollable: true,
                 labelPadding: EdgeInsets.symmetric(horizontal: 40),
@@ -63,7 +65,7 @@ class PersonalView extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Divider(
-              color: Colors.black54,
+              // color: Colors.black54,
               indent: 40,
               endIndent: 40,
               height: 3,
@@ -110,7 +112,6 @@ class PersonalView extends StatelessWidget {
           : Scaffold(
               key: GlobalKey<RefreshIndicatorState>(),
               extendBodyBehindAppBar: true,
-              backgroundColor: Colors.white,
               drawer: DrawerWidget(
                 userImageUrl: selfController.userData.value.picResize,
                 userName: selfController.userData.value.name,
@@ -138,13 +139,60 @@ class PersonalView extends StatelessWidget {
                       children: [
                         Obx(() => selfController.postCover.isEmpty
                             ? Center(
-                                child: Container(
-                                child: Icon(
-                                  Icons.image_rounded,
-                                ),
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Opacity(
+                                    opacity: 0.5,
+                                    child: Expanded(
+                                      child: Icon(Icons.image_rounded,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          color: Theme.of(context)
+                                              .iconTheme
+                                              .color),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      "你尚未發文章喔~\n快點分享你的生活吧！",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  )
+                                ],
                               ))
                             : InitPostGridView()),
-                        InitCollectGridView()
+                        Obx(() => selfController.postCover.isEmpty
+                            ? Center(
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Opacity(
+                                    opacity: 0.5,
+                                    child: Expanded(
+                                      child: Icon(Icons.image_rounded,
+                                          size: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          color: Theme.of(context)
+                                              .iconTheme
+                                              .color),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      "尚未收藏貼文",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  )
+                                ],
+                              ))
+                            : InitCollectGridView())
                       ],
                     )),
               ),
@@ -163,7 +211,7 @@ class _TabbarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.white,
+      // color: Colors.white,
       child: Center(child: tab),
     );
   }
@@ -260,7 +308,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               height: tabbarHeight,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(45),
                     topRight: Radius.circular(45)),
@@ -283,7 +331,6 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    // "楊哲倫",
                     _selfPageController.userData.value.name,
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
@@ -304,17 +351,22 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
             top: (expandedHeight - tabbarHeight) * 0.8 - shrinkOffset,
             right: 20,
             child: ElevatedButton(
-              onPressed: () {
-                Get.to(Edit_PersonalPage(), transition: Transition.downToUp);
+              onPressed: () async {
+                var status = await Get.to(
+                    Edit_PersonalPage(
+                        userData: _selfPageController.userData.value),
+                    transition: Transition.downToUp);
+                if (status == "更新用戶資料成功") {
+                  _selfPageController.getUserData();
+                }
               },
               child: Text(
                 "編輯個人資料",
-                style: TextStyle(color: Colors.black54),
+                // style: TextStyle(color: Colors.black54),
               ),
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(176, 202, 175, 154),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30))),
+                backgroundColor: Color.fromARGB(174, 164, 131, 106),
+              ),
             ))
       ],
     );
@@ -331,13 +383,13 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               '$trackerCount',
               style: const TextStyle(
                 fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '追隨中',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
           ]),
           onTap: () {
@@ -356,7 +408,9 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
         ),
         InkWell(
           onTap: (() {
-            Get.to(TrackerPage(index: 1, uid: _selfPageController.uid),
+            Get.to(
+                TrackerPage(
+                    key: UniqueKey(), index: 1, uid: _selfPageController.uid),
                 fullscreenDialog: true);
           }),
           child: Column(children: <Widget>[
@@ -364,13 +418,13 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               '$followerCount',
               style: const TextStyle(
                 fontSize: 18,
-                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
             const Text(
               '粉絲',
-              style:
-                  TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
           ]),
         ),
@@ -379,12 +433,13 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
             '$postCount',
             style: const TextStyle(
               fontSize: 18,
-              color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
           const Text(
             '貼文',
-            style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+            style: TextStyle(
+              fontSize: 14,
+            ),
           ),
         ]),
         Column(children: <Widget>[
@@ -392,12 +447,13 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
             '$eventCount',
             style: const TextStyle(
               fontSize: 18,
-              color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
           const Text(
             '活動數',
-            style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),
+            style: TextStyle(
+              fontSize: 14,
+            ),
           ),
         ]),
       ],

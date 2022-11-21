@@ -13,7 +13,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
   @override
   Widget build(BuildContext context) {
     //Controller
-    final _createPostController = CreatePostController();
+    final _createPostController = Get.put(CreatePostController());
 
     //initState
     _createPostController.fetchMedia();
@@ -33,11 +33,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                         timeInSecForIosWeb: 1,
                         fontSize: 16.0);
                   } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ArticlePage()),
-                    );
+                    Get.to(() => ArticlePage());
                   }
                 },
                 child: Padding(

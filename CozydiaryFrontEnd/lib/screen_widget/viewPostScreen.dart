@@ -1,6 +1,7 @@
 import 'package:cozydiary/LocalDB/UidAndState.dart';
 import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -11,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class ViewPostScreen extends StatelessWidget {
   ViewPostScreen({Key? key, required this.pid}) : super(key: key);
   final String pid;
+  // final String isCollect;
 
   //controller
   final commentCtr = TextEditingController();
@@ -18,6 +20,7 @@ class ViewPostScreen extends StatelessWidget {
   final updateTitleCtr = TextEditingController();
   final updateContentCtr = TextEditingController();
   final viewPostController = Get.put(ViewPostController());
+  var uid = Hive.box('UidAndState').get('uid');
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +28,12 @@ class ViewPostScreen extends StatelessWidget {
     viewPostController.getPostDetail();
 
     Future<bool> onLikeButtonTapped(bool isLiked) async {
-      var uid = Hive.box('UidAndState').get('uid');
       viewPostController.updateLikes(pid, uid);
+      return !isLiked;
+    }
+
+    Future<bool> onCollectButtonTapped(bool isLiked) async {
+      viewPostController.updateCollects(pid, uid);
       return !isLiked;
     }
 
@@ -67,9 +74,9 @@ class ViewPostScreen extends StatelessWidget {
                                     onPressed: () {
                                       //initState
                                       updateTitleCtr.text = viewPostController
-                                          .currViewPostDetial['title'];
+                                          .currViewPostDetial.value.title;
                                       updateContentCtr.text = viewPostController
-                                          .currViewPostDetial['content'];
+                                          .currViewPostDetial.value.content;
                                       Navigator.pop(context, '編輯貼文');
                                       showDialog<String>(
                                           context: context,
@@ -175,7 +182,7 @@ class ViewPostScreen extends StatelessWidget {
                                                     .deletePost(pid);
 
                                                 Navigator.pop(context, '確認');
-                                                Get.to(HomePageTabbar());
+                                                Get.back();
                                               },
                                               child: const Text('確認'),
                                             ),
@@ -207,70 +214,118 @@ class ViewPostScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               )
             : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width,
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.4,
+                    ),
                     child: GestureDetector(
                       onTap: () {
                         Get.to(() => _viewPostPic());
                       },
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 5.0),
-                          child: Image.network(
-                            viewPostController.currViewPostDetial
-                                .value['postFiles'][0]['postUrl'],
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: Image.network(
+                          viewPostController
+                              .currViewPostDetial.value.postFiles[0].postUrl,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Container(
+                        height: 50,
+                        child: Wrap(
+                          direction: Axis.vertical,
+                          children: [
+                            Obx(
+                              () => LikeButton(
+                                  padding: EdgeInsets.all(8),
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  likeCount: viewPostController
+                                      .currViewPostDetial.value.likes,
+                                  isLiked:
+                                      viewPostController.buttonIsLiked.value,
+                                  size: 25,
+                                  onTap: onLikeButtonTapped),
+                            ),
+                            LikeButton(
+                              likeBuilder: (isLiked) {
+                                return isLiked
+                                    ? Icon(Icons.bookmark_outlined)
+                                    : Icon(Icons.bookmark_border);
+                              },
+                              padding: EdgeInsets.all(8),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              likeCount: viewPostController
+                                  .currViewPostDetial.value.collects,
+                              isLiked:
+                                  viewPostController.buttonIsCollected.value,
+                              size: 25,
+                            ),
+                          ],
+                        )),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 24.0, right: 8.0),
+                    child: ExpandableNotifier(
+                      child: ExpandableButton(
+                        child: ExpandablePanel(
+                          header: Text(
+                            viewPostController.currViewPostDetial.value.title,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 22),
+                          ),
+                          theme: ExpandableThemeData(
+                            useInkWell: false,
+                            hasIcon: false,
+                          ),
+                          collapsed: Text(
+                            viewPostController.currViewPostDetial.value.content,
+                            style: TextTheme().titleMedium,
+                            maxLines: 3,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          expanded: Text(
+                              viewPostController
+                                  .currViewPostDetial.value.content,
+                              style: TextTheme().titleMedium),
+                          builder: (_, collapsed, expanded) => Expandable(
+                            collapsed: collapsed,
+                            expanded: expanded,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: ListTile(
-                        title: Text(viewPostController
-                            .currViewPostDetial.value['title']),
-                        subtitle: Text(viewPostController
-                            .currViewPostDetial.value['content']),
-                        trailing: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          child: Obx(
-                            () => LikeButton(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                likeCount: viewPostController
-                                    .currViewPostDetial['likes'],
-                                isLiked: viewPostController.buttonIsLiked.value,
-                                size: 25,
-                                onTap: onLikeButtonTapped),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Text(viewPostController.currViewPostDetial.value['content']),
                   Divider(
                     thickness: 2,
                   ),
                   if (viewPostController
-                      .currViewPostDetial.value['comments'].isEmpty)
+                      .currViewPostDetial.value.comments.isEmpty)
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, top: 10),
+                        padding: EdgeInsets.only(left: 30, top: 10),
                         child: Container(
                           child: Text('目前還沒有人留言'),
                         ),
@@ -281,7 +336,7 @@ class ViewPostScreen extends StatelessWidget {
                       () => Expanded(
                         child: ListView.builder(
                             itemCount: viewPostController
-                                .currViewPostDetial.value['comments'].length,
+                                .currViewPostDetial.value.comments.length,
                             itemBuilder: ((context, index) {
                               return Padding(
                                 padding: const EdgeInsets.only(
@@ -294,7 +349,7 @@ class ViewPostScreen extends StatelessWidget {
                                     leading: CircleAvatar(
                                       backgroundImage: NetworkImage(
                                           viewPostController.currViewPostDetial
-                                              .value['comments'][index]['pic']),
+                                              .value.comments[index].pic),
                                     ),
                                     title: Row(
                                       crossAxisAlignment:
@@ -302,8 +357,7 @@ class ViewPostScreen extends StatelessWidget {
                                       children: [
                                         Text(
                                           viewPostController.currViewPostDetial
-                                                  .value['comments'][index]
-                                              ['username'],
+                                              .value.comments[index].username,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Padding(
@@ -311,9 +365,10 @@ class ViewPostScreen extends StatelessWidget {
                                               const EdgeInsets.only(left: 12.0),
                                           child: Text(
                                             viewPostController
-                                                    .currViewPostDetial
-                                                    .value['comments'][index]
-                                                ['text'],
+                                                .currViewPostDetial
+                                                .value
+                                                .comments[index]
+                                                .text,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 // fontSize: 15,
@@ -337,23 +392,26 @@ class ViewPostScreen extends StatelessWidget {
                                                         '測試',
                                                         viewPostController
                                                             .currViewPostDetial
-                                                            .value['comments']
-                                                                [index]
-                                                                ['commentId']
+                                                            .value
+                                                            .comments[index]
+                                                            .commentId
                                                             .toString());
                                               },
                                               child: Text('回覆',
                                                   style:
                                                       TextStyle(fontSize: 12))),
                                         ),
-                                        viewPostController.currViewPostDetial[
-                                                            'comments'][index]
-                                                        ['uid'] ==
+                                        viewPostController
+                                                        .currViewPostDetial
+                                                        .value
+                                                        .comments[index]
+                                                        .uid ==
                                                     Hive.box("UidAndState")
                                                         .get('uid') ||
                                                 viewPostController
-                                                            .currViewPostDetial[
-                                                        'uid'] ==
+                                                        .currViewPostDetial
+                                                        .value
+                                                        .uid ==
                                                     Hive.box("UidAndState")
                                                         .get('uid')
                                             ? SizedBox(
@@ -366,14 +424,16 @@ class ViewPostScreen extends StatelessWidget {
                                                           .get('uid');
                                                       if (uid ==
                                                           viewPostController
-                                                                      .currViewPostDetial[
-                                                                  'comments']
-                                                              [index]['uid']) {
+                                                              .currViewPostDetial
+                                                              .value
+                                                              .comments[index]
+                                                              .uid) {
                                                         updateCommentCtr.text =
                                                             viewPostController
-                                                                        .currViewPostDetial[
-                                                                    'comments']
-                                                                [index]['text'];
+                                                                .currViewPostDetial
+                                                                .value
+                                                                .comments[index]
+                                                                .text;
                                                         showDialog<String>(
                                                           context: context,
                                                           builder: (BuildContext
@@ -419,10 +479,10 @@ class ViewPostScreen extends StatelessWidget {
                                                                               () {
                                                                             if (updateCommentCtr.text !=
                                                                                 '') {
-                                                                              viewPostController.updateComment(viewPostController.currViewPostDetial['comments'][index]['commentId'].toString(), updateCommentCtr.text);
+                                                                              viewPostController.updateComment(viewPostController.currViewPostDetial.value.comments[index].commentId.toString(), updateCommentCtr.text);
                                                                               updateCommentCtr.clear();
                                                                             } else {
-                                                                              viewPostController.deleteComment(viewPostController.currViewPostDetial['comments'][index]['commentId']);
+                                                                              viewPostController.deleteComment(viewPostController.currViewPostDetial.value.comments[index].commentId);
                                                                               Fluttertoast.showToast(msg: "已刪除留言", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
                                                                             }
                                                                             Navigator.pop(context,
@@ -450,12 +510,12 @@ class ViewPostScreen extends StatelessWidget {
                                                               ),
                                                               TextButton(
                                                                 onPressed: () {
-                                                                  viewPostController.deleteComment(
-                                                                      viewPostController.currViewPostDetial['comments']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'commentId']);
+                                                                  viewPostController.deleteComment(viewPostController
+                                                                      .currViewPostDetial
+                                                                      .value
+                                                                      .comments[
+                                                                          index]
+                                                                      .commentId);
                                                                   Navigator.pop(
                                                                       context,
                                                                       '刪除');
@@ -468,8 +528,9 @@ class ViewPostScreen extends StatelessWidget {
                                                           ),
                                                         );
                                                       } else if (viewPostController
-                                                                  .currViewPostDetial[
-                                                              'uid'] ==
+                                                              .currViewPostDetial
+                                                              .value
+                                                              .uid ==
                                                           Hive.box(
                                                                   "UidAndState")
                                                               .get('uid')) {
@@ -483,12 +544,12 @@ class ViewPostScreen extends StatelessWidget {
                                                             actions: <Widget>[
                                                               TextButton(
                                                                 onPressed: () {
-                                                                  viewPostController.deleteComment(
-                                                                      viewPostController.currViewPostDetial['comments']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'commentId']);
+                                                                  viewPostController.deleteComment(viewPostController
+                                                                      .currViewPostDetial
+                                                                      .value
+                                                                      .comments[
+                                                                          index]
+                                                                      .commentId);
                                                                   Navigator.pop(
                                                                       context,
                                                                       '刪除');
@@ -538,45 +599,78 @@ class ViewPostScreen extends StatelessWidget {
                             })),
                       ),
                     ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20, left: 20),
-                        child: TextField(
-                          controller: commentCtr,
-                          maxLines: 1,
-                          maxLength: 30,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.send),
-                              onPressed: () {
-                                if (commentCtr.text != '') {
-                                  viewPostController
-                                      .postComments(commentCtr.text);
-                                  commentCtr.clear();
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg: "留言不可為空白",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.blue,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }
-                              },
-                            ),
-                            border: InputBorder.none,
-                            hintText: '發表言論...',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.bottomCenter,
+                  //   child: Container(
+                  //     height: MediaQuery.of(context).size.height * 0.1,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.only(right: 20, left: 20),
+                  //       child: TextField(
+                  //         controller: commentCtr,
+                  //         maxLines: 1,
+                  //         maxLength: 30,
+                  //         decoration: InputDecoration(
+                  //           suffixIcon: IconButton(
+                  //             icon: Icon(Icons.send),
+                  //             onPressed: () {
+                  //               if (commentCtr.text != '') {
+                  //                 viewPostController
+                  //                     .postComments(commentCtr.text);
+                  //                 commentCtr.clear();
+                  //               } else {
+                  //                 Fluttertoast.showToast(
+                  //                     msg: "留言不可為空白",
+                  //                     toastLength: Toast.LENGTH_SHORT,
+                  //                     gravity: ToastGravity.CENTER,
+                  //                     timeInSecForIosWeb: 1,
+                  //                     backgroundColor: Colors.blue,
+                  //                     textColor: Colors.white,
+                  //                     fontSize: 16.0);
+                  //               }
+                  //             },
+                  //           ),
+                  //           border: InputBorder.none,
+                  //           hintText: '發表言論...',
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ))),
+        bottomSheet: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20, left: 20),
+            child: TextField(
+              controller: commentCtr,
+              maxLines: 1,
+              maxLength: 30,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    if (commentCtr.text != '') {
+                      viewPostController.postComments(commentCtr.text);
+                      commentCtr.clear();
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "留言不可為空白",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
+                ),
+                border: InputBorder.none,
+                hintText: '發表言論...',
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -603,8 +697,8 @@ class _viewPostPic extends StatelessWidget {
               child: Padding(
                   padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
                   child: Image.network(
-                    viewPostController.currViewPostDetial.value['postFiles']
-                        [index]['postUrl'],
+                    viewPostController
+                        .currViewPostDetial.value.postFiles[index].postUrl,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
                       return Center(
@@ -620,7 +714,7 @@ class _viewPostPic extends StatelessWidget {
             );
           },
           itemCount:
-              viewPostController.currViewPostDetial.value['postFiles'].length,
+              viewPostController.currViewPostDetial.value.postFiles.length,
         ),
       ),
     );

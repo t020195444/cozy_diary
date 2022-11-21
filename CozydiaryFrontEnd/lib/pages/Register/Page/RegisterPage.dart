@@ -17,7 +17,7 @@ class RegisterPage extends StatelessWidget {
   }
 
 //選擇性別
-  Widget choiceGender() {
+  Widget choiceGender(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -32,18 +32,18 @@ class RegisterPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
                     backgroundColor: registerController.sex.value == "0"
-                        ? const Color.fromARGB(255, 179, 141, 113)
-                        : const Color.fromARGB(255, 255, 255, 255)),
+                        ? Theme.of(context).selectedRowColor
+                        : Theme.of(context).primaryColorLight),
                 child: const Icon(
                   Icons.boy_outlined,
                   size: 50,
-                  color: Color.fromARGB(255, 88, 67, 50),
+                  color: Colors.black,
                 ),
               ),
             ),
             const Text(
               "男",
-              style: TextStyle(color: Colors.black87, fontSize: 18),
+              style: TextStyle(fontSize: 18),
             )
           ],
         ),
@@ -57,18 +57,18 @@ class RegisterPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
                     backgroundColor: registerController.sex.value == "0"
-                        ? Color.fromARGB(255, 255, 255, 255)
-                        : Color.fromARGB(255, 179, 141, 113)),
+                        ? Theme.of(context).primaryColorLight
+                        : Theme.of(context).selectedRowColor),
                 child: const Icon(
                   Icons.girl_outlined,
                   size: 50,
-                  color: Color.fromARGB(255, 88, 67, 50),
+                  color: Colors.black,
                 ),
               ),
             ),
             const Text(
               "女",
-              style: TextStyle(color: Colors.black87, fontSize: 18),
+              style: TextStyle(fontSize: 18),
             )
           ],
         )
@@ -77,19 +77,21 @@ class RegisterPage extends StatelessWidget {
   }
 
 //姓名
-  Widget nameTextField() {
+  Widget nameTextField(BuildContext context) {
     return SizedBox(
-      height: 70.0,
-      width: 230,
       child: TextFormField(
         maxLength: 20,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        style: const TextStyle(color: Colors.black),
+        // style: const TextStyle(color: Colors.black),
         textInputAction: TextInputAction.done,
         decoration: const InputDecoration(
+          label: Text("姓名"),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
           isDense: true,
-          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          hintText: "您的大名是？",
+          contentPadding: EdgeInsets.fromLTRB(10, 30, 10, 0),
         ),
+
         initialValue: registerController.name.value,
         validator: (value) {
           if (value!.isEmpty) {
@@ -105,14 +107,14 @@ class RegisterPage extends StatelessWidget {
   }
 
 //使用者頭貼
-  Widget userImage() {
+  Widget userImage(BuildContext context) {
     return Stack(
       children: [
         Obx(
           () => Container(
             alignment: Alignment.center,
-            height: 80,
-            width: 80,
+            height: 150,
+            width: 150,
             margin: const EdgeInsets.fromLTRB(2, 20, 5, 15),
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -133,16 +135,15 @@ class RegisterPage extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 75,
+          top: 130,
           right: 0,
           child: SizedBox(
-            width: 32,
-            height: 32,
+            width: 50,
+            height: 50,
             child: TextButton(
                 child: const Icon(
                   Icons.camera_alt,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  size: 19,
+                  size: 40,
                 ),
                 onPressed: () {
                   registerController.openImagePicker();
@@ -151,7 +152,6 @@ class RegisterPage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(90),
                   ),
-                  backgroundColor: Color.fromARGB(255, 127, 236, 215),
                 )),
           ),
         ),
@@ -165,55 +165,40 @@ class RegisterPage extends StatelessWidget {
     late DateTime currentBirth = DateTime.now();
     //選擇生日欄位
     Widget BirthDayTitle() {
-      return SizedBox(
-        height: 35,
-        width: 230,
-        child: ListTile(
-            title: Padding(
-              padding: EdgeInsets.fromLTRB(55, 0, 0, 15),
-              child: Obx(
-                () => registerController.birth.value == "2000-01-01"
-                    ? Text(
-                        "選擇你的生日",
-                        style: TextStyle(
-                          color: Color.fromARGB(150, 0, 0, 0),
-                          fontSize: 14,
-                        ),
-                      )
-                    : Text(
-                        registerController.birth.value,
-                        style: TextStyle(
-                          color: Color.fromARGB(150, 0, 0, 0),
-                          fontSize: 14,
-                        ),
-                      ),
-              ),
+      return ListTile(
+          title: Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Obx(
+              () => registerController.birth.value == "2000-01-01"
+                  ? Text("選擇你的生日",
+                      style: Theme.of(context).textTheme.titleMedium)
+                  : Text(registerController.birth.value,
+                      style: Theme.of(context).textTheme.titleMedium),
             ),
-            dense: true,
-            trailing: Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-              child: const Icon(
-                Icons.keyboard_arrow_right_outlined,
-                color: Colors.black,
-              ),
+          ),
+          dense: true,
+          trailing: Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 40, 0),
+            child: const Icon(
+              Icons.keyboard_arrow_right_outlined,
             ),
-            shape: RoundedRectangleBorder(
-                side: const BorderSide(
-                    color: Color.fromARGB(105, 0, 0, 0), width: 1),
-                borderRadius: BorderRadius.circular(30)),
-            tileColor: Colors.white,
-            onTap: () async {
-              DateTime? newDate = await showDatePicker(
-                  context: context,
-                  initialDate: currentBirth,
-                  firstDate: DateTime(DateTime.now().year - 100),
-                  lastDate: DateTime.now());
+          ),
+          // shape: RoundedRectangleBorder(
+          //     side: const BorderSide(
+          //         color: Color.fromARGB(105, 0, 0, 0), width: 1),
+          //     borderRadius: BorderRadius.circular(30)),
+          // tileColor: Colors.white,
+          onTap: () async {
+            DateTime? newDate = await showDatePicker(
+                context: context,
+                initialDate: currentBirth,
+                firstDate: DateTime(DateTime.now().year - 100),
+                lastDate: DateTime.now());
 
-              if (newDate == null) return;
-              registerController.birth.value =
-                  DateFormat("yyyy-MM-dd").format(newDate);
-            }),
-      );
+            if (newDate == null) return;
+            registerController.birth.value =
+                DateFormat("yyyy-MM-dd").format(newDate);
+          });
     }
 
 //自我介紹
@@ -228,20 +213,20 @@ class RegisterPage extends StatelessWidget {
         onSaved: (String? introduction) {
           registerController.introduction.value = introduction!;
         },
-        maxLines: 1,
+        maxLines: 5,
         maxLength: 300,
         decoration: const InputDecoration(
             hintText: "簡單介紹自己吧~",
-            hintStyle: TextStyle(color: Colors.black38),
+            label: Text("簡介"),
             floatingLabelBehavior: FloatingLabelBehavior.always),
-        style: const TextStyle(color: Colors.black, fontSize: 14),
+        // style: const TextStyle(color: Colors.black, fontSize: 14),
         textInputAction: TextInputAction.done,
       );
     }
 
     //主頁面架構
     return Scaffold(
-      backgroundColor: Color(0xFFF5E8DE),
+      // backgroundColor: Color(0xFFF5E8DE),
       body: Form(
         key: registerFormKey,
         child: SingleChildScrollView(
@@ -261,7 +246,6 @@ class RegisterPage extends StatelessWidget {
                   Text(
                     "歡迎來到CozyDiary~",
                     style: TextStyle(
-                      color: Colors.black87,
                       fontSize: 30,
                       fontWeight: FontWeight.w600,
                     ),
@@ -270,7 +254,7 @@ class RegisterPage extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
                     child: Text(
                       "填寫您的個人資訊吧!",
-                      style: TextStyle(color: Colors.black54, fontSize: 15),
+                      style: TextStyle(fontSize: 15),
                     ),
                   ),
                 ],
@@ -281,65 +265,66 @@ class RegisterPage extends StatelessWidget {
               padding: EdgeInsets.only(top: 10, bottom: 0),
             ),
             //使用者照片
-            userImage(),
+            userImage(context),
             //輸入名字欄位
             Padding(
-              child: nameTextField(),
-              padding: const EdgeInsets.fromLTRB(50, 10, 50, 0),
+              child: nameTextField(context),
+              padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+            ),
+            //編輯生日欄位
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(30, 0, 0, 10),
+                child: Text(
+                  "生日",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+            BirthDayTitle(),
+            Divider(
+              indent: 50,
+              endIndent: 40,
             ),
 
+            //選擇性別按鈕
             const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.fromLTRB(30, 0, 0, 20),
                 child: Text(
                   "您的性別",
-                  style: TextStyle(color: Colors.black87, fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
-            //選擇性別按鈕
+
             Padding(
                 padding: const EdgeInsets.fromLTRB(80, 0, 80, 0),
-                child: choiceGender()),
+                child: choiceGender(context)),
             const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                 // child: Text(
                 //   "您的生日",
                 //   style: TextStyle(color: Colors.black87, fontSize: 18),
                 // ),
               ),
             ),
-            //編輯生日欄位
-            Padding(
-              padding: const EdgeInsets.fromLTRB(40, 0, 30, 0),
-              child: BirthDayTitle(),
-            ),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(30, 20, 0, 10),
-                child: Text(
-                  "簡介",
-                  style: TextStyle(color: Colors.black87, fontSize: 16),
-                ),
-              ),
-            ),
 
             //自我介紹欄位
             Padding(
-              padding: const EdgeInsets.fromLTRB(40, 0, 30, 0),
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: introductionTitle(),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 135, 110, 95),
-                  textStyle: const TextStyle(
-                      color: Color.fromARGB(255, 135, 110, 95), fontSize: 16),
+                  // backgroundColor: const Color.fromARGB(255, 135, 110, 95),
+                  // textStyle: const TextStyle(fontSize: 16),
                   minimumSize:
                       Size(MediaQuery.of(context).size.width * 0.8, 40),
                   shape: RoundedRectangleBorder(

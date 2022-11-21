@@ -23,14 +23,14 @@ class DrawerWidget extends StatelessWidget {
             height: 215,
             child: UserAccountsDrawerHeader(
               decoration:
-                  BoxDecoration(color: Theme.of(context).secondaryHeaderColor),
+                  BoxDecoration(color: Theme.of(context).backgroundColor),
               accountName: Text(
                 userName,
-                style: TextStyle(fontSize: 30, color: Colors.black54),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               accountEmail: Text(
                 "UID：$uid",
-                style: TextStyle(fontSize: 12, color: Colors.black45),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               currentAccountPictureSize: const Size.square(110),
               currentAccountPicture: Container(
@@ -38,7 +38,6 @@ class DrawerWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(userImageUrl), fit: BoxFit.cover),
-                    // border: Border.all(color: Colors.white, width: 2.5),
                     shape: BoxShape.circle,
                     boxShadow: const [
                       BoxShadow(

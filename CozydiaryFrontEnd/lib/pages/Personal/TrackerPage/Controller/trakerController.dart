@@ -55,13 +55,13 @@ class TrackerController extends GetxController {
       if (trackerResponse == 200) {
         if (state[index]) {
           state[index] = false;
-          update();
         } else
           state[index] = true;
-        update();
       }
       ;
-    } finally {}
+    } finally {
+      update();
+    }
   }
 }
 
@@ -113,7 +113,6 @@ class FollowerController extends GetxController {
         return "刪除成功";
       } else
         return "刪除失敗";
-      ;
     } finally {}
   }
 
@@ -129,4 +128,10 @@ class FollowerController extends GetxController {
       }
     } finally {}
   }
+
+  // @override
+  // void refresh() {
+  //   getFollower(uid);
+  //   super.refresh();
+  // }
 }

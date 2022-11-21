@@ -1,5 +1,6 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
 import 'package:cozydiary/pages/Home/homePageTabbar.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -24,7 +25,7 @@ class EditUserController extends GetxController {
   int oldSex = 0;
   List<String> gender = [];
   var currentSelect = "".obs;
-  // SelfPageController selfPageController = Get.find<SelfPageController>();
+
   late TextEditingController nameController;
   late TextEditingController introducionController;
   final imagePicker = ImagePicker();
@@ -115,5 +116,12 @@ class EditUserController extends GetxController {
       birth: oldbirthDay,
     );
     return finalUserData;
+  }
+
+  Future<String> updateUser(EditUserModel editUserModel) async {
+    String updateUserJsonData = editUserModelToJson(editUserModel);
+    var response = await PersonalService.updateUser(updateUserJsonData);
+
+    return response.message;
   }
 }

@@ -1,9 +1,9 @@
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
+import 'package:cozydiary/pages/Register/Page/registerPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
@@ -53,40 +53,68 @@ class MyApp extends StatelessWidget {
       //所有主題顏色與框架都是用這個套件調整，若要細部調整，用以下網址
       //https://rydmike.com/flexcolorscheme/themesplayground-v6/#/
       theme: FlexThemeData.light(
-        scheme: FlexScheme.gold,
+        colors: const FlexSchemeColor(
+          primary: Color(0xff9e7555),
+          primaryContainer: Color(0xff5f5149),
+          secondary: Color(0xff896040),
+          secondaryContainer: Color(0xff3f3f3f),
+          tertiary: Color(0xff795548),
+          tertiaryContainer: Color(0xff5a5a5a),
+          appBarColor: Color(0xff3f3f3f),
+          error: Color(0xffb00020),
+        ),
+        subThemesData: const FlexSubThemesData(
+          appBarBackgroundSchemeColor: SchemeColor.onInverseSurface,
+          navigationBarLabelBehavior:
+              NavigationDestinationLabelBehavior.onlyShowSelected,
+          blendOnLevel: 20,
+          blendOnColors: false,
+          elevatedButtonSecondarySchemeColor: SchemeColor.secondary,
+          elevatedButtonSchemeColor: SchemeColor.surfaceVariant,
+          inputDecoratorUnfocusedHasBorder: false,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
         blendLevel: 16,
         appBarOpacity: 0.95,
         tabBarStyle: FlexTabBarStyle.forBackground,
         lightIsWhite: true,
-        subThemesData: const FlexSubThemesData(
-          appBarBackgroundSchemeColor: SchemeColor.onInverseSurface,
-          navigationBarLabelBehavior:
-              NavigationDestinationLabelBehavior.onlyShowSelected,
-        ),
         keyColors: const FlexKeyColors(
           useSecondary: true,
           useTertiary: true,
         ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: true,
       ),
       darkTheme: FlexThemeData.dark(
-        scheme: FlexScheme.gold,
+        colors: const FlexSchemeColor(
+          primary: Color(0xff9e7555),
+          primaryContainer: Color(0xff5f5149),
+          secondary: Color(0xff896040),
+          secondaryContainer: Color(0xff3f3f3f),
+          tertiary: Color(0xff795548),
+          tertiaryContainer: Color(0xff5a5a5a),
+          appBarColor: Color(0xff3f3f3f),
+          error: Color(0xffb00020),
+        ).defaultError.toDark(10, true),
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 15,
+        appBarStyle: FlexAppBarStyle.background,
         appBarOpacity: 0.90,
-        tabBarStyle: FlexTabBarStyle.forBackground,
+        surfaceTint: Color(0xff818181),
         subThemesData: const FlexSubThemesData(
-          navigationBarLabelBehavior:
-              NavigationDestinationLabelBehavior.onlyShowSelected,
-        ),
-        keyColors: const FlexKeyColors(
-          useSecondary: true,
-          useTertiary: true,
-        ),
+            elevatedButtonSecondarySchemeColor: SchemeColor.primary,
+            blendOnLevel: 30,
+            elevatedButtonSchemeColor: SchemeColor.background,
+            inputDecoratorUnfocusedHasBorder: false,
+            dialogBackgroundSchemeColor: SchemeColor.secondaryContainer,
+            tabBarIndicatorSchemeColor: SchemeColor.primaryContainer,
+            navigationBarSelectedIconSchemeColor: SchemeColor.primaryContainer,
+            navigationBarSelectedLabelSchemeColor:
+                SchemeColor.primaryContainer),
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
+        // To use the playground font, add GoogleFonts package and uncomment
+        // fontFamily: GoogleFonts.notoSans().fontFamily,
       ),
 // If you do not have a themeMode switch, uncomment this line
 // to let the device system mode control the theme mode:
