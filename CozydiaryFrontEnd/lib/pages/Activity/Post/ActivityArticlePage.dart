@@ -446,7 +446,7 @@ class ActivityArticlePage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '發布',
-                  style: Theme.of(context).textTheme.labelLarge,
+                  // style: Theme.of(context).textTheme.labelLarge,
                 ),
               ))
         ],

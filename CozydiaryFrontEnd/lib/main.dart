@@ -106,6 +106,7 @@ class MyApp extends StatelessWidget {
         subThemesData: const FlexSubThemesData(
             elevatedButtonSecondarySchemeColor: SchemeColor.primary,
             blendOnLevel: 30,
+            textButtonSchemeColor: SchemeColor.onBackground,
             elevatedButtonSchemeColor: SchemeColor.background,
             inputDecoratorUnfocusedHasBorder: false,
             dialogBackgroundSchemeColor: SchemeColor.secondaryContainer,

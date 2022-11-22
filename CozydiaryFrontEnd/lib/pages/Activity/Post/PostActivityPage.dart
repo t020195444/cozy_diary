@@ -40,7 +40,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     '下一步',
-                    style: Theme.of(context).textTheme.labelLarge,
+                    // style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ))
           ],

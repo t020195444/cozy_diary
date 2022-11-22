@@ -52,6 +52,8 @@ class ArticlePage extends StatelessWidget {
                       showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
                                 title: const Text('發文中...'),
                                 content: Container(
                                     height: 150,

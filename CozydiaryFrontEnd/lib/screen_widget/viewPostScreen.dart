@@ -79,6 +79,8 @@ class ViewPostScreen extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) {
                               return SimpleDialog(
+                                backgroundColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 title: Center(child: Text('請選擇動作')),
                                 children: [
                                   SimpleDialogOption(
@@ -93,6 +95,9 @@ class ViewPostScreen extends StatelessWidget {
                                           context: context,
                                           builder: (BuildContext context) =>
                                               AlertDialog(
+                                                backgroundColor: Theme.of(
+                                                        context)
+                                                    .scaffoldBackgroundColor,
                                                 title: const Text('修改貼文'),
                                                 content: Container(
                                                   child: Column(
