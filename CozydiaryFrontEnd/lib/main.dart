@@ -69,6 +69,8 @@ class MyApp extends StatelessWidget {
               NavigationDestinationLabelBehavior.onlyShowSelected,
           blendOnLevel: 20,
           blendOnColors: false,
+
+          // textButtonSchemeColor: SchemeColor.onBackground,
           elevatedButtonSecondarySchemeColor: SchemeColor.secondary,
           elevatedButtonSchemeColor: SchemeColor.surfaceVariant,
           inputDecoratorUnfocusedHasBorder: false,

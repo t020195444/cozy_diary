@@ -51,7 +51,7 @@ class ArticlePage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '發布',
-                  // style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ))
         ],

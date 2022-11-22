@@ -31,8 +31,6 @@ class _PostActivityPageState extends State<PostActivityPage> {
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.black,
-                        textColor: Colors.white,
                         fontSize: 16.0);
                   } else {
                     Get.to(() => ActivityArticlePage());
@@ -42,7 +40,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     '下一步',
-                    style: TextStyle(color: Colors.white),
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ))
           ],
@@ -56,7 +54,6 @@ class _PostActivityPageState extends State<PostActivityPage> {
                   child: postController.isPicked == true
                       ? postController.currPic[0]
                       : Container(
-                          color: Colors.white,
                           child: Center(child: Text("尚未選擇照片")),
                         ),
                 ),
@@ -97,7 +94,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                                           ActivityPostController.checkBox[i] ==
                                                   true
                                               ? Icon(Icons.check_circle,
-                                                  color: Colors.blue)
+                                                  color: Colors.blue[400])
                                               : null,
                                     ),
                                   ),

@@ -1,6 +1,8 @@
-import 'dart:convert';
-
+import 'package:cozydiary/Model/postCategoryModel.dart';
 import 'package:cozydiary/pages/Register/Service/registerService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -16,7 +18,21 @@ class CategoryController extends GetxController {
   //uid
   var uid = Hive.box("UidAndState").get("uid");
   //按鈕狀態
-  var isChoice = <bool>[false, false, false, false, false];
+  var isChoice = <bool>[
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   //load狀態
   var isLoding = false;
   //目前是哪個狀態，現在有註冊與登入狀態
@@ -28,8 +44,17 @@ class CategoryController extends GetxController {
       "assets/category/dressStyle_S.jpg",
       "assets/category/invest_S.jpg",
       "assets/category/anime_S.jpg",
-      "assets/category/beauty_S.jpg"
+      "assets/category/beauty_S.jpg",
+      "assets/category/memes.jpg",
+      "assets/category/scenery.jpg",
+      "assets/category/travel.jpg",
+      "assets/category/workout.jpg",
+      "assets/category/pets.jpg",
+      "assets/category/cars.jpg",
+      "assets/category/photography.jpg",
+      "assets/category/game.jpg",
     ];
+
     fetchCategoryList();
     fetchUserCategory();
 
@@ -86,16 +111,41 @@ class CategoryController extends GetxController {
     print(finalCategoryList);
   }
 
-  void addCategory() async {
-    for (var id in finalCategoryList) {
-      Map<String, dynamic> postJsonData = {"uid": uid, "cid": id};
-      int response =
-          await RegisterService.addCategory(jsonEncode(postJsonData));
-      if (response == 200) {
-      } else {
-        print("can't post");
-        break;
+  Future<int> addUserCategory() async {
+    int deleteResponse = await RegisterService.deleteCategory(uid);
+    if (deleteResponse == 200) {
+      List<UserCategory> userCategoryList = <UserCategory>[];
+      for (var id in finalCategoryList) {
+        Map<String, dynamic> postJsonData = {"uid": uid, "cid": id};
+        userCategoryList.add(UserCategory.fromJson(postJsonData));
       }
+      PostCategoryModel postCategoryModel =
+          PostCategoryModel(userCategory: userCategoryList);
+      String postJsonDataList = postCategoryModelToJson(postCategoryModel);
+      int addResponse = await RegisterService.addCategory(postJsonDataList);
+      if (addResponse == 200) {
+        return addResponse;
+      } else {
+        Get.showSnackbar(GetSnackBar(
+          icon: Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+          message: "can't addCategory",
+          duration: const Duration(seconds: 3),
+        ));
+        return addResponse;
+      }
+    } else {
+      Get.showSnackbar(GetSnackBar(
+        icon: Icon(
+          Icons.close,
+          color: Colors.red,
+        ),
+        message: "can't deleteCategory",
+        duration: const Duration(seconds: 3),
+      ));
+      return deleteResponse;
     }
   }
 }

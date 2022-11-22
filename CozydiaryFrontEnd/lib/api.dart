@@ -42,6 +42,8 @@ class Api {
   static String getCategoryList = "getCategoryList";
   //新增使用者類別
   static String addCategory = "addUserCategory";
+  //刪除使用者類別
+  static String deleteUserCategory = "deleteUserCategory?uid=";
   //抓取使用者類別
   static String userCategoryList = "userCategoryList?uid=";
   //新增留言

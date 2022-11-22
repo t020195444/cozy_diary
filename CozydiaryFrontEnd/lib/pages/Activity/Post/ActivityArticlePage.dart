@@ -31,20 +31,17 @@ class ActivityArticlePage extends StatelessWidget {
         title: Text(
           "選擇活動時間",
           style: TextStyle(
-            color: Color.fromARGB(150, 0, 0, 0),
             fontSize: 14,
           ),
         ),
         dense: true,
         trailing: const Icon(
           Icons.keyboard_arrow_right_outlined,
-          color: Colors.black,
         ),
         shape: RoundedRectangleBorder(
             side:
                 const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
             borderRadius: BorderRadius.circular(30)),
-        tileColor: Colors.white,
         onTap: () async {
           showModalBottomSheet(
               isScrollControlled: true,
@@ -54,7 +51,6 @@ class ActivityArticlePage extends StatelessWidget {
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Container(
                         height: 200,
-                        color: Color.fromARGB(255, 215, 199, 194),
                         child: Center(
                             child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -119,8 +115,6 @@ class ActivityArticlePage extends StatelessWidget {
                                             },
                                             style: OutlinedButton.styleFrom(
                                               fixedSize: Size(195, 25),
-                                              backgroundColor: Colors.white,
-                                              foregroundColor: Colors.black,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(15)),
@@ -175,8 +169,6 @@ class ActivityArticlePage extends StatelessWidget {
                                             },
                                             style: OutlinedButton.styleFrom(
                                               fixedSize: Size(195, 25),
-                                              backgroundColor: Colors.white,
-                                              foregroundColor: Colors.black,
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(15)),
@@ -204,20 +196,17 @@ class ActivityArticlePage extends StatelessWidget {
         title: Text(
           "詳細活動設定",
           style: TextStyle(
-            color: Color.fromARGB(150, 0, 0, 0),
             fontSize: 14,
           ),
         ),
         dense: true,
         trailing: const Icon(
           Icons.keyboard_arrow_right_outlined,
-          color: Colors.black,
         ),
         shape: RoundedRectangleBorder(
             side:
                 const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
             borderRadius: BorderRadius.circular(30)),
-        tileColor: Colors.white,
         onTap: () async {
           showModalBottomSheet(
               isScrollControlled: true,
@@ -227,7 +216,6 @@ class ActivityArticlePage extends StatelessWidget {
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: Container(
                         height: 200,
-                        color: Color.fromARGB(255, 215, 199, 194),
                         child: Center(
                             child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -263,10 +251,6 @@ class ActivityArticlePage extends StatelessWidget {
                                         width: 100,
                                         height: 25,
                                         child: OutlinedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.white)),
                                           onPressed: () {
                                             showCupertinoModalPopup(
                                                 context: context,
@@ -296,8 +280,6 @@ class ActivityArticlePage extends StatelessWidget {
                                               postController
                                                   .activityPeople.value
                                                   .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black),
                                             ),
                                           ),
                                         )),
@@ -370,10 +352,6 @@ class ActivityArticlePage extends StatelessWidget {
                                         width: 100,
                                         height: 25,
                                         child: OutlinedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.white)),
                                           onPressed: () {
                                             showCupertinoModalPopup(
                                                 context: context,
@@ -405,8 +383,6 @@ class ActivityArticlePage extends StatelessWidget {
                                               postController
                                                   .activitybudget.value
                                                   .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black),
                                             ),
                                           ),
                                         )),
@@ -428,27 +404,23 @@ class ActivityArticlePage extends StatelessWidget {
             ? Text(
                 "選擇活動地點",
                 style: TextStyle(
-                  color: Color.fromARGB(150, 0, 0, 0),
                   fontSize: 14,
                 ),
               )
             : Text(
                 postController.activityLocation.value,
                 style: TextStyle(
-                  color: Color.fromARGB(150, 0, 0, 0),
                   fontSize: 14,
                 ),
               ),
         dense: true,
         trailing: const Icon(
           Icons.keyboard_arrow_right_outlined,
-          color: Colors.black,
         ),
         shape: RoundedRectangleBorder(
             side:
                 const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
             borderRadius: BorderRadius.circular(30)),
-        tileColor: Colors.white,
         onTap: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => SearchScreen()));
@@ -474,7 +446,7 @@ class ActivityArticlePage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   '發布',
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ))
         ],
@@ -528,7 +500,6 @@ class ActivityArticlePage extends StatelessWidget {
                     postController.activityContent.value = value;
                   },
                   controller: contentCtr,
-                  cursorColor: Colors.red,
                   maxLines: 7,
                   maxLength: 150,
                   decoration: InputDecoration(

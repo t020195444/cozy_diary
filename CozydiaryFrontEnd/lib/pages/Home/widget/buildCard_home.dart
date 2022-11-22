@@ -1,5 +1,8 @@
+import 'package:cozydiary/Model/categoryList.dart';
 import 'package:cozydiary/Model/postCoverModel.dart';
+import 'package:cozydiary/pages/Home/controller/categoryPostController.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
+import 'package:cozydiary/pages/Register/Controller/categoryController.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,12 +18,16 @@ class BuildCardHome extends StatelessWidget {
   final List<PostCoverData> postCovers;
   final int index;
   final String pid;
+  final String category;
+  final String cid;
   BuildCardHome(
       {Key? key,
       required this.postCovers,
       required this.index,
       required this.uid,
-      required this.pid})
+      required this.pid,
+      required this.category,
+      required this.cid})
       : super(key: key);
 
   @override
@@ -55,21 +62,24 @@ class BuildCardHome extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.network(
-              postCovers[index].cover,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: Container(
-                    color: Colors.grey[100],
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                  ),
-                );
-              },
+            Container(
+              constraints: BoxConstraints(maxHeight: 300),
+              child: Image.network(
+                postCovers[index].cover,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      color: Colors.grey[100],
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                    ),
+                  );
+                },
+              ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(15, 15, 15, 8),

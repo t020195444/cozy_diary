@@ -40,6 +40,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     '下一步',
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ))
           ],

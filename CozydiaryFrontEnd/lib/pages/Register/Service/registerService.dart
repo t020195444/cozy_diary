@@ -14,13 +14,19 @@ class RegisterService {
     var response = await Dio().get(Api.ipUrl + Api.getCategoryList);
     var encodeJsonData = json.encode(response.data);
     var returnData = categoryListModelFromJson(encodeJsonData);
-
+    print(encodeJsonData);
     return returnData;
   }
 
   static Future<int> addCategory(String postData) async {
     var response =
         await Dio().post(Api.ipUrl + Api.addCategory, data: postData);
+
+    return response.statusCode!;
+  }
+
+  static Future<int> deleteCategory(String uid) async {
+    var response = await Dio().post(Api.ipUrl + Api.deleteUserCategory + uid);
     return response.statusCode!;
   }
 

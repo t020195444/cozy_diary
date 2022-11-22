@@ -77,12 +77,24 @@ class SelectLikePage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                 ),
-                onPressed: () {
-                  categoryController.addCategory();
-                  if (categoryController.currentState[state] == "登入") {
-                    Get.back();
-                  } else if (categoryController.currentState[state] == "註冊") {
-                    Get.offAll(HomePageTabbar());
+                onPressed: () async {
+                  int status = await categoryController.addUserCategory();
+                  print(status);
+                  if (status == 200) {
+                    if (categoryController.currentState[state] == "登入") {
+                      Get.back();
+                      Get.showSnackbar(GetSnackBar(
+                        title: "通知",
+                        icon: Icon(
+                          Icons.done,
+                          color: Colors.green[400],
+                        ),
+                        message: "修改類別成功",
+                        duration: const Duration(seconds: 3),
+                      ));
+                    } else if (categoryController.currentState[state] == "註冊") {
+                      Get.offAll(HomePageTabbar());
+                    }
                   }
                 },
               ),
