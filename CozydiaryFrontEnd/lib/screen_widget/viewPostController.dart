@@ -93,9 +93,11 @@ class ViewPostController extends GetxController {
   }
 
   //新增附屬留言
+  String tempCid = '';
   postAdditionComment(String comment, String cid) async {
     var commentJson = {};
-    commentJson = {'text': comment, 'uid': uid, 'cid': cid};
+    commentJson = {'text': comment, 'uid': uid, 'commentId': cid};
+    tempCid = '';
     print(commentJson);
     await postAdditionCommentData(commentJson);
     await getPostDetail();
@@ -107,13 +109,30 @@ class ViewPostController extends GetxController {
   }
 
   //刪除附屬留言
+  deleteAdditionComment(var rid) async {
+    await dio.post(Api.ipUrl + Api.deleteAdditionComment + rid.toString());
+    await getPostDetail();
+  }
 
   //更新附屬留言
+  updateAdditionComment(String rid, String text) async {
+    await dio.post(Api.ipUrl +
+        Api.updateAdditionComment +
+        'rid=' +
+        rid +
+        '&' +
+        'text=' +
+        text);
+    await getPostDetail();
+  }
+
+  RxBool commentType = true.obs; //true = 一般留言; false = 附屬留言
 
   // 更新貼文
   updatePost(String pid, String title, String content) async {
     var updateJson = {};
     updateJson = {'pid': pid, 'title': title, 'content': content};
+    print(updateJson);
     await dio.post(Api.ipUrl + Api.updatePost, data: updateJson);
     await getPostDetail();
   }
@@ -138,6 +157,7 @@ class ViewPostController extends GetxController {
     likeButtonCheck();
   }
 
+  //按讚偵測
   likeButtonCheck() {
     if (currViewPostDetial.value.likeList.length == 0) {
       buttonIsLiked.value = false;
