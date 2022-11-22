@@ -95,7 +95,7 @@ class ArticlePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.3,
                           child: ElevatedButton(
                             onPressed: () {
-                              _createPostController.getList();
+                              _createPostController.selectCategory(index);
                             },
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(

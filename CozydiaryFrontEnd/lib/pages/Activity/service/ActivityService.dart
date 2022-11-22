@@ -12,6 +12,7 @@ class ActivityService {
 
   //活動按讚
   Future<dynamic> checkLike(String uid, String aid) async {
+    print(Api.ipUrl + Api.updateActivityLikes + "?aid=" + aid + "&uid=" + uid);
     return await dio.post(
         Api.ipUrl + Api.updateActivityLikes + "?aid=" + aid + "&uid=" + uid);
   }
