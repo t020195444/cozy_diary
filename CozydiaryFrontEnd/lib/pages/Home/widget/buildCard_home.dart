@@ -1,4 +1,6 @@
+import 'package:cozydiary/Model/categoryList.dart';
 import 'package:cozydiary/Model/postCoverModel.dart';
+import 'package:cozydiary/pages/Home/controller/categoryPostController.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +17,17 @@ class BuildCardHome extends StatelessWidget {
   final List<PostCoverData> postCovers;
   final int index;
   final String pid;
+  final String cid;
+  final String category;
+
   BuildCardHome(
       {Key? key,
       required this.postCovers,
       required this.index,
       required this.uid,
-      required this.pid})
+      required this.pid,
+      required this.cid,
+      required this.category})
       : super(key: key);
 
   @override
@@ -28,6 +35,7 @@ class BuildCardHome extends StatelessWidget {
     return InkWell(
       onTap: () async {
         ViewPostController.currPostCover = postCovers[index];
+
         // Navigator.of(context).push(
         //   MaterialPageRoute(
         //     builder: (BuildContext context) {
@@ -41,11 +49,14 @@ class BuildCardHome extends StatelessWidget {
         //     builder: (_) => ViewPostScreen(
         //           pid: postCovers[index].pid.toString(),
         //         )));
-        Get.to(
+        bool result = await Get.to(
             () => ViewPostScreen(
                   pid: postCovers[index].pid.toString(),
                 ),
             transition: Transition.cupertino);
+        if (result) {
+          Get.find<CategoryPostController>(tag: category).getPostCover(cid);
+        }
       },
       child: Card(
         shape: RoundedRectangleBorder(

@@ -50,6 +50,8 @@ class HomeScreen extends StatelessWidget {
                           pid: categoryController.postCover[index].pid
                               .toString(),
                           uid: categoryController.postCover[index].uid,
+                          category: category,
+                          cid: cid,
                         );
                       }),
                 ))));
