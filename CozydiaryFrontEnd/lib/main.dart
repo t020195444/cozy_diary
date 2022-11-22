@@ -120,51 +120,6 @@ class MyApp extends StatelessWidget {
 // to let the device system mode control the theme mode:
 // themeMode: ThemeMode.system,
 
-      // ThemeData().copyWith(
-      //   colorScheme: flexSchemeLight,
-      //   useMaterial3: true,
-
-      //   //輸入框的Theme
-      //   inputDecorationTheme: const InputDecorationTheme(
-      //     counterStyle: TextStyle(color: Colors.black),
-      //     labelStyle: TextStyle(color: Colors.black45),
-      //     filled: true,
-      //     fillColor: Colors.white,
-      //     errorBorder: OutlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red),
-      //       borderRadius: BorderRadius.all(Radius.circular(15)),
-      //     ),
-      //     enabledBorder: OutlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.black54),
-      //       borderRadius: BorderRadius.all(Radius.circular(15)),
-      //     ),
-      //     focusedBorder: OutlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.black87),
-      //       borderRadius: BorderRadius.all(Radius.circular(15)),
-      //     ),
-      //     focusedErrorBorder: OutlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red),
-      //       borderRadius: BorderRadius.all(Radius.circular(15)),
-      //     ),
-      //   ),
-      //   //主題顏色(主要顏色)
-      //   primaryColor: Color.fromRGBO(234, 230, 228, 1),
-      //   // //預設Scaffold背景顏色
-      //   // scaffoldBackgroundColor: Colors.white,
-      //   //AppBar主題顏色
-      //   appBarTheme: AppBarTheme(
-      //     titleTextStyle: TextStyle(color: Colors.black54, fontSize: 20),
-      //     iconTheme: IconThemeData(color: Colors.black54),
-      //     // backgroundColor: Color.fromRGBO(234, 230, 228, 1),
-      //   ),
-      //   tabBarTheme: TabBarTheme(labelColor: Colors.black54),
-      //   //Card主題顏色
-      //   cardTheme: CardTheme(
-      //       // color: Colors.white,
-      //       shape: Border.all(
-      //           color: Color.fromRGBO(234, 230, 228, 1), width: 0.5)),
-      // ),
-
       //路由
       routes: {
         "homepage": (context) => const HomePageTabbar(),

@@ -4,6 +4,7 @@ import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../screen_widget/viewPostController.dart';
 import '../../../screen_widget/viewPostScreen.dart';
 import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
@@ -57,25 +58,19 @@ class BuildCardHome extends StatelessWidget {
             Image.network(
               postCovers[index].cover,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    color: Colors.grey[100],
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                  ),
+                );
+              },
             ),
-            // Image.network(
-            //   PostCovers[index].cover,
-            //   errorBuilder: (context, error, stackTrace) {
-            //     return Image.asset("assets/images/yunhan.jpg",
-            //         fit: BoxFit.cover);
-            //   },
-            //   fit: BoxFit.cover,
-            // ),
-            // FadeInImage(
-            //   fadeInDuration: Duration(milliseconds: 100),
-            //   image: NetworkImage(PostCovers[index].cover),
-            //   placeholder: AssetImage("assets/images/yunhan.jpg"),
-            //   imageErrorBuilder: (context, error, stackTrace) {
-            //     return Image.asset('asset/images/logo/logoS.png',
-            //         fit: BoxFit.fitWidth);
-            //   },
-            //   fit: BoxFit.fitWidth,
-            // ),
             Padding(
               padding: EdgeInsets.fromLTRB(15, 15, 15, 8),
               child: Text(postCovers[index].title,
