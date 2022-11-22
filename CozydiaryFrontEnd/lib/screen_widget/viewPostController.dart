@@ -13,6 +13,7 @@ import '../api.dart';
 class ViewPostController extends GetxController {
   Dio dio = Dio();
 
+  bool needRefresh = false;
   String currViewPostID = '';
   var currViewPostDetial = PostDetail(
       pid: 0,
@@ -72,6 +73,7 @@ class ViewPostController extends GetxController {
     commentJson = {'text': comment, 'uid': uid, 'pid': currViewPostID};
     await postCommentData(commentJson);
     await getPostDetail();
+    needRefresh = true;
   }
 
   //留言api
@@ -135,11 +137,13 @@ class ViewPostController extends GetxController {
     print(updateJson);
     await dio.post(Api.ipUrl + Api.updatePost, data: updateJson);
     await getPostDetail();
+    needRefresh = true;
   }
 
   // 刪除貼文
   deletePost(String pid) async {
     await dio.post(Api.ipUrl + Api.deletePost + pid);
+    needRefresh = true;
   }
 
   // 按讚
@@ -148,6 +152,7 @@ class ViewPostController extends GetxController {
         .post(Api.ipUrl + Api.updatePostLikes + 'pid=' + pid + '&uid=' + uid);
     await getPostDetail();
     likeButtonCheck();
+    needRefresh = true;
   }
 
   updateCollects(String pid, String uid) async {

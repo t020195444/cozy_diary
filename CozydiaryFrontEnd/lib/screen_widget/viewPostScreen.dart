@@ -54,7 +54,7 @@ class ViewPostScreen extends StatelessWidget {
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () async {
-                Get.back();
+                Get.back(result: viewPostController.needRefresh);
               },
             ),
             title: Row(
@@ -192,8 +192,10 @@ class ViewPostScreen extends StatelessWidget {
                                                 await viewPostController
                                                     .deletePost(pid);
 
-                                                Navigator.pop(context, '確認');
                                                 Get.back();
+                                                Get.back(
+                                                    result: viewPostController
+                                                        .needRefresh);
                                               },
                                               child: const Text('確認'),
                                             ),
@@ -398,10 +400,10 @@ class ViewPostScreen extends StatelessWidget {
                                                       .text,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      // fontSize: 15,
-                                                      color: Color.fromARGB(
-                                                          255, 218, 196, 183)),
+                                                  // style: TextStyle(
+                                                  //     // fontSize: 15,
+                                                  //     color: Color.fromARGB(
+                                                  //         255, 218, 196, 183)),
                                                 ),
                                               ),
                                             ],
@@ -657,14 +659,14 @@ class ViewPostScreen extends StatelessWidget {
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
-                                                              style: TextStyle(
-                                                                  // fontSize: 15,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          218,
-                                                                          196,
-                                                                          183)),
+                                                              // style: TextStyle(
+                                                              //     // fontSize: 15,
+                                                              //     color: Color
+                                                              //         .fromARGB(
+                                                              //             255,
+                                                              //             218,
+                                                              //             196,
+                                                              //             183)),
                                                             ),
                                                           ),
                                                         ],

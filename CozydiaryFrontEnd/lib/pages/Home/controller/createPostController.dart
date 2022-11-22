@@ -24,21 +24,26 @@ class CreatePostController extends GetxController {
   //function
 
   static List fileList = [].obs;
+  static List showList = [].obs;
   static RxList mediaList = [].obs;
   RxBool isLoading = false.obs;
-  fetchMedia() async {
+  fetchMedia(
+      // int start, int end
+      ) async {
     isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
       List<AssetPathEntity> albums =
           await PhotoManager.getAssetPathList(onlyAll: true);
 
-      List media =
-          await albums[0].getAssetListPaged(size: 30, page: currentPage);
+      List<AssetEntity> media =
+          await albums[0].getAssetListPaged(size: 15, page: currentPage);
+      // List media = await albums[0].getAssetListRange(start: start, end: end);
 
       mediaList.value = [];
       List<Widget> temp = [];
       pickedList = [];
+      showList = [];
 
       for (var asset in media) {
         fileList.add(await asset.file);
@@ -58,14 +63,16 @@ class CreatePostController extends GetxController {
                     if (asset.type == AssetType.video)
                       Align(
                         alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 5, bottom: 5),
-                          child: Icon(
-                            Icons.videocam,
-                            color: Colors.white,
-                          ),
+                        child: Stack(
+                          children: [
+                            Icon(
+                              Icons.videocam,
+                              color: Colors.white,
+                            ),
+                            Icon(Icons.close, color: Colors.red),
+                          ],
                         ),
-                      ),
+                      )
                   ],
                 );
               return Container();
@@ -76,8 +83,10 @@ class CreatePostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(temp);
+      // print(mediaList);
       //default Pic
       currPic.add(mediaList[0]);
+      checkBox = List.generate(mediaList.length, (_) => false.obs);
     } else {}
     isLoading.value = false;
   }
@@ -86,8 +95,9 @@ class CreatePostController extends GetxController {
   changeCurrPic(int i) {
     //設置目前顯示照片
     currPic.value = [];
-    currPic.add(mediaList[i]);
 
+    currPic.add(mediaList[i]);
+    // print(currPic.value);
     setPicList(i);
   }
 
@@ -96,11 +106,14 @@ class CreatePostController extends GetxController {
     File tempFile = fileList[i];
     if (pickedList.contains(tempFile)) {
       pickedList.remove(tempFile);
+      showList.remove(mediaList[i]);
       checkBox[i].value = false;
     } else {
       pickedList.add(tempFile);
+      showList.add(mediaList[i]);
       checkBox[i].value = true;
     }
+    print(showList);
   }
 
   String postTitle = '';
@@ -173,4 +186,18 @@ class CreatePostController extends GetxController {
   selectCategory(int index) {
     selectedMap.value = categoryList['data'][index];
   }
+
+  // RxInt startNum = 0.obs;
+  // RxInt endNum = 9.obs;
+  // setRange(bool move) {
+  //   if (move == true) {
+  //     startNum.value += 9;
+  //     endNum.value += 9;
+  //     fetchMedia(startNum.value, endNum.value);
+  //   } else {
+  //     startNum.value -= 9;
+  //     endNum.value -= 9;
+  //     fetchMedia(startNum.value, endNum.value);
+  //   }
+  // }
 }
