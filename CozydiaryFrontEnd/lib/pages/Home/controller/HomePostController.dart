@@ -65,7 +65,7 @@ class HomePostController extends GetxController {
     WritePostModule writePost = WritePostModule(post: postsContext);
     FormData formData = FormData.fromMap(writePost.toJson());
     // int index = 1;
-    imageFile.value.asMap().forEach((key, value) async {
+    imageFile.asMap().forEach((key, value) async {
       formData.files.addAll([
         MapEntry(
             "file",

@@ -49,7 +49,7 @@ class LocalActivityList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return BuildCardActivity(
                       key: ValueKey({
-                        postCoverController.localPostCover.value[index].aid,
+                        postCoverController.localPostCover[index].aid,
                       }),
                       PostCovers: postCoverController.localPostCover,
                       index: index,

@@ -58,6 +58,7 @@ class ActivityPostService {
 
   static Future<dynamic> postPostData(FormData formData) async {
     try {
+      // ignore: unused_local_variable
       var response =
           await dio.post(Api.ipUrl + Api.addActivity, data: formData);
     } catch (e) {}

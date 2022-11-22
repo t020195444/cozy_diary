@@ -35,6 +35,7 @@ class BuildCardHome extends StatelessWidget {
     return InkWell(
       onTap: () async {
         ViewPostController.currPostCover = postCovers[index];
+
         // Navigator.of(context).push(
         //   MaterialPageRoute(
         //     builder: (BuildContext context) {
@@ -48,11 +49,14 @@ class BuildCardHome extends StatelessWidget {
         //     builder: (_) => ViewPostScreen(
         //           pid: postCovers[index].pid.toString(),
         //         )));
-        Get.to(
+        bool result = await Get.to(
             () => ViewPostScreen(
                   pid: postCovers[index].pid.toString(),
                 ),
             transition: Transition.cupertino);
+        if (result) {
+          Get.find<CategoryPostController>(tag: category).getPostCover(cid);
+        }
       },
       child: Card(
         shape: RoundedRectangleBorder(

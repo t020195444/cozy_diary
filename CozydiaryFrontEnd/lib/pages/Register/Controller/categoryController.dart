@@ -66,10 +66,8 @@ class CategoryController extends GetxController {
       isLoding = true;
       CategoryListModel response = await RegisterService.fetchCategoryList();
       if (response.status == 200) {
-        if (response.data != null) {
-          categoryList = response.data;
-          update();
-        }
+        categoryList = response.data;
+        update();
       }
     } catch (e) {
       print(e);

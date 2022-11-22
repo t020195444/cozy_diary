@@ -29,8 +29,10 @@ class LoginController extends GetxController {
   void loginWithGoogle() async {
     googleAccount.value = await googleSignIn
         .signIn()
+        // ignore: invalid_return_type_for_catch_error
         .catchError((onError) => Fluttertoast.showToast(msg: "$onError"));
 
+    // ignore: unnecessary_null_comparison
     if (googleAccount != null) {
       final user = googleAccount.value;
       // final googleAuth = await googleAccount.value!.authentication;
@@ -81,44 +83,5 @@ class LoginController extends GetxController {
       isLogin = false;
     }
     return isLogin;
-  }
-
-  //因後端還未上伺服器 這邊先使用跳頁方法
-
-  void tohomepage() async {
-    Get.to(const HomePageTabbar());
-  }
-
-  void toregisterpage() async {
-    Get.to(RegisterPage());
-  }
-
-  void testpost() async {
-    var response = await http.post(
-      Uri.parse('http://yapi.smart-xwork.cn/mock/152435/userRegister'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        "google_id": id,
-        "name": "tim",
-        "sex": "1",
-        "introduction": "我是usdt暴徒",
-        "birth": "2001-01-30",
-        "email": "10846036@ntub.edu.tw",
-        "pic": "ddsfdsfdsfds"
-      }),
-    );
-    var responseBody = jsonDecode(response.body);
-    // print(responseBody['id']);
-    // print(responseBody['messenge']);
-
-    // if (responseBody != null) {
-    //   Get.to(HomePageTabbar());
-    // }
-  }
-
-  void printid() async {
-    // print(userdata.RegisterUserData);
   }
 }

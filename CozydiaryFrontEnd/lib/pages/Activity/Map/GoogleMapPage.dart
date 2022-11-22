@@ -51,6 +51,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   Set<Marker> markersList = Set();
 
   postcover() async {
+    print("1");
     double lat = 0;
     double lng = 0;
     for (int i = 0; i < postCoverController.postCover.length; i++) {

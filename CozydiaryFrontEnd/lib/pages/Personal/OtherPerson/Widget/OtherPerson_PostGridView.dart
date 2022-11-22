@@ -21,7 +21,7 @@ class InitOtherPersonPostGridView extends StatelessWidget {
             itemBuilder: (context, index) {
               return BuildCard(
                 index: index,
-                userPostCover: personalPageController.postCover.value,
+                userPostCover: personalPageController.postCover,
               );
             }));
   }

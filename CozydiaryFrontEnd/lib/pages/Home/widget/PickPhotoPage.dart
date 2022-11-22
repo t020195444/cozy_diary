@@ -16,12 +16,15 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
     final _createPostController = Get.put(CreatePostController());
 
     //initState
+    // _createPostController.fetchMedia(_createPostController.startNum.value,
+    //     _createPostController.endNum.value);
     _createPostController.fetchMedia();
     _createPostController.getList();
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Text('選擇照片'),
           actions: [
             TextButton(
                 onPressed: () {
@@ -51,12 +54,13 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
               flex: 4,
               child: Obx(
                 () => Container(
-                  child: _createPostController.isPicked == true
-                      ? _createPostController.currPic[0]
-                      : Container(
-                          color: Colors.white,
-                        ),
-                ),
+                    child: _createPostController.isPicked == true
+                        ? _createPostController.currPic[0]
+                        : Container(
+                            child: Center(
+                              child: Text('選擇一張照片吧！'),
+                            ),
+                          )),
               ),
             ),
             Obx(
@@ -110,15 +114,36 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                         }),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: TextButton(
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Icon(Icons.photo), Text('選取更多照片')],
-                  )),
-            )
+            // Obx(
+            //   () => Expanded(
+            //       flex: 1,
+            //       child: Row(
+            //         children: [
+            //           _createPostController.startNum != 0
+            //               ? Expanded(
+            //                   child: TextButton(
+            //                       onPressed: () {
+            //                         _createPostController.setRange(false);
+            //                       },
+            //                       child: Row(
+            //                         mainAxisAlignment: MainAxisAlignment.center,
+            //                         children: [Icon(Icons.photo), Text('上一頁')],
+            //                       )),
+            //                 )
+            //               : Container(),
+            //           Expanded(
+            //             child: TextButton(
+            //                 onPressed: () {
+            //                   _createPostController.setRange(true);
+            //                 },
+            //                 child: Row(
+            //                   mainAxisAlignment: MainAxisAlignment.center,
+            //                   children: [Icon(Icons.photo), Text('下一頁')],
+            //                 )),
+            //           ),
+            //         ],
+            //       )),
+            // )
           ],
         ),
       ),

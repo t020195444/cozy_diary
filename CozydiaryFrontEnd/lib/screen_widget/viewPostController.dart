@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:cozydiary/Model/PostCoverModel.dart';
-import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:hive/hive.dart';
@@ -13,6 +11,7 @@ import '../api.dart';
 class ViewPostController extends GetxController {
   Dio dio = Dio();
 
+  bool needRefresh = false;
   String currViewPostID = '';
   var currViewPostDetial = PostDetail(
       pid: 0,
@@ -72,6 +71,7 @@ class ViewPostController extends GetxController {
     commentJson = {'text': comment, 'uid': uid, 'pid': currViewPostID};
     await postCommentData(commentJson);
     await getPostDetail();
+    needRefresh = true;
   }
 
   //留言api
@@ -93,9 +93,11 @@ class ViewPostController extends GetxController {
   }
 
   //新增附屬留言
+  String tempCid = '';
   postAdditionComment(String comment, String cid) async {
     var commentJson = {};
-    commentJson = {'text': comment, 'uid': uid, 'cid': cid};
+    commentJson = {'text': comment, 'uid': uid, 'commentId': cid};
+    tempCid = '';
     print(commentJson);
     await postAdditionCommentData(commentJson);
     await getPostDetail();
@@ -107,20 +109,39 @@ class ViewPostController extends GetxController {
   }
 
   //刪除附屬留言
+  deleteAdditionComment(var rid) async {
+    await dio.post(Api.ipUrl + Api.deleteAdditionComment + rid.toString());
+    await getPostDetail();
+  }
 
   //更新附屬留言
+  updateAdditionComment(String rid, String text) async {
+    await dio.post(Api.ipUrl +
+        Api.updateAdditionComment +
+        'rid=' +
+        rid +
+        '&' +
+        'text=' +
+        text);
+    await getPostDetail();
+  }
+
+  RxBool commentType = true.obs; //true = 一般留言; false = 附屬留言
 
   // 更新貼文
   updatePost(String pid, String title, String content) async {
     var updateJson = {};
     updateJson = {'pid': pid, 'title': title, 'content': content};
+    print(updateJson);
     await dio.post(Api.ipUrl + Api.updatePost, data: updateJson);
     await getPostDetail();
+    needRefresh = true;
   }
 
   // 刪除貼文
   deletePost(String pid) async {
     await dio.post(Api.ipUrl + Api.deletePost + pid);
+    needRefresh = true;
   }
 
   // 按讚
@@ -129,6 +150,7 @@ class ViewPostController extends GetxController {
         .post(Api.ipUrl + Api.updatePostLikes + 'pid=' + pid + '&uid=' + uid);
     await getPostDetail();
     likeButtonCheck();
+    needRefresh = true;
   }
 
   updateCollects(String pid, String uid) async {
@@ -138,6 +160,7 @@ class ViewPostController extends GetxController {
     likeButtonCheck();
   }
 
+  //按讚偵測
   likeButtonCheck() {
     if (currViewPostDetial.value.likeList.length == 0) {
       buttonIsLiked.value = false;

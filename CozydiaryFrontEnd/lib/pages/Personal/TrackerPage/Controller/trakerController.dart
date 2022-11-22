@@ -34,14 +34,12 @@ class TrackerController extends GetxController {
     try {
       var trackerResponse = await PersonalService.getTracker(uid);
 
-      if (trackerResponse != null) {
-        if (trackerResponse.status == 200) {
-          trackerList = trackerResponse.data;
-          //依照追蹤數量，全部新增成true
-          for (int i = 0; i < trackerList.length; i++) state.add(true);
+      if (trackerResponse.status == 200) {
+        trackerList = trackerResponse.data;
+        //依照追蹤數量，全部新增成true
+        for (int i = 0; i < trackerList.length; i++) state.add(true);
 
-          update();
-        }
+        update();
       }
     } finally {}
   }
@@ -120,11 +118,9 @@ class FollowerController extends GetxController {
     try {
       var trackerResponse = await PersonalService.getFollower(uid);
 
-      if (trackerResponse != null) {
-        if (trackerResponse.status == 200) {
-          trackerList = trackerResponse.data;
-          update();
-        }
+      if (trackerResponse.status == 200) {
+        trackerList = trackerResponse.data;
+        update();
       }
     } finally {}
   }

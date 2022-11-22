@@ -1,11 +1,12 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
+import 'package:cozydiary/Model/catchPersonalModel.dart';
 import 'package:cozydiary/Model/editUserModel.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import '../controller/editController.dart';
-import '../controller/selfController.dart';
+import '../control, required UserData userDataler/selfController.dart';
 
 class Edit_PersonalPage extends StatelessWidget {
   Edit_PersonalPage({

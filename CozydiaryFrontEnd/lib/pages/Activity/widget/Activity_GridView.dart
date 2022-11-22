@@ -30,7 +30,7 @@ class ActivityScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return BuildCardActivity(
                     key: ValueKey({
-                      postCoverController.postCover.value[index].aid,
+                      postCoverController.postCover[index].aid,
                     }),
                     PostCovers: postCoverController.postCover,
                     index: index,
