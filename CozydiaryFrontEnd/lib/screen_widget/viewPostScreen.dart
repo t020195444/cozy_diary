@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:like_button/like_button.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ViewPostScreen extends StatelessWidget {
   ViewPostScreen({Key? key, required this.pid}) : super(key: key);
@@ -231,13 +232,14 @@ class ViewPostScreen extends StatelessWidget {
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+                            return Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                color: Colors.grey[100],
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
                               ),
                             );
                           },
