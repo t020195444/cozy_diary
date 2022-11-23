@@ -38,17 +38,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       transitionDuration: Duration(milliseconds: 300),
-      // localizationsDelegates: [
-      //   PickerLocalizationsDelegate.delegate, // 如果要使用本地化，请添加此行，则可以显示中文按钮
-      // ],
-      // supportedLocales: [
-      //   const Locale('en', 'US'),
-      //   const Locale('zh', 'CH'),
-      //   const Locale('ko', 'KO'),
-      //   const Locale('it', 'IT'),
-      //   const Locale('ar', 'AR'),
-      //   const Locale('tr', 'TR')
-      // ],
       title: 'CozyDiary',
       //所有主題顏色與框架都是用這個套件調整，若要細部調整，用以下網址
       //https://rydmike.com/flexcolorscheme/themesplayground-v6/#/

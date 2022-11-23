@@ -5,10 +5,11 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+// ignore: must_be_immutable
 class LocalActivityList extends StatelessWidget {
   LocalActivityList(this.lat, this.lng);
-  final String lat;
-  final String lng;
+  String lat;
+  String lng;
 
   @override
   Widget build(BuildContext context) {

@@ -45,28 +45,32 @@ const kGoogleApiKey = 'AIzaSyCFx2oYtAcaHgrxwBm9H5-oyQNMsVUeh-Y';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class GoogleMapPageState extends State<GoogleMapPage> {
+  late GoogleMapController googleMapController;
   final topTabbarController = Get.put(ActivityTabbarController());
   ActivityController postCoverController = Get.put(ActivityController());
 
   Set<Marker> markersList = Set();
 
   postcover() async {
-    print("1");
     double lat = 0;
     double lng = 0;
+
     for (int i = 0; i < postCoverController.postCover.length; i++) {
       if (lat != postCoverController.postCover[i].placeLat ||
-          lng != postCoverController.postCover[i].placeLng) {
+          lng != postCoverController.postCover[i].placeLng ||
+          lat != 0) {
         lat = postCoverController.postCover[i].placeLat;
         lng = postCoverController.postCover[i].placeLng;
         String imgurl = postCoverController.postCover[i].cover;
         markersList.add(Marker(
             onTap: (() => Get.to(
-                  LocalActivityList(lat.toString(), lng.toString()),
+                  LocalActivityList(
+                      postCoverController.postCover[i].placeLat.toString(),
+                      postCoverController.postCover[i].placeLng.toString()),
                   transition: Transition.fade,
                   duration: Duration(seconds: 1),
                 )),
-            markerId: const MarkerId("0"),
+            markerId: MarkerId(i.toString()),
             position: LatLng(lat, lng),
             icon: await MarkerIcon.downloadResizePictureCircle(imgurl,
                 size: 150,
@@ -78,17 +82,14 @@ class GoogleMapPageState extends State<GoogleMapPage> {
       }
     }
     ;
+    print(markersList.toString());
   }
 
   loadData() async {
     await postCoverController.getPostCover();
     await postcover();
-    setState(() {
-      //refresh UI
-    });
+    setState(() {});
   }
-
-  late GoogleMapController googleMapController;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(25.0419, 121.5256),
@@ -98,9 +99,7 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   @override
   void initState() {
     GeolocatorService()._determinePosition();
-
     loadData();
-
     super.initState();
   }
 
@@ -124,6 +123,28 @@ class GoogleMapPageState extends State<GoogleMapPage> {
             ),
           ),
         ),
+        Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, top: 10),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 135, 110, 95),
+                    textStyle:
+                        const TextStyle(color: Colors.white, fontSize: 16),
+                    minimumSize:
+                        Size(MediaQuery.of(context).size.width * 0.2, 40),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                  onPressed: () {
+                    loadData();
+                  },
+                  child: const Text(
+                    "找尋活動",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ))),
       ]),
     );
   }
@@ -158,8 +179,6 @@ class GoogleMapPageState extends State<GoogleMapPage> {
         markerId: const MarkerId("0"),
         position: LatLng(lat, lng),
         infoWindow: InfoWindow(title: detail.result.name)));
-
-    setState(() {});
 
     googleMapController
         .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0));
