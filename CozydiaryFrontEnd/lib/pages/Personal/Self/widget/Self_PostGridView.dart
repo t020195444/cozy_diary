@@ -12,21 +12,18 @@ class InitPostGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var selfPageController = Get.find<SelfPageController>();
-    return Obx(() {
-      return MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: MasonryGridView.count(
-              crossAxisCount: 2,
-
-              //依照資料長度數量
-              itemCount: selfPageController.postCover.length,
-              itemBuilder: (context, index) {
-                return BuildCard(
-                  index: index,
-                  userPostCover: selfPageController.postCover,
-                );
-              }));
-    });
+    return MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: MasonryGridView.count(
+            crossAxisCount: 2,
+            //依照資料長度數量
+            itemCount: selfPageController.postCover.length,
+            itemBuilder: (context, index) {
+              return BuildCard(
+                index: index,
+                userPostCover: selfPageController.postCover,
+              );
+            }));
   }
 }

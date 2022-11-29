@@ -6,6 +6,8 @@ class Api {
   //抓取使用者貼文(Get)
   static String getPostCoverForPersonalPage =
       "getPostCoverForPersonalPage?uid=";
+  //抓取使用者收藏貼文(Get)
+  static String getPostCoverForCollected = "getPostCoverForCollected?uid=";
   //追蹤(Post)
   static String addTracker = "addTracker";
   //取消追蹤(Post)
@@ -73,4 +75,10 @@ class Api {
   //地圖位置抓貼文
   static String getActivityCoverByPlace =
       "/getActivityCoverByPlace?option=activityTime&placeLat=";
+  //搜尋貼文
+  static List<String> searchPost = [
+    "searchPost?text=",
+    "&limit=",
+    "&fields=title&fields=content"
+  ];
 }

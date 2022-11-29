@@ -11,7 +11,6 @@ class PostService {
   static Future<PostDetailModel> getPostDetail(String pid) async {
     var response = await dio.get(Api.ipUrl + Api.getPostDetail + pid);
     var data = response.data;
-
     var encodeJsonString = jsonEncode(data);
     var fromJsonValue = postDetailModelFromJson(encodeJsonString);
     return fromJsonValue;
@@ -57,5 +56,20 @@ class PostService {
   //發文
   static Future<dynamic> postPostData(FormData formData) async {
     return await dio.post(Api.ipUrl + Api.addPost, data: formData);
+  }
+
+  static Future<PostCoverModule?> searchPost(
+      String keyText, String limit) async {
+    var response = await dio.get(Api.ipUrl +
+        Api.searchPost[0] +
+        keyText +
+        Api.searchPost[1] +
+        limit +
+        Api.searchPost[2]);
+    var jsonString = response.data;
+    var encodeJsonString = jsonEncode(jsonString);
+    print(jsonString);
+    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+    return fromJsonValue;
   }
 }

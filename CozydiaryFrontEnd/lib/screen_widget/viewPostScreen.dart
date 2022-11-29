@@ -1,7 +1,3 @@
-import 'package:cozydiary/LocalDB/UidAndState.dart';
-import 'package:cozydiary/Model/WritePostModel.dart';
-import 'package:cozydiary/PostJsonService.dart';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,8 +8,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ViewPostScreen extends StatelessWidget {
-  ViewPostScreen({Key? key, required this.pid}) : super(key: key);
+  ViewPostScreen(
+      {Key? key,
+      required this.pid,
+      required this.ownerPicUrl,
+      required this.username,
+      required this.ownerUid})
+      : super(key: key);
   final String pid;
+  final String ownerPicUrl;
+  final String username;
+  final String ownerUid;
   // final String isCollect;
 
   //controller
@@ -29,17 +34,10 @@ class ViewPostScreen extends StatelessWidget {
   FocusNode focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    // viewPostController.currViewPostID = pid;
-    // viewPostController.getPostDetail();
     final viewPostController = Get.put(ViewPostController(pid: pid));
 
     Future<bool> onLikeButtonTapped(bool isLiked) async {
       viewPostController.updateLikes(pid, uid);
-      return !isLiked;
-    }
-
-    Future<bool> onCollectButtonTapped(bool isLiked) async {
-      viewPostController.updateCollects(pid, uid);
       return !isLiked;
     }
 
@@ -61,18 +59,16 @@ class ViewPostScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(ViewPostController.currPostCover.pic),
+                  backgroundImage: NetworkImage(ownerPicUrl),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(ViewPostController.currPostCover.username),
+                  child: Text(username),
                 )
               ],
             ),
             actions: [
-              Hive.box('UidAndState').get('uid') ==
-                      ViewPostController.currPostCover.uid
+              viewPostController.uid == ownerUid
                   ? IconButton(
                       onPressed: () {
                         showDialog(
@@ -288,16 +284,20 @@ class ViewPostScreen extends StatelessWidget {
                             LikeButton(
                               likeBuilder: (isLiked) {
                                 return isLiked
-                                    ? Icon(Icons.bookmark_outlined)
+                                    ? Icon(
+                                        Icons.bookmark_outlined,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                      )
                                     : Icon(Icons.bookmark_border_rounded);
                               },
                               padding: EdgeInsets.all(8),
                               mainAxisAlignment: MainAxisAlignment.start,
-                              likeCount: viewPostController
-                                  .currViewPostDetial.value.collects,
                               isLiked:
                                   viewPostController.buttonIsCollected.value,
                               size: 25,
+                              onTap: (isLiked) => viewPostController
+                                  .onCollectButtonTapped(isLiked),
                             ),
                           ],
                         )),
@@ -630,7 +630,9 @@ class ViewPostScreen extends StatelessWidget {
                                                                 .currViewPostDetial
                                                                 .value
                                                                 .comments[index]
-                                                                .repliesComments[i]['pic']),
+                                                                .repliesComments[
+                                                                    i]
+                                                                .pic),
                                                       ),
                                                       title: Row(
                                                         crossAxisAlignment:
@@ -639,11 +641,12 @@ class ViewPostScreen extends StatelessWidget {
                                                         children: [
                                                           Text(
                                                             viewPostController
-                                                                    .currViewPostDetial
-                                                                    .value
-                                                                    .comments[index]
-                                                                    .repliesComments[
-                                                                i]['username'],
+                                                                .currViewPostDetial
+                                                                .value
+                                                                .comments[index]
+                                                                .repliesComments[
+                                                                    i]
+                                                                .username,
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -655,12 +658,13 @@ class ViewPostScreen extends StatelessWidget {
                                                                     left: 12.0),
                                                             child: Text(
                                                               viewPostController
-                                                                      .currViewPostDetial
-                                                                      .value
-                                                                      .comments[
-                                                                          index]
-                                                                      .repliesComments[
-                                                                  i]['text'],
+                                                                  .currViewPostDetial
+                                                                  .value
+                                                                  .comments[
+                                                                      index]
+                                                                  .repliesComments[
+                                                                      i]
+                                                                  .text,
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -709,7 +713,7 @@ class ViewPostScreen extends StatelessWidget {
                                                                           if (uid ==
                                                                               viewPostController.currViewPostDetial.value.comments[index].uid) {
                                                                             updateAdditionCommentCtr.text =
-                                                                                viewPostController.currViewPostDetial.value.comments[index].repliesComments[i]['text'];
+                                                                                viewPostController.currViewPostDetial.value.comments[index].repliesComments[i].text;
                                                                             showDialog<String>(
                                                                               context: context,
                                                                               builder: (BuildContext context) => AlertDialog(
@@ -735,7 +739,7 @@ class ViewPostScreen extends StatelessWidget {
                                                                                             TextButton(
                                                                                               onPressed: () {
                                                                                                 if (updateAdditionCommentCtr.text != '') {
-                                                                                                  viewPostController.updateAdditionComment(viewPostController.currViewPostDetial.value.comments[index].repliesComments[i]['rid'].toString(), updateAdditionCommentCtr.text);
+                                                                                                  viewPostController.updateAdditionComment(viewPostController.currViewPostDetial.value.comments[index].repliesComments[i].rid.toString(), updateAdditionCommentCtr.text);
                                                                                                   updateAdditionCommentCtr.clear();
                                                                                                 } else {
                                                                                                   Fluttertoast.showToast(msg: "已刪除留言", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
@@ -758,7 +762,7 @@ class ViewPostScreen extends StatelessWidget {
                                                                                   ),
                                                                                   TextButton(
                                                                                     onPressed: () {
-                                                                                      viewPostController.deleteAdditionComment(viewPostController.currViewPostDetial.value.comments[index].repliesComments[i]['rid']);
+                                                                                      viewPostController.deleteAdditionComment(viewPostController.currViewPostDetial.value.comments[index].repliesComments[i].rid);
                                                                                       Navigator.pop(context, '刪除');
                                                                                     },
                                                                                     child: const Text('刪除'),

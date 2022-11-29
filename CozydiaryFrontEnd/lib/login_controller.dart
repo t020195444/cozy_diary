@@ -73,7 +73,6 @@ class LoginController extends GetxController {
     bool isLogin = false;
     var response = await http.get(Uri.parse(Api.ipUrl + Api.getUser + id));
     var responseBody = jsonDecode(response.body);
-
     if (responseBody['status'] == 200 &&
         responseBody['data']['googleId'] == id &&
         id != "") {

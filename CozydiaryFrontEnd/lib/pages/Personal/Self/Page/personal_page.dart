@@ -128,6 +128,7 @@ class PersonalView extends StatelessWidget {
           onRefresh: (() async {
             await selfController.getUserData();
             await selfController.getUserPostCover(uid);
+            await selfController.getCollectedPostCover(uid);
           }),
           child: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -165,7 +166,7 @@ class PersonalView extends StatelessWidget {
                           ],
                         ))
                       : InitPostGridView()),
-                  Obx(() => selfController.postCover.isEmpty
+                  Obx(() => selfController.collectedPostCover.isEmpty
                       ? Center(
                           child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
