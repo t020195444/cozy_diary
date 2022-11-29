@@ -92,7 +92,17 @@ class RegisterController extends GetxController {
   }
 
   void register() async {
-    try {
+    if (picOrigin == "") {
+      Get.showSnackbar(GetSnackBar(
+        title: "通知",
+        icon: Icon(
+          Icons.error,
+          color: Colors.red[400],
+        ),
+        message: "請選擇大頭照",
+        duration: const Duration(seconds: 3),
+      ));
+    } else {
       Get.dialog(Center(child: CircularProgressIndicator()));
       var postUserData = RegisterUserDataModel(user: userData[0]);
       var jsonData = jsonEncode(postUserData.toJson());
@@ -101,6 +111,7 @@ class RegisterController extends GetxController {
           .add(MapEntry("file", await MultipartFile.fromFile(picOrigin)));
       print(formData);
       print(picOrigin);
+
       int responseStatus = await RegisterService.registerUser(formData);
 
       if (responseStatus == 200) {
@@ -113,8 +124,6 @@ class RegisterController extends GetxController {
         Get.back();
         Get.offAll(MyHomePage(title: ""));
       }
-    } catch (e) {
-      print(e);
     }
   }
 }

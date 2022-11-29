@@ -269,52 +269,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ))),
           ),
-
-          //選擇登入按鈕
-          Center(
-            child: Align(
-                alignment: const Alignment(0.0, 0.57),
-                child: TextButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return Container(
-                              height: 200,
-                              color: Colors.black,
-                              child: Center(
-                                  child: Stack(
-                                children: <Widget>[
-                                  const Align(
-                                      alignment: Alignment(0.0, -0.8),
-                                      child: Text(
-                                        "選擇登入方式",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                  Align(
-                                    alignment: const Alignment(0.0, 0.0),
-                                    child: Image.asset(
-                                        "assets/images/icons8-facebook-48.png"),
-                                  ),
-                                  const Align(
-                                      alignment: Alignment(0.0, 0.3),
-                                      child: Text(
-                                        "Facebook",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                ],
-                              )));
-                        });
-                  },
-                  child: const Text(
-                    "其他登入方式  >",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                  ),
-                )),
-          ),
         ],
       )),
     );

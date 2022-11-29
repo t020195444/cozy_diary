@@ -438,8 +438,19 @@ class ActivityArticlePage extends StatelessWidget {
         ),
         actions: [
           TextButton(
-              onPressed: () {
-                postController.goToDataBase();
+              onPressed: () async {
+                showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                          backgroundColor: Theme.of(context).backgroundColor,
+                          title: const Text('發文中...'),
+                          content: Container(
+                              height: 150,
+                              width: 30,
+                              child:
+                                  Center(child: CircularProgressIndicator())),
+                        ));
+                await postController.goToDataBase();
                 Get.offAll(() => HomePageTabbar());
               },
               child: Padding(

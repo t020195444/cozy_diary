@@ -18,9 +18,9 @@ class BuildCardActivity extends StatelessWidget {
       onTap: () async {
         await ActivityPostService.getActivityDetail(
             key.toString().replaceAll(RegExp(r"[^\s\w]"), ""));
-
         Get.to(
-          ActivityViewPostScreen(),
+          ActivityViewPostScreen(
+              id: key.toString().replaceAll(RegExp(r"[^\s\w]"), "")),
           transition: Transition.fadeIn,
         );
       },

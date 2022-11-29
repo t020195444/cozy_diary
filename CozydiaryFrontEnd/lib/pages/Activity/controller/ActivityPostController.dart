@@ -187,7 +187,7 @@ class ActivityPostController extends GetxController {
   var activityFiles = <ActivityPostFile>[];
   List allPicName = [];
 
-  void goToDataBase() async {
+  goToDataBase() async {
     checkBox = [];
     checkBox = List.generate(
         ActivityPostController.mediaList.length, (_) => false.obs);

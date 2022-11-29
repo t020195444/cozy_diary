@@ -36,6 +36,8 @@ class ActivityGetPostController extends GetxController {
 
   Map updateParticipantData = {}; //參加人資料
 
+  // deleteActivity?aid=
+
   //按讚
   checkLike(String uid) async {
     await ActivityService().checkLike(uid, activityId.value.toString());
@@ -63,20 +65,23 @@ class ActivityGetPostController extends GetxController {
           Hive.box("UidAndState").get("uid")) {
         isParticipant.value = true;
         break;
+      } else {
+        isParticipant.value = false;
       }
     }
   }
 
   //報名活動
-  setUpdateParticipantData() async {
+  setUpdateParticipantData(id) async {
+    print(participantContent.value.toString());
+    print(id);
     updateParticipantData = {
       "participant": Hive.box("UidAndState").get("uid"),
       "reason": participantContent.value.toString(),
-      "aid": activityId.value,
+      "aid": id,
     };
     await ActivityService().updateParticipant(updateParticipantData); //呼叫報名API
-    await ActivityPostService.getActivityDetail(
-        activityId.value.toString()); //重新拉活動資訊
+    await ActivityPostService.getActivityDetail(id); //重新拉活動資訊
     update(); //更新
   }
 
@@ -107,6 +112,7 @@ class ActivityGetPostController extends GetxController {
 
   @override
   void onInit() {
+    isActivityParticipant();
     super.onInit();
   }
 

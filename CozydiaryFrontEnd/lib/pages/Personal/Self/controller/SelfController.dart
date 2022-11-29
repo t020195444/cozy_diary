@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:cozydiary/Model/editUserModel.dart';
 import 'package:cozydiary/pages/Personal/Service/personalService.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:hive/hive.dart';
