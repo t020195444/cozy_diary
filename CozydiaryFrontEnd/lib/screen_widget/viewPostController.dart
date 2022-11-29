@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:hive/hive.dart';
@@ -7,10 +5,10 @@ import 'package:hive/hive.dart';
 import '../Model/postDetailModel.dart';
 import '../PostJsonService.dart';
 import '../api.dart';
+import '../pages/Personal/Self/controller/selfController.dart';
 
 class ViewPostController extends GetxController {
   Dio dio = Dio();
-
   bool needRefresh = false;
   String currViewPostID = '';
   var currViewPostDetial = PostDetail(
@@ -34,14 +32,14 @@ class ViewPostController extends GetxController {
   //按讚偵測
   RxBool buttonIsLiked = false.obs;
   var buttonIsCollected = false.obs;
-  static var currPostCover;
   final String pid;
   ViewPostController({required this.pid});
 
   @override
-  void onInit() async {
+  void onInit() {
     currViewPostID = pid;
-    await getPostDetail();
+    getPostDetail();
+    collectButtonCheck();
     super.onInit();
   }
 
@@ -53,10 +51,10 @@ class ViewPostController extends GetxController {
       if (data.status == 200) {
         if (data != null) {
           currViewPostDetial.value = data.data;
-          print(postDetailModelToJson(data));
+          // print(postDetailModelToJson(data));
           currViewPostDetial.refresh();
         }
-        print(currViewPostDetial);
+
         likeButtonCheck();
       }
       isLoading(true);
@@ -157,7 +155,6 @@ class ViewPostController extends GetxController {
     await dio
         .post(Api.ipUrl + Api.updateCollects + 'pid=' + pid + '&uid=' + uid);
     await getPostDetail();
-    likeButtonCheck();
   }
 
   //按讚偵測
@@ -172,14 +169,16 @@ class ViewPostController extends GetxController {
     });
   }
 
-  collectButtonCheck() {
-    if (currViewPostDetial.value.likeList.length == 0) {
-      buttonIsLiked.value = false;
-    }
-    currViewPostDetial.value.likeList.forEach((element) {
-      if (element.uid == uid) {
-        buttonIsLiked.value = true;
-      }
-    });
+  collectButtonCheck() async {
+    buttonIsCollected.value =
+        await Get.find<SelfPageController>().checkIsCollect(pid);
+  }
+
+  Future<bool> onCollectButtonTapped(bool isLiked) async {
+    await updateCollects(pid, uid);
+    buttonIsCollected.value = !buttonIsCollected.value;
+
+    await Get.find<SelfPageController>().getCollectedPostCover(uid);
+    return buttonIsCollected.value;
   }
 }

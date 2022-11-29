@@ -1,9 +1,11 @@
 import 'package:cozydiary/login_controller.dart';
+
 import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:cozydiary/pages/Register/Page/registerPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
@@ -29,6 +31,10 @@ void main() async {
   Hive.registerAdapter(UidAndStateAdapter());
   await Hive.openBox("UidAndState");
   imageCache.clear();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const MyApp());
 }
 
@@ -189,7 +195,12 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           }
         } else {
-          return Container();
+          return Center(
+            child: SpinKitFadingCircle(
+              color: Theme.of(context).primaryColor,
+              size: 50,
+            ),
+          );
         }
       },
     );
@@ -201,10 +212,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.logout_outlined),
-          onPressed: () => logincontroller.logout(),
-        ),
       ),
       body: Center(
           child: Stack(

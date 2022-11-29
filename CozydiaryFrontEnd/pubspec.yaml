@@ -103,6 +103,10 @@ dependencies:
   flex_color_scheme: ^6.0.1
   #讀取動畫物件
   shimmer: ^2.0.0
+  #搜尋物件
+  anim_search_bar: ^2.0.2
+  #裁切圖片
+  image_cropper: ^3.0.1
 
 dev_dependencies:
   flutter_test:

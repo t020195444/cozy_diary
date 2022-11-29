@@ -28,6 +28,7 @@ class SelfPageController extends GetxController {
           picResize: "")
       .obs; //使用者資料暫存
   var postCover = <PostCoverData>[].obs;
+  var collectedPostCover = <PostCoverData>[].obs;
   var box = Hive.box("UidAndState");
   var trackerList = <TrackerList>[];
   @override
@@ -36,6 +37,7 @@ class SelfPageController extends GetxController {
 
     getUserData();
     getUserPostCover(uid);
+    getCollectedPostCover(uid);
 
     super.onInit();
   }
@@ -68,7 +70,34 @@ class SelfPageController extends GetxController {
       isLoading(false);
     }
   }
-  // Bool checkIsCollect(String pid) async {
 
-  // }
+  Future<void> getCollectedPostCover(String uid) async {
+    try {
+      isLoading(true);
+      var Posts = await PersonalService.fetchUserCollectedPostCover(uid);
+      if (Posts != null) {
+        if (Posts.status == 200) {
+          collectedPostCover.value = Posts.data;
+        }
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<bool> checkIsCollect(String pid) async {
+    bool result = false;
+    if (collectedPostCover.isEmpty) {
+      result = false;
+    } else {
+      for (var collectpost in collectedPostCover) {
+        if (collectpost.pid.toString() == pid) {
+          result = true;
+          break;
+        }
+      }
+    }
+
+    return result;
+  }
 }

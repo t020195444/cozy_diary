@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'controller/TopTabbarController.dart';
+import 'serchPage.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -17,6 +18,19 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        centerTitle: true,
+
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(left: 0.0, right: 16.0),
+            child: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () =>
+                  Get.to(SerchPage(), transition: Transition.downToUp),
+            ),
+          )
+        ],
+        // titleSpacing: 0,
         elevation: 0,
         title: Center(
           child: TabBar(

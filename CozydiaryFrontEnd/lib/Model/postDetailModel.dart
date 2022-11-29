@@ -129,20 +129,19 @@ class Comment {
   int pid;
   String username;
   String pic;
-  List<dynamic> repliesComments;
+  List<RepliesComment> repliesComments;
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-        commentId: json["commentId"],
-        text: json["text"],
-        uid: json["uid"],
-        commentTime: DateTime.parse(json["commentTime"]),
-        likes: json["likes"],
-        pid: json["pid"],
-        username: json["username"],
-        pic: json["pic"],
-        repliesComments:
-            List<dynamic>.from(json["repliesComments"].map((x) => x)),
-      );
+      commentId: json["commentId"],
+      text: json["text"],
+      uid: json["uid"],
+      commentTime: DateTime.parse(json["commentTime"]),
+      likes: json["likes"],
+      pid: json["pid"],
+      username: json["username"],
+      pic: json["pic"],
+      repliesComments: List<RepliesComment>.from(
+          json["repliesComments"].map((x) => RepliesComment.fromJson(x))));
 
   Map<String, dynamic> toJson() => {
         "commentId": commentId,
@@ -153,7 +152,8 @@ class Comment {
         "pid": pid,
         "username": username,
         "pic": pic,
-        "repliesComments": List<dynamic>.from(repliesComments.map((x) => x)),
+        "repliesComments":
+            List<dynamic>.from(repliesComments.map((x) => x.toJson())),
       };
 }
 
@@ -197,4 +197,48 @@ class LikeList {
 
   Map<String, dynamic> toJson() =>
       {"pid": pid, "uid": uid, "like_time": like_time, "type": type};
+}
+
+class RepliesComment {
+  RepliesComment({
+    required this.rid,
+    required this.text,
+    required this.uid,
+    required this.repliesTime,
+    required this.likes,
+    required this.commentId,
+    required this.username,
+    required this.pic,
+  });
+
+  int rid;
+  String text;
+  String uid;
+  DateTime repliesTime;
+  int likes;
+  String commentId;
+  String username;
+  String pic;
+
+  factory RepliesComment.fromJson(Map<String, dynamic> json) => RepliesComment(
+        rid: json["rid"],
+        text: json["text"],
+        uid: json["uid"],
+        repliesTime: DateTime.parse(json["repliesTime"]),
+        likes: json["likes"],
+        commentId: json["commentId"],
+        username: json["username"],
+        pic: json["pic"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "rid": rid,
+        "text": text,
+        "uid": uid,
+        "repliesTime": repliesTime.toIso8601String(),
+        "likes": likes,
+        "commentId": commentId,
+        "username": username,
+        "pic": pic,
+      };
 }

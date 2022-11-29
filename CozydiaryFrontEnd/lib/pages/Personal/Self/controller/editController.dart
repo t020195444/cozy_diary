@@ -1,9 +1,8 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
-import 'package:cozydiary/pages/Home/homePageTabbar.dart';
-import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
@@ -75,8 +74,36 @@ class EditUserController extends GetxController {
         await imagePicker.pickImage(source: ImageSource.gallery).then((value) {
       if (value != null) {
         oldImageUrl = value.path;
-        // changedPreviewImage = FileImage(File(oldImageUrl));
-        // isImageChange.value = true;
+      }
+      // changeProfilePic(oldImageUrl).then((value) {
+      //   if (value == 200) {
+      //     Get.back();
+      //     Get.back();
+      //   }
+      // }).catchError((error) => print("Error$error"));
+
+      return null;
+    });
+
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: oldImageUrl,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      maxHeight: 600,
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: ThemeData.light().appBarTheme.backgroundColor,
+            toolbarWidgetColor: ThemeData.light().appBarTheme.foregroundColor,
+            hideBottomControls: true,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+        )
+      ],
+    ).then((value) {
+      if (value != null) {
+        oldImageUrl = value.path;
         Get.dialog(Center(
           child: CircularProgressIndicator(),
         ));
@@ -85,10 +112,8 @@ class EditUserController extends GetxController {
             Get.back();
             Get.back();
           }
-          // ignore: invalid_return_type_for_catch_error
         }).catchError((error) => print("Error$error"));
       }
-      return null;
     });
   }
 

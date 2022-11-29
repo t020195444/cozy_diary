@@ -2,6 +2,7 @@ import 'package:cozydiary/Model/categoryList.dart';
 import 'package:cozydiary/Model/postCoverModel.dart';
 import 'package:cozydiary/pages/Home/controller/categoryPostController.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/SelfController.dart';
 import 'package:cozydiary/pages/Register/Controller/categoryController.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
@@ -34,23 +35,11 @@ class BuildCardHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        ViewPostController.currPostCover = postCovers[index];
-
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (BuildContext context) {
-        //       return ViewPostScreen(
-        //         pid: postCovers[index].pid.toString(),
-        //       );
-        //     },
-        //   ),
-        // );
-        // navigator!.push(MaterialPageRoute(
-        //     builder: (_) => ViewPostScreen(
-        //           pid: postCovers[index].pid.toString(),
-        //         )));
         bool result = await Get.to(
             () => ViewPostScreen(
+                  ownerPicUrl: postCovers[index].pic,
+                  ownerUid: postCovers[index].uid,
+                  username: postCovers[index].username,
                   pid: postCovers[index].pid.toString(),
                 ),
             transition: Transition.cupertino);
@@ -67,7 +56,7 @@ class BuildCardHome extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              constraints: BoxConstraints(maxHeight: 300),
+              // constraints: BoxConstraints(maxHeight: 300),
               child: Image.network(
                 postCovers[index].cover,
                 fit: BoxFit.cover,

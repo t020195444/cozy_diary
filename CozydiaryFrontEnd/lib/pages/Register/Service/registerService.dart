@@ -14,7 +14,6 @@ class RegisterService {
     var response = await Dio().get(Api.ipUrl + Api.getCategoryList);
     var encodeJsonData = json.encode(response.data);
     var returnData = categoryListModelFromJson(encodeJsonData);
-    print(encodeJsonData);
     return returnData;
   }
 
