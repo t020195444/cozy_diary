@@ -880,41 +880,38 @@ class _viewPostPic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ViewPostController viewPostController = Get.find<ViewPostController>();
-    return Material(
-      child: InkWell(
-        onTap: () => {Get.back()},
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          key: UniqueKey(),
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.only(top: 150, bottom: 150),
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
-                  child: Image.network(
-                    viewPostController
-                        .currViewPostDetial.value.postFiles[index].postUrl,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
+    return SafeArea(
+      child: Material(
+          child: InkWell(
+              onTap: () => {Get.back()},
+              child: PageView.builder(
+                  itemCount: viewPostController
+                      .currViewPostDetial.value.postFiles.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.network(
+                          viewPostController.currViewPostDetial.value
+                              .postFiles[index].postUrl,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                color: Colors.grey[100],
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.4,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  )),
-            );
-          },
-          itemCount:
-              viewPostController.currViewPostDetial.value.postFiles.length,
-        ),
-      ),
+                      ),
+                    );
+                  }))),
     );
   }
 }

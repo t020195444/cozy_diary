@@ -4,6 +4,7 @@ import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/api.dart';
 import 'package:cozydiary/postJsonService.dart';
 import 'package:hive/hive.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -24,7 +25,7 @@ class CreatePostController extends GetxController {
   //function
 
   static List fileList = [].obs;
-  static List showList = [].obs;
+  RxList showList = [].obs;
   static RxList mediaList = [].obs;
   RxBool isLoading = false.obs;
   fetchMedia(
@@ -42,8 +43,8 @@ class CreatePostController extends GetxController {
 
       mediaList.value = [];
       List<Widget> temp = [];
-      pickedList = [];
-      showList = [];
+
+      showList.value = [];
 
       for (var asset in media) {
         fileList.add(await asset.file);
@@ -101,19 +102,17 @@ class CreatePostController extends GetxController {
     setPicList(i);
   }
 
-  static List pickedList = [];
+  List pickedList = [];
   setPicList(int i) {
-    File tempFile = fileList[i];
+    String tempFile = fileList[i].path;
+
     if (pickedList.contains(tempFile)) {
       pickedList.remove(tempFile);
-      showList.remove(mediaList[i]);
       checkBox[i].value = false;
     } else {
       pickedList.add(tempFile);
-      showList.add(mediaList[i]);
       checkBox[i].value = true;
     }
-    print(showList);
   }
 
   String postTitle = '';
@@ -149,7 +148,7 @@ class CreatePostController extends GetxController {
         content: postContent,
         likes: 0,
         collects: 0,
-        cover: basename(pickedList[0].path),
+        cover: basename(showList[0]),
         cid: selectedMap['cid'],
         postFiles: postFiles);
   }
@@ -157,8 +156,8 @@ class CreatePostController extends GetxController {
   Future<FormData> writePost() async {
     FormData formData = FormData();
     // int index = 1;
-    for (int i = 0; i < pickedList.length; i++) {
-      allPicName.add(basename(pickedList[i].path));
+    for (int i = 0; i < showList.length; i++) {
+      allPicName.add(basename(showList[i]));
     }
     allPicName.asMap().forEach((key, value) async {
       postFiles.add(PostFile(postUrl: value));
@@ -168,9 +167,9 @@ class CreatePostController extends GetxController {
     var jsonString = jsonEncode(writePost.toJson());
     formData = FormData.fromMap({"jsondata": jsonString});
     // print(formData.fields.toString());
-    for (int i = 0; i < pickedList.length; i++) {
+    for (int i = 0; i < showList.length; i++) {
       formData.files.addAll(
-          [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
+          [MapEntry("file", await MultipartFile.fromFile(showList[i]))]);
     }
     return formData;
   }
@@ -200,4 +199,42 @@ class CreatePostController extends GetxController {
   //     fetchMedia(startNum.value, endNum.value);
   //   }
   // }
+
+  Future<void> changePicSize(String path, int index) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: path,
+      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 4),
+      maxHeight: 600,
+
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: ThemeData.light().appBarTheme.backgroundColor,
+            toolbarWidgetColor: ThemeData.light().appBarTheme.foregroundColor,
+            hideBottomControls: true,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+          aspectRatioLockEnabled: false,
+          rotateButtonsHidden: true,
+          rotateClockwiseButtonHidden: true,
+          aspectRatioPickerButtonHidden: true,
+          resetAspectRatioEnabled: false,
+        )
+      ],
+
+      // )
+      // .then((value) {
+      //   if (value != null) {
+      //     path = value.path;
+      //     Get.dialog(Center(
+      //       child: CircularProgressIndicator(),
+      //     ));
+      //   }
+      // }
+    );
+    showList[index] = croppedFile!.path;
+    print(showList);
+  }
 }

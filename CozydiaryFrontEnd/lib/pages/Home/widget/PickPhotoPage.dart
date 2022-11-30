@@ -20,7 +20,6 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
     //     _createPostController.endNum.value);
     _createPostController.fetchMedia();
     _createPostController.getList();
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -28,7 +27,9 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
           actions: [
             TextButton(
                 onPressed: () {
-                  if (CreatePostController.pickedList.isEmpty) {
+                  _createPostController.showList.value =
+                      _createPostController.pickedList;
+                  if (_createPostController.showList.isEmpty) {
                     Fluttertoast.showToast(
                         msg: '沒選照片',
                         toastLength: Toast.LENGTH_SHORT,

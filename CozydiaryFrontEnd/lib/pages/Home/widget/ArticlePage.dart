@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../HomePageTabbar.dart';
 import '../controller/createPostController.dart';
@@ -24,9 +25,16 @@ class ArticlePage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text('最後一步！'),
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(Icons.arrow_back_ios_new_outlined)),
+            automaticallyImplyLeading: false,
             actions: [
               TextButton(
                   onPressed: () async {
+                    print(_createPostController.pickedList);
                     if (titleCtr.text == '' || contentCtr.text == '') {
                       Fluttertoast.showToast(
                           msg: "標題或內文不可為空白",
@@ -84,14 +92,18 @@ class ArticlePage extends StatelessWidget {
                     padding: const EdgeInsets.all(20.0),
                     child: GestureDetector(
                       onTap: () {
-                        print(CreatePostController.showList);
                         Get.to(_showPicPage());
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: CreatePostController.showList[0],
+                      child: Obx(
+                        () => Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Image.asset(
+                            _createPostController.showList[0],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   )),
@@ -165,29 +177,44 @@ class ArticlePage extends StatelessWidget {
 }
 
 class _showPicPage extends StatelessWidget {
-  const _showPicPage({Key? key}) : super(key: key);
+  _showPicPage({Key? key}) : super(key: key);
+
+  final _createPostController = Get.find<CreatePostController>();
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () => {Get.back()},
-        child: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            key: UniqueKey(),
+          onTap: () => {Get.back()},
+          child: PageView.builder(
+            itemCount: _createPostController.showList.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.only(top: 150, bottom: 150),
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
-                    child: CreatePostController.showList[index]),
+              return Obx(
+                () => Scaffold(
+                  appBar: AppBar(
+                    automaticallyImplyLeading: false,
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            _createPostController.changePicSize(
+                                _createPostController.showList[index], index);
+                          },
+                          child: Text('更改'))
+                    ],
+                  ),
+                  body: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        _createPostController.showList[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
               );
             },
-            itemCount: CreatePostController.showList.length),
-      ),
+          )),
     );
   }
 }
