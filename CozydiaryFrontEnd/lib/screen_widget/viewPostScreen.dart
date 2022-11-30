@@ -38,6 +38,7 @@ class ViewPostScreen extends StatelessWidget {
 
     Future<bool> onLikeButtonTapped(bool isLiked) async {
       viewPostController.updateLikes(pid, uid);
+
       return !isLiked;
     }
 
