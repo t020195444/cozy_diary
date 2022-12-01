@@ -37,32 +37,21 @@ class ActivityViewPostScreen extends StatelessWidget {
                 Get.back();
               },
             ),
-            title: Obx(
-              () => Row(
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: 45,
-                    width: 45,
-                    margin: const EdgeInsets.fromLTRB(2, 20, 5, 15),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: getPostController.isLoding.value
-                              ? AssetImage('assets/images/Black.png')
-                                  as ImageProvider
-                              : NetworkImage(
-                                  pic,
-                                )),
-                      border: Border.all(color: Colors.white, width: 2.5),
-                      shape: BoxShape.circle,
-                    ),
+            title: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    pic,
                   ),
-                  Text(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
                     name,
                     style: TextStyle(fontSize: 18),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             )),
         body: Obx(
           (() => SingleChildScrollView(

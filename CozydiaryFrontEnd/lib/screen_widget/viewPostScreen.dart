@@ -63,8 +63,11 @@ class ViewPostScreen extends StatelessWidget {
                     backgroundImage: NetworkImage(ownerPicUrl),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(username),
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      username,
+                      style: TextStyle(fontSize: 18),
+                    ),
                   )
                 ],
               ),
