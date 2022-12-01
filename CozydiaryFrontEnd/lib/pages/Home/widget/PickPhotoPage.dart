@@ -55,18 +55,25 @@ class PickPhotoPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Obx(
-              () => Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: _createPostController.currPic.isEmpty
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Image.asset(
-                          _createPostController.currPic.value,
+            Obx(() => _createPostController.currPic.isEmpty
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Center(child: Text('選擇一張照片吧！')),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
                           fit: BoxFit.cover,
-                        )),
-            ),
+                          image:
+                              AssetImage(_createPostController.currPic.value),
+                        ),
+                      ),
+                    ),
+                  )),
             Obx(
               () => Expanded(
                 flex: 6,

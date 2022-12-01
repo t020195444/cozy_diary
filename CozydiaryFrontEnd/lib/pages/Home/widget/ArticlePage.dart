@@ -86,26 +86,32 @@ class ArticlePage extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(_showPicPage());
-                    },
-                    child: Obx(
-                      () => Container(
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Image.asset(
-                          _createPostController.showList[0],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
+                Container(
+                  height: MediaQuery.of(context).size.width * 0.75,
+                  child: _showPicPage(),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.all(20.0),
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       Get.to(_showPicPage());
+                //     },
+                //     child: Obx(() => Padding(
+                //           padding: const EdgeInsets.only(bottom: 8.0),
+                //           child: Container(
+                //             width: MediaQuery.of(context).size.width,
+                //             height: MediaQuery.of(context).size.height * 0.3,
+                //             decoration: BoxDecoration(
+                //               image: DecorationImage(
+                //                 fit: BoxFit.cover,
+                //                 image: AssetImage(
+                //                     _createPostController.showList[0]),
+                //               ),
+                //             ),
+                //           ),
+                //         )),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(right: 20, left: 20),
                   child: TextField(
@@ -186,37 +192,35 @@ class _showPicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: InkWell(
-          onTap: () => {Get.back()},
-          child: PageView.builder(
-            itemCount: _createPostController.showList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Obx(
-                () => Scaffold(
-                  appBar: AppBar(
-                    automaticallyImplyLeading: false,
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            _createPostController.changePicSize(
-                                _createPostController.showList[index], index);
-                          },
-                          child: Text('更改'))
-                    ],
-                  ),
-                  body: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        _createPostController.showList[index],
-                        fit: BoxFit.cover,
+      child: PageView.builder(
+        itemCount: _createPostController.showList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Obx(() => Scaffold(
+                body: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _createPostController.changePicSize(
+                            _createPostController.showList[index], index);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 800,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                                _createPostController.showList[index]),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              );
-            },
-          )),
+              ));
+        },
+      ),
     );
   }
 }
