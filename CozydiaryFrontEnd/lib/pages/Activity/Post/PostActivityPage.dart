@@ -54,7 +54,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                   child: postController.isPicked == true
                       ? postController.currPic[0]
                       : Container(
-                          child: Center(child: Text("尚未選擇照片")),
+                          child: Center(child: Text("選擇一張照片吧！")),
                         ),
                 ),
               ),
@@ -62,47 +62,53 @@ class _PostActivityPageState extends State<PostActivityPage> {
             Obx(
               () => Expanded(
                 flex: 6,
-                child: GridView.builder(
-                    itemCount: ActivityPostController.mediaList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
-                    itemBuilder: (BuildContext context, int i) {
-                      return Obx(
-                        () => GestureDetector(
-                            onTap: () {
-                              postController.isPicked.value = true;
-                              postController.changeCurrPic(i);
-                            },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  child: ActivityPostController.mediaList[i],
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: 25,
-                                      width: 25,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromARGB(129, 68, 68, 68),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                      ),
+                child: postController.isLoading.value == true
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : GridView.builder(
+                        itemCount: ActivityPostController.mediaList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                        itemBuilder: (BuildContext context, int i) {
+                          return Obx(
+                            () => GestureDetector(
+                                onTap: () {
+                                  postController.isPicked.value = true;
+                                  postController.changeCurrPic(i);
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
                                       child:
-                                          ActivityPostController.checkBox[i] ==
+                                          ActivityPostController.mediaList[i],
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 25,
+                                          width: 25,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Color.fromARGB(129, 68, 68, 68),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          child: ActivityPostController
+                                                      .checkBox[i] ==
                                                   true
                                               ? Icon(Icons.check_circle,
                                                   color: Colors.blue[400])
                                               : null,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                      );
-                    }),
+                                  ],
+                                )),
+                          );
+                        }),
               ),
             ),
           ],

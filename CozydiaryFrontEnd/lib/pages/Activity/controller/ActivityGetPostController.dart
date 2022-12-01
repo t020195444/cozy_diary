@@ -101,7 +101,7 @@ class ActivityGetPostController extends GetxController {
       picResize: "",
       userCategoryList: []).obs;
 
-  getHolder(data) async {
+  getHolder(String data) async {
     var UserData = await PersonalService.fetchUserData(data);
     if (UserData != null) {
       if (UserData.status == 200) {
@@ -112,6 +112,7 @@ class ActivityGetPostController extends GetxController {
 
   @override
   void onInit() {
+    participantContent.value = "";
     isActivityParticipant();
     super.onInit();
   }

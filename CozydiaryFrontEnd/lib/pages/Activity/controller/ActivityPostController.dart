@@ -107,7 +107,10 @@ class ActivityPostController extends GetxController {
   //function
   static List fileList = [].obs;
   static RxList mediaList = [].obs;
+  RxBool isLoading = false.obs;
+
   fetchMedia() async {
+    isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
       List<AssetPathEntity> albums =
@@ -156,6 +159,7 @@ class ActivityPostController extends GetxController {
       //default Pic
       currPic.add(mediaList[0]);
     } else {}
+    isLoading.value = false;
   }
 
   RxList currPic = [].obs;

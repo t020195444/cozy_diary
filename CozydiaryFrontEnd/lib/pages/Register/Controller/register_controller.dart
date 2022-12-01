@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:io';
 import 'package:cozydiary/main.dart';
-import 'package:cozydiary/pages/Register/Page/selectLikePage.dart';
+import 'package:cozydiary/pages/Register/Page/SelectLikePage.dart';
 import 'package:cozydiary/pages/Register/Service/registerService.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData, Response;
 import 'package:hive/hive.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../Model/registerUserDataModel.dart';
@@ -82,10 +83,34 @@ class RegisterController extends GetxController {
     final XFile? pickedImage =
         await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
-      final image = io.File(pickedImage.path);
-      previewImage.value = image;
-      pic = pickedImage.path;
-      picOrigin = pickedImage.path;
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        maxHeight: 600,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: ThemeData.light().appBarTheme.backgroundColor,
+              toolbarWidgetColor: ThemeData.light().appBarTheme.foregroundColor,
+              hideBottomControls: true,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: true),
+          IOSUiSettings(
+              title: 'Cropper',
+              aspectRatioLockEnabled: true,
+              rotateButtonsHidden: true,
+              rotateClockwiseButtonHidden: true,
+              aspectRatioPickerButtonHidden: true,
+              resetAspectRatioEnabled: false)
+        ],
+      ).then((value) {
+        if (value != null) {
+          final image = io.File(value.path);
+          previewImage.value = image;
+          pic = value.path;
+          picOrigin = value.path;
+        }
+      });
     } else {
       return;
     }
@@ -109,16 +134,15 @@ class RegisterController extends GetxController {
       var formData = FormData.fromMap({"jsondata": jsonData});
       formData.files
           .add(MapEntry("file", await MultipartFile.fromFile(picOrigin)));
-      print(formData);
-      print(picOrigin);
 
       int responseStatus = await RegisterService.registerUser(formData);
 
       if (responseStatus == 200) {
         Get.back();
         Hive.box("UidAndState").put("uid", googleId);
+
         Get.to(SelectLikePage(
-          state: 0,
+          isRegiststate: false,
         ));
       } else {
         Get.back();

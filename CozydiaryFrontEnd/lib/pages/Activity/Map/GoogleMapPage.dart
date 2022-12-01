@@ -49,8 +49,9 @@ class GoogleMapPageState extends State<GoogleMapPage> {
   final topTabbarController = Get.put(ActivityTabbarController());
   ActivityController postCoverController = Get.put(ActivityController());
 
+  late LatLng currentLatLng;
   Set<Marker> markersList = Set();
-
+  late Position _currentPosition;
   postcover() async {
     double lat = 0;
     double lng = 0;
@@ -91,15 +92,28 @@ class GoogleMapPageState extends State<GoogleMapPage> {
     setState(() {});
   }
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(25.0419, 121.5256),
-    zoom: 14.4746,
-  );
+  late LatLng currentPostion = LatLng(25.042096215490048, 121.5255484286204);
+
+  void _getUserLocation() async {
+    var position = await GeolocatorPlatform.instance.getCurrentPosition();
+
+    setState(() {
+      currentPostion = LatLng(position.latitude, position.longitude);
+      googleMapController.animateCamera(CameraUpdate.newLatLngZoom(
+          LatLng(position.latitude, position.longitude), 14.4746));
+    });
+  }
+
+  // static final CameraPosition _kGooglePlex = CameraPosition(
+  //   // target:  currentLatLng,
+  //   zoom: 14.4746,
+  // );
 
   @override
   void initState() {
     GeolocatorService()._determinePosition();
     loadData();
+    _getUserLocation();
     super.initState();
   }
 
@@ -115,7 +129,10 @@ class GoogleMapPageState extends State<GoogleMapPage> {
             child: GoogleMap(
               markers: markersList,
               mapType: MapType.normal,
-              initialCameraPosition: _kGooglePlex,
+              initialCameraPosition: CameraPosition(
+                target: currentPostion,
+                zoom: 14.4746,
+              ),
               onMapCreated: (GoogleMapController controller) {
                 googleMapController = controller;
               },

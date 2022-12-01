@@ -96,13 +96,19 @@ class EditUserController extends GetxController {
             toolbarWidgetColor: ThemeData.light().appBarTheme.foregroundColor,
             hideBottomControls: true,
             initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: true),
+            lockAspectRatio: false),
         IOSUiSettings(
           title: 'Cropper',
+          aspectRatioLockEnabled: false,
+          rotateButtonsHidden: true,
+          rotateClockwiseButtonHidden: true,
+          aspectRatioPickerButtonHidden: true,
+          resetAspectRatioEnabled: false,
         )
       ],
     ).then((value) {
       if (value != null) {
+        print(value);
         oldImageUrl = value.path;
         Get.dialog(Center(
           child: CircularProgressIndicator(),

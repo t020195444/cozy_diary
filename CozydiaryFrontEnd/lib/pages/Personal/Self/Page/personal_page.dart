@@ -373,7 +373,8 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                 // style: TextStyle(color: Colors.black54),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(174, 164, 131, 106),
+                backgroundColor:
+                    Theme.of(context).primaryColorLight.withOpacity(0.6),
               ),
             ))
       ],

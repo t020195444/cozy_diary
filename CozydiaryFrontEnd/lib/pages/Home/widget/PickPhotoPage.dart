@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cozydiary/pages/Home/widget/ArticlePage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +62,10 @@ class PickPhotoPage extends StatelessWidget {
                       ? Center(
                           child: CircularProgressIndicator(),
                         )
-                      : Image.asset(_createPostController.currPic.value)),
+                      : Image.asset(
+                          _createPostController.currPic.value,
+                          fit: BoxFit.cover,
+                        )),
             ),
             Obx(
               () => Expanded(

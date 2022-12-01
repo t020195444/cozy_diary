@@ -1,6 +1,9 @@
 import 'package:cozydiary/pages/Personal/Self/Page/userManagementPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+
+import 'Self/SettingMenuPage.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget(
@@ -14,6 +17,7 @@ class DrawerWidget extends StatelessWidget {
   final String uid;
   @override
   Widget build(BuildContext context) {
+    // print(Hive.box("UidAndState").get("uid"));
     return SafeArea(
       child: Drawer(
           child: ListView(
@@ -52,23 +56,26 @@ class DrawerWidget extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.manage_accounts,
+              size: 30,
             ),
             title: Text(
               '管理帳戶',
               style: TextStyle(),
             ),
             onTap: () {
-              Get.bottomSheet(
-                UserManagemenetPage(),
-              );
+              Get.to(() => UserManagemenetPage(),
+                  transition: Transition.cupertino);
             },
           ),
-          const ListTile(
+          ListTile(
+            onTap: () =>
+                Get.to(SettingMenuPage(), transition: Transition.cupertino),
             leading: Icon(
-              Icons.group_outlined,
+              Icons.settings,
+              size: 30,
             ),
             title: Text(
-              '查看聚會',
+              '設定',
               style: TextStyle(),
             ),
           ),

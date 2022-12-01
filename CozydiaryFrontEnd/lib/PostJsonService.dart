@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cozydiary/Model/SearchDataModel.dart';
 import 'package:cozydiary/Model/postDetailModel.dart';
 import 'package:dio/dio.dart';
 import 'Model/postCoverModel.dart';
@@ -61,7 +62,7 @@ class PostService {
     return await dio.post(Api.ipUrl + Api.addPost, data: formData);
   }
 
-  static Future<PostCoverModule?> searchPost(
+  static Future<SearchDataModel?> searchPost(
       String keyText, String limit) async {
     var response = await dio.get(Api.ipUrl +
         Api.searchPost[0] +
@@ -71,8 +72,8 @@ class PostService {
         Api.searchPost[2]);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
-    print(jsonString);
-    var fromJsonValue = postCoverModuleFromJson(encodeJsonString);
+    var fromJsonValue = searchDataModelFromJson(encodeJsonString);
+    print(fromJsonValue.data[0]);
     return fromJsonValue;
   }
 }
