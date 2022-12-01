@@ -8,10 +8,13 @@ import 'package:hive/hive.dart';
 
 // ignore: must_be_immutable
 class ActivityViewPostScreen extends StatelessWidget {
-  ActivityViewPostScreen({required this.id});
+  ActivityViewPostScreen(
+      {required this.id, required this.name, required this.pic});
+  String name;
+  String pic;
   String id = "";
   //Controller
-  final commentCtr = TextEditingController();
+  final commentCtr = TextEditingController(text: "");
 
   ActivityGetPostController getPostController =
       Get.put(ActivityGetPostController());
@@ -21,7 +24,7 @@ class ActivityViewPostScreen extends StatelessWidget {
     getPostController.isParticipant.value = false;
     getPostController.isActivityParticipant();
     getPostController.getActivityParticipantList();
-    getPostController.actId.value = int.parse(id);
+    getPostController.activityId.value = int.parse(id);
     final contentCtr = TextEditingController(
         text: getPostController.participantContent.value.toString());
     //主畫面
@@ -47,14 +50,14 @@ class ActivityViewPostScreen extends StatelessWidget {
                               ? AssetImage('assets/images/Black.png')
                                   as ImageProvider
                               : NetworkImage(
-                                  getPostController.userData.value.pic,
+                                  pic,
                                 )),
                       border: Border.all(color: Colors.white, width: 2.5),
                       shape: BoxShape.circle,
                     ),
                   ),
                   Text(
-                    getPostController.userData.value.name,
+                    name,
                     style: TextStyle(fontSize: 18),
                   )
                 ],
@@ -371,8 +374,9 @@ class ActivityViewPostScreen extends StatelessWidget {
                                                                                     minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 40),
                                                                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                                                                                   ),
-                                                                                  onPressed: () {
+                                                                                  onPressed: () async {
                                                                                     getPostController.setUpdateParticipantData(id);
+                                                                                    getPostController.participantContent.value = "";
                                                                                     Navigator.pop(context);
                                                                                   },
                                                                                   child: const Text(
@@ -424,7 +428,7 @@ class ActivityViewPostScreen extends StatelessWidget {
                                       children: [
                                         Icon(
                                           Icons.payment,
-                                          size: 40,
+                                          size: 30,
                                         ),
                                         Text(
                                           "付款方式",
@@ -442,7 +446,7 @@ class ActivityViewPostScreen extends StatelessWidget {
                                       children: [
                                         Icon(
                                           Icons.currency_exchange_rounded,
-                                          size: 40,
+                                          size: 30,
                                         ),
                                         Text(
                                           "活動預算",
@@ -459,14 +463,16 @@ class ActivityViewPostScreen extends StatelessWidget {
                                       children: [
                                         Icon(
                                           Icons.people,
-                                          size: 40,
+                                          size: 30,
                                         ),
                                         Text(
-                                          "活動人數",
+                                          "活動類別",
                                           style: TextStyle(fontSize: 13),
                                         ),
                                         Text(
-                                          "10",
+                                          getPostController.actType[
+                                                  getPostController.actId.value]
+                                              .toString(),
                                           style: TextStyle(fontSize: 15),
                                         ),
                                       ],
@@ -475,19 +481,15 @@ class ActivityViewPostScreen extends StatelessWidget {
                                       children: [
                                         Obx(
                                           () => InkWell(
-                                            onTap: () => getPostController
-                                                    .isLike.value
-                                                ? getPostController.checkLike(
-                                                    Hive.box("UidAndState")
-                                                        .get("uid"))
-                                                : getPostController.checkLike(
+                                            onTap: () =>
+                                                getPostController.checkLike(
                                                     Hive.box("UidAndState")
                                                         .get("uid")),
                                             child: Icon(
                                               getPostController.isLike.value
                                                   ? Icons.favorite
                                                   : Icons.favorite_border,
-                                              size: 40,
+                                              size: 30,
                                               // color: Color.fromARGB(255, 255, 87, 87),
                                             ),
                                           ),
@@ -526,11 +528,7 @@ class _viewPostPic extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () => {
-          Get.to(ActivityViewPostScreen(
-            id: id,
-          ))
-        },
+        onTap: () => {Get.back()},
         child: Hero(
           tag: 'pic',
           child: ListView.builder(

@@ -20,7 +20,10 @@ class BuildCardActivity extends StatelessWidget {
             key.toString().replaceAll(RegExp(r"[^\s\w]"), ""));
         Get.to(
           ActivityViewPostScreen(
-              id: key.toString().replaceAll(RegExp(r"[^\s\w]"), "")),
+            id: key.toString().replaceAll(RegExp(r"[^\s\w]"), ""),
+            name: PostCovers[index].username,
+            pic: PostCovers[index].pic,
+          ),
           transition: Transition.fadeIn,
         );
       },

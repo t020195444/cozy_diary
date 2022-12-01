@@ -28,9 +28,7 @@ class CreatePostController extends GetxController {
   RxList showList = [].obs;
   static RxList mediaList = [].obs;
   RxBool isLoading = false.obs;
-  fetchMedia(
-      // int start, int end
-      ) async {
+  fetchMedia() async {
     isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {

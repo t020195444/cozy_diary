@@ -48,6 +48,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
         children: <Widget>[ActivityScreen(), NestedTabBar(), GoogleMapPage()],
         controller: topTabbarController.topController,
       ),
