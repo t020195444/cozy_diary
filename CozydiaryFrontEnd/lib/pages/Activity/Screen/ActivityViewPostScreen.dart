@@ -31,39 +31,58 @@ class ActivityViewPostScreen extends StatelessWidget {
     //主畫面
     return Scaffold(
         appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-            title: Obx(
-              () => Row(
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: 45,
-                    width: 45,
-                    margin: const EdgeInsets.fromLTRB(2, 20, 5, 15),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: getPostController.isLoding.value
-                              ? AssetImage('assets/images/Black.png')
-                                  as ImageProvider
-                              : NetworkImage(
-                                  pic,
-                                )),
-                      border: Border.all(color: Colors.white, width: 2.5),
-                      shape: BoxShape.circle,
-                    ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Obx(
+            () => Row(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: 45,
+                  width: 45,
+                  margin: const EdgeInsets.fromLTRB(2, 20, 5, 15),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: getPostController.isLoding.value
+                            ? AssetImage('assets/images/Black.png')
+                                as ImageProvider
+                            : NetworkImage(
+                                pic,
+                              )),
+                    border: Border.all(color: Colors.white, width: 2.5),
+                    shape: BoxShape.circle,
                   ),
-                  Text(
-                    name,
-                    style: TextStyle(fontSize: 18),
-                  )
-                ],
-              ),
-            )),
+                ),
+                Text(
+                  name,
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: getPostController.activityHolder ==
+                      Hive.box("UidAndState").get("uid")
+                  ? PopupMenuButton(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text("刪除活動"),
+                          onTap: () => getPostController.deleteActivity(id),
+                        )
+                      ],
+                      child:
+                          Icon(Icons.more_horiz_outlined, color: Colors.brown),
+                    )
+                  : null,
+            )
+          ],
+        ),
         body: Obx(
           (() => SingleChildScrollView(
                 child: Container(

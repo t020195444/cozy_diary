@@ -38,6 +38,13 @@ class ActivityGetPostController extends GetxController {
 
   // deleteActivity?aid=
 
+  //刪除活動
+  deleteActivity(String aid) async {
+    await ActivityService().deleteActivity(aid);
+    Get.back();
+    update();
+  }
+
   //按讚
   checkLike(String uid) async {
     await ActivityService().checkLike(uid, activityId.value.toString());

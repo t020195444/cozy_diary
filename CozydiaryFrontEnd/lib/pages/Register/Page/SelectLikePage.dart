@@ -20,11 +20,10 @@ class SelectLikePage extends StatelessWidget {
               centerTitle: true,
               elevation: 0,
               backgroundColor: Colors.transparent,
-              title: SafeArea(
-                  child: Text(
+              title: Text(
                 "選擇主題",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              )),
+              ),
               leading: SafeArea(
                 child: IconButton(
                   icon: Icon(Icons.cancel),

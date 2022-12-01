@@ -428,113 +428,118 @@ class ActivityArticlePage extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back();
-          },
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          actions: [
+            TextButton(
+                onPressed: () async {
+                  showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            backgroundColor: Theme.of(context).backgroundColor,
+                            title: const Text('發文中...'),
+                            content: Container(
+                                height: 150,
+                                width: 30,
+                                child:
+                                    Center(child: CircularProgressIndicator())),
+                          ));
+                  await postController.goToDataBase();
+                  Get.offAll(() => HomePageTabbar());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '發布',
+                    // style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ))
+          ],
         ),
-        actions: [
-          TextButton(
-              onPressed: () async {
-                showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                          backgroundColor: Theme.of(context).backgroundColor,
-                          title: const Text('發文中...'),
-                          content: Container(
-                              height: 150,
-                              width: 30,
-                              child:
-                                  Center(child: CircularProgressIndicator())),
-                        ));
-                await postController.goToDataBase();
-                Get.offAll(() => HomePageTabbar());
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '發布',
-                  // style: Theme.of(context).textTheme.labelLarge,
-                ),
-              ))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 20),
-                height: 100,
-                width: 100,
-                child: GestureDetector(
-                  onTap: () {
-                    // Get.to(_viewPostPic());
-                  },
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Hero(
-                          tag: 'pic',
-                          child: Image.file(
-                            ActivityPostController.pickedList[0],
-                            fit: BoxFit.cover,
-                          )),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(top: 20, bottom: 20),
+                  height: 100,
+                  width: 100,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Get.to(_viewPostPic());
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Hero(
+                            tag: 'pic',
+                            child: Image.file(
+                              ActivityPostController.pickedList[0],
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                    ),
+                  )),
+              Container(
+                height: 60,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 20),
+                  child: TextField(
+                    onChanged: (value) {
+                      postController.activityTitle.value = value;
+                    },
+                    controller: titleCtr,
+                    maxLines: 1,
+                    maxLength: 15,
+                    decoration: InputDecoration(
+                      hintText: '請輸入活動名稱...',
                     ),
                   ),
-                )),
-            Container(
-              height: 60,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20, left: 20),
-                child: TextField(
-                  onChanged: (value) {
-                    postController.activityTitle.value = value;
-                  },
-                  controller: titleCtr,
-                  maxLines: 1,
-                  maxLength: 15,
-                  decoration: InputDecoration(
-                    hintText: '請輸入活動名稱...',
+                ),
+              ),
+              Container(
+                height: 150,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 20),
+                  child: TextField(
+                    onChanged: (value) {
+                      postController.activityContent.value = value;
+                    },
+                    controller: contentCtr,
+                    maxLines: 7,
+                    maxLength: 150,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '請輸入活動內容...',
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              height: 150,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20, left: 20),
-                child: TextField(
-                  onChanged: (value) {
-                    postController.activityContent.value = value;
-                  },
-                  controller: contentCtr,
-                  maxLines: 7,
-                  maxLength: 150,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '請輸入活動內容...',
-                  ),
-                ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: ActivityTime(),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: ActivityTime(),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: ActivitySetting(),
-            ),
-            Obx(
-              (() => Container(
-                    padding: EdgeInsets.all(10),
-                    child: ActivityLocation(),
-                  )),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.all(10),
+                child: ActivitySetting(),
+              ),
+              Obx(
+                (() => Container(
+                      padding: EdgeInsets.all(10),
+                      child: ActivityLocation(),
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
     );

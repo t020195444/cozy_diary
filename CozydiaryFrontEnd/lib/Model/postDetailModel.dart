@@ -216,7 +216,7 @@ class RepliesComment {
   String uid;
   DateTime repliesTime;
   int likes;
-  String commentId;
+  int commentId;
   String username;
   String pic;
 
