@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import '../../../Model/categoryList.dart';
 
 class CategoryController extends GetxController {
+  CategoryController({required this.registState});
   //使用者類別清單
   var categoryList = <Category>[];
   //類別照片路徑清單
@@ -18,27 +19,29 @@ class CategoryController extends GetxController {
   //uid
   var uid = Hive.box("UidAndState").get("uid");
   //按鈕狀態
-  var isChoice = <bool>[
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
+  var isChoice = <bool>[];
+  //註冊(false)與已登入狀態(true)
+  final bool registState;
   //load狀態
   var isLoding = false;
-  //目前是哪個狀態，現在有註冊與登入狀態
-  var currentState = ["註冊", "登入"];
+
   @override
   void onInit() {
+    isChoice = <bool>[
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ];
     categoryAssetsList = [
       "assets/category/basketball_S.jpg",
       "assets/category/dressStyle_S.jpg",
@@ -56,7 +59,9 @@ class CategoryController extends GetxController {
     ];
 
     fetchCategoryList();
-    fetchUserCategory();
+    if (registState) {
+      fetchUserCategory();
+    }
 
     super.onInit();
   }

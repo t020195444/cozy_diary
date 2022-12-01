@@ -14,7 +14,7 @@ class OtherPersonalPage extends StatelessWidget {
   final String uid;
   @override
   Widget build(BuildContext context) {
-    print(uid);
+    Get.put(OtherPersonPageController(otherUid: uid), tag: uid);
     return PersonalView(
       uid: uid,
     );
@@ -22,7 +22,7 @@ class OtherPersonalPage extends StatelessWidget {
 }
 
 class PersonalView extends StatelessWidget {
-  const PersonalView({
+  PersonalView({
     Key? key,
     required this.uid,
   }) : super(key: key);
@@ -30,17 +30,15 @@ class PersonalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final otherPersonPageController =
-        Get.put(OtherPersonPageController(otherUid: uid), tag: uid);
+    var otherPersonPageController =
+        Get.find<OtherPersonPageController>(tag: uid);
     final _tabController = Get.put(OtherPersonTabController());
 
     Widget _buildSliverHeaderWidget() {
       return SliverPersistentHeader(
         pinned: true,
         delegate: _SliverHeaderDelegate(
-            MediaQuery.of(context).size.height * 0.5,
-            70,
-            otherPersonPageController),
+            MediaQuery.of(context).size.height * 0.5, 70, uid),
       );
     }
 
@@ -48,15 +46,13 @@ class PersonalView extends StatelessWidget {
       return SliverPersistentHeader(
           pinned: true,
           floating: true,
-          delegate: _TabbarDelegate(
-            TabBar(
-                controller: controller,
-                indicatorWeight: 2,
-                indicatorSize: TabBarIndicatorSize.label,
-                isScrollable: true,
-                labelPadding: EdgeInsets.symmetric(horizontal: 40),
-                tabs: tab),
-          ));
+          delegate: _TabbarDelegate(TabBar(
+              controller: controller,
+              indicatorWeight: 2,
+              indicatorSize: TabBarIndicatorSize.label,
+              isScrollable: true,
+              labelPadding: EdgeInsets.symmetric(horizontal: 40),
+              tabs: tab)));
     }
 
     Widget _DetailSliverWidget() {
@@ -107,6 +103,9 @@ class PersonalView extends StatelessWidget {
         : Scaffold(
             extendBodyBehindAppBar: true,
             body: RefreshIndicator(
+              notificationPredicate: ((notification) {
+                return true;
+              }),
               onRefresh: (() async {
                 otherPersonPageController.getOtherUserData();
                 otherPersonPageController.getUserPostCover();
@@ -209,15 +208,11 @@ class _TabbarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _SliverHeaderDelegate(
-    this.expandedHeight,
-    this.tabbarHeight,
-    this._otherPersonPageController,
-  );
+  _SliverHeaderDelegate(this.expandedHeight, this.tabbarHeight, this.uid);
 
   final double expandedHeight;
   final double tabbarHeight;
-  final OtherPersonPageController _otherPersonPageController;
+  final String uid;
 
   @override
   double get minExtent => 0;
@@ -227,6 +222,8 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    var _otherPersonPageController =
+        Get.find<OtherPersonPageController>(tag: uid);
     Widget followerWidget(
         int trackerCount, int followerCount, int postCount, eventCount) {
       return Row(
@@ -308,32 +305,41 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Obx(() => Stack(
           children: <Widget>[
             _otherPersonPageController.userData.value.pic != ""
-                ? Image.network(
-                    _otherPersonPageController.userData.value.pic,
+                ? Image.network(_otherPersonPageController.userData.value.pic,
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
                     height: expandedHeight,
                     errorBuilder: (context, error, stackTrace) =>
                         Text("pic Network Error"),
                     loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
                       return Shimmer.fromColors(
-                        baseColor: Colors.grey[400]!,
-                        highlightColor: Colors.grey[300]!,
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
                         child: Container(
+                          color: Colors.grey[100],
                           width: MediaQuery.of(context).size.width,
                           height: expandedHeight,
                         ),
                       );
-                    },
-                  )
+                    })
                 : Shimmer.fromColors(
-                    baseColor: Colors.grey[400]!,
-                    highlightColor: Colors.grey[300]!,
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
                     child: Container(
+                      color: Colors.grey[100],
                       width: MediaQuery.of(context).size.width,
                       height: expandedHeight,
                     ),
                   ),
+            // : Shimmer.fromColors(
+            //     baseColor: Colors.grey[400]!,
+            //     highlightColor: Colors.grey[200]!,
+            //     child: Container(
+            //       width: MediaQuery.of(context).size.width,
+            //       height: expandedHeight,
+            //     ),
+            //   ),
             Container(
               color: Color.fromARGB(100, 0, 0, 0),
               height: expandedHeight,

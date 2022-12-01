@@ -159,9 +159,7 @@ class ViewPostController extends GetxController {
 
   //按讚偵測
   likeButtonCheck() {
-    if (currViewPostDetial.value.likeList.length == 0) {
-      buttonIsLiked.value = false;
-    }
+    buttonIsLiked.value = false;
     currViewPostDetial.value.likeList.forEach((element) {
       if (element.uid == uid) {
         buttonIsLiked.value = true;

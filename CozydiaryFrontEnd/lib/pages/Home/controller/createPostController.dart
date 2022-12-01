@@ -14,88 +14,190 @@ import 'package:dio/dio.dart';
 import '../HomePageTabbar.dart';
 
 class CreatePostController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    fetchMedia();
+    getList();
+  }
+
   //variable
 
   int currentPage = 0;
   RxBool isPicked = false.obs;
 
-  static late List<RxBool> checkBox =
+  late List<RxBool> checkBox =
       List.generate(mediaList.length, (_) => false.obs);
 
   //function
 
-  static List fileList = [].obs;
+  List fileList = [].obs;
   RxList showList = [].obs;
-  static RxList mediaList = [].obs;
+  RxList mediaList = [].obs;
   RxBool isLoading = false.obs;
-  fetchMedia() async {
+
+  int startNum = 0;
+  int endNum = 15;
+
+  fetchMedia(
+      // int start, int end
+      ) async {
     isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
       List<AssetPathEntity> albums =
           await PhotoManager.getAssetPathList(onlyAll: true);
 
-      List<AssetEntity> media =
-          await albums[0].getAssetListPaged(size: 15, page: currentPage);
-      // List media = await albums[0].getAssetListRange(start: start, end: end);
-
+      // List<AssetEntity> media =
+      //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
+      List media =
+          await albums[0].getAssetListRange(start: startNum, end: endNum);
       mediaList.value = [];
-      List<Widget> temp = [];
-
+      fileList = [];
+      List<Widget> _temp = [];
       showList.value = [];
 
+      int wrongPicTypeCount = 0;
+
       for (var asset in media) {
-        fileList.add(await asset.file);
-        temp.add(
-          FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done)
-                return Stack(
-                  children: <Widget>[
-                    Positioned.fill(
+        if (asset.type == AssetType.image) {
+          fileList.add(await asset.file);
+          _temp.add(
+            FutureBuilder(
+              future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done)
+                  return Positioned.fill(
+                    child: Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                return Container();
+              },
+            ),
+          );
+        } else {
+          wrongPicTypeCount++;
+        }
+      }
+
+      if (wrongPicTypeCount != 0) {
+        while (_temp.length != 15) {
+          startNum = endNum;
+          endNum += 1;
+          media =
+              await albums[0].getAssetListRange(start: startNum, end: endNum);
+          if (media[0].type == AssetType.image) {
+            fileList.add(await media[0].file);
+
+            _temp.add(
+              FutureBuilder(
+                future: media[0].thumbnailDataWithSize(ThumbnailSize(800, 800)),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done)
+                    return Positioned.fill(
                       child: Image.memory(
                         snapshot.data!,
                         fit: BoxFit.cover,
                       ),
-                    ),
-                    if (asset.type == AssetType.video)
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Stack(
-                          children: [
-                            Icon(
-                              Icons.videocam,
-                              color: Colors.white,
-                            ),
-                            Icon(Icons.close, color: Colors.red),
-                          ],
-                        ),
-                      )
-                  ],
-                );
-              return Container();
-            },
-          ),
-        );
+                    );
+                  return Container();
+                },
+              ),
+            );
+          }
+        }
       }
 
       //設置顯示照片List
-      mediaList.addAll(temp);
+      mediaList.addAll(_temp);
       // print(mediaList);
       //default Pic
-      currPic.add(mediaList[0]);
+      currPic.value = fileList[0].path;
       checkBox = List.generate(mediaList.length, (_) => false.obs);
     } else {}
     isLoading.value = false;
   }
 
-  RxList currPic = [].obs;
+  loadMorePic() async {
+    startNum = endNum;
+    endNum += 15;
+    List<AssetPathEntity> albums =
+        await PhotoManager.getAssetPathList(onlyAll: true);
+
+    // List<AssetEntity> media =
+    //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
+    List media =
+        await albums[0].getAssetListRange(start: startNum, end: endNum);
+
+    List<Widget> _temp = [];
+
+    int wrongPicTypeCount = 0;
+
+    for (var asset in media) {
+      if (asset.type == AssetType.image) {
+        fileList.add(await asset.file);
+        _temp.add(
+          FutureBuilder(
+            future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done)
+                return Positioned.fill(
+                  child: Image.memory(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              return Container();
+            },
+          ),
+        );
+      } else {
+        wrongPicTypeCount++;
+      }
+    }
+
+    if (wrongPicTypeCount != 0) {
+      while (_temp.length % 15 != 0) {
+        startNum = endNum;
+        endNum += 1;
+        media = await albums[0].getAssetListRange(start: startNum, end: endNum);
+        if (media[0].type == AssetType.image) {
+          fileList.add(await media[0].file);
+
+          _temp.add(
+            FutureBuilder(
+              future: media[0].thumbnailDataWithSize(ThumbnailSize(800, 800)),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done)
+                  return Positioned.fill(
+                    child: Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                return Container();
+              },
+            ),
+          );
+        }
+      }
+    }
+
+    //設置顯示照片List
+    mediaList.addAll(_temp);
+    // print(mediaList);
+
+    checkBox = List.generate(mediaList.length, (_) => false.obs);
+  }
+
+  RxString currPic = ''.obs;
   changeCurrPic(int i) {
     //設置目前顯示照片
-    currPic.value = [];
 
-    currPic.add(mediaList[i]);
+    currPic.value = fileList[i].path;
     // print(currPic.value);
     setPicList(i);
   }
@@ -111,6 +213,10 @@ class CreatePostController extends GetxController {
       pickedList.add(tempFile);
       checkBox[i].value = true;
     }
+    print('show');
+    print(showList);
+    print('pick');
+    print(pickedList);
   }
 
   String postTitle = '';
@@ -131,8 +237,7 @@ class CreatePostController extends GetxController {
   goToDataBase() async {
     // reset Data
     checkBox = [];
-    checkBox =
-        List.generate(CreatePostController.mediaList.length, (_) => false.obs);
+    checkBox = List.generate(mediaList.length, (_) => false.obs);
 
     // Post
     var formdata = writePost();
@@ -184,20 +289,6 @@ class CreatePostController extends GetxController {
     selectedMap.value = categoryList['data'][index];
   }
 
-  // RxInt startNum = 0.obs;
-  // RxInt endNum = 9.obs;
-  // setRange(bool move) {
-  //   if (move == true) {
-  //     startNum.value += 9;
-  //     endNum.value += 9;
-  //     fetchMedia(startNum.value, endNum.value);
-  //   } else {
-  //     startNum.value -= 9;
-  //     endNum.value -= 9;
-  //     fetchMedia(startNum.value, endNum.value);
-  //   }
-  // }
-
   Future<void> changePicSize(String path, int index) async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: path,
@@ -233,6 +324,9 @@ class CreatePostController extends GetxController {
       // }
     );
     showList[index] = croppedFile!.path;
+    print('show');
     print(showList);
+    print('pick');
+    print(pickedList);
   }
 }

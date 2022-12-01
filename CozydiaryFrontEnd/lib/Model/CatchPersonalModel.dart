@@ -105,26 +105,26 @@ class UserData {
 
 class Follower {
   Follower({
-    required this.tid,
+    // required this.tid,
     required this.tracker1,
     required this.tracker2,
     required this.trackTime,
   });
 
-  int tid;
+  // int tid;
   String tracker1;
   String tracker2;
   List<int> trackTime;
 
   factory Follower.fromJson(Map<String, dynamic> json) => Follower(
-        tid: json["tid"],
+        // tid: json["tid"],
         tracker1: json["tracker1"],
         tracker2: json["tracker2"],
         trackTime: List<int>.from(json["trackTime"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "tid": tid,
+        // "tid": tid,
         "tracker1": tracker1,
         "tracker2": tracker2,
         "trackTime": List<dynamic>.from(trackTime.map((x) => x)),

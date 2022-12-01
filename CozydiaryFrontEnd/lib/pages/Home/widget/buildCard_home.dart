@@ -94,21 +94,22 @@ class BuildCardHome extends StatelessWidget {
                             padding: EdgeInsets.only(right: 5),
                             child: InkWell(
                               child: CircleAvatar(
-                                radius: 12,
+                                radius: 15,
                                 backgroundImage:
                                     NetworkImage(postCovers[index].pic),
                               ),
                               onTap: () {
-                                Get.to(() =>
-                                    // OtherPersonalPage(
-                                    //         key: UniqueKey(), uid: uid)
-                                    GetBuilder<OtherPersonPageController>(
-                                        init: OtherPersonPageController(
-                                            otherUid: uid),
-                                        builder: (otherPersonPageController) {
-                                          return OtherPersonalPage(
-                                              key: UniqueKey(), uid: uid);
-                                        }));
+                                Get.put(
+                                    OtherPersonPageController(otherUid: uid));
+                                Get.to(() => OtherPersonalPage(
+                                    key: UniqueKey(), uid: uid));
+                                // GetBuilder<OtherPersonPageController>(
+                                //     init: OtherPersonPageController(
+                                //         otherUid: uid),
+                                //     builder: (otherPersonPageController) {
+                                //       return OtherPersonalPage(
+                                //           key: UniqueKey(), uid: uid);
+                                //     }));
                               },
                             )),
                         Column(
@@ -129,7 +130,7 @@ class BuildCardHome extends StatelessWidget {
                     ),
                     LikeButton(
                       likeCount: postCovers[index].likes,
-                      isLiked: false,
+                      isLiked: true,
                       size: 15,
                     )
                   ],

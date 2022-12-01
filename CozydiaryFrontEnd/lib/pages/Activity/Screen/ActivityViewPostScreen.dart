@@ -5,6 +5,7 @@ import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:shimmer/shimmer.dart';
 
 // ignore: must_be_immutable
 class ActivityViewPostScreen extends StatelessWidget {
@@ -75,31 +76,22 @@ class ActivityViewPostScreen extends StatelessWidget {
                               ));
                         },
                         child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Hero(
-                                tag: 'pic',
-                                child: Image.network(
-                                  ActivityPostService.activityDetailList['url']
-                                      [0]!,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                )),
+                          child: Image.network(
+                            ActivityPostService.activityDetailList['url'][0]!,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[350]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  color: Colors.grey[100],
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
