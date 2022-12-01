@@ -11,9 +11,12 @@ class PostService {
 
   static Future<PostDetailModel> getPostDetail(String pid) async {
     var response = await dio.get(Api.ipUrl + Api.getPostDetail + pid);
+
     var data = response.data;
+    print(data);
     var encodeJsonString = jsonEncode(data);
     var fromJsonValue = postDetailModelFromJson(encodeJsonString);
+
     return fromJsonValue;
   }
 

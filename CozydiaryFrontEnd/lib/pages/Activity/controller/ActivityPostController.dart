@@ -32,6 +32,8 @@ class ActivityPostController extends GetxController {
   RxInt selectActType = 1.obs;
   RxInt selectActPayment = 1.obs;
 
+  RxBool checkActivitySetting = false.obs;
+
   selectActPaymentPuls(value) {
     if (selectActPayment.value != actPayment.length) {
       selectActPayment.value = selectActPayment.value + 1;

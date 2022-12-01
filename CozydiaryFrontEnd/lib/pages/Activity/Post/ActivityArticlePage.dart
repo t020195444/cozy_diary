@@ -27,379 +27,405 @@ class ActivityArticlePage extends StatelessWidget {
 
     //輸入活動時間
     Widget ActivityTime() {
-      return ListTile(
-        title: Text(
-          "選擇活動時間",
-          style: TextStyle(
-            fontSize: 14,
+      return Obx(
+        () => ListTile(
+          tileColor: postController.activityTime.value != '' &&
+                  postController.activityDeadlineTime.value != ''
+              ? Colors.green
+              : Color(0xffb00020),
+          title: Text(
+            "選擇活動時間",
+            style: TextStyle(
+              fontSize: 14,
+            ),
           ),
-        ),
-        dense: true,
-        trailing: const Icon(
-          Icons.keyboard_arrow_right_outlined,
-        ),
-        shape: RoundedRectangleBorder(
-            side:
-                const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
-            borderRadius: BorderRadius.circular(30)),
-        onTap: () async {
-          showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Container(
-                        height: 200,
-                        child: Center(
-                            child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Expanded(
-                              child: Center(
-                                child: Container(
-                                    child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(child: Text("活動時間")),
-                                    Container(
-                                        padding: EdgeInsets.only(top: 20),
-                                        child: Text("活動審核時間時間")),
-                                  ],
-                                )),
+          dense: true,
+          trailing: const Icon(
+            Icons.keyboard_arrow_right_outlined,
+          ),
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(
+                  color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              borderRadius: BorderRadius.circular(30)),
+          onTap: () async {
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) => Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Container(
+                          height: 200,
+                          child: Center(
+                              child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Expanded(
+                                child: Center(
+                                  child: Container(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(child: Text("活動時間")),
+                                      Container(
+                                          padding: EdgeInsets.only(top: 20),
+                                          child: Text("活動審核時間時間")),
+                                    ],
+                                  )),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Container(
-                                    child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      width: 180,
-                                      height: 30,
-                                      child: Obx(() => OutlinedButton(
-                                            child: Text(postController
-                                                .activityTimeview.value),
-                                            onPressed: () async {
-                                              DateTime? newDateTime =
-                                                  await DatePicker
-                                                      .showDateTimePicker(
-                                                          context,
-                                                          showTitleActions:
-                                                              true,
-                                                          minTime:
-                                                              DateTime.now(),
-                                                          maxTime: DateTime(
-                                                              2023,
-                                                              12,
-                                                              31,
-                                                              00,
-                                                              00),
-                                                          currentTime:
-                                                              DateTime.now(),
-                                                          locale:
-                                                              LocaleType.en);
-                                              if (newDateTime == null) return;
+                              Expanded(
+                                child: Center(
+                                  child: Container(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SizedBox(
+                                        width: 180,
+                                        height: 30,
+                                        child: Obx(() => OutlinedButton(
+                                              child: Text(postController
+                                                  .activityTimeview.value),
+                                              onPressed: () async {
+                                                DateTime?
+                                                    newDateTime =
+                                                    await DatePicker
+                                                        .showDateTimePicker(
+                                                            context,
+                                                            showTitleActions:
+                                                                true,
+                                                            minTime:
+                                                                DateTime.now(),
+                                                            maxTime:
+                                                                DateTime(
+                                                                    2023,
+                                                                    12,
+                                                                    31,
+                                                                    00,
+                                                                    00),
+                                                            currentTime:
+                                                                DateTime.now(),
+                                                            locale:
+                                                                LocaleType.en);
+                                                if (newDateTime == null) return;
 
-                                              postController.activityTime
-                                                  .value = DateFormat(
-                                                      'yyyy-MM-ddTHH:mm:ss.000')
-                                                  .format(newDateTime);
-                                              String formattedDate = DateFormat(
-                                                      'yyyy-MM-dd – HH:mm')
-                                                  .format(newDateTime);
-                                              postController
-                                                      .activityTimeview.value =
-                                                  formattedDate.toString();
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              fixedSize: Size(195, 25),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(15)),
+                                                postController.activityTime
+                                                    .value = DateFormat(
+                                                        'yyyy-MM-ddTHH:mm:ss.000')
+                                                    .format(newDateTime);
+                                                String formattedDate =
+                                                    DateFormat(
+                                                            'yyyy-MM-dd – HH:mm')
+                                                        .format(newDateTime);
+                                                postController.activityTimeview
+                                                        .value =
+                                                    formattedDate.toString();
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                fixedSize: Size(195, 25),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(15)),
+                                                ),
+                                                side: BorderSide(
+                                                    width: 1,
+                                                    color: Colors.black54),
                                               ),
-                                              side: BorderSide(
-                                                  width: 1,
-                                                  color: Colors.black54),
-                                            ),
-                                          )),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 20),
-                                      width: 180,
-                                      height: 30,
-                                      child: Obx(() => OutlinedButton(
-                                            child: Text(postController
-                                                .activityDeadlineTimeview
-                                                .value),
-                                            onPressed: () async {
-                                              DateTime? newDateTime =
-                                                  await DatePicker
-                                                      .showDateTimePicker(
-                                                          context,
-                                                          showTitleActions:
-                                                              true,
-                                                          minTime:
-                                                              DateTime.now(),
-                                                          maxTime: DateTime(
-                                                              2023,
-                                                              12,
-                                                              31,
-                                                              00,
-                                                              00),
-                                                          onChanged: (date) {},
-                                                          currentTime:
-                                                              DateTime.now(),
-                                                          locale:
-                                                              LocaleType.en);
-                                              if (newDateTime == null) return;
-                                              postController
-                                                  .activityDeadlineTime
-                                                  .value = DateFormat(
-                                                      'yyyy-MM-ddTHH:mm:ss.000')
-                                                  .format(newDateTime);
-                                              String formattedDate = DateFormat(
-                                                      'yyyy-MM-dd - HH:mm')
-                                                  .format(newDateTime);
-                                              postController
-                                                      .activityDeadlineTimeview
-                                                      .value =
-                                                  formattedDate.toString();
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              fixedSize: Size(195, 25),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(15)),
+                                            )),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 20),
+                                        width: 180,
+                                        height: 30,
+                                        child: Obx(() => OutlinedButton(
+                                              child: Text(postController
+                                                  .activityDeadlineTimeview
+                                                  .value),
+                                              onPressed: () async {
+                                                DateTime? newDateTime =
+                                                    await DatePicker
+                                                        .showDateTimePicker(
+                                                            context,
+                                                            showTitleActions:
+                                                                true,
+                                                            minTime:
+                                                                DateTime.now(),
+                                                            maxTime:
+                                                                DateTime(
+                                                                    2023,
+                                                                    12,
+                                                                    31,
+                                                                    00,
+                                                                    00),
+                                                            onChanged:
+                                                                (date) {},
+                                                            currentTime:
+                                                                DateTime.now(),
+                                                            locale:
+                                                                LocaleType.en);
+                                                if (newDateTime == null) return;
+                                                postController
+                                                    .activityDeadlineTime
+                                                    .value = DateFormat(
+                                                        'yyyy-MM-ddTHH:mm:ss.000')
+                                                    .format(newDateTime);
+                                                String formattedDate =
+                                                    DateFormat(
+                                                            'yyyy-MM-dd - HH:mm')
+                                                        .format(newDateTime);
+                                                postController
+                                                        .activityDeadlineTimeview
+                                                        .value =
+                                                    formattedDate.toString();
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                fixedSize: Size(195, 25),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(15)),
+                                                ),
+                                                side: BorderSide(
+                                                    width: 1,
+                                                    color: Colors.black54),
                                               ),
-                                              side: BorderSide(
-                                                  width: 1,
-                                                  color: Colors.black54),
-                                            ),
-                                          )),
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            )
-                          ],
-                        ))),
-                  ));
-        },
+                                            )),
+                                      ),
+                                    ],
+                                  )),
+                                ),
+                              )
+                            ],
+                          ))),
+                    ));
+          },
+        ),
       );
     }
 
     //輸入活動設定
     Widget ActivitySetting() {
-      return ListTile(
-        title: Text(
-          "詳細活動設定",
-          style: TextStyle(
-            fontSize: 14,
+      return Obx(
+        () => ListTile(
+          tileColor: postController.checkActivitySetting.value == true
+              ? Colors.green
+              : null,
+          title: Text(
+            "詳細活動設定",
+            style: TextStyle(
+              fontSize: 14,
+            ),
           ),
-        ),
-        dense: true,
-        trailing: const Icon(
-          Icons.keyboard_arrow_right_outlined,
-        ),
-        shape: RoundedRectangleBorder(
-            side:
-                const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
-            borderRadius: BorderRadius.circular(30)),
-        onTap: () async {
-          showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) => Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Container(
-                        height: 200,
-                        child: Center(
-                            child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Expanded(
-                              child: Center(
-                                child: Container(
-                                    child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(child: Text("活動人數")),
-                                    Container(
-                                        padding: EdgeInsets.only(top: 20),
-                                        child: Text("活動類型")),
-                                    Container(
-                                        padding: EdgeInsets.only(top: 20),
-                                        child: Text("活動付費方式")),
-                                    Container(
-                                        padding: EdgeInsets.only(top: 20),
-                                        child: Text("活動費用")),
-                                  ],
-                                )),
+          dense: true,
+          trailing: const Icon(
+            Icons.keyboard_arrow_right_outlined,
+          ),
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(
+                  color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              borderRadius: BorderRadius.circular(30)),
+          onTap: () async {
+            postController.checkActivitySetting.value = true;
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) => Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Container(
+                          height: 200,
+                          child: Center(
+                              child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Expanded(
+                                child: Center(
+                                  child: Container(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(child: Text("活動人數")),
+                                      Container(
+                                          padding: EdgeInsets.only(top: 20),
+                                          child: Text("活動類型")),
+                                      Container(
+                                          padding: EdgeInsets.only(top: 20),
+                                          child: Text("活動付費方式")),
+                                      Container(
+                                          padding: EdgeInsets.only(top: 20),
+                                          child: Text("活動費用")),
+                                    ],
+                                  )),
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Container(
-                                    child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    //活動人數
-                                    Container(
-                                        width: 100,
-                                        height: 25,
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (_) => SizedBox(
-                                                      width: double.infinity,
-                                                      height: 200,
-                                                      child: CupertinoPicker(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        itemExtent: 30,
-                                                        scrollController:
-                                                            FixedExtentScrollController(
-                                                          initialItem: 0,
+                              Expanded(
+                                child: Center(
+                                  child: Container(
+                                      child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      //活動人數
+                                      Container(
+                                          width: 100,
+                                          height: 25,
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              showCupertinoModalPopup(
+                                                  context: context,
+                                                  builder: (_) => SizedBox(
+                                                        width: double.infinity,
+                                                        height: 200,
+                                                        child: CupertinoPicker(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          itemExtent: 30,
+                                                          scrollController:
+                                                              FixedExtentScrollController(
+                                                            initialItem: 0,
+                                                          ),
+                                                          onSelectedItemChanged:
+                                                              (int value) {
+                                                            postController
+                                                                .activityPeople
+                                                                .value = value + 1;
+                                                          },
+                                                          children: peopleList,
                                                         ),
-                                                        onSelectedItemChanged:
-                                                            (int value) {
-                                                          postController
-                                                              .activityPeople
-                                                              .value = value + 1;
-                                                        },
-                                                        children: peopleList,
-                                                      ),
-                                                    ));
-                                          },
-                                          child: Obx(
-                                            () => Text(
-                                              postController
-                                                  .activityPeople.value
-                                                  .toString(),
-                                            ),
-                                          ),
-                                        )),
-                                    //活動類別
-                                    Obx((() => Container(
-                                        margin: EdgeInsets.only(top: 15),
-                                        padding: EdgeInsets.only(left: 60),
-                                        child: Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () => postController
-                                                  .selectActTypeSubtractions(
-                                                      postController.actId),
-                                              child: Icon(
-                                                Icons.arrow_left,
-                                                size: 24.0,
-                                              ),
-                                            ),
-                                            Text(postController.actType[
+                                                      ));
+                                            },
+                                            child: Obx(
+                                              () => Text(
                                                 postController
-                                                    .selectActType.value]),
-                                            InkWell(
-                                              onTap: () => postController
-                                                  .selectActTypePuls(
-                                                      postController.actId),
-                                              child: Icon(
-                                                Icons.arrow_right,
-                                                size: 24.0,
+                                                    .activityPeople.value
+                                                    .toString(),
                                               ),
                                             ),
-                                          ],
-                                        )))),
-                                    //活動支付方式
-                                    Obx(
-                                      () => Container(
-                                          margin: EdgeInsets.only(top: 20),
-                                          padding: EdgeInsets.only(left: 45),
+                                          )),
+                                      //活動類別
+                                      Obx((() => Container(
+                                          margin: EdgeInsets.only(top: 15),
+                                          padding: EdgeInsets.only(left: 60),
                                           child: Row(
                                             children: [
                                               InkWell(
                                                 onTap: () => postController
-                                                    .selectActPaymentSubtractions(
-                                                        postController
-                                                            .actPayment),
+                                                    .selectActTypeSubtractions(
+                                                        postController.actId),
                                                 child: Icon(
                                                   Icons.arrow_left,
                                                   size: 24.0,
                                                 ),
                                               ),
-                                              Text(postController.actPayment[
+                                              Text(postController.actType[
                                                   postController
-                                                      .selectActPayment]),
+                                                      .selectActType.value]),
                                               InkWell(
                                                 onTap: () => postController
-                                                    .selectActPaymentPuls(
-                                                        postController
-                                                            .actPayment),
+                                                    .selectActTypePuls(
+                                                        postController.actId),
                                                 child: Icon(
                                                   Icons.arrow_right,
                                                   size: 24.0,
                                                 ),
                                               ),
                                             ],
-                                          )),
-                                    ),
-
-                                    //活動預算
-                                    Container(
-                                        margin: EdgeInsets.only(top: 20),
-                                        width: 100,
-                                        height: 25,
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (_) => SizedBox(
-                                                      width: double.infinity,
-                                                      height: 200,
-                                                      child: CupertinoPicker(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        itemExtent: 30,
-                                                        scrollController:
-                                                            FixedExtentScrollController(
-                                                          initialItem: 0,
-                                                        ),
-                                                        onSelectedItemChanged:
-                                                            (int value) {
+                                          )))),
+                                      //活動支付方式
+                                      Obx(
+                                        () => Container(
+                                            margin: EdgeInsets.only(top: 20),
+                                            padding: EdgeInsets.only(left: 45),
+                                            child: Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () => postController
+                                                      .selectActPaymentSubtractions(
                                                           postController
-                                                              .activitybudget
-                                                              .value = (value +
-                                                                  1) *
-                                                              50;
-                                                        },
-                                                        children: priceList,
-                                                      ),
-                                                    ));
-                                          },
-                                          child: Obx(
-                                            () => Text(
-                                              postController
-                                                  .activitybudget.value
-                                                  .toString(),
+                                                              .actPayment),
+                                                  child: Icon(
+                                                    Icons.arrow_left,
+                                                    size: 24.0,
+                                                  ),
+                                                ),
+                                                Text(postController.actPayment[
+                                                    postController
+                                                        .selectActPayment]),
+                                                InkWell(
+                                                  onTap: () => postController
+                                                      .selectActPaymentPuls(
+                                                          postController
+                                                              .actPayment),
+                                                  child: Icon(
+                                                    Icons.arrow_right,
+                                                    size: 24.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                      ),
+
+                                      //活動預算
+                                      Container(
+                                          margin: EdgeInsets.only(top: 20),
+                                          width: 100,
+                                          height: 25,
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              showCupertinoModalPopup(
+                                                  context: context,
+                                                  builder: (_) => SizedBox(
+                                                        width: double.infinity,
+                                                        height: 200,
+                                                        child: CupertinoPicker(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          itemExtent: 30,
+                                                          scrollController:
+                                                              FixedExtentScrollController(
+                                                            initialItem: 0,
+                                                          ),
+                                                          onSelectedItemChanged:
+                                                              (int value) {
+                                                            postController
+                                                                .activitybudget
+                                                                .value = (value +
+                                                                    1) *
+                                                                50;
+                                                          },
+                                                          children: priceList,
+                                                        ),
+                                                      ));
+                                            },
+                                            child: Obx(
+                                              () => Text(
+                                                postController
+                                                    .activitybudget.value
+                                                    .toString(),
+                                              ),
                                             ),
-                                          ),
-                                        )),
-                                  ],
-                                )),
-                              ),
-                            )
-                          ],
-                        ))),
-                  ));
-        },
+                                          )),
+                                    ],
+                                  )),
+                                ),
+                              )
+                            ],
+                          ))),
+                    ));
+          },
+        ),
       );
     }
 
     //活動地點
     Widget ActivityLocation() {
-      return ListTile(
+      return
+          // Obx(
+          //   () =>
+          ListTile(
+        tileColor: postController.activityLocation.value != ''
+            ? Colors.green
+            : Color(0xffb00020),
         title: postController.activityLocation.value == ""
             ? Text(
                 "選擇活動地點",
@@ -425,6 +451,7 @@ class ActivityArticlePage extends StatelessWidget {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => SearchScreen()));
         },
+        // ),
       );
     }
 
@@ -440,6 +467,7 @@ class ActivityArticlePage extends StatelessWidget {
               Get.back();
             },
           ),
+          title: Text('最後一步'),
           actions: [
             TextButton(
                 onPressed: () async {
@@ -447,7 +475,7 @@ class ActivityArticlePage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                             backgroundColor: Theme.of(context).backgroundColor,
-                            title: const Text('發文中...'),
+                            title: const Text('發布中...'),
                             content: Container(
                                 height: 150,
                                 width: 30,
@@ -470,38 +498,22 @@ class ActivityArticlePage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                  margin: const EdgeInsets.only(top: 20, bottom: 20),
-                  height: 100,
-                  width: 100,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Get.to(_viewPostPic());
-                    },
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Hero(
-                            tag: 'pic',
-                            child: Image.file(
-                              ActivityPostController.pickedList[0],
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                    ),
-                  )),
-              Container(
-                height: 60,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 20),
-                  child: TextField(
-                    onChanged: (value) {
-                      postController.activityTitle.value = value;
-                    },
-                    controller: titleCtr,
-                    maxLines: 1,
-                    maxLength: 15,
-                    decoration: InputDecoration(
-                      hintText: '請輸入活動名稱...',
+                margin: const EdgeInsets.only(top: 20, bottom: 20),
+                height: 100,
+                width: 100,
+                child: GestureDetector(
+                  onTap: () {
+                    // Get.to(_viewPostPic());
+                  },
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Hero(
+                          tag: 'pic',
+                          child: Image.file(
+                            ActivityPostController.pickedList[0],
+                            fit: BoxFit.cover,
+                          )),
                     ),
                   ),
                 ),

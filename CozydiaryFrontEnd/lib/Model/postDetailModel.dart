@@ -191,7 +191,7 @@ class LikeList {
 
   factory LikeList.fromJson(Map<String, dynamic> json) => LikeList(
       pid: json["pid"],
-      uid: json["uid"],
+      uid: json["uid"].toString(),
       like_time: json["like_time"],
       type: json['type']);
 

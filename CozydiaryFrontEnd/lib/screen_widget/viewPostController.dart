@@ -47,7 +47,6 @@ class ViewPostController extends GetxController {
   getPostDetail() async {
     try {
       PostDetailModel data = await PostService.getPostDetail(currViewPostID);
-
       if (data.status == 200) {
         if (data != null) {
           currViewPostDetial.value = data.data;
@@ -96,7 +95,6 @@ class ViewPostController extends GetxController {
     var commentJson = {};
     commentJson = {'text': comment, 'uid': uid, 'commentId': cid};
     tempCid = '';
-    print(commentJson);
     await postAdditionCommentData(commentJson);
     await getPostDetail();
   }
