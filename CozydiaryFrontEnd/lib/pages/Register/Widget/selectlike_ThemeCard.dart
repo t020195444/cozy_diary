@@ -7,12 +7,14 @@ class SelectLike_ThemeCard extends StatelessWidget {
   const SelectLike_ThemeCard({
     Key? key,
     required this.index,
+    required this.registState,
   }) : super(key: key);
   final int index;
+  final bool registState;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CategoryController>(
-        init: CategoryController(),
+        init: CategoryController(registState: registState),
         builder: (controller) {
           return InkWell(
             child: Container(

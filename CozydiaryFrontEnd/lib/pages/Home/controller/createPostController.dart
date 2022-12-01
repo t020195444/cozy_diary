@@ -18,16 +18,20 @@ class CreatePostController extends GetxController {
   int currentPage = 0;
   RxBool isPicked = false.obs;
 
-  static late List<RxBool> checkBox =
+  late List<RxBool> checkBox =
       List.generate(mediaList.length, (_) => false.obs);
 
   //function
 
-  static List fileList = [].obs;
-  static List showList = [].obs;
-  static RxList mediaList = [].obs;
+  List fileList = [].obs;
+  List showList = [].obs;
+  RxList mediaList = [].obs;
   RxBool isLoading = false.obs;
-  fetchMedia(
+  List pickedList = [];
+  RxList currPic = [].obs;
+  Map categoryList = {}.obs;
+  RxMap selectedMap = {}.obs;
+  void fetchMedia(
       // int start, int end
       ) async {
     isLoading(true);
@@ -37,7 +41,7 @@ class CreatePostController extends GetxController {
           await PhotoManager.getAssetPathList(onlyAll: true);
 
       List<AssetEntity> media =
-          await albums[0].getAssetListPaged(size: 15, page: currentPage);
+          await albums[0].getAssetListPaged(size: 100, page: currentPage);
       // List media = await albums[0].getAssetListRange(start: start, end: end);
 
       mediaList.value = [];
@@ -91,8 +95,7 @@ class CreatePostController extends GetxController {
     isLoading.value = false;
   }
 
-  RxList currPic = [].obs;
-  changeCurrPic(int i) {
+  void changeCurrPic(int i) {
     //設置目前顯示照片
     currPic.value = [];
 
@@ -101,8 +104,7 @@ class CreatePostController extends GetxController {
     setPicList(i);
   }
 
-  static List pickedList = [];
-  setPicList(int i) {
+  void setPicList(int i) {
     File tempFile = fileList[i];
     if (pickedList.contains(tempFile)) {
       pickedList.remove(tempFile);
@@ -134,8 +136,7 @@ class CreatePostController extends GetxController {
   goToDataBase() async {
     // reset Data
     checkBox = [];
-    checkBox =
-        List.generate(CreatePostController.mediaList.length, (_) => false.obs);
+    checkBox = List.generate(mediaList.length, (_) => false.obs);
 
     // Post
     var formdata = writePost();
@@ -175,15 +176,13 @@ class CreatePostController extends GetxController {
     return formData;
   }
 
-  static Map categoryList = {}.obs;
-  getList() async {
+  void getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
     // print(categoryList);
   }
 
-  RxMap selectedMap = {}.obs;
-  selectCategory(int index) {
+  void selectCategory(int index) {
     selectedMap.value = categoryList['data'][index];
   }
 

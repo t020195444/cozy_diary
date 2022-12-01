@@ -34,7 +34,7 @@ class SelfPageController extends GetxController {
   @override
   void onInit() {
     uid = box.get("uid");
-
+    print(uid);
     getUserData();
     getUserPostCover(uid);
     getCollectedPostCover(uid);

@@ -34,7 +34,7 @@ class OtherPersonPageController extends GetxController {
       .obs;
   var postCover = <PostCoverData>[].obs;
   var trackerList = <TrackerList>[];
-  int tid = -1;
+  // int tid = -1;
 
   @override
   void onInit() {
@@ -51,12 +51,13 @@ class OtherPersonPageController extends GetxController {
       if (UserData != null) {
         if (UserData.status == 200) {
           userData.value = UserData.data;
+          print(userData.value.pic);
           if (userData.value.follower.isEmpty) {
             isFollow(false);
           } else {
             for (Follower follower in userData.value.follower) {
               if (follower.tracker1 == userUid) {
-                tid = follower.tid;
+                // tid = follower.tid;
                 isFollow.value = true;
                 break;
               } else {

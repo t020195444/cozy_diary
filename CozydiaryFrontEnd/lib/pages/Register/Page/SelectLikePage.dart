@@ -6,12 +6,13 @@ import 'package:get/get.dart';
 import '../Widget/selectlike_ThemeCard.dart';
 
 class SelectLikePage extends StatelessWidget {
-  const SelectLikePage({Key? key, required this.state}) : super(key: key);
-  final int state;
+  const SelectLikePage({Key? key, required this.isRegiststate})
+      : super(key: key);
+  final bool isRegiststate;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CategoryController>(
-        init: CategoryController(),
+        init: CategoryController(registState: isRegiststate),
         builder: (categoryController) {
           return Scaffold(
             // backgroundColor: Color.fromRGBO(234, 230, 228, 1),
@@ -63,6 +64,7 @@ class SelectLikePage extends StatelessWidget {
                     itemCount: categoryController.categoryList.length,
                     itemBuilder: (context, index) {
                       return SelectLike_ThemeCard(
+                        registState: isRegiststate,
                         index: index,
                       );
                     },
@@ -81,7 +83,7 @@ class SelectLikePage extends StatelessWidget {
                   int status = await categoryController.addUserCategory();
                   print(status);
                   if (status == 200) {
-                    if (categoryController.currentState[state] == "登入") {
+                    if (categoryController.registState) {
                       Get.back();
                       Get.showSnackbar(GetSnackBar(
                         title: "通知",
@@ -92,7 +94,7 @@ class SelectLikePage extends StatelessWidget {
                         message: "修改類別成功",
                         duration: const Duration(seconds: 3),
                       ));
-                    } else if (categoryController.currentState[state] == "註冊") {
+                    } else {
                       Get.offAll(HomePageTabbar());
                     }
                   }

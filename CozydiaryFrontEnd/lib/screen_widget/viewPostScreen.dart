@@ -248,7 +248,7 @@ class ViewPostScreen extends StatelessWidget {
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;
                             return Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
+                              baseColor: Colors.grey[350]!,
                               highlightColor: Colors.grey[100]!,
                               child: Container(
                                 color: Colors.grey[100],
@@ -269,6 +269,7 @@ class ViewPostScreen extends StatelessWidget {
                         height: 50,
                         child: Wrap(
                           direction: Axis.vertical,
+                          alignment: WrapAlignment.center,
                           children: [
                             Obx(
                               () => LikeButton(
@@ -287,7 +288,7 @@ class ViewPostScreen extends StatelessWidget {
                                     ? Icon(
                                         Icons.bookmark_outlined,
                                         color:
-                                            Theme.of(context).primaryColorLight,
+                                            ThemeData.dark().primaryColorLight,
                                       )
                                     : Icon(Icons.bookmark_border_rounded);
                               },

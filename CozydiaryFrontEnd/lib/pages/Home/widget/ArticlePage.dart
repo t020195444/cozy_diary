@@ -84,14 +84,14 @@ class ArticlePage extends StatelessWidget {
                     padding: const EdgeInsets.all(20.0),
                     child: GestureDetector(
                       onTap: () {
-                        print(CreatePostController.showList);
+                        print(_createPostController.showList);
                         Get.to(_showPicPage());
                       },
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
-                        child: CreatePostController.showList[0],
+                        child: _createPostController.showList[0],
                       ),
                     ),
                   )),
@@ -124,7 +124,8 @@ class ArticlePage extends StatelessWidget {
                 flex: 1,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: CreatePostController.categoryList['data'].length,
+                    itemCount:
+                        _createPostController.categoryList['data'].length,
                     itemBuilder: ((context, index) {
                       return Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -139,7 +140,7 @@ class ArticlePage extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0)),
-                                      backgroundColor: CreatePostController
+                                      backgroundColor: _createPostController
                                                       .categoryList['data']
                                                   [index] ==
                                               _createPostController
@@ -148,7 +149,7 @@ class ArticlePage extends StatelessWidget {
                                           : Theme.of(context)
                                               .primaryColorLight),
                                   child: Text(
-                                    CreatePostController.categoryList['data']
+                                    _createPostController.categoryList['data']
                                         [index]['category'],
                                     style: TextStyle(fontSize: 20),
                                   ),
@@ -165,7 +166,8 @@ class ArticlePage extends StatelessWidget {
 }
 
 class _showPicPage extends StatelessWidget {
-  const _showPicPage({Key? key}) : super(key: key);
+  _showPicPage({Key? key}) : super(key: key);
+  final _createPostController = Get.put(CreatePostController());
 
   @override
   Widget build(BuildContext context) {
@@ -183,10 +185,10 @@ class _showPicPage extends StatelessWidget {
                 height: 50,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
-                    child: CreatePostController.showList[index]),
+                    child: _createPostController.showList[index]),
               );
             },
-            itemCount: CreatePostController.showList.length),
+            itemCount: _createPostController.showList.length),
       ),
     );
   }

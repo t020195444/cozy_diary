@@ -28,7 +28,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
           actions: [
             TextButton(
                 onPressed: () {
-                  if (CreatePostController.pickedList.isEmpty) {
+                  if (_createPostController.pickedList.isEmpty) {
                     Fluttertoast.showToast(
                         msg: '沒選照片',
                         toastLength: Toast.LENGTH_SHORT,
@@ -71,7 +71,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                         child: CircularProgressIndicator(),
                       )
                     : GridView.builder(
-                        itemCount: CreatePostController.mediaList.length,
+                        itemCount: _createPostController.mediaList.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3),
                         itemBuilder: (BuildContext context, int i) {
@@ -84,7 +84,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                                 child: Stack(
                                   children: [
                                     Container(
-                                      child: CreatePostController.mediaList[i],
+                                      child: _createPostController.mediaList[i],
                                     ),
                                     Align(
                                       alignment: Alignment.topRight,
@@ -99,7 +99,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(20)),
                                           ),
-                                          child: CreatePostController
+                                          child: _createPostController
                                                       .checkBox[i] ==
                                                   true
                                               ? Icon(Icons.check_circle,
