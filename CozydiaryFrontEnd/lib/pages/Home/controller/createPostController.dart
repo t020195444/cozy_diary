@@ -311,7 +311,7 @@ class CreatePostController extends GetxController {
   Future<void> changePicSize(String path, int index) async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: path,
-      aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
+      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 3.05),
       maxHeight: 600,
 
       uiSettings: [

@@ -64,7 +64,7 @@ class PickPhotoPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.3,
+                      height: MediaQuery.of(context).size.width * 1.05,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,

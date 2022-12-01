@@ -83,11 +83,11 @@ class ArticlePage extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Container(
-            height: MediaQuery.of(context).size.height,
+            // height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.width * 1.05,
                   child: _showPicPage(),
                 ),
                 // Padding(
@@ -195,30 +195,30 @@ class _showPicPage extends StatelessWidget {
       child: PageView.builder(
         itemCount: _createPostController.showList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Obx(() => Scaffold(
-                body: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        _createPostController.changePicSize(
-                            _createPostController.showList[index], index);
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 800,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                                _createPostController.showList[index]),
-                          ),
-                        ),
+          return Obx(
+            () => Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    _createPostController.changePicSize(
+                        _createPostController.showList[index], index);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width * 1.05,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image:
+                            AssetImage(_createPostController.showList[index]),
                       ),
                     ),
                   ),
                 ),
-              ));
+              ),
+            ),
+          );
         },
       ),
     );
