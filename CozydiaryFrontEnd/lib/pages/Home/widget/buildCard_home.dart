@@ -130,7 +130,7 @@ class BuildCardHome extends StatelessWidget {
                     ),
                     LikeButton(
                       likeCount: postCovers[index].likes,
-                      isLiked: false,
+                      isLiked: true,
                       size: 15,
                     )
                   ],

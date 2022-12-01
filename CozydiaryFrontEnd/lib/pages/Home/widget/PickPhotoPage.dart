@@ -1,25 +1,26 @@
+import 'dart:io';
+
+import 'package:cozydiary/pages/Home/widget/ArticlePage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/createPostController.dart';
-import 'ArticlePage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class PickPhotoPage extends StatefulWidget {
-  @override
-  State<PickPhotoPage> createState() => _PickPhotoPageState();
-}
+class PickPhotoPage extends StatelessWidget {
+  const PickPhotoPage({Key? key}) : super(key: key);
 
-class _PickPhotoPageState extends State<PickPhotoPage> {
   @override
   Widget build(BuildContext context) {
     //Controller
     final _createPostController = Get.put(CreatePostController());
+    final _refreshController = RefreshController(initialRefresh: false);
 
-    //initState
-    // _createPostController.fetchMedia(_createPostController.startNum.value,
-    //     _createPostController.endNum.value);
-    _createPostController.fetchMedia();
-    _createPostController.getList();
+    void _load() async {
+      await _createPostController.loadMorePic();
+
+      _refreshController.loadComplete();
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -28,7 +29,10 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
           actions: [
             TextButton(
                 onPressed: () {
-                  if (_createPostController.pickedList.isEmpty) {
+                  _createPostController.showList.value = [];
+                  _createPostController.showList.value =
+                      _createPostController.pickedList;
+                  if (_createPostController.showList.isEmpty) {
                     Fluttertoast.showToast(
                         msg: '沒選照片',
                         toastLength: Toast.LENGTH_SHORT,
@@ -37,6 +41,7 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                         fontSize: 16.0);
                   } else {
                     Get.to(() => ArticlePage());
+                    // Get.to(() => ArticlePage());
                   }
                 },
                 child: Padding(
@@ -50,18 +55,17 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
         ),
         body: Column(
           children: [
-            Expanded(
-              flex: 4,
-              child: Obx(
-                () => Container(
-                    child: _createPostController.isPicked == true
-                        ? _createPostController.currPic[0]
-                        : Container(
-                            child: Center(
-                              child: Text('選擇一張照片吧！'),
-                            ),
-                          )),
-              ),
+            Obx(
+              () => Container(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: _createPostController.currPic.isEmpty
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Image.asset(
+                          _createPostController.currPic.value,
+                          fit: BoxFit.cover,
+                        )),
             ),
             Obx(
               () => Expanded(
@@ -70,48 +74,66 @@ class _PickPhotoPageState extends State<PickPhotoPage> {
                     ? Center(
                         child: CircularProgressIndicator(),
                       )
-                    : GridView.builder(
-                        itemCount: _createPostController.mediaList.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                        itemBuilder: (BuildContext context, int i) {
-                          return Obx(
-                            () => GestureDetector(
-                                onTap: () {
-                                  _createPostController.isPicked.value = true;
-                                  _createPostController.changeCurrPic(i);
-                                },
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      child: _createPostController.mediaList[i],
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: 25,
-                                          width: 25,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Color.fromARGB(129, 68, 68, 68),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
+                    : Scrollbar(
+                        child: SmartRefresher(
+                          header: WaterDropHeader(),
+                          controller: _refreshController,
+                          enablePullDown: false,
+                          enablePullUp: true,
+                          onLoading: _load,
+                          child: GridView.builder(
+                              itemCount: _createPostController.mediaList.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
+                              itemBuilder: (BuildContext context, int i) {
+                                return Obx(
+                                  () => GestureDetector(
+                                      onTap: () {
+                                        _createPostController.isPicked.value =
+                                            true;
+                                        _createPostController.changeCurrPic(i);
+                                      },
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            child: _createPostController
+                                                .mediaList[i],
                                           ),
-                                          child: _createPostController
-                                                      .checkBox[i] ==
-                                                  true
-                                              ? Icon(Icons.check_circle,
-                                                  color: Colors.blue)
-                                              : null,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          );
-                        }),
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                height: 25,
+                                                width: 25,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      129, 68, 68, 68),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20)),
+                                                ),
+                                                child: _createPostController
+                                                            .checkBox[i]
+                                                            .value ==
+                                                        true
+                                                    ? Icon(
+                                                        Icons.check_circle,
+                                                        color: Color.fromARGB(
+                                                            147, 26, 26, 26),
+                                                      )
+                                                    : null,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                );
+                              }),
+                        ),
+                      ),
               ),
             ),
             // Obx(
