@@ -8,7 +8,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 var peopleList = [for (var i = 1; i <= 30; i++) Text(i.toString())];
-var priceList = [for (var i = 1; i <= 50; i++) Text((i * 50).toString())];
+var priceList = [for (var i = 0; i <= 50; i++) Text((i * 50).toString())];
 
 class ActivityArticlePage extends StatelessWidget {
   const ActivityArticlePage({Key? key}) : super(key: key);
@@ -29,10 +29,10 @@ class ActivityArticlePage extends StatelessWidget {
     Widget ActivityTime() {
       return Obx(
         () => ListTile(
-          tileColor: postController.activityTime.value != '' &&
-                  postController.activityDeadlineTime.value != ''
-              ? Colors.green
-              : Color(0xffb00020),
+          // tileColor: postController.activityTime.value != '' &&
+          //         postController.activityDeadlineTime.value != ''
+          //     ? Colors.green
+          //     : Color.fromARGB(255, 237, 187, 196),
           title: Text(
             "選擇活動時間",
             style: TextStyle(
@@ -44,8 +44,12 @@ class ActivityArticlePage extends StatelessWidget {
             Icons.keyboard_arrow_right_outlined,
           ),
           shape: RoundedRectangleBorder(
-              side: const BorderSide(
-                  color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              side: BorderSide(
+                  color: postController.activityTime.value != '' &&
+                          postController.activityDeadlineTime.value != ''
+                      ? Colors.green
+                      : Color.fromARGB(255, 237, 187, 196),
+                  width: 2),
               borderRadius: BorderRadius.circular(30)),
           onTap: () async {
             showModalBottomSheet(
@@ -208,9 +212,6 @@ class ActivityArticlePage extends StatelessWidget {
     Widget ActivitySetting() {
       return Obx(
         () => ListTile(
-          tileColor: postController.checkActivitySetting.value == true
-              ? Colors.green
-              : null,
           title: Text(
             "詳細活動設定",
             style: TextStyle(
@@ -222,8 +223,11 @@ class ActivityArticlePage extends StatelessWidget {
             Icons.keyboard_arrow_right_outlined,
           ),
           shape: RoundedRectangleBorder(
-              side: const BorderSide(
-                  color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              side: BorderSide(
+                  color: postController.checkActivitySetting.value == true
+                      ? Colors.green
+                      : Color.fromARGB(255, 237, 187, 196),
+                  width: 2),
               borderRadius: BorderRadius.circular(30)),
           onTap: () async {
             postController.checkActivitySetting.value = true;
@@ -273,12 +277,14 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
+                                                  barrierColor:
+                                                      CupertinoDynamicColor
+                                                          .resolve(Colors.black,
+                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
-                                                          backgroundColor:
-                                                              Colors.white,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -378,8 +384,6 @@ class ActivityArticlePage extends StatelessWidget {
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
-                                                          backgroundColor:
-                                                              Colors.white,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -388,10 +392,9 @@ class ActivityArticlePage extends StatelessWidget {
                                                           onSelectedItemChanged:
                                                               (int value) {
                                                             postController
-                                                                .activitybudget
-                                                                .value = (value +
-                                                                    1) *
-                                                                50;
+                                                                    .activitybudget
+                                                                    .value =
+                                                                (value) * 50;
                                                           },
                                                           children: priceList,
                                                         ),
@@ -423,9 +426,6 @@ class ActivityArticlePage extends StatelessWidget {
           // Obx(
           //   () =>
           ListTile(
-        tileColor: postController.activityLocation.value != ''
-            ? Colors.green
-            : Color(0xffb00020),
         title: postController.activityLocation.value == ""
             ? Text(
                 "選擇活動地點",
@@ -444,8 +444,11 @@ class ActivityArticlePage extends StatelessWidget {
           Icons.keyboard_arrow_right_outlined,
         ),
         shape: RoundedRectangleBorder(
-            side:
-                const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
+            side: BorderSide(
+                color: postController.activityLocation.value != ''
+                    ? Colors.green
+                    : Color.fromARGB(255, 237, 187, 196),
+                width: 2),
             borderRadius: BorderRadius.circular(30)),
         onTap: () {
           Navigator.push(
@@ -471,19 +474,42 @@ class ActivityArticlePage extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () async {
-                  showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                            backgroundColor: Theme.of(context).backgroundColor,
-                            title: const Text('發布中...'),
-                            content: Container(
-                                height: 150,
-                                width: 30,
-                                child:
-                                    Center(child: CircularProgressIndicator())),
-                          ));
-                  await postController.goToDataBase();
-                  Get.offAll(() => HomePageTabbar());
+                  await postController.checkData();
+                  await postController.checkActivity.value
+                      ? Get.showSnackbar(GetSnackBar(
+                          title: "通知",
+                          icon: Icon(
+                            Icons.check_circle,
+                            color: Colors.green[400],
+                          ),
+                          message: "成功發送貼文～",
+                          duration: const Duration(seconds: 3),
+                        ))
+                      : Get.showSnackbar(GetSnackBar(
+                          title: "通知",
+                          icon: Icon(
+                            Icons.error,
+                            color: Colors.red[400],
+                          ),
+                          message: "尚有資料未填寫完畢！",
+                          duration: const Duration(seconds: 3),
+                        ));
+                  await postController.checkActivity.value
+                      ? postController.goToDataBase() &
+                          showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                    backgroundColor:
+                                        Theme.of(context).backgroundColor,
+                                    title: const Text('發布中...'),
+                                    content: Container(
+                                        height: 150,
+                                        width: 30,
+                                        child: Center(
+                                            child:
+                                                CircularProgressIndicator())),
+                                  ))
+                      : null;
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -514,6 +540,23 @@ class ActivityArticlePage extends StatelessWidget {
                             ActivityPostController.pickedList[0],
                             fit: BoxFit.cover,
                           )),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 60,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 20),
+                  child: TextField(
+                    onChanged: (value) {
+                      postController.activityTitle.value = value;
+                    },
+                    controller: titleCtr,
+                    maxLines: 1,
+                    maxLength: 15,
+                    decoration: InputDecoration(
+                      hintText: '請輸入活動名稱...',
                     ),
                   ),
                 ),

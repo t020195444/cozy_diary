@@ -4,6 +4,7 @@ import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
+import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,22 @@ class ActivityPostController extends GetxController {
   RxBool isPicked = false.obs;
   RxInt selectActType = 1.obs;
   RxInt selectActPayment = 1.obs;
-
+  RxBool checkActivity = false.obs;
   RxBool checkActivitySetting = false.obs;
+
+  checkData() {
+    if (activityLng.value.toDouble() != 0.0 &&
+        activityLat.value.toDouble() != 0.0 &&
+        activityTitle.value.toString() != "" &&
+        activityTime.value.toString() != "" &&
+        activityDeadlineTime.value.toString() != "" &&
+        activityContent.value.toString() != "" &&
+        checkActivitySetting.value != false) {
+      checkActivity.value = true;
+    } else {
+      checkActivity.value = false;
+    }
+  }
 
   selectActPaymentPuls(value) {
     if (selectActPayment.value != actPayment.length) {
@@ -199,7 +214,9 @@ class ActivityPostController extends GetxController {
         ActivityPostController.mediaList.length, (_) => false.obs);
 
     var formdata = await writePost();
+
     await ActivityPostService.postPostData(await formdata);
+    Get.offAll(HomePageTabbar());
   }
 
   void setPost() {

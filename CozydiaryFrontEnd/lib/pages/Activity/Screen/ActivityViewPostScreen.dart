@@ -31,28 +31,47 @@ class ActivityViewPostScreen extends StatelessWidget {
     //主畫面
     return Scaffold(
         appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-            title: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    pic,
-                  ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  pic,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    name,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                )
-              ],
-            )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  name,
+                  style: TextStyle(fontSize: 18),
+                ),
+              )
+            ],
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: getPostController.activityHolder ==
+                      Hive.box("UidAndState").get("uid")
+                  ? PopupMenuButton(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text("刪除活動"),
+                          onTap: () => getPostController.deleteActivity(id),
+                        )
+                      ],
+                      child:
+                          Icon(Icons.more_horiz_outlined, color: Colors.brown),
+                    )
+                  : null,
+            )
+          ],
+        ),
         body: Obx(
           (() => SingleChildScrollView(
                 child: Container(
