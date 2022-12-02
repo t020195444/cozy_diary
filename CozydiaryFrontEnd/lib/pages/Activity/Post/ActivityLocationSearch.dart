@@ -137,16 +137,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                             child:
                                                 CircularProgressIndicator())),
                                   ));
-                          if (startFocusNode.hasFocus) {
-                            startPosition = details.result;
-                            _startSearchFieldController.text =
-                                details.result!.name!;
-                            predictions = [];
-                            postController
-                                .updateActivityLocation(startPosition);
 
-                            Get.to(ActivityArticlePage());
-                          }
+                          startPosition = details.result;
+                          _startSearchFieldController.text =
+                              details.result!.name!;
+                          predictions = [];
+                          postController.updateActivityLocation(startPosition);
+                          Get.back();
+                          Get.back();
                         }
                       },
                     );
