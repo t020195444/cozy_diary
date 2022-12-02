@@ -57,21 +57,28 @@ class BuildCardHome extends StatelessWidget {
           children: <Widget>[
             Container(
               // constraints: BoxConstraints(maxHeight: 300),
-              child: Image.network(
-                postCovers[index].cover,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      color: Colors.grey[100],
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                    ),
-                  );
-                },
+              // height: 100,
+              // decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //         fit: BoxFit.cover,
+              //         image: NetworkImage(postCovers[index].cover))),
+              child: Center(
+                child: Image.network(
+                  postCovers[index].cover,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        color: Colors.grey[100],
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             Padding(

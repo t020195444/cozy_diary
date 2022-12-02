@@ -45,13 +45,30 @@ class CreatePostController extends GetxController {
     isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
-      List<AssetPathEntity> albums =
-          await PhotoManager.getAssetPathList(onlyAll: true);
+      List<AssetPathEntity> albums = await PhotoManager.getAssetPathList();
 
+      // var _folder;
+      // if (Platform.isAndroid) {
+      //   for (var folder in albums) {
+      //     if (folder.name == 'Download') {
+      //       _folder = folder;
+      //     }
+      //   }
+      // } else if (Platform.isIOS) {
+      //   for (var folder in albums) {
+      //     if (folder.name == '豆漿') {
+      //       _folder = folder;
+      //     }
+      //   }
+      // }
+      // albums = [];
+      // albums.add(_folder);
+      // print(albums);
       // List<AssetEntity> media =
       //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
       List media =
           await albums[0].getAssetListRange(start: startNum, end: endNum);
+
       mediaList.value = [];
       fileList = [];
       List<Widget> _temp = [];
@@ -113,6 +130,8 @@ class CreatePostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(_temp);
+      print(mediaList.length);
+      print(fileList.length);
       // print(mediaList);
       //default Pic
       currPic.value = fileList[0].path;
@@ -292,7 +311,7 @@ class CreatePostController extends GetxController {
   Future<void> changePicSize(String path, int index) async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: path,
-      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 4),
+      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 3.05),
       maxHeight: 600,
 
       uiSettings: [
@@ -305,7 +324,8 @@ class CreatePostController extends GetxController {
             lockAspectRatio: true),
         IOSUiSettings(
           title: 'Cropper',
-          aspectRatioLockEnabled: false,
+          aspectRatioLockDimensionSwapEnabled: true,
+          aspectRatioLockEnabled: true,
           rotateButtonsHidden: true,
           rotateClockwiseButtonHidden: true,
           aspectRatioPickerButtonHidden: true,

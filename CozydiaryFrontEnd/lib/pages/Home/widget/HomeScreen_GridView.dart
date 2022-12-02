@@ -38,6 +38,7 @@ class HomeScreen extends StatelessWidget {
                 child: KeepAliveWrapper(
                   keepAlive: true,
                   child: MasonryGridView.count(
+                      addAutomaticKeepAlives: true,
                       crossAxisSpacing: 0,
                       crossAxisCount: 2,
                       itemCount: categoryController.postCover.length,
