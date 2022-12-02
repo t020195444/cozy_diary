@@ -36,8 +36,6 @@ class ActivityGetPostController extends GetxController {
 
   Map updateParticipantData = {}; //參加人資料
 
-  // deleteActivity?aid=
-
   //刪除活動
   deleteActivity(String aid) async {
     await ActivityService().deleteActivity(aid);
