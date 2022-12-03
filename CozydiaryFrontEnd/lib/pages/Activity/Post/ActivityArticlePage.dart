@@ -90,26 +90,28 @@ class ActivityArticlePage extends StatelessWidget {
                                               child: Text(postController
                                                   .activityTimeview.value),
                                               onPressed: () async {
-                                                DateTime?
-                                                    newDateTime =
-                                                    await DatePicker
-                                                        .showDateTimePicker(
-                                                            context,
-                                                            showTitleActions:
-                                                                true,
-                                                            minTime:
-                                                                DateTime.now(),
-                                                            maxTime:
-                                                                DateTime(
-                                                                    2023,
-                                                                    12,
-                                                                    31,
-                                                                    00,
-                                                                    00),
-                                                            currentTime:
-                                                                DateTime.now(),
-                                                            locale:
-                                                                LocaleType.en);
+                                                DateTime? newDateTime = await DatePicker.showDateTimePicker(
+                                                    context,
+                                                    theme: DatePickerTheme(
+                                                        headerColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        backgroundColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        itemStyle: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18)),
+                                                    showTitleActions: true,
+                                                    minTime: DateTime.now(),
+                                                    maxTime: DateTime(
+                                                        2023, 12, 31, 00, 00),
+                                                    currentTime: DateTime.now(),
+                                                    locale: LocaleType.zh);
                                                 if (newDateTime == null) return;
 
                                                 postController.activityTime
@@ -133,7 +135,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                 ),
                                                 side: BorderSide(
                                                     width: 1,
-                                                    color: Colors.black54),
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
                                               ),
                                             )),
                                       ),
@@ -146,27 +149,29 @@ class ActivityArticlePage extends StatelessWidget {
                                                   .activityDeadlineTimeview
                                                   .value),
                                               onPressed: () async {
-                                                DateTime? newDateTime =
-                                                    await DatePicker
-                                                        .showDateTimePicker(
-                                                            context,
-                                                            showTitleActions:
-                                                                true,
-                                                            minTime:
-                                                                DateTime.now(),
-                                                            maxTime:
-                                                                DateTime(
-                                                                    2023,
-                                                                    12,
-                                                                    31,
-                                                                    00,
-                                                                    00),
-                                                            onChanged:
-                                                                (date) {},
-                                                            currentTime:
-                                                                DateTime.now(),
-                                                            locale:
-                                                                LocaleType.en);
+                                                DateTime? newDateTime = await DatePicker.showDateTimePicker(
+                                                    context,
+                                                    theme: DatePickerTheme(
+                                                        headerColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        backgroundColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        itemStyle: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18)),
+                                                    showTitleActions: true,
+                                                    minTime: DateTime.now(),
+                                                    maxTime: DateTime(
+                                                        2023, 12, 31, 00, 00),
+                                                    onChanged: (date) {},
+                                                    currentTime: DateTime.now(),
+                                                    locale: LocaleType.zh);
                                                 if (newDateTime == null) return;
                                                 postController
                                                     .activityDeadlineTime
@@ -191,7 +196,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                 ),
                                                 side: BorderSide(
                                                     width: 1,
-                                                    color: Colors.black54),
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
                                               ),
                                             )),
                                       ),
@@ -280,8 +286,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                   barrierColor:
                                                       CupertinoDynamicColor
                                                           .resolve(
-                                                              Color.fromARGB(
-                                                                  203, 0, 0, 0),
+                                                              Theme.of(context)
+                                                                  .backgroundColor,
                                                               context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
@@ -385,8 +391,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                   barrierColor:
                                                       CupertinoDynamicColor
                                                           .resolve(
-                                                              Color.fromARGB(
-                                                                  203, 0, 0, 0),
+                                                              Theme.of(context)
+                                                                  .backgroundColor,
                                                               context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
