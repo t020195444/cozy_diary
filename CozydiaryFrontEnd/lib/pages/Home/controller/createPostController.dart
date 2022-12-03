@@ -39,14 +39,13 @@ class CreatePostController extends GetxController {
   int startNum = 0;
   int endNum = 15;
 
-  fetchMedia(
-      // int start, int end
-      ) async {
-    isLoading(true);
+  fetchMedia() async {
+    isLoading.value = true;
+
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
+
     if (_ps.isAuth) {
       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList();
-
       // var _folder;
       // if (Platform.isAndroid) {
       //   for (var folder in albums) {
@@ -100,7 +99,7 @@ class CreatePostController extends GetxController {
       }
 
       if (wrongPicTypeCount != 0) {
-        while (_temp.length != 5) {
+        while (_temp.length != 15) {
           startNum = endNum;
           endNum += 1;
           media =
@@ -130,6 +129,7 @@ class CreatePostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(_temp);
+
       print(mediaList);
       print(fileList);
       // print(mediaList);

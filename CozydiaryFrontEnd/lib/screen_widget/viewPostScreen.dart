@@ -236,10 +236,9 @@ class ViewPostScreen extends StatelessWidget {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              :
-              // SingleChildScrollView(
-              //     child:
-              Column(
+              : Container(
+                  child: SingleChildScrollView(
+                      child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -369,7 +368,7 @@ class ViewPostScreen extends StatelessWidget {
                       )
                     else
                       Obx(
-                        () => Expanded(
+                        () => Flexible(
                           child: ListView.builder(
                               // physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
@@ -831,7 +830,7 @@ class ViewPostScreen extends StatelessWidget {
                       // color: Color.fromARGB(28, 244, 67, 54),
                     )
                   ],
-                ))),
+                ))))),
           bottomSheet: Obx(
             () => Container(
               height: MediaQuery.of(context).size.height * 0.1,

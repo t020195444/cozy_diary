@@ -194,7 +194,7 @@ class ActivityPostController extends GetxController {
       }
 
       if (wrongPicTypeCount != 0) {
-        while (_temp.length != 5) {
+        while (_temp.length != 15) {
           startNum = endNum;
           endNum += 1;
           media =
