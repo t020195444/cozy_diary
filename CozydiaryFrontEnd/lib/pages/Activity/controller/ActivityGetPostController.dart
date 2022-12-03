@@ -33,6 +33,7 @@ class ActivityGetPostController extends GetxController {
   RxBool isParticipant = false.obs;
   RxList<dynamic> activityParticipant = [].obs; //參加人列表
   RxList<dynamic> checkActivityParticipant = [].obs; //審核列表
+  RxList<dynamic> checkActivitLike = [].obs; //審核列表
 
   Map updateParticipantData = {}; //參加人資料
 
@@ -43,9 +44,30 @@ class ActivityGetPostController extends GetxController {
     update();
   }
 
+  //按讚列表
+  checkLikeList(String aid) async {
+    checkActivitLike.value = await ActivityService().activityLikesList(aid);
+    if (checkActivitLike.length == 0) {
+      isLike.value = false;
+    }
+    for (var i = 0; i < checkActivitLike.length; i++) {
+      if (checkActivitLike[i]['uid'] == Hive.box("UidAndState").get("uid")) {
+        isLike.value = true;
+        break;
+      } else {
+        isLike.value = false;
+      }
+    }
+    print(isLike);
+
+    // await ActivityPostService.getActivityDetail(activityId.value.toString());
+    update();
+  }
+
   //按讚
   checkLike(String uid) async {
     await ActivityService().checkLike(uid, activityId.value.toString());
+    await checkLikeList(activityId.value.toString());
     await ActivityPostService.getActivityDetail(activityId.value.toString());
     update();
   }

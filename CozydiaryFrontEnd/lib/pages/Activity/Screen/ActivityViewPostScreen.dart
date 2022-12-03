@@ -26,6 +26,7 @@ class ActivityViewPostScreen extends StatelessWidget {
     getPostController.isActivityParticipant();
     getPostController.getActivityParticipantList();
     getPostController.activityId.value = int.parse(id);
+    getPostController.checkLikeList(id);
     final contentCtr = TextEditingController(
         text: getPostController.participantContent.value.toString());
     //主畫面
@@ -55,22 +56,21 @@ class ActivityViewPostScreen extends StatelessWidget {
           ),
           actions: [
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child:
-                    // getPostController.activityHolder ==
-                    //         Hive.box("UidAndState").get("uid")
-                    //     ?
-                    PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: Text("刪除活動"),
-                      onTap: () => getPostController.deleteActivity(id),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: getPostController.activityHolder ==
+                      Hive.box("UidAndState").get("uid")
+                  ? PopupMenuButton(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text("刪除活動"),
+                          onTap: () => getPostController.deleteActivity(id),
+                        )
+                      ],
+                      child:
+                          Icon(Icons.more_horiz_outlined, color: Colors.brown),
                     )
-                  ],
-                  child: Icon(Icons.more_horiz_outlined, color: Colors.brown),
-                )
-                // : null,
-                )
+                  : null,
+            )
           ],
         ),
         body: Obx(

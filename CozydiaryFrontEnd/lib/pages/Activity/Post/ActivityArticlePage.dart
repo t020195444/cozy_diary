@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cozydiary/pages/Activity/Post/ActivityLocationSearch.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
@@ -29,10 +31,6 @@ class ActivityArticlePage extends StatelessWidget {
     Widget ActivityTime() {
       return Obx(
         () => ListTile(
-          // tileColor: postController.activityTime.value != '' &&
-          //         postController.activityDeadlineTime.value != ''
-          //     ? Colors.green
-          //     : Color.fromARGB(255, 237, 187, 196),
           title: Text(
             "選擇活動時間",
             style: TextStyle(
@@ -53,6 +51,7 @@ class ActivityArticlePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(30)),
           onTap: () async {
             showModalBottomSheet(
+                backgroundColor: Theme.of(context).backgroundColor,
                 isScrollControlled: true,
                 context: context,
                 builder: (context) => Padding(
@@ -232,6 +231,7 @@ class ActivityArticlePage extends StatelessWidget {
           onTap: () async {
             postController.checkActivitySetting.value = true;
             showModalBottomSheet(
+                backgroundColor: Theme.of(context).backgroundColor,
                 isScrollControlled: true,
                 context: context,
                 builder: (context) => Padding(
@@ -279,7 +279,9 @@ class ActivityArticlePage extends StatelessWidget {
                                                   context: context,
                                                   barrierColor:
                                                       CupertinoDynamicColor
-                                                          .resolve(Colors.black,
+                                                          .resolve(
+                                                              Color.fromARGB(
+                                                                  203, 0, 0, 0),
                                                               context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
@@ -380,6 +382,12 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
+                                                  barrierColor:
+                                                      CupertinoDynamicColor
+                                                          .resolve(
+                                                              Color.fromARGB(
+                                                                  203, 0, 0, 0),
+                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
@@ -495,20 +503,21 @@ class ActivityArticlePage extends StatelessWidget {
                           duration: const Duration(seconds: 3),
                         ));
                   await postController.checkActivity.value
-                      ? postController.goToDataBase() &
-                          showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                    backgroundColor:
-                                        Theme.of(context).backgroundColor,
-                                    title: const Text('發布中...'),
-                                    content: Container(
-                                        height: 150,
-                                        width: 30,
-                                        child: Center(
-                                            child:
-                                                CircularProgressIndicator())),
-                                  ))
+                      ? postController.goToDataBase()
+                      : null;
+                  await postController.checkActivity.value
+                      ? showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                title: const Text('發布中...'),
+                                content: Container(
+                                    height: 150,
+                                    width: 30,
+                                    child: Center(
+                                        child: CircularProgressIndicator())),
+                              ))
                       : null;
                 },
                 child: Padding(
@@ -534,12 +543,17 @@ class ActivityArticlePage extends StatelessWidget {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Hero(
-                          tag: 'pic',
-                          child: Image.file(
-                            ActivityPostController.pickedList[0],
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.width * 1.05,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
-                          )),
+                            image: FileImage(
+                                File(ActivityPostController.pickedList[0])),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),

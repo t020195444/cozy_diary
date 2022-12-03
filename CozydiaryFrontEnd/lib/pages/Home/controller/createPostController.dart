@@ -100,7 +100,7 @@ class CreatePostController extends GetxController {
       }
 
       if (wrongPicTypeCount != 0) {
-        while (_temp.length != 15) {
+        while (_temp.length != 5) {
           startNum = endNum;
           endNum += 1;
           media =
@@ -130,8 +130,8 @@ class CreatePostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(_temp);
-      print(mediaList.length);
-      print(fileList.length);
+      print(mediaList);
+      print(fileList);
       // print(mediaList);
       //default Pic
       currPic.value = fileList[0].path;

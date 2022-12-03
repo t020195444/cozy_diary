@@ -68,8 +68,8 @@ class PickPhotoPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:
-                              AssetImage(_createPostController.currPic.value),
+                          image: FileImage(
+                              File(_createPostController.currPic.value)),
                         ),
                       ),
                     ),

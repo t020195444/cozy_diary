@@ -74,6 +74,8 @@ class Api {
   static String updateApplication = "/updateApplication";
   //按讚/取消按讚
   static String updateActivityLikes = "updateActivityLikes";
+  //按讚列表
+  static String activityLikesList = "activityLikesList?aid=";
   //地圖位置抓貼文
   static String getActivityCoverByPlace =
       "/getActivityCoverByPlace?option=activityTime&placeLat=";

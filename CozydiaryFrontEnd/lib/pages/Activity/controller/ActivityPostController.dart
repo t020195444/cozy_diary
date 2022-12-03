@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
+import 'package:cozydiary/api.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Activity/Post/ActivityArticlePage.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
+import 'package:cozydiary/postJsonService.dart';
 import 'package:hive/hive.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
@@ -125,75 +128,197 @@ class ActivityPostController extends GetxController {
   //function
   static List fileList = [].obs;
   static RxList mediaList = [].obs;
+  RxList showList = [].obs;
   RxBool isLoading = false.obs;
+  int startNum = 0;
+  int endNum = 15;
 
-  fetchMedia() async {
+  fetchMedia(
+      // int start, int end
+      ) async {
     isLoading(true);
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
-      List<AssetPathEntity> albums =
-          await PhotoManager.getAssetPathList(onlyAll: true);
+      List<AssetPathEntity> albums = await PhotoManager.getAssetPathList();
 
+      // var _folder;
+      // if (Platform.isAndroid) {
+      //   for (var folder in albums) {
+      //     if (folder.name == 'Download') {
+      //       _folder = folder;
+      //     }
+      //   }
+      // } else if (Platform.isIOS) {
+      //   for (var folder in albums) {
+      //     if (folder.name == '豆漿') {
+      //       _folder = folder;
+      //     }
+      //   }
+      // }
+      // albums = [];
+      // albums.add(_folder);
+      // print(albums);
+      // List<AssetEntity> media =
+      //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
       List media =
-          await albums[0].getAssetListPaged(size: 60, page: currentPage);
+          await albums[0].getAssetListRange(start: startNum, end: endNum);
 
       mediaList.value = [];
-      List<Widget> temp = [];
+      fileList = [];
+      List<Widget> _temp = [];
+      showList.value = [];
+
+      int wrongPicTypeCount = 0;
+
       for (var asset in media) {
-        fileList.add(await asset.file);
-        temp.add(
-          FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done)
-                return Stack(
-                  children: <Widget>[
-                    Positioned.fill(
+        if (asset.type == AssetType.image) {
+          fileList.add(await asset.file);
+          _temp.add(
+            FutureBuilder(
+              future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done)
+                  return Positioned.fill(
+                    child: Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                return Container();
+              },
+            ),
+          );
+        } else {
+          wrongPicTypeCount++;
+        }
+      }
+
+      if (wrongPicTypeCount != 0) {
+        while (_temp.length != 5) {
+          startNum = endNum;
+          endNum += 1;
+          media =
+              await albums[0].getAssetListRange(start: startNum, end: endNum);
+          if (media[0].type == AssetType.image) {
+            fileList.add(await media[0].file);
+
+            _temp.add(
+              FutureBuilder(
+                future: media[0].thumbnailDataWithSize(ThumbnailSize(800, 800)),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done)
+                    return Positioned.fill(
                       child: Image.memory(
                         snapshot.data!,
                         fit: BoxFit.cover,
                       ),
-                    ),
-                    if (asset.type == AssetType.video)
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 5, bottom: 5),
-                          child: Icon(
-                            Icons.videocam,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                  ],
+                    );
+                  return Container();
+                },
+              ),
+            );
+          }
+        }
+      }
+
+      //設置顯示照片List
+      mediaList.addAll(_temp);
+      print(mediaList);
+      print(fileList);
+      // print(mediaList);
+      //default Pic
+      currPic.value = fileList[0].path;
+      checkBox = List.generate(mediaList.length, (_) => false.obs);
+    } else {}
+    isLoading.value = false;
+  }
+
+  loadMorePic() async {
+    startNum = endNum;
+    endNum += 15;
+    List<AssetPathEntity> albums =
+        await PhotoManager.getAssetPathList(onlyAll: true);
+
+    // List<AssetEntity> media =
+    //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
+    List media =
+        await albums[0].getAssetListRange(start: startNum, end: endNum);
+
+    List<Widget> _temp = [];
+
+    int wrongPicTypeCount = 0;
+
+    for (var asset in media) {
+      if (asset.type == AssetType.image) {
+        fileList.add(await asset.file);
+        _temp.add(
+          FutureBuilder(
+            future: asset.thumbnailDataWithSize(ThumbnailSize(800, 800)),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done)
+                return Positioned.fill(
+                  child: Image.memory(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                  ),
                 );
               return Container();
             },
           ),
         );
+      } else {
+        wrongPicTypeCount++;
       }
-      //設置顯示照片List
-      mediaList.addAll(temp);
-      //default Pic
-      currPic.add(mediaList[0]);
-    } else {}
-    isLoading.value = false;
+    }
+
+    if (wrongPicTypeCount != 0) {
+      while (_temp.length % 15 != 0) {
+        startNum = endNum;
+        endNum += 1;
+        media = await albums[0].getAssetListRange(start: startNum, end: endNum);
+        if (media[0].type == AssetType.image) {
+          fileList.add(await media[0].file);
+
+          _temp.add(
+            FutureBuilder(
+              future: media[0].thumbnailDataWithSize(ThumbnailSize(800, 800)),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done)
+                  return Positioned.fill(
+                    child: Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                return Container();
+              },
+            ),
+          );
+        }
+      }
+    }
+
+    //設置顯示照片List
+    mediaList.addAll(_temp);
+    // print(mediaList);
+
+    checkBox = List.generate(mediaList.length, (_) => false.obs);
   }
 
-  RxList currPic = [].obs;
-
+  RxString currPic = ''.obs;
   changeCurrPic(int i) {
     //設置目前顯示照片
-    currPic.value = [];
-    currPic.add(mediaList[i]);
-
+    currPic.value = fileList[i].path;
+    // print(currPic.value);
     setPicList(i);
   }
 
   static List pickedList = [];
 
   setPicList(int i) {
-    File tempFile = fileList[i];
+    String tempFile = fileList[i].path;
+
     if (pickedList.contains(tempFile)) {
       pickedList.remove(tempFile);
       checkBox[i].value = false;
@@ -201,6 +326,10 @@ class ActivityPostController extends GetxController {
       pickedList.add(tempFile);
       checkBox[i].value = true;
     }
+    print('show');
+    print(showList);
+    print('pick');
+    print(pickedList);
   }
 
   //create post
@@ -209,6 +338,7 @@ class ActivityPostController extends GetxController {
   var activityFiles = <ActivityPostFile>[];
   List allPicName = [];
 
+  RxBool isPosting = true.obs;
   goToDataBase() async {
     checkBox = [];
     checkBox = List.generate(
@@ -217,7 +347,27 @@ class ActivityPostController extends GetxController {
     var formdata = await writePost();
 
     await ActivityPostService.postPostData(await formdata);
+
     Get.offAll(HomePageTabbar());
+    await checkActivity.value
+        ? Get.showSnackbar(GetSnackBar(
+            title: "通知",
+            icon: Icon(
+              Icons.check_circle,
+              color: Colors.green[400],
+            ),
+            message: "成功發送貼文～",
+            duration: const Duration(seconds: 3),
+          ))
+        : Get.showSnackbar(GetSnackBar(
+            title: "通知",
+            icon: Icon(
+              Icons.error,
+              color: Colors.red[400],
+            ),
+            message: "尚有資料未填寫完畢！",
+            duration: const Duration(seconds: 3),
+          ));
   }
 
   void setPost() {
@@ -227,7 +377,7 @@ class ActivityPostController extends GetxController {
       placeLat: activityLat.value.toDouble(),
       likes: 0,
       activityName: activityTitle.value.toString(),
-      cover: basename(pickedList[0].path),
+      cover: basename(pickedList[0]),
       activityTime: activityTime.value,
       auditTime: activityDeadlineTime.value,
       payment: selectActPayment.value.toInt(),
@@ -239,6 +389,10 @@ class ActivityPostController extends GetxController {
 
   Future<FormData> writePost() async {
     FormData formData = FormData();
+    for (int i = 0; i < showList.length; i++) {
+      allPicName.add(basename(showList[i]));
+    }
+
     setPost();
 
     WriteActivityPostModel writePost =
@@ -248,8 +402,51 @@ class ActivityPostController extends GetxController {
     formData = FormData.fromMap({"jsondata": jsonString});
     for (int i = 0; i < pickedList.length; i++) {
       formData.files.addAll(
-          [MapEntry("file", await MultipartFile.fromFile(pickedList[i].path))]);
+          [MapEntry("file", await MultipartFile.fromFile(pickedList[i]))]);
     }
     return formData;
+  }
+
+  static Map categoryList = {}.obs;
+  getList() async {
+    var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
+    categoryList = response.data;
+    // print(categoryList);
+  }
+
+  RxMap selectedMap = {}.obs;
+  selectCategory(int index) {
+    selectedMap.value = categoryList['data'][index];
+  }
+
+  Future<void> changePicSize(String path, int index) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: path,
+      aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 3.05),
+      maxHeight: 600,
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: ThemeData.light().appBarTheme.backgroundColor,
+            toolbarWidgetColor: ThemeData.light().appBarTheme.foregroundColor,
+            hideBottomControls: true,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        IOSUiSettings(
+          title: 'Cropper',
+          aspectRatioLockDimensionSwapEnabled: true,
+          aspectRatioLockEnabled: true,
+          rotateButtonsHidden: true,
+          rotateClockwiseButtonHidden: true,
+          aspectRatioPickerButtonHidden: true,
+          resetAspectRatioEnabled: false,
+        )
+      ],
+    );
+    showList[index] = croppedFile!.path;
+    print('show');
+    print(showList);
+    print('pick');
+    print(pickedList);
   }
 }
