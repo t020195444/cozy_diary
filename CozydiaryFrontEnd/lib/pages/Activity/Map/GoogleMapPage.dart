@@ -83,7 +83,6 @@ class GoogleMapPageState extends State<GoogleMapPage> {
       }
     }
     ;
-    print(markersList.toString());
   }
 
   loadData() async {

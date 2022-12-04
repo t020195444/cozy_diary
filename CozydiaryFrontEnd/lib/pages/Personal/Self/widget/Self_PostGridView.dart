@@ -20,7 +20,7 @@ class InitPostGridView extends StatelessWidget {
             //依照資料長度數量
             itemCount: selfPageController.postCover.length,
             itemBuilder: (context, index) {
-              return BuildCard(
+              return BuildCard_Post(
                 index: index,
                 userPostCover: selfPageController.postCover,
               );

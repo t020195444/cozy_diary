@@ -18,13 +18,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CategoryPostController categoryController =
-        Get.put(CategoryPostController(), tag: category);
-    categoryController.getPostCover(cid);
+        Get.put(CategoryPostController(cid: cid), tag: category);
     return Obx(() => categoryController.isLoading.value
         ? SpinKitFadingCircle(
-            size: 50,
-            color: Colors.black,
-          )
+            size: 50, color: Theme.of(context).colorScheme.primary)
         : MediaQuery.removePadding(
             context: context,
             removeTop: true,
@@ -36,12 +33,13 @@ class HomeScreen extends StatelessWidget {
                   categoryController.getPostCover(cid);
                 },
                 child: KeepAliveWrapper(
-                  keepAlive: true,
                   child: MasonryGridView.count(
                       addAutomaticKeepAlives: true,
+                      cacheExtent: 5000,
                       crossAxisSpacing: 0,
                       crossAxisCount: 2,
                       itemCount: categoryController.postCover.length,
+                      controller: ScrollController(keepScrollOffset: true),
                       itemBuilder: (context, index) {
                         return BuildCardHome(
                           key: ValueKey(

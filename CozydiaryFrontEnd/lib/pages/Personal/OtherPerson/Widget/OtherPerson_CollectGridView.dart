@@ -14,7 +14,7 @@ class InitOtherPersonCollectGridView extends StatelessWidget {
             crossAxisCount: 2,
             itemCount: 0,
             itemBuilder: (context, index) {
-              return BuildCard(
+              return BuildCard_Collect(
                 index: index,
                 userPostCover: [],
               );

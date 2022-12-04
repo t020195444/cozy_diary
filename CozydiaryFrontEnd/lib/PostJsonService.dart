@@ -13,7 +13,6 @@ class PostService {
     var response = await dio.get(Api.ipUrl + Api.getPostDetail + pid);
 
     var data = response.data;
-    print(data);
     var encodeJsonString = jsonEncode(data);
     var fromJsonValue = postDetailModelFromJson(encodeJsonString);
 
@@ -73,7 +72,6 @@ class PostService {
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
     var fromJsonValue = searchDataModelFromJson(encodeJsonString);
-    print(fromJsonValue.data[0]);
     return fromJsonValue;
   }
 }

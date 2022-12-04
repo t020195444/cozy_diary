@@ -1,7 +1,5 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:cozydiary/pages/Personal/TrackerPage/Controller/trakerController.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../OtherPerson/Controller/otherPersonController.dart';
@@ -32,17 +30,7 @@ class TrackerPage extends StatelessWidget {
         builder: (trackerController) {
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    child: TextField(
-                      decoration: InputDecoration(hintText: "輸入..."),
-                      controller: TextEditingController(),
-                    ),
-                  ),
-                )
-              ];
+              return [];
             },
             body: ListView.builder(
               itemCount: trackerController.trackerList.length,
@@ -72,23 +60,25 @@ class TrackerPage extends StatelessWidget {
                         NetworkImage(trackerController.trackerList[index].pic),
                   ),
                   title: Text(trackerController.trackerList[index].name),
-                  trailing: ElevatedButton(
-                    child: trackerController.state[index]
-                        ? Text("取消追蹤")
-                        : Text("追蹤"),
-                    onPressed: () {
-                      trackerController.tapTracker(
-                          trackerController.trackerList[index].tracker1,
-                          trackerController.trackerList[index].tracker2,
-                          index);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: trackerController.state[index]
-                            ? Color.fromARGB(176, 149, 147, 147)
-                            : Color.fromARGB(174, 164, 131, 106),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                  ),
+                  trailing: trackerController.userId != uid
+                      ? null
+                      : ElevatedButton(
+                          child: trackerController.state[index]
+                              ? Text("取消追蹤")
+                              : Text("追蹤"),
+                          onPressed: () {
+                            trackerController.tapTracker(
+                                trackerController.trackerList[index].tracker1,
+                                trackerController.trackerList[index].tracker2,
+                                index);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: trackerController.state[index]
+                                  ? Color.fromARGB(176, 149, 147, 147)
+                                  : Color.fromARGB(174, 164, 131, 106),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30))),
+                        ),
                 ),
               ),
             ),
@@ -104,17 +94,7 @@ class TrackerPage extends StatelessWidget {
         builder: (followerController) {
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    child: TextField(
-                      decoration: InputDecoration(hintText: "輸入..."),
-                      controller: TextEditingController(),
-                    ),
-                  ),
-                )
-              ];
+              return [];
             },
             body: ListView.builder(
               itemCount: followerController.trackerList.length,

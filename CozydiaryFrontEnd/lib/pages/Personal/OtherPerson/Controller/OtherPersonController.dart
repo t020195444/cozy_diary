@@ -51,7 +51,6 @@ class OtherPersonPageController extends GetxController {
       if (UserData != null) {
         if (UserData.status == 200) {
           userData.value = UserData.data;
-          print(userData.value.pic);
           if (userData.value.follower.isEmpty) {
             isFollow(false);
           } else {

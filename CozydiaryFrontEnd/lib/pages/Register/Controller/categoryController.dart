@@ -111,7 +111,6 @@ class CategoryController extends GetxController {
       finalCategoryList.add(choiceId);
     }
     update();
-    print(finalCategoryList);
   }
 
   Future<int> addUserCategory() async {

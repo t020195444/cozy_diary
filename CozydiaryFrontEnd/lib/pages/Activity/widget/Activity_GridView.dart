@@ -1,5 +1,6 @@
 import 'package:cozydiary/pages/Activity/controller/ActivityController.dart';
 import 'package:cozydiary/pages/Activity/widget/BuildCardActivity.dart';
+import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -25,19 +26,22 @@ class ActivityScreen extends StatelessWidget {
           child: MediaQuery.removePadding(
               context: context,
               removeTop: true,
-              child: MasonryGridView.count(
-                  crossAxisSpacing: 0,
-                  crossAxisCount: 2,
-                  itemCount: activityController.postCover.length,
-                  itemBuilder: (context, index) {
-                    return BuildCardActivity(
-                      key: ValueKey({
-                        activityController.postCover[index].aid,
-                      }),
-                      PostCovers: activityController.postCover,
-                      index: index,
-                    );
-                  })),
+              child: KeepAliveWrapper(
+                child: MasonryGridView.count(
+                    cacheExtent: 5000,
+                    crossAxisSpacing: 0,
+                    crossAxisCount: 2,
+                    itemCount: activityController.postCover.length,
+                    itemBuilder: (context, index) {
+                      return BuildCardActivity(
+                        key: ValueKey({
+                          activityController.postCover[index].aid,
+                        }),
+                        PostCovers: activityController.postCover,
+                        index: index,
+                      );
+                    }),
+              )),
         );
       }
     });

@@ -2,7 +2,6 @@ import 'package:cozydiary/login_controller.dart';
 
 import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
-import 'package:cozydiary/pages/Register/Page/registerPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -199,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           return Center(
             child: SpinKitFadingCircle(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               size: 50,
             ),
           );
@@ -212,6 +211,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () => logincontroller.logout(),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

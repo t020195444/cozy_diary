@@ -7,28 +7,23 @@ import '../../../PostJsonService.dart';
 import '../../Register/Service/registerService.dart';
 
 class CategoryPostController extends GetxController {
+  final String cid;
   var postCover = <PostCoverData>[].obs;
   var isLoading = false.obs;
   var userCategory = <Category>[];
   String uid = Hive.box("UidAndState").get("uid");
 
+  CategoryPostController({required this.cid});
+
   @override
   void onInit() {
     setUserCategory();
-    Post(
-        uid: "",
-        title: "",
-        content: "",
-        likes: 0,
-        collects: 0,
-        cover: "",
-        cid: 0,
-        postFiles: []);
-
+    getPostCover(cid);
     super.onInit();
   }
 
   Future<void> getPostCover(String cid) async {
+    print("aksdjlsakjlsajdsalkd");
     isLoading(true);
     if (cid == "") {
       try {

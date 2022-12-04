@@ -1,4 +1,4 @@
-import 'package:cozydiary/pages/Personal/OtherPerson/Widget/otherPerson_PostGridView.dart';
+import 'package:cozydiary/pages/Personal/OtherPerson/Widget/OtherPerson_PostGridView.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -7,7 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
 import '../Controller/otherPersonController.dart';
 import '../Controller/otherPersonTabbarController.dart';
-import '../Widget/otherPerson_CollectGridView.dart';
+import '../Widget/OtherPerson_CollectGridView.dart';
 
 class OtherPersonalPage extends StatelessWidget {
   const OtherPersonalPage({Key? key, required this.uid}) : super(key: key);
@@ -97,9 +97,7 @@ class PersonalView extends StatelessWidget {
 
     return Obx((() => otherPersonPageController.isLoading.value
         ? SpinKitFadingCircle(
-            size: 50,
-            color: Colors.black,
-          )
+            size: 50, color: Theme.of(context).colorScheme.primary)
         : Scaffold(
             extendBodyBehindAppBar: true,
             body: RefreshIndicator(
@@ -147,8 +145,8 @@ class PersonalView extends StatelessWidget {
                                 )
                               ],
                             ))
-                          : InitOtherPersonPostGridView()),
-                      otherPersonPageController.postCover.isEmpty
+                          : InitOtherPersonPostGridView(uid: uid)),
+                      Obx(() => otherPersonPageController.postCover.isEmpty
                           ? Center(
                               child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -173,7 +171,7 @@ class PersonalView extends StatelessWidget {
                                 )
                               ],
                             ))
-                          : InitOtherPersonCollectGridView()
+                          : InitOtherPersonCollectGridView())
                     ],
                   )),
             ),
@@ -257,7 +255,6 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
           ),
           InkWell(
             onTap: (() {
-              print(_otherPersonPageController.otherUid);
               Get.to(
                   TrackerPage(
                       uid: _otherPersonPageController.otherUid, index: 1),

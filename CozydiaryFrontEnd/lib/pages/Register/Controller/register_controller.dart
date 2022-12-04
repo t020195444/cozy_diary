@@ -58,7 +58,7 @@ class RegisterController extends GetxController {
   //註冊使用者
   void adddata(String googleId, String email) async {
     var picsplit = pic.split("/").last;
-
+    this.googleId = googleId;
     userData.add(RegisterUserData(
         googleId: googleId,
         name: name.value,
@@ -134,20 +134,18 @@ class RegisterController extends GetxController {
       var formData = FormData.fromMap({"jsondata": jsonData});
       formData.files
           .add(MapEntry("file", await MultipartFile.fromFile(picOrigin)));
-
-      int responseStatus = await RegisterService.registerUser(formData);
-
-      if (responseStatus == 200) {
-        Get.back();
-        Hive.box("UidAndState").put("uid", googleId);
-
-        Get.to(SelectLikePage(
-          isRegiststate: false,
-        ));
-      } else {
-        Get.back();
-        Get.offAll(MyHomePage(title: ""));
-      }
+      await RegisterService.registerUser(formData).then((value) {
+        if (value == 200) {
+          Get.back();
+          Hive.box("UidAndState").put("uid", googleId);
+          Get.to(SelectLikePage(
+            isRegiststate: false,
+          ));
+        } else {
+          Get.back();
+          Get.offAll(MyHomePage(title: ""));
+        }
+      });
     }
   }
 }

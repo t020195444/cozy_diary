@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'controller/TopTabbarController.dart';
-import 'serchPage.dart';
+import 'searchPage.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.search),
               onPressed: () =>
-                  Get.to(SerchPage(), transition: Transition.downToUp),
+                  Get.to(() => SearchPage(), transition: Transition.downToUp),
             ),
           )
         ],
@@ -67,7 +67,7 @@ class NestedTabBar extends StatelessWidget {
     return Obx(() => _nestedTabbarController.isLoading.value
         ? SpinKitFadingCircle(
             size: 50,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.primary,
           )
         : NestedScrollView(
             controller: _scrollViewController,

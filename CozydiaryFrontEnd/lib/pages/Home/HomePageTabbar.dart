@@ -1,4 +1,3 @@
-import 'package:cozydiary/PostJsonService.dart';
 import 'package:cozydiary/pages/Home/HomePage.dart';
 import 'package:cozydiary/pages/Home/controller/changePageController.dart';
 import 'package:cozydiary/pages/Home/postRequestPage.dart';
@@ -16,7 +15,6 @@ class HomePageTabbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final box = Hive.box("UidAndState");
     final uid = box.get("uid");
-
     final screens = [
       // MapPage(),
       HomePage(),
@@ -28,7 +26,10 @@ class HomePageTabbar extends StatelessWidget {
     Get.put(SelfPageController());
 
     return Obx((() => Scaffold(
-          body: screens[controller.selectedIndex.value],
+          body: IndexedStack(
+            children: screens,
+            index: controller.selectedIndex.value,
+          ),
           bottomNavigationBar: KeepAliveWrapper(
             keepAlive: true,
             child: NavigationBar(

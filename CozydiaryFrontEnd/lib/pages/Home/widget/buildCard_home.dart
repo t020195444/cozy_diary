@@ -1,18 +1,14 @@
-import 'package:cozydiary/Model/categoryList.dart';
 import 'package:cozydiary/Model/postCoverModel.dart';
+import 'package:cozydiary/pages/Home/controller/changePageController.dart';
 import 'package:cozydiary/pages/Home/controller/categoryPostController.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
-import 'package:cozydiary/pages/Personal/Self/controller/SelfController.dart';
-import 'package:cozydiary/pages/Register/Controller/categoryController.dart';
-import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:like_button/like_button.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../screen_widget/viewPostController.dart';
 import '../../../screen_widget/viewPostScreen.dart';
 import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class BuildCardHome extends StatelessWidget {
   final String uid;
@@ -106,10 +102,24 @@ class BuildCardHome extends StatelessWidget {
                                     NetworkImage(postCovers[index].pic),
                               ),
                               onTap: () {
-                                Get.put(
-                                    OtherPersonPageController(otherUid: uid));
-                                Get.to(() => OtherPersonalPage(
-                                    key: UniqueKey(), uid: uid));
+                                var userUid =
+                                    Hive.box("UidAndState").get("uid");
+                                print("uid" + uid);
+                                print("userUid" + userUid);
+                                print(uid != userUid);
+                                if (uid != userUid) {
+                                  Get.put(
+                                      OtherPersonPageController(otherUid: uid));
+                                  Get.to(
+                                      () => OtherPersonalPage(
+                                          key: UniqueKey(), uid: uid),
+                                      transition: Transition.fadeIn);
+                                } else {
+                                  Get.find<ChangePageTabbarController>()
+                                      .selectedIndex
+                                      .value = 2;
+                                }
+                                ;
                                 // GetBuilder<OtherPersonPageController>(
                                 //     init: OtherPersonPageController(
                                 //         otherUid: uid),

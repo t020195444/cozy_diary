@@ -4,10 +4,70 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 
-class BuildCard extends StatelessWidget {
+class BuildCard_Post extends StatelessWidget {
   final int index;
   final List<PostCoverData> userPostCover;
-  const BuildCard({Key? key, required this.index, required this.userPostCover})
+  const BuildCard_Post(
+      {Key? key, required this.index, required this.userPostCover})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Get.to(
+          ViewPostScreen(
+              ownerPicUrl: userPostCover[index].pic,
+              ownerUid: userPostCover[index].uid,
+              username: userPostCover[index].username,
+              pid: userPostCover[index].pid.toString()),
+          transition: Transition.fadeIn,
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 1,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Hero(
+              tag: userPostCover[index].cover,
+              child: Image.network(
+                userPostCover[index].cover,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+              child: Text(
+                userPostCover[index].title,
+                softWrap: true,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 15, 8),
+              child: LikeButton(
+                mainAxisAlignment: MainAxisAlignment.end,
+                likeCount: userPostCover[index].likes,
+                isLiked: false,
+                size: 15,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BuildCard_Collect extends StatelessWidget {
+  final int index;
+  final List<PostCoverData> userPostCover;
+  const BuildCard_Collect(
+      {Key? key, required this.index, required this.userPostCover})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

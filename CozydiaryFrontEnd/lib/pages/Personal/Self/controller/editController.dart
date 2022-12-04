@@ -1,4 +1,5 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
+import 'package:cozydiary/pages/Personal/Self/controller/selfController.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -44,8 +45,7 @@ class EditUserController extends GetxController {
     oldname.value = userData.name;
     birthday = userData.birth;
     String year = birthday[0].toString();
-    String month =
-        birthday[1] >= 10 ? birthday[1] : "0" + birthday[1].toString();
+    var month = birthday[1] >= 10 ? birthday[1] : "0" + birthday[1].toString();
     String day = birthday[2] >= 10
         ? birthday[2].toString()
         : "0" + birthday[2].toString();
@@ -117,6 +117,7 @@ class EditUserController extends GetxController {
           if (value == 200) {
             Get.back();
             Get.back();
+            Get.find<SelfPageController>().getUserData();
           }
         }).catchError((error) => print("Error$error"));
       }

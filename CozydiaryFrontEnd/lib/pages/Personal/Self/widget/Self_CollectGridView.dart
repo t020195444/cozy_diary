@@ -17,7 +17,7 @@ class InitCollectGridView extends StatelessWidget {
             crossAxisCount: 2,
             itemCount: selfPageController.collectedPostCover.length,
             itemBuilder: (context, index) {
-              return BuildCard(
+              return BuildCard_Collect(
                 index: index,
                 userPostCover: selfPageController.collectedPostCover,
               );

@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cozydiary/login_controller.dart';
 import 'package:cozydiary/pages/Personal/drawerWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
@@ -17,7 +17,7 @@ import 'edit_Personal.dart';
 class PersonalPage extends StatelessWidget {
   const PersonalPage({Key? key, required this.uid}) : super(key: key);
   final String uid;
-
+  @override
   @override
   Widget build(BuildContext context) {
     return PersonalView(uid: this.uid);
@@ -247,24 +247,24 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Stack(
       children: <Widget>[
         Obx(() => _selfPageController.userData.value.pic != ""
-            ? Image.network(_selfPageController.userData.value.pic,
+            ? CachedNetworkImage(
+                key: UniqueKey(),
+                imageUrl: _selfPageController.userData.value.pic,
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: expandedHeight,
-                errorBuilder: (context, error, stackTrace) =>
+                errorWidget: (context, error, stackTrace) =>
                     Text("pic Network Error"),
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      color: Colors.grey[100],
-                      width: MediaQuery.of(context).size.width,
-                      height: expandedHeight,
-                    ),
-                  );
-                })
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    color: Colors.grey[100],
+                    width: MediaQuery.of(context).size.width,
+                    height: expandedHeight,
+                  ),
+                ),
+              )
             : Shimmer.fromColors(
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
@@ -299,7 +299,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       child: Text("登出"),
-                      onTap: () => Get.find<LoginController>().logout(),
+                      onTap: () => Get.put(LoginController()).logout(),
                     )
                   ],
                   child: Icon(Icons.more_horiz_outlined, color: Colors.white),
@@ -370,11 +370,11 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
               },
               child: Text(
                 "編輯個人資料",
-                // style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    Theme.of(context).primaryColorLight.withOpacity(0.6),
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.6),
               ),
             ))
       ],

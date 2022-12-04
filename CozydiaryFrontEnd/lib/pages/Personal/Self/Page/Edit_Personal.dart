@@ -1,12 +1,9 @@
 import 'package:cozydiary/Model/catchPersonalModel.dart';
-import 'package:cozydiary/Model/catchPersonalModel.dart';
 import 'package:cozydiary/Model/editUserModel.dart';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import '../controller/editController.dart';
-import '../control, required UserData userDataler/selfController.dart';
 
 class Edit_PersonalPage extends StatelessWidget {
   Edit_PersonalPage({
@@ -210,16 +207,14 @@ class Edit_PersonalPage extends StatelessWidget {
                 final isValid = _introductionFormKey.currentState!.validate();
                 if (isValid) {
                   _introductionFormKey.currentState!.save();
+                  Get.dialog(SpinKitFadingCircle(
+                      size: 50, color: Theme.of(context).colorScheme.primary));
                   EditUserModel finalUserData =
                       editUserController.setEditData();
-                  Get.dialog(SpinKitFadingCircle(
-                    size: 50,
-                    color: Colors.black,
-                  ));
-                  editUserController
+
+                  await editUserController
                       .updateUser(finalUserData)
                       .then((String value) {
-                    print(value);
                     Get.back();
                     Get.back(result: value);
                   });

@@ -92,6 +92,7 @@ class FollowerController extends GetxController {
   final String uid;
   var trackerList = <TrackerList>[];
   var userId = Hive.box("UidAndState").get("uid");
+  var searchList = <TrackerList>[];
 
   FollowerController({required this.uid});
   @override
@@ -125,9 +126,11 @@ class FollowerController extends GetxController {
     } finally {}
   }
 
-  // @override
-  // void refresh() {
-  //   getFollower(uid);
-  //   super.refresh();
-  // }
+  void searchFollowerList(String input) {
+    trackerList.forEach((element) {
+      if (element.name == input || element.tracker1.contains(input)) {
+        searchList.add(element);
+      }
+    });
+  }
 }

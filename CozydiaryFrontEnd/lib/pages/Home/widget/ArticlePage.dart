@@ -31,7 +31,6 @@ class ArticlePage extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () async {
-                  print(_createPostController.pickedList);
                   if (titleCtr.text == '' || contentCtr.text == '') {
                     Fluttertoast.showToast(
                         msg: "標題或內文不可為空白",

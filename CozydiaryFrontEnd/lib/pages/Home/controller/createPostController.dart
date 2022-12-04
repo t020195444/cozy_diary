@@ -130,8 +130,6 @@ class CreatePostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(_temp);
-      print(mediaList.length);
-      print(fileList.length);
       // print(mediaList);
       //default Pic
       currPic.value = fileList[0].path;
@@ -232,10 +230,6 @@ class CreatePostController extends GetxController {
       pickedList.add(tempFile);
       checkBox[i].value = true;
     }
-    print('show');
-    print(showList);
-    print('pick');
-    print(pickedList);
   }
 
   String postTitle = '';
@@ -344,9 +338,5 @@ class CreatePostController extends GetxController {
       // }
     );
     showList[index] = croppedFile!.path;
-    print('show');
-    print(showList);
-    print('pick');
-    print(pickedList);
   }
 }

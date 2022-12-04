@@ -73,8 +73,6 @@ class ActivityGetPostController extends GetxController {
 
   //報名活動
   setUpdateParticipantData(id) async {
-    print(participantContent.value.toString());
-    print(id);
     updateParticipantData = {
       "participant": Hive.box("UidAndState").get("uid"),
       "reason": participantContent.value.toString(),
