@@ -3,5 +3,16 @@
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
+    
+   
     <uses-permission android:name="android.permission.INTERNET"/>
+</manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fluttercandies.photo_manager_example">
+
+    <application
+        android:label="photo_manager_example"
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
+    </application>
 </manifest>

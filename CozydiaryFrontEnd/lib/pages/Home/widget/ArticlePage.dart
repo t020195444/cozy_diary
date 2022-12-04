@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -209,8 +211,8 @@ class _showPicPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image:
-                            AssetImage(_createPostController.showList[index]),
+                        image: FileImage(
+                            File(_createPostController.showList[index])),
                       ),
                     ),
                   ),

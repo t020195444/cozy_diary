@@ -68,10 +68,14 @@ class Api {
   static String getPostCoverByCategory = "/getPostCoverByCategory?cid=";
   //審核貼文列表
   static String getParticipantList = "/getParticipantList?aid=";
+  //刪除活動
+  static String deleteActivity = "deleteActivity?aid=";
   //審核通過/未審核
   static String updateApplication = "/updateApplication";
   //按讚/取消按讚
   static String updateActivityLikes = "updateActivityLikes";
+  //按讚列表
+  static String activityLikesList = "activityLikesList?aid=";
   //地圖位置抓貼文
   static String getActivityCoverByPlace =
       "/getActivityCoverByPlace?option=activityTime&placeLat=";

@@ -39,14 +39,13 @@ class CreatePostController extends GetxController {
   int startNum = 0;
   int endNum = 15;
 
-  fetchMedia(
-      // int start, int end
-      ) async {
-    isLoading(true);
+  fetchMedia() async {
+    isLoading.value = true;
+
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
+
     if (_ps.isAuth) {
       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList();
-
       // var _folder;
       // if (Platform.isAndroid) {
       //   for (var folder in albums) {

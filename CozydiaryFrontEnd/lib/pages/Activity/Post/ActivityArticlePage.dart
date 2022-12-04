@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cozydiary/pages/Activity/Post/ActivityLocationSearch.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
@@ -8,7 +10,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 var peopleList = [for (var i = 1; i <= 30; i++) Text(i.toString())];
-var priceList = [for (var i = 1; i <= 50; i++) Text((i * 50).toString())];
+var priceList = [for (var i = 0; i <= 50; i++) Text((i * 50).toString())];
 
 class ActivityArticlePage extends StatelessWidget {
   const ActivityArticlePage({Key? key}) : super(key: key);
@@ -29,10 +31,6 @@ class ActivityArticlePage extends StatelessWidget {
     Widget ActivityTime() {
       return Obx(
         () => ListTile(
-          tileColor: postController.activityTime.value != '' &&
-                  postController.activityDeadlineTime.value != ''
-              ? Colors.green
-              : Color(0xffb00020),
           title: Text(
             "選擇活動時間",
             style: TextStyle(
@@ -44,11 +42,16 @@ class ActivityArticlePage extends StatelessWidget {
             Icons.keyboard_arrow_right_outlined,
           ),
           shape: RoundedRectangleBorder(
-              side: const BorderSide(
-                  color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              side: BorderSide(
+                  color: postController.activityTime.value != '' &&
+                          postController.activityDeadlineTime.value != ''
+                      ? Colors.green
+                      : Color.fromARGB(255, 237, 187, 196),
+                  width: 2),
               borderRadius: BorderRadius.circular(30)),
           onTap: () async {
             showModalBottomSheet(
+                backgroundColor: Theme.of(context).backgroundColor,
                 isScrollControlled: true,
                 context: context,
                 builder: (context) => Padding(
@@ -87,26 +90,28 @@ class ActivityArticlePage extends StatelessWidget {
                                               child: Text(postController
                                                   .activityTimeview.value),
                                               onPressed: () async {
-                                                DateTime?
-                                                    newDateTime =
-                                                    await DatePicker
-                                                        .showDateTimePicker(
-                                                            context,
-                                                            showTitleActions:
-                                                                true,
-                                                            minTime:
-                                                                DateTime.now(),
-                                                            maxTime:
-                                                                DateTime(
-                                                                    2023,
-                                                                    12,
-                                                                    31,
-                                                                    00,
-                                                                    00),
-                                                            currentTime:
-                                                                DateTime.now(),
-                                                            locale:
-                                                                LocaleType.en);
+                                                DateTime? newDateTime = await DatePicker.showDateTimePicker(
+                                                    context,
+                                                    theme: DatePickerTheme(
+                                                        headerColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        backgroundColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        itemStyle: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18)),
+                                                    showTitleActions: true,
+                                                    minTime: DateTime.now(),
+                                                    maxTime: DateTime(
+                                                        2023, 12, 31, 00, 00),
+                                                    currentTime: DateTime.now(),
+                                                    locale: LocaleType.zh);
                                                 if (newDateTime == null) return;
 
                                                 postController.activityTime
@@ -130,7 +135,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                 ),
                                                 side: BorderSide(
                                                     width: 1,
-                                                    color: Colors.black54),
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
                                               ),
                                             )),
                                       ),
@@ -143,27 +149,29 @@ class ActivityArticlePage extends StatelessWidget {
                                                   .activityDeadlineTimeview
                                                   .value),
                                               onPressed: () async {
-                                                DateTime? newDateTime =
-                                                    await DatePicker
-                                                        .showDateTimePicker(
-                                                            context,
-                                                            showTitleActions:
-                                                                true,
-                                                            minTime:
-                                                                DateTime.now(),
-                                                            maxTime:
-                                                                DateTime(
-                                                                    2023,
-                                                                    12,
-                                                                    31,
-                                                                    00,
-                                                                    00),
-                                                            onChanged:
-                                                                (date) {},
-                                                            currentTime:
-                                                                DateTime.now(),
-                                                            locale:
-                                                                LocaleType.en);
+                                                DateTime? newDateTime = await DatePicker.showDateTimePicker(
+                                                    context,
+                                                    theme: DatePickerTheme(
+                                                        headerColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        backgroundColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        itemStyle: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18)),
+                                                    showTitleActions: true,
+                                                    minTime: DateTime.now(),
+                                                    maxTime: DateTime(
+                                                        2023, 12, 31, 00, 00),
+                                                    onChanged: (date) {},
+                                                    currentTime: DateTime.now(),
+                                                    locale: LocaleType.zh);
                                                 if (newDateTime == null) return;
                                                 postController
                                                     .activityDeadlineTime
@@ -188,7 +196,8 @@ class ActivityArticlePage extends StatelessWidget {
                                                 ),
                                                 side: BorderSide(
                                                     width: 1,
-                                                    color: Colors.black54),
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
                                               ),
                                             )),
                                       ),
@@ -208,9 +217,6 @@ class ActivityArticlePage extends StatelessWidget {
     Widget ActivitySetting() {
       return Obx(
         () => ListTile(
-          tileColor: postController.checkActivitySetting.value == true
-              ? Colors.green
-              : null,
           title: Text(
             "詳細活動設定",
             style: TextStyle(
@@ -222,12 +228,16 @@ class ActivityArticlePage extends StatelessWidget {
             Icons.keyboard_arrow_right_outlined,
           ),
           shape: RoundedRectangleBorder(
-              side: const BorderSide(
-                  color: Color.fromARGB(105, 0, 0, 0), width: 1),
+              side: BorderSide(
+                  color: postController.checkActivitySetting.value == true
+                      ? Colors.green
+                      : Color.fromARGB(255, 237, 187, 196),
+                  width: 2),
               borderRadius: BorderRadius.circular(30)),
           onTap: () async {
             postController.checkActivitySetting.value = true;
             showModalBottomSheet(
+                backgroundColor: Theme.of(context).backgroundColor,
                 isScrollControlled: true,
                 context: context,
                 builder: (context) => Padding(
@@ -273,12 +283,16 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
+                                                  barrierColor:
+                                                      CupertinoDynamicColor
+                                                          .resolve(
+                                                              Theme.of(context)
+                                                                  .backgroundColor,
+                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
-                                                          backgroundColor:
-                                                              Colors.white,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -374,12 +388,16 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
+                                                  barrierColor:
+                                                      CupertinoDynamicColor
+                                                          .resolve(
+                                                              Theme.of(context)
+                                                                  .backgroundColor,
+                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
-                                                          backgroundColor:
-                                                              Colors.white,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -388,10 +406,9 @@ class ActivityArticlePage extends StatelessWidget {
                                                           onSelectedItemChanged:
                                                               (int value) {
                                                             postController
-                                                                .activitybudget
-                                                                .value = (value +
-                                                                    1) *
-                                                                50;
+                                                                    .activitybudget
+                                                                    .value =
+                                                                (value) * 50;
                                                           },
                                                           children: priceList,
                                                         ),
@@ -423,9 +440,6 @@ class ActivityArticlePage extends StatelessWidget {
           // Obx(
           //   () =>
           ListTile(
-        tileColor: postController.activityLocation.value != ''
-            ? Colors.green
-            : Color(0xffb00020),
         title: postController.activityLocation.value == ""
             ? Text(
                 "選擇活動地點",
@@ -444,8 +458,11 @@ class ActivityArticlePage extends StatelessWidget {
           Icons.keyboard_arrow_right_outlined,
         ),
         shape: RoundedRectangleBorder(
-            side:
-                const BorderSide(color: Color.fromARGB(105, 0, 0, 0), width: 1),
+            side: BorderSide(
+                color: postController.activityLocation.value != ''
+                    ? Colors.green
+                    : Color.fromARGB(255, 237, 187, 196),
+                width: 2),
             borderRadius: BorderRadius.circular(30)),
         onTap: () {
           Navigator.push(
@@ -455,45 +472,73 @@ class ActivityArticlePage extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        title: Text('最後一步'),
-        actions: [
-          TextButton(
-              onPressed: () async {
-                showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                          backgroundColor: Theme.of(context).backgroundColor,
-                          title: const Text('發布中...'),
-                          content: Container(
-                              height: 150,
-                              width: 30,
-                              child:
-                                  Center(child: CircularProgressIndicator())),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Text('最後一步'),
+          actions: [
+            TextButton(
+                onPressed: () async {
+                  await postController.checkData();
+                  await postController.checkActivity.value
+                      ? Get.showSnackbar(GetSnackBar(
+                          title: "通知",
+                          icon: Icon(
+                            Icons.check_circle,
+                            color: Colors.green[400],
+                          ),
+                          message: "成功發送貼文～",
+                          duration: const Duration(seconds: 3),
+                        ))
+                      : Get.showSnackbar(GetSnackBar(
+                          title: "通知",
+                          icon: Icon(
+                            Icons.error,
+                            color: Colors.red[400],
+                          ),
+                          message: "尚有資料未填寫完畢！",
+                          duration: const Duration(seconds: 3),
                         ));
-                await postController.goToDataBase();
-                Get.offAll(() => HomePageTabbar());
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '發布',
-                  // style: Theme.of(context).textTheme.labelLarge,
-                ),
-              ))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
+                  await postController.checkActivity.value
+                      ? postController.goToDataBase()
+                      : null;
+                  await postController.checkActivity.value
+                      ? showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                title: const Text('發布中...'),
+                                content: Container(
+                                    height: 150,
+                                    width: 30,
+                                    child: Center(
+                                        child: CircularProgressIndicator())),
+                              ))
+                      : null;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '發布',
+                    // style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ))
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
                 margin: const EdgeInsets.only(top: 20, bottom: 20),
                 height: 100,
                 width: 100,
@@ -504,65 +549,72 @@ class ActivityArticlePage extends StatelessWidget {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Hero(
-                          tag: 'pic',
-                          child: Image.file(
-                            ActivityPostController.pickedList[0],
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.width * 1.05,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
-                          )),
+                            image: FileImage(
+                                File(ActivityPostController.pickedList[0])),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                )),
-            Container(
-              height: 60,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20, left: 20),
-                child: TextField(
-                  onChanged: (value) {
-                    postController.activityTitle.value = value;
-                  },
-                  controller: titleCtr,
-                  maxLines: 1,
-                  maxLength: 15,
-                  decoration: InputDecoration(
-                    hintText: '請輸入活動名稱...',
+                ),
+              ),
+              Container(
+                height: 60,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 20),
+                  child: TextField(
+                    onChanged: (value) {
+                      postController.activityTitle.value = value;
+                    },
+                    controller: titleCtr,
+                    maxLines: 1,
+                    maxLength: 15,
+                    decoration: InputDecoration(
+                      hintText: '請輸入活動名稱...',
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              height: 150,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20, left: 20),
-                child: TextField(
-                  onChanged: (value) {
-                    postController.activityContent.value = value;
-                  },
-                  controller: contentCtr,
-                  maxLines: 7,
-                  maxLength: 150,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: '請輸入活動內容...',
+              Container(
+                height: 150,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 20),
+                  child: TextField(
+                    onChanged: (value) {
+                      postController.activityContent.value = value;
+                    },
+                    controller: contentCtr,
+                    maxLines: 7,
+                    maxLength: 150,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '請輸入活動內容...',
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: ActivityTime(),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: ActivitySetting(),
-            ),
-            Obx(
-              (() => Container(
-                    padding: EdgeInsets.all(10),
-                    child: ActivityLocation(),
-                  )),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.all(10),
+                child: ActivityTime(),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: ActivitySetting(),
+              ),
+              Obx(
+                (() => Container(
+                      padding: EdgeInsets.all(10),
+                      child: ActivityLocation(),
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:cozydiary/pages/Activity/Post/ActivityArticlePage.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -119,24 +120,31 @@ class _SearchScreenState extends State<SearchScreen> {
                       onTap: () async {
                         final placeId = predictions[index].placeId!;
                         final details = await googlePlace.details.get(placeId);
+
                         if (details != null &&
                             details.result != null &&
                             mounted) {
-                          if (startFocusNode.hasFocus) {
-                            setState(() {
-                              startPosition = details.result;
-                              _startSearchFieldController.text =
-                                  details.result!.name!;
+                          showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                    backgroundColor:
+                                        Theme.of(context).backgroundColor,
+                                    title: const Text('發文中...'),
+                                    content: Container(
+                                        height: 150,
+                                        width: 30,
+                                        child: Center(
+                                            child:
+                                                CircularProgressIndicator())),
+                                  ));
 
-                              predictions = [];
-                            });
-                          }
-
-                          if (startPosition != null) {
-                            postController
-                                .updateActivityLocation(startPosition);
-                            Get.back();
-                          }
+                          startPosition = details.result;
+                          _startSearchFieldController.text =
+                              details.result!.name!;
+                          predictions = [];
+                          postController.updateActivityLocation(startPosition);
+                          Get.back();
+                          Get.back();
                         }
                       },
                     );
