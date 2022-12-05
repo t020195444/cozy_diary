@@ -51,7 +51,6 @@ class GoogleMapPageState extends State<GoogleMapPage> {
 
   late LatLng currentLatLng;
   Set<Marker> markersList = Set();
-  late Position _currentPosition;
   postcover() async {
     double lat = 0;
     double lng = 0;

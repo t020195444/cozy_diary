@@ -489,25 +489,7 @@ class ActivityArticlePage extends StatelessWidget {
             TextButton(
                 onPressed: () async {
                   await postController.checkData();
-                  await postController.checkActivity.value
-                      ? Get.showSnackbar(GetSnackBar(
-                          title: "通知",
-                          icon: Icon(
-                            Icons.check_circle,
-                            color: Colors.green[400],
-                          ),
-                          message: "成功發送貼文～",
-                          duration: const Duration(seconds: 3),
-                        ))
-                      : Get.showSnackbar(GetSnackBar(
-                          title: "通知",
-                          icon: Icon(
-                            Icons.error,
-                            color: Colors.red[400],
-                          ),
-                          message: "尚有資料未填寫完畢！",
-                          duration: const Duration(seconds: 3),
-                        ));
+
                   await postController.checkActivity.value
                       ? postController.goToDataBase()
                       : null;
