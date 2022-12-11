@@ -138,26 +138,6 @@ class ActivityPostController extends GetxController {
     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
     if (_ps.isAuth) {
       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList();
-
-      // var _folder;
-      // if (Platform.isAndroid) {
-      //   for (var folder in albums) {
-      //     if (folder.name == 'Download') {
-      //       _folder = folder;
-      //     }
-      //   }
-      // } else if (Platform.isIOS) {
-      //   for (var folder in albums) {
-      //     if (folder.name == '豆漿') {
-      //       _folder = folder;
-      //     }
-      //   }
-      // }
-      // albums = [];
-      // albums.add(_folder);
-      // print(albums);
-      // List<AssetEntity> media =
-      //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
       List media =
           await albums[0].getAssetListRange(start: startNum, end: endNum);
 
@@ -222,10 +202,6 @@ class ActivityPostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(_temp);
-      print(mediaList);
-      print(fileList);
-      // print(mediaList);
-      //default Pic
       currPic.value = fileList[0].path;
       checkBox = List.generate(mediaList.length, (_) => false.obs);
     } else {}
@@ -299,7 +275,6 @@ class ActivityPostController extends GetxController {
 
     //設置顯示照片List
     mediaList.addAll(_temp);
-    // print(mediaList);
 
     checkBox = List.generate(mediaList.length, (_) => false.obs);
   }
@@ -308,7 +283,6 @@ class ActivityPostController extends GetxController {
   changeCurrPic(int i) {
     //設置目前顯示照片
     currPic.value = fileList[i].path;
-    // print(currPic.value);
     setPicList(i);
   }
 
@@ -324,10 +298,6 @@ class ActivityPostController extends GetxController {
       pickedList.add(tempFile);
       checkBox[i].value = true;
     }
-    print('show');
-    print(showList);
-    print('pick');
-    print(pickedList);
   }
 
   //create post
@@ -409,7 +379,6 @@ class ActivityPostController extends GetxController {
   getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
-    // print(categoryList);
   }
 
   RxMap selectedMap = {}.obs;
@@ -442,9 +411,5 @@ class ActivityPostController extends GetxController {
       ],
     );
     showList[index] = croppedFile!.path;
-    print('show');
-    print(showList);
-    print('pick');
-    print(pickedList);
   }
 }

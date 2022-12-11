@@ -51,7 +51,6 @@ class ViewPostController extends GetxController {
         // ignore: unnecessary_null_comparison
         if (data != null) {
           currViewPostDetial.value = data.data;
-          // print(postDetailModelToJson(data));
           currViewPostDetial.refresh();
         }
 

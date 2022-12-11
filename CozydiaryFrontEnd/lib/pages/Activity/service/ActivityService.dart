@@ -12,7 +12,6 @@ class ActivityService {
 
   //活動按讚列表
   Future<dynamic> activityLikesList(String aid) async {
-    print(Api.ipUrl + Api.activityLikesList + aid);
     var response = await dio.get(Api.ipUrl + Api.activityLikesList + aid);
     var jsonString = response.data;
     return jsonString['data'];
@@ -20,7 +19,6 @@ class ActivityService {
 
   //刪除活動
   Future<dynamic> deleteActivity(String aid) async {
-    print(Api.ipUrl + Api.deleteActivity + aid);
     return await dio.post(Api.ipUrl + Api.deleteActivity + aid);
   }
 

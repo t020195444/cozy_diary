@@ -16,7 +16,6 @@ class DrawerWidget extends StatelessWidget {
   final String uid;
   @override
   Widget build(BuildContext context) {
-    // print(Hive.box("UidAndState").get("uid"));
     return SafeArea(
       child: Drawer(
           child: ListView(

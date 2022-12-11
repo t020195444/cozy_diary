@@ -15,7 +15,6 @@ class PersonalService {
     var response = await dio.get(Api.ipUrl + Api.getUser + id);
     var jsonString = response.data;
     var encodeJsonString = jsonEncode(jsonString);
-    // print(encodeJsonString);
     var fromJsonValue = userModelFromJson(encodeJsonString);
     return fromJsonValue;
   }

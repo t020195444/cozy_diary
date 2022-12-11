@@ -75,13 +75,6 @@ class EditUserController extends GetxController {
       if (value != null) {
         oldImageUrl = value.path;
       }
-      // changeProfilePic(oldImageUrl).then((value) {
-      //   if (value == 200) {
-      //     Get.back();
-      //     Get.back();
-      //   }
-      // }).catchError((error) => print("Error$error"));
-
       return null;
     });
 
@@ -110,7 +103,6 @@ class EditUserController extends GetxController {
       // ignore: body_might_complete_normally_nullable
     ).then((value) {
       if (value != null) {
-        print(value);
         oldImageUrl = value.path;
         Get.dialog(Center(
           child: CircularProgressIndicator(),

@@ -47,7 +47,6 @@ class LoginController extends GetxController {
       email = user!.email;
 
       bool isLogin = await login(id);
-      print(isLogin);
       if (isLogin) {
         box.put("uid", id);
         Get.to(HomePageTabbar());
