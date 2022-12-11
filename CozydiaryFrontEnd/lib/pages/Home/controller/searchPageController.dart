@@ -1,11 +1,6 @@
 import 'package:cozydiary/Model/SearchDataModel.dart';
-import 'package:cozydiary/Model/postCoverModel.dart';
-import 'package:cozydiary/Model/postDetailModel.dart';
 import 'package:cozydiary/PostJsonService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:google_place/google_place.dart';
-import 'package:http/http.dart';
 
 import '../../Personal/Service/PersonalService.dart';
 
@@ -32,6 +27,7 @@ class SearchPageController extends GetxController {
   Future<void> getOtherUserData(int index) async {
     try {
       var UserData =
+          // ignore: invalid_use_of_protected_member
           await PersonalService.fetchUserData(searchResult.value[index].uid);
       if (UserData != null) {
         if (UserData.status == 200) {

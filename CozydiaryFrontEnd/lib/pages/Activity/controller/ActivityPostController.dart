@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:cozydiary/Model/WriteActivityPostModel.dart';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/api.dart';
 import 'package:cozydiary/login_controller.dart';
-import 'package:cozydiary/pages/Activity/Post/ActivityArticlePage.dart';
 import 'package:cozydiary/pages/Activity/service/ActivityPostService.dart';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:cozydiary/postJsonService.dart';

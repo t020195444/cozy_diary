@@ -521,6 +521,7 @@ class ActivityViewPostScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _viewPostPic extends StatelessWidget {
   _viewPostPic({required this.id});
   String id;

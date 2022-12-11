@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cozydiary/pages/Activity/Post/ActivityLocationSearch.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -492,7 +491,16 @@ class ActivityArticlePage extends StatelessWidget {
 
                   await postController.checkActivity.value
                       ? postController.goToDataBase()
-                      : null;
+                      : Get.showSnackbar(GetSnackBar(
+                          title: "通知",
+                          icon: Icon(
+                            Icons.error,
+                            color: Colors.red[400],
+                          ),
+                          message: "尚有資料未填寫完畢！",
+                          duration: const Duration(seconds: 3),
+                        ));
+                  ;
                   await postController.checkActivity.value
                       ? showDialog<String>(
                           context: context,

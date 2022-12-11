@@ -85,6 +85,7 @@ class EditUserController extends GetxController {
       return null;
     });
 
+    // ignore: unused_local_variable
     CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: oldImageUrl,
       aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -106,6 +107,7 @@ class EditUserController extends GetxController {
           resetAspectRatioEnabled: false,
         )
       ],
+      // ignore: body_might_complete_normally_nullable
     ).then((value) {
       if (value != null) {
         print(value);
@@ -119,6 +121,7 @@ class EditUserController extends GetxController {
             Get.back();
             Get.find<SelfPageController>().getUserData();
           }
+          // ignore: invalid_return_type_for_catch_error
         }).catchError((error) => print("Error$error"));
       }
     });

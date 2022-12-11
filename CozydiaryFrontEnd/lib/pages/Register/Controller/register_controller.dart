@@ -83,6 +83,7 @@ class RegisterController extends GetxController {
     final XFile? pickedImage =
         await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
+      // ignore: unused_local_variable
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedImage.path,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -103,6 +104,7 @@ class RegisterController extends GetxController {
               aspectRatioPickerButtonHidden: true,
               resetAspectRatioEnabled: false)
         ],
+        // ignore: body_might_complete_normally_nullable
       ).then((value) {
         if (value != null) {
           final image = io.File(value.path);

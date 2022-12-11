@@ -1,19 +1,15 @@
 import 'dart:convert';
 import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
-import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:cozydiary/pages/Register/Page/registerPage.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'Model/registerUserDataModel.dart';
 import 'api.dart';
 import 'main.dart';
-import 'pages/Home/controller/ChangePageController.dart';
 
 class LoginController extends GetxController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);

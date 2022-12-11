@@ -38,7 +38,6 @@ class _PostActivityPageState extends State<PostActivityPage> {
                   postController.showList.value = [];
                   postController.showList.value =
                       ActivityPostController.pickedList;
-                  print(postController.showList.value);
                   if (ActivityPostController.pickedList.isEmpty) {
                     Fluttertoast.showToast(
                         msg: '沒選照片',

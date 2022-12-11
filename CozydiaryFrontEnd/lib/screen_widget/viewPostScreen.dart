@@ -1,4 +1,3 @@
-import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
 
+// ignore: must_be_immutable
 class ViewPostScreen extends StatelessWidget {
   ViewPostScreen(
       {Key? key,
@@ -904,6 +904,7 @@ class ViewPostScreen extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _viewPostPic extends StatelessWidget {
   const _viewPostPic({Key? key}) : super(key: key);
 

@@ -2,7 +2,6 @@
 //
 //     final searchDataModel = searchDataModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 SearchDataModel searchDataModelFromJson(String str) =>

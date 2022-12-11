@@ -1,6 +1,5 @@
 import 'package:cozydiary/Model/postCategoryModel.dart';
 import 'package:cozydiary/pages/Register/Service/registerService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,6 +83,7 @@ class CategoryController extends GetxController {
       CategoryListModel response =
           await RegisterService.fetchUserCategoryList(uid);
       if (response.status == 200) {
+        // ignore: unnecessary_null_comparison
         if (response.data != null && response.data != []) {
           response.data.forEach((element) {
             finalCategoryList.add(element.cid);

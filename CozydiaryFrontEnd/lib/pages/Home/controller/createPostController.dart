@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/api.dart';
 import 'package:cozydiary/postJsonService.dart';
@@ -10,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:photo_manager/photo_manager.dart';
 import 'package:dio/dio.dart';
-
-import '../HomePageTabbar.dart';
 
 class CreatePostController extends GetxController {
   @override
