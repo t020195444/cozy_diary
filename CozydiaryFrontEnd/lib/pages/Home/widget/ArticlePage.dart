@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:photo_view/photo_view.dart';
 
 import '../HomePageTabbar.dart';
 import '../controller/createPostController.dart';
@@ -163,7 +162,10 @@ class ArticlePage extends StatelessWidget {
                                                         .categoryList['data']
                                                     [index] ==
                                                 _createPostController
-                                                    .selectedMap.value
+                                                    // ignore: invalid_use_of_protected_member
+                                                    .selectedMap
+                                                    // ignore: invalid_use_of_protected_member
+                                                    .value
                                             ? Theme.of(context).primaryColor
                                             : Theme.of(context)
                                                 .primaryColorLight),

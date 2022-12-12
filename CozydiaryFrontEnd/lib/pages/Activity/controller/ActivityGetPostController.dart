@@ -58,7 +58,6 @@ class ActivityGetPostController extends GetxController {
         isLike.value = false;
       }
     }
-    print(isLike);
 
     // await ActivityPostService.getActivityDetail(activityId.value.toString());
     update();

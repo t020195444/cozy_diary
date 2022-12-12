@@ -36,10 +36,8 @@ class _PostActivityPageState extends State<PostActivityPage> {
             TextButton(
                 onPressed: () {
                   postController.showList.value = [];
-                  postController.showList.value =
-                      ActivityPostController.pickedList;
-                  print(postController.showList.value);
-                  if (ActivityPostController.pickedList.isEmpty) {
+                  postController.showList.value = postController.pickedList;
+                  if (postController.pickedList.isEmpty) {
                     Fluttertoast.showToast(
                         msg: '沒選照片',
                         toastLength: Toast.LENGTH_SHORT,
@@ -94,8 +92,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                           enablePullUp: true,
                           onLoading: _load,
                           child: GridView.builder(
-                              itemCount:
-                                  ActivityPostController.mediaList.length,
+                              itemCount: postController.mediaList.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3),
@@ -109,8 +106,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                                       child: Stack(
                                         children: [
                                           Container(
-                                            child: ActivityPostController
-                                                .mediaList[i],
+                                            child: postController.mediaList[i],
                                           ),
                                           Align(
                                             alignment: Alignment.topRight,
@@ -127,7 +123,7 @@ class _PostActivityPageState extends State<PostActivityPage> {
                                                       BorderRadius.all(
                                                           Radius.circular(20)),
                                                 ),
-                                                child: ActivityPostController
+                                                child: postController
                                                             .checkBox[i]
                                                             .value ==
                                                         true

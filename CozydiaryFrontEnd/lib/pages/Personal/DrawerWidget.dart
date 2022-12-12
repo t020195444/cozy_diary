@@ -1,7 +1,6 @@
 import 'package:cozydiary/pages/Personal/Self/Page/userManagementPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 import 'Self/SettingMenuPage.dart';
 
@@ -17,7 +16,6 @@ class DrawerWidget extends StatelessWidget {
   final String uid;
   @override
   Widget build(BuildContext context) {
-    // print(Hive.box("UidAndState").get("uid"));
     return SafeArea(
       child: Drawer(
           child: ListView(

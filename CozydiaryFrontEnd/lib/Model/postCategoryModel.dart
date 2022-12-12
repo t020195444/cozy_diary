@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final postCategoryModel = postCategoryModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PostCategoryModel postCategoryModelFromJson(String str) =>

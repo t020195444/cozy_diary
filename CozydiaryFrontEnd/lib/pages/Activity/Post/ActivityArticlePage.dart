@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cozydiary/pages/Activity/Post/ActivityLocationSearch.dart';
 import 'package:cozydiary/pages/Activity/controller/ActivityPostController.dart';
-import 'package:cozydiary/pages/Home/HomePageTabbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -283,16 +282,13 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
-                                                  barrierColor:
-                                                      CupertinoDynamicColor
-                                                          .resolve(
-                                                              Theme.of(context)
-                                                                  .backgroundColor,
-                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .backgroundColor,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -388,16 +384,13 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
-                                                  barrierColor:
-                                                      CupertinoDynamicColor
-                                                          .resolve(
-                                                              Theme.of(context)
-                                                                  .backgroundColor,
-                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .backgroundColor,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -490,15 +483,7 @@ class ActivityArticlePage extends StatelessWidget {
                 onPressed: () async {
                   await postController.checkData();
                   await postController.checkActivity.value
-                      ? Get.showSnackbar(GetSnackBar(
-                          title: "通知",
-                          icon: Icon(
-                            Icons.check_circle,
-                            color: Colors.green[400],
-                          ),
-                          message: "成功發送貼文～",
-                          duration: const Duration(seconds: 3),
-                        ))
+                      ? postController.goToDataBase()
                       : Get.showSnackbar(GetSnackBar(
                           title: "通知",
                           icon: Icon(
@@ -508,9 +493,7 @@ class ActivityArticlePage extends StatelessWidget {
                           message: "尚有資料未填寫完畢！",
                           duration: const Duration(seconds: 3),
                         ));
-                  await postController.checkActivity.value
-                      ? postController.goToDataBase()
-                      : null;
+                  ;
                   await postController.checkActivity.value
                       ? showDialog<String>(
                           context: context,
@@ -555,8 +538,8 @@ class ActivityArticlePage extends StatelessWidget {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: FileImage(
-                                File(ActivityPostController.pickedList[0])),
+                            image:
+                                FileImage(File(postController.pickedList[0])),
                           ),
                         ),
                       ),

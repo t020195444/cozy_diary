@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:cozydiary/Model/WritePostModel.dart';
 import 'package:cozydiary/api.dart';
 import 'package:cozydiary/postJsonService.dart';
@@ -10,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:photo_manager/photo_manager.dart';
 import 'package:dio/dio.dart';
-
-import '../HomePageTabbar.dart';
 
 class CreatePostController extends GetxController {
   @override
@@ -46,25 +43,6 @@ class CreatePostController extends GetxController {
 
     if (_ps.isAuth) {
       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList();
-      // var _folder;
-      // if (Platform.isAndroid) {
-      //   for (var folder in albums) {
-      //     if (folder.name == 'Download') {
-      //       _folder = folder;
-      //     }
-      //   }
-      // } else if (Platform.isIOS) {
-      //   for (var folder in albums) {
-      //     if (folder.name == '豆漿') {
-      //       _folder = folder;
-      //     }
-      //   }
-      // }
-      // albums = [];
-      // albums.add(_folder);
-      // print(albums);
-      // List<AssetEntity> media =
-      //     await albums[0].getAssetListPaged(size: 15, page: currentPage);
       List media =
           await albums[0].getAssetListRange(start: startNum, end: endNum);
 
@@ -129,8 +107,6 @@ class CreatePostController extends GetxController {
 
       //設置顯示照片List
       mediaList.addAll(_temp);
-      // print(mediaList);
-      //default Pic
       currPic.value = fileList[0].path;
       checkBox = List.generate(mediaList.length, (_) => false.obs);
     } else {}
@@ -204,7 +180,6 @@ class CreatePostController extends GetxController {
 
     //設置顯示照片List
     mediaList.addAll(_temp);
-    // print(mediaList);
 
     checkBox = List.generate(mediaList.length, (_) => false.obs);
   }
@@ -214,7 +189,6 @@ class CreatePostController extends GetxController {
     //設置目前顯示照片
 
     currPic.value = fileList[i].path;
-    // print(currPic.value);
     setPicList(i);
   }
 
@@ -281,7 +255,6 @@ class CreatePostController extends GetxController {
     WritePostModule writePost = WritePostModule(post: postsContext);
     var jsonString = jsonEncode(writePost.toJson());
     formData = FormData.fromMap({"jsondata": jsonString});
-    // print(formData.fields.toString());
     for (int i = 0; i < showList.length; i++) {
       formData.files.addAll(
           [MapEntry("file", await MultipartFile.fromFile(showList[i]))]);
@@ -293,7 +266,6 @@ class CreatePostController extends GetxController {
   getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
-    // print(categoryList);
   }
 
   RxMap selectedMap = {}.obs;

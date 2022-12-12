@@ -1,4 +1,3 @@
-import 'package:cozydiary/Model/writePostModel.dart';
 import 'package:hive/hive.dart';
 import "package:get/get.dart" hide FormData, MultipartFile, Response;
 import '../../../Model/categoryList.dart';

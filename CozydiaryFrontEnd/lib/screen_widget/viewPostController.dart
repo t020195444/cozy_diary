@@ -48,9 +48,9 @@ class ViewPostController extends GetxController {
     try {
       PostDetailModel data = await PostService.getPostDetail(currViewPostID);
       if (data.status == 200) {
+        // ignore: unnecessary_null_comparison
         if (data != null) {
           currViewPostDetial.value = data.data;
-          // print(postDetailModelToJson(data));
           currViewPostDetial.refresh();
         }
 

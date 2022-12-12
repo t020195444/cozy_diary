@@ -29,18 +29,21 @@ class HomePage extends StatelessWidget {
         // titleSpacing: 0,
         elevation: 0,
         title: Center(
-          child: TabBar(
-              isScrollable: true,
-              indicatorSize: TabBarIndicatorSize.label,
-              labelStyle: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-              controller: topTabbarController.topController,
-              labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-              // unselectedLabelColor: Colors.black38,
-              unselectedLabelStyle: TextStyle(fontSize: 15),
-              tabs: topTabbarController.topTabs),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: TabBar(
+                isScrollable: true,
+                indicatorSize: TabBarIndicatorSize.label,
+                labelStyle: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+                controller: topTabbarController.topController,
+                labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                // unselectedLabelColor: Colors.black38,
+                unselectedLabelStyle: TextStyle(fontSize: 15),
+                tabs: topTabbarController.topTabs),
+          ),
         ),
       ),
       body: TabBarView(

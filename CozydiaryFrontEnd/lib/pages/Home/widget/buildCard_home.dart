@@ -104,9 +104,6 @@ class BuildCardHome extends StatelessWidget {
                               onTap: () {
                                 var userUid =
                                     Hive.box("UidAndState").get("uid");
-                                print("uid" + uid);
-                                print("userUid" + userUid);
-                                print(uid != userUid);
                                 if (uid != userUid) {
                                   Get.put(
                                       OtherPersonPageController(otherUid: uid));

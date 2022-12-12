@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../screen_widget/viewPostScreen.dart';
 
+// ignore: must_be_immutable
 class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
   SearchPageController searchPageController = Get.put(SearchPageController());
@@ -60,7 +61,11 @@ class SearchPage extends StatelessWidget {
                           padding: EdgeInsets.all(2),
                           child: Image.network(
                             searchPageController
-                                .searchResult.value[index].cover,
+                                // ignore: invalid_use_of_protected_member
+                                .searchResult
+                                // ignore: invalid_use_of_protected_member
+                                .value[index]
+                                .cover,
                             fit: BoxFit.cover,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
