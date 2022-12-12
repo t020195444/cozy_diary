@@ -19,15 +19,11 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(left: 0.0, right: 16.0),
-            child: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () =>
-                  Get.to(() => SearchPage(), transition: Transition.downToUp),
-            ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () =>
+                Get.to(() => SearchPage(), transition: Transition.downToUp),
           )
         ],
         // titleSpacing: 0,
