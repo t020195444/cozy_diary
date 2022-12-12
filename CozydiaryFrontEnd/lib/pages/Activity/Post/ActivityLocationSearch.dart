@@ -52,7 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         leading: const BackButton(color: Colors.black),
         elevation: 0,
       ),
@@ -71,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     hintStyle: const TextStyle(
                         fontWeight: FontWeight.w500, fontSize: 16),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    // fillColor: Theme.of(context).primaryColor,
                     border: InputBorder.none,
                     suffixIcon: _startSearchFieldController.text.isNotEmpty
                         ? IconButton(

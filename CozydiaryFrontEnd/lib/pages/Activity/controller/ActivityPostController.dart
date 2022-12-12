@@ -120,12 +120,12 @@ class ActivityPostController extends GetxController {
     update();
   }
 
-  static late List<RxBool> checkBox =
+  late List<RxBool> checkBox =
       List.generate(mediaList.length, (_) => false.obs);
 
   //function
-  static List fileList = [].obs;
-  static RxList mediaList = [].obs;
+  List fileList = [].obs;
+  RxList mediaList = [].obs;
   RxList showList = [].obs;
   RxBool isLoading = false.obs;
   int startNum = 0;
@@ -286,7 +286,7 @@ class ActivityPostController extends GetxController {
     setPicList(i);
   }
 
-  static List pickedList = [];
+  List pickedList = [];
 
   setPicList(int i) {
     String tempFile = fileList[i].path;
@@ -309,8 +309,7 @@ class ActivityPostController extends GetxController {
   RxBool isPosting = true.obs;
   goToDataBase() async {
     checkBox = [];
-    checkBox = List.generate(
-        ActivityPostController.mediaList.length, (_) => false.obs);
+    checkBox = List.generate(mediaList.length, (_) => false.obs);
 
     var formdata = await writePost();
 

@@ -282,16 +282,13 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
-                                                  barrierColor:
-                                                      CupertinoDynamicColor
-                                                          .resolve(
-                                                              Theme.of(context)
-                                                                  .backgroundColor,
-                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .backgroundColor,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -387,16 +384,13 @@ class ActivityArticlePage extends StatelessWidget {
                                             onPressed: () {
                                               showCupertinoModalPopup(
                                                   context: context,
-                                                  barrierColor:
-                                                      CupertinoDynamicColor
-                                                          .resolve(
-                                                              Theme.of(context)
-                                                                  .backgroundColor,
-                                                              context),
                                                   builder: (_) => SizedBox(
                                                         width: double.infinity,
                                                         height: 200,
                                                         child: CupertinoPicker(
+                                                          backgroundColor: Theme
+                                                                  .of(context)
+                                                              .backgroundColor,
                                                           itemExtent: 30,
                                                           scrollController:
                                                               FixedExtentScrollController(
@@ -488,7 +482,6 @@ class ActivityArticlePage extends StatelessWidget {
             TextButton(
                 onPressed: () async {
                   await postController.checkData();
-
                   await postController.checkActivity.value
                       ? postController.goToDataBase()
                       : Get.showSnackbar(GetSnackBar(
@@ -545,8 +538,8 @@ class ActivityArticlePage extends StatelessWidget {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: FileImage(
-                                File(ActivityPostController.pickedList[0])),
+                            image:
+                                FileImage(File(postController.pickedList[0])),
                           ),
                         ),
                       ),
