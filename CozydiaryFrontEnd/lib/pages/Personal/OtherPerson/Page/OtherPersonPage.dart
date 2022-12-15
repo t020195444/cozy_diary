@@ -1,4 +1,3 @@
-import 'package:cozydiary/pages/Personal/OtherPerson/Controller/OtherPersonController.dart';
 import 'package:cozydiary/pages/Personal/OtherPerson/Widget/OtherPerson_PostGridView.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../TrackerPage/Page/trackerAndFollowerPage.dart';
+import '../Controller/otherPersonController.dart';
 import '../Controller/otherPersonTabbarController.dart';
 import '../Widget/OtherPerson_CollectGridView.dart';
 

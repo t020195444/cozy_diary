@@ -5,6 +5,7 @@ import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonContr
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:like_button/like_button.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../screen_widget/viewPostScreen.dart';
 import '../../Personal/OtherPerson/Page/otherPersonPage.dart';
@@ -28,6 +29,7 @@ class BuildCardHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return InkWell(
       onTap: () async {
         bool result = await Get.to(

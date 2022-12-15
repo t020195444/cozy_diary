@@ -23,7 +23,8 @@ class ActivityViewPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getPostController.isParticipant.value = false;
-    getPostController.isActivityParticipant();
+    getPostController.isActivityParticipant(
+        ActivityPostService.activityDetailList['participant']);
     getPostController.getActivityParticipantList();
     getPostController.activityId.value = int.parse(id);
     getPostController.checkLikeList(id);

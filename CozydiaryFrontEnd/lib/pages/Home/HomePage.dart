@@ -1,4 +1,5 @@
 import 'package:cozydiary/pages/Activity/Map/GoogleMapPage.dart';
+import 'package:cozydiary/pages/Activity/Screen/ActivityHistoryList.dart';
 import 'package:cozydiary/pages/Activity/widget/activity_GridView.dart';
 import 'package:cozydiary/pages/Home/controller/NestedTabbarController.dart';
 import 'package:cozydiary/widget/keepAliveWrapper.dart';
@@ -19,19 +20,40 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(left: 0.0, right: 0),
-            child: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () =>
-                  Get.to(() => SearchPage(), transition: Transition.downToUp),
-            ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () =>
+                Get.to(() => SearchPage(), transition: Transition.downToUp),
           )
         ],
         // titleSpacing: 0,
         elevation: 0,
+        leading: Container(
+          width: 100,
+          height: 50,
+          child: InkWell(
+            onTap: () => Get.to(() => ActivityHistoryList()),
+            child: Center(
+              child: Stack(alignment: Alignment.center, children: [
+                Positioned(
+                  child: Icon(
+                    Icons.archive_outlined,
+                    size: 30,
+                  ),
+                ),
+                Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Icon(
+                      Icons.circle,
+                      size: 13,
+                      color: Colors.red,
+                    )),
+              ]),
+            ),
+          ),
+        ),
         title: Center(
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0),
