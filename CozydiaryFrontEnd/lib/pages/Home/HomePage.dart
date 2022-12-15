@@ -42,14 +42,7 @@ class HomePage extends StatelessWidget {
                     size: 30,
                   ),
                 ),
-                Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Icon(
-                      Icons.circle,
-                      size: 13,
-                      color: Colors.red,
-                    )),
+                
               ]),
             ),
           ),

@@ -23,7 +23,7 @@ class ActivityHistoryList extends StatelessWidget {
                 Get.back();
               },
             ),
-            title: Text("歷史紀錄")),
+            title: Text("活動列表")),
         body: Obx(
           () => ListView.builder(
               itemCount: getPostController.activityHistoryList.length,
@@ -111,17 +111,18 @@ class ActivityHistoryList extends StatelessWidget {
                                       0
                                   ? getPostController.checkActivityHistory[index]
                                               ['participant'] !=
-                                          getPostController
-                                                  .activityHistoryList[index]
+                                          getPostController.activityHistoryList[index]
                                               ['holder']
                                       ? Container(
                                           width: 40,
                                           height: 40,
                                           decoration: BoxDecoration(
-                                              color: Color.fromARGB(
-                                                  255, 175, 223, 140),
+                                              color: Theme.of(context)
+                                                  .appBarTheme
+                                                  .backgroundColor,
                                               border: Border.all(
-                                                  color: Color.fromARGB(255, 175, 223, 140),
+                                                  color: Theme.of(context)
+                                                      .backgroundColor,
                                                   width: 2.0,
                                                   style: BorderStyle.solid),
                                               borderRadius: BorderRadius.circular(20)),
@@ -142,7 +143,7 @@ class ActivityHistoryList extends StatelessWidget {
                                   : Container(
                                       width: 40,
                                       height: 40,
-                                      decoration: BoxDecoration(color: Theme.of(context).appBarTheme.backgroundColor, border: Border.all(color: Theme.of(context).primaryColor, width: 2.0, style: BorderStyle.solid), borderRadius: BorderRadius.circular(20)),
+                                      decoration: BoxDecoration(color: Color.fromARGB(255, 175, 223, 140), border: Border.all(color: Color.fromARGB(255, 175, 223, 140), width: 2.0, style: BorderStyle.solid), borderRadius: BorderRadius.circular(20)),
                                       child: Center(
                                         child: Text("審核通過",
                                             style: TextStyle(
