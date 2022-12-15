@@ -1,5 +1,6 @@
 import 'package:cozydiary/pages/Personal/TrackerPage/Controller/trakerController.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../OtherPerson/Controller/otherPersonController.dart';
@@ -139,16 +140,24 @@ class TrackerPage extends StatelessWidget {
                                 style: TextStyle(fontSize: 16),
                               ),
                               contentPadding: EdgeInsets.all(30),
-                              onConfirm: () {
-                                var message = followerController.deleteFollower(
-                                    followerController
-                                        .trackerList[index].tracker1,
-                                    followerController
-                                        .trackerList[index].tracker2,
-                                    index);
+                              onConfirm: () async {
+                                Get.dialog(SpinKitFadingCircle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 50,
+                                ));
+                                var message =
+                                    await followerController.deleteFollower(
+                                        followerController
+                                            .trackerList[index].tracker1,
+                                        followerController
+                                            .trackerList[index].tracker2,
+                                        index);
                                 if (message == "刪除成功") {
                                   followerController.trackerList
                                       .removeAt(index);
+                                  followerController.update();
+                                  Get.back();
+                                  Get.back();
                                 } else if (message == "刪除失敗") {
                                   Get.showSnackbar(GetSnackBar(
                                     messageText: Text("移除失敗"),

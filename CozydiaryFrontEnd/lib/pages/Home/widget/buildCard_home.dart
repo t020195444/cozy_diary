@@ -29,6 +29,7 @@ class BuildCardHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return InkWell(
       onTap: () async {
         bool result = await Get.to(
@@ -87,68 +88,75 @@ class BuildCardHome extends StatelessWidget {
                       )),
             ),
             Padding(
-                padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
+              padding: EdgeInsets.all(12).copyWith(top: 0, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: InkWell(
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundImage: NetworkImage(postCovers[index].pic),
+                        ),
+                        onTap: () {
+                          var userUid = Hive.box("UidAndState").get("uid");
+
+                          if (uid != userUid) {
+                            Get.put(OtherPersonPageController(otherUid: uid));
+                            Get.to(
+                                () => OtherPersonalPage(
+                                    key: UniqueKey(), uid: uid),
+                                transition: Transition.fadeIn);
+                          } else {
+                            Get.find<ChangePageTabbarController>()
+                                .selectedIndex
+                                .value = 2;
+                          }
+                          ;
+                          // GetBuilder<OtherPersonPageController>(
+                          //     init: OtherPersonPageController(
+                          //         otherUid: uid),
+                          //     builder: (otherPersonPageController) {
+                          //       return OtherPersonalPage(
+                          //           key: UniqueKey(), uid: uid);
+                          //     }));
+                        },
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(right: 5),
-                            child: InkWell(
-                              child: CircleAvatar(
-                                radius: 15,
-                                backgroundImage:
-                                    NetworkImage(postCovers[index].pic),
-                              ),
-                              onTap: () {
-                                var userUid =
-                                    Hive.box("UidAndState").get("uid");
-                                if (uid != userUid) {
-                                  Get.put(
-                                      OtherPersonPageController(otherUid: uid));
-                                  Get.to(
-                                      () => OtherPersonalPage(
-                                          key: UniqueKey(), uid: uid),
-                                      transition: Transition.fadeIn);
-                                } else {
-                                  Get.find<ChangePageTabbarController>()
-                                      .selectedIndex
-                                      .value = 2;
-                                }
-                                ;
-                                // GetBuilder<OtherPersonPageController>(
-                                //     init: OtherPersonPageController(
-                                //         otherUid: uid),
-                                //     builder: (otherPersonPageController) {
-                                //       return OtherPersonalPage(
-                                //           key: UniqueKey(), uid: uid);
-                                //     }));
-                              },
-                            )),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              postCovers[index].username,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                // color: Colors.black
-                              ),
-                            )
-                          ],
+                        Text(
+                          postCovers[index].username,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.black
+                          ),
                         )
                       ],
                     ),
-                    LikeButton(
-                      likeCount: postCovers[index].likes,
-                      isLiked: true,
-                      size: 15,
-                    )
-                  ],
-                ))
+                  ),
+                  Expanded(child: Container()),
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Text(postCovers[index].likes.toString()),
+                  )
+                  // LikeButton(
+                  //   likeCount: postCovers[index].likes,
+                  //   isLiked: true,
+                  //   size: 15,
+                  // ),
+                ],
+              ),
+            )
           ],
         ),
       ),

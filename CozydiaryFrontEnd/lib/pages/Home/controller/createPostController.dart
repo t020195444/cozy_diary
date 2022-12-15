@@ -23,6 +23,8 @@ class CreatePostController extends GetxController {
   int currentPage = 0;
   RxBool isPicked = false.obs;
 
+  var categoryAssetsList = [];
+
   late List<RxBool> checkBox =
       List.generate(mediaList.length, (_) => false.obs);
 
@@ -262,15 +264,67 @@ class CreatePostController extends GetxController {
     return formData;
   }
 
-  static Map categoryList = {}.obs;
+  Map categoryList = {}.obs;
+  List categoryImageList = [];
+
   getList() async {
     var response = await PostService.dio.get(Api.ipUrl + Api.getCategoryList);
     categoryList = response.data;
+    categoryAssetsList = [
+      "assets/category/basketball_S.jpg",
+      "assets/category/dressStyle_S.jpg",
+      "assets/category/invest_S.jpg",
+      "assets/category/anime_S.jpg",
+      "assets/category/beauty_S.jpg",
+      "assets/category/memes.jpg",
+      "assets/category/scenery.jpg",
+      "assets/category/travel.jpg",
+      "assets/category/workout.jpg",
+      "assets/category/pets.jpg",
+      "assets/category/cars.jpg",
+      "assets/category/photography.jpg",
+      "assets/category/game.jpg",
+    ];
+    for (int i = 0; i < categoryList['data'].length; i++) {
+      categoryImageList.add(FutureBuilder(
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return Container(
+            height: 100,
+            width: 100,
+            child: Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: Image.asset(
+                    categoryAssetsList[i],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                      padding: EdgeInsets.only(right: 5, bottom: 5),
+                      child: Text(
+                        categoryList['data'][i]['category'],
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Theme.of(context).primaryColorLight),
+                      )),
+                ),
+              ],
+            ),
+          );
+        }, //resolution of thumbnail
+      ));
+    }
+    print(categoryImageList);
   }
 
   RxMap selectedMap = {}.obs;
+  RxInt currSelectedNumber = 0.obs;
   selectCategory(int index) {
+    currSelectedNumber.value = index;
     selectedMap.value = categoryList['data'][index];
+    print(selectedMap);
   }
 
   Future<void> changePicSize(String path, int index) async {

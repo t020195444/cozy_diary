@@ -34,6 +34,7 @@ class OtherPersonPageController extends GetxController {
       .obs;
   var postCover = <PostCoverData>[].obs;
   var trackerList = <TrackerList>[];
+  var collectedPostCover = <PostCoverData>[].obs;
   // int tid = -1;
 
   @override
@@ -41,6 +42,7 @@ class OtherPersonPageController extends GetxController {
     userUid = Hive.box("UidAndState").get("uid");
     getOtherUserData();
     getUserPostCover();
+    getCollectedPostCover();
     super.onInit();
   }
 
@@ -107,5 +109,19 @@ class OtherPersonPageController extends GetxController {
         trackerList = trackerResponse.data;
       }
     } finally {}
+  }
+
+  Future<void> getCollectedPostCover() async {
+    try {
+      isLoading(true);
+      var Posts = await PersonalService.fetchUserCollectedPostCover(otherUid);
+      if (Posts != null) {
+        if (Posts.status == 200) {
+          collectedPostCover.value = Posts.data;
+        }
+      }
+    } finally {
+      isLoading(false);
+    }
   }
 }

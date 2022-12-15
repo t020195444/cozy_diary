@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
+import '../../Register/Controller/categoryController.dart';
 import '../HomePageTabbar.dart';
 import '../controller/createPostController.dart';
 
@@ -11,6 +12,7 @@ class ArticlePage extends StatelessWidget {
   ArticlePage({Key? key}) : super(key: key);
 
   final _createPostController = Get.find<CreatePostController>();
+
   final titleCtr = TextEditingController();
   final contentCtr = TextEditingController();
 
@@ -20,98 +22,77 @@ class ArticlePage extends StatelessWidget {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('最後一步！'),
-          leading: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(Icons.arrow_back_ios_new_outlined)),
-          automaticallyImplyLeading: false,
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  if (titleCtr.text == '' || contentCtr.text == '') {
-                    Fluttertoast.showToast(
-                        msg: "標題或內文不可為空白",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  } else if (_createPostController.selectedMap.isEmpty) {
-                    Fluttertoast.showToast(
-                        msg: "請選擇類別",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  } else {
-                    _createPostController.setContent(
-                        titleCtr.text, contentCtr.text);
-
-                    showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              backgroundColor:
-                                  Theme.of(context).backgroundColor,
-                              title: const Text('發文中...'),
-                              content: Container(
-                                  height: 150,
-                                  width: 30,
-                                  child: Center(
-                                      child: CircularProgressIndicator())),
-                            ));
-
-                    await _createPostController.goToDataBase();
-
-                    Get.offAll(HomePageTabbar());
-                  }
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('最後一步！'),
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
                 },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '發布',
-                    // style: TextStyle(color: Colors.white),
-                  ),
-                )),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            // height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
+                icon: Icon(Icons.arrow_back_ios_new_outlined)),
+            automaticallyImplyLeading: false,
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    if (titleCtr.text == '' || contentCtr.text == '') {
+                      Fluttertoast.showToast(
+                          msg: "標題或內文不可為空白",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else if (_createPostController.selectedMap.isEmpty) {
+                      Fluttertoast.showToast(
+                          msg: "請選擇類別",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    } else {
+                      _createPostController.setContent(
+                          titleCtr.text, contentCtr.text);
+
+                      showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                title: const Text('發文中...'),
+                                content: Container(
+                                    height: 150,
+                                    width: 30,
+                                    child: Center(
+                                        child: CircularProgressIndicator())),
+                              ));
+
+                      await _createPostController.goToDataBase();
+
+                      Get.offAll(HomePageTabbar());
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '發布',
+                      // style: TextStyle(color: Colors.white),
+                    ),
+                  )),
+            ],
+          ),
+          body: SingleChildScrollView(
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                 Container(
                   height: MediaQuery.of(context).size.width * 1.05,
                   child: _showPicPage(),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(20.0),
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       Get.to(_showPicPage());
-                //     },
-                //     child: Obx(() => Padding(
-                //           padding: const EdgeInsets.only(bottom: 8.0),
-                //           child: Container(
-                //             width: MediaQuery.of(context).size.width,
-                //             height: MediaQuery.of(context).size.height * 0.3,
-                //             decoration: BoxDecoration(
-                //               image: DecorationImage(
-                //                 fit: BoxFit.cover,
-                //                 image: AssetImage(
-                //                     _createPostController.showList[0]),
-                //               ),
-                //             ),
-                //           ),
-                //         )),
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(right: 20, left: 20),
                   child: TextField(
@@ -138,49 +119,64 @@ class ArticlePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.1,
+                  height: 150,
                   child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount:
-                          CreatePostController.categoryList['data'].length,
-                      itemBuilder: ((context, index) {
-                        return Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                child: Obx(
-                                  () => ElevatedButton(
-                                    onPressed: () {
-                                      _createPostController
-                                          .selectCategory(index);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0)),
-                                        backgroundColor: CreatePostController
-                                                        .categoryList['data']
-                                                    [index] ==
-                                                _createPostController
-                                                    // ignore: invalid_use_of_protected_member
-                                                    .selectedMap
-                                                    // ignore: invalid_use_of_protected_member
-                                                    .value
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .primaryColorLight),
-                                    child: Text(
-                                      CreatePostController.categoryList['data']
-                                          [index]['category'],
-                                      style: TextStyle(fontSize: 20),
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: _createPostController.categoryImageList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          _createPostController.selectCategory(index);
+                        },
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0, bottom: 20, top: 10),
+                              child: Container(
+                                height: 150,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: _createPostController
+                                    .categoryImageList[index],
+                              ),
+                            ),
+                            Obx(
+                              () => Positioned(
+                                right: 10,
+                                top: 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: Color.fromARGB(129, 68, 68, 68),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
                                     ),
+                                    child: _createPostController
+                                                .currSelectedNumber ==
+                                            index
+                                        ? Icon(
+                                            Icons.check_circle,
+                                            color:
+                                                Color.fromARGB(147, 26, 26, 26),
+                                          )
+                                        : null,
                                   ),
-                                )));
-                      })),
-                ),
-              ],
-            ),
-          ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ])),
         ),
       ),
     );

@@ -146,7 +146,8 @@ class PersonalView extends StatelessWidget {
                               ],
                             ))
                           : InitOtherPersonPostGridView(uid: uid)),
-                      Obx(() => otherPersonPageController.postCover.isEmpty
+                      Obx(() => otherPersonPageController
+                              .collectedPostCover.isEmpty
                           ? Center(
                               child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +172,9 @@ class PersonalView extends StatelessWidget {
                                 )
                               ],
                             ))
-                          : InitOtherPersonCollectGridView())
+                          : InitOtherPersonCollectGridView(
+                              otherUid: uid,
+                            ))
                     ],
                   )),
             ),

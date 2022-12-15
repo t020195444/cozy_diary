@@ -24,6 +24,7 @@ class HomePageTabbar extends StatelessWidget {
     ];
     final controller = Get.put(ChangePageTabbarController());
     Get.put(SelfPageController());
+    
 
     return Obx((() => Scaffold(
           body: IndexedStack(
