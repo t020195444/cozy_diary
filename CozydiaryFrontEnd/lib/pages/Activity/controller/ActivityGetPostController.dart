@@ -33,7 +33,10 @@ class ActivityGetPostController extends GetxController {
   RxBool isParticipant = false.obs;
   RxList<dynamic> activityParticipant = [].obs; //參加人列表
   RxList<dynamic> checkActivityParticipant = [].obs; //審核列表
-  RxList<dynamic> checkActivitLike = [].obs; //審核列表
+  RxList<dynamic> checkActivityHistory = [].obs; //歷史列表
+  RxList<dynamic> activityHistoryList = [].obs; //歷史列表(存放詳細資料)
+  RxList<dynamic> activityHistoryUser = [].obs; //歷史列表(存放個人詳細資料)
+  RxList<dynamic> checkActivitLike = [].obs; //按讚列表
 
   Map updateParticipantData = {}; //參加人資料
 
@@ -84,11 +87,26 @@ class ActivityGetPostController extends GetxController {
     update();
   }
 
+  //獲取使用者參與活動列表
+  getActivityHistoryList(String uid) async {
+    activityHistoryList.value = [];
+    activityHistoryUser.value = [];
+    checkActivityHistory.value = await ActivityService().getHistoryList(uid);
+    for (var i = 0; i < checkActivityHistory.length; i++) {
+      activityHistoryList.add(await ActivityPostService.getActivityDetail(
+          checkActivityHistory[i]['aid'].toString()));
+    }
+    for (var i = 0; i < activityHistoryList.length; i++) {
+      activityHistoryUser.add(await ActivityService.getUserData(
+          activityHistoryList[i]['holder'].toString()));
+    }
+    update();
+  }
+
   //判斷是否已經報名
-  isActivityParticipant() async {
-    for (var i = 0; i < activityParticipant.length; i++) {
-      if (activityParticipant[i]["participant"] ==
-          Hive.box("UidAndState").get("uid")) {
+  isActivityParticipant(list) async {
+    for (var i = 0; i < list.length; i++) {
+      if (list[i]['participant'] == Hive.box("UidAndState").get("uid")) {
         isParticipant.value = true;
         break;
       } else {
@@ -137,7 +155,6 @@ class ActivityGetPostController extends GetxController {
   @override
   void onInit() {
     participantContent.value = "";
-    isActivityParticipant();
     super.onInit();
   }
 
@@ -175,6 +192,5 @@ class ActivityGetPostController extends GetxController {
     selectActPayment.value = data['data']['payment'];
     activityParticipant.value = data['data']["participant"];
     isLoding.value = false;
-    await isActivityParticipant();
   }
 }

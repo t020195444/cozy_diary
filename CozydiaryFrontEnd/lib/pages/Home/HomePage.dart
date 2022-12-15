@@ -5,6 +5,7 @@ import 'package:cozydiary/widget/keepAliveWrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import '../Activity/Screen/ActivityHistoryList.dart';
 import 'controller/TopTabbarController.dart';
 import 'searchPage.dart';
 
@@ -19,7 +20,31 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-
+        leading: Container(
+          width: 100,
+          height: 50,
+          child: InkWell(
+            onTap: () => Get.to(() => ActivityHistoryList()),
+            child: Center(
+              child: Stack(alignment: Alignment.center, children: [
+                Positioned(
+                  child: Icon(
+                    Icons.archive_outlined,
+                    size: 30,
+                  ),
+                ),
+                Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Icon(
+                      Icons.circle,
+                      size: 13,
+                      color: Colors.red,
+                    )),
+              ]),
+            ),
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(left: 0.0, right: 0),
@@ -33,21 +58,18 @@ class HomePage extends StatelessWidget {
         // titleSpacing: 0,
         elevation: 0,
         title: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15.0),
-            child: TabBar(
-                isScrollable: true,
-                indicatorSize: TabBarIndicatorSize.label,
-                labelStyle: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-                controller: topTabbarController.topController,
-                labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                // unselectedLabelColor: Colors.black38,
-                unselectedLabelStyle: TextStyle(fontSize: 15),
-                tabs: topTabbarController.topTabs),
-          ),
+          child: TabBar(
+              isScrollable: true,
+              indicatorSize: TabBarIndicatorSize.label,
+              labelStyle: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+              controller: topTabbarController.topController,
+              labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
+              // unselectedLabelColor: Colors.black38,
+              unselectedLabelStyle: TextStyle(fontSize: 15),
+              tabs: topTabbarController.topTabs),
         ),
       ),
       body: TabBarView(
