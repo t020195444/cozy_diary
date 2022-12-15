@@ -19,7 +19,6 @@ class ActivityPostService {
     activityDetailList = {};
     var response = await dio.get(Api.ipUrl + Api.getActivityDetail + i);
     var data = response.data;
-
     List tempPathList = [];
     for (int j = 0; j < data['data']['activityFiles'].length; j++) {
       tempPathList.add(data['data']['activityFiles'][j]['activityUrl']);
@@ -38,10 +37,9 @@ class ActivityPostService {
     activityDetailList['activityTime'] = data['data']['activityTime'];
     activityDetailList['auditTime'] = data['data']['auditTime'];
     activityDetailList['participants'] = data['data']['participants'];
-    activityDetailList['participant'] = data['data']['participant'];
     activityDetailList['content'] = data['data']['content'];
+
     activityDetailList['url'] = tempPathList;
-    return activityDetailList;
   }
 
   static List postPid = [];

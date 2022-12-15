@@ -79,9 +79,6 @@ class Api {
   //地圖位置抓貼文
   static String getActivityCoverByPlace =
       "/getActivityCoverByPlace?option=activityTime&placeLat=";
-  //歷史活動列表
-  static String getUserParticipated = "getUserParticipated?uid=";
-
   //搜尋貼文
   static List<String> searchPost = [
     "searchPost?text=",

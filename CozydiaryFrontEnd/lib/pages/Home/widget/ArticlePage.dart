@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
-import '../../Register/Controller/categoryController.dart';
 import '../HomePageTabbar.dart';
 import '../controller/createPostController.dart';
 

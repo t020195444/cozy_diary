@@ -23,8 +23,7 @@ class ActivityViewPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getPostController.isParticipant.value = false;
-    getPostController.isActivityParticipant(
-        ActivityPostService.activityDetailList['participant']);
+    getPostController.isActivityParticipant();
     getPostController.getActivityParticipantList();
     getPostController.activityId.value = int.parse(id);
     getPostController.checkLikeList(id);
@@ -58,7 +57,7 @@ class ActivityViewPostScreen extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ActivityPostService.activityDetailList['holder'] ==
+              child: getPostController.activityHolder ==
                       Hive.box("UidAndState").get("uid")
                   ? PopupMenuButton(
                       itemBuilder: (context) => [
@@ -213,7 +212,7 @@ class ActivityViewPostScreen extends StatelessWidget {
                                   ),
                                 ),
                               )),
-                          ActivityPostService.activityDetailList['holder'] ==
+                          getPostController.activityHolder ==
                                   Hive.box("UidAndState").get("uid")
                               ? Align(
                                   alignment: Alignment.center,
@@ -399,9 +398,10 @@ class ActivityViewPostScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(left: 10, top: 10),
                                 child: Text(
                                   "目前已有" +
-                                      ActivityPostService
-                                          .activityDetailList['participants']
+                                      getPostController.activityPeople
                                           .toString() +
+                                      // getPostController.activityPeople.value
+                                      //     .toString() +
                                       '人參加',
                                   style: TextStyle(fontSize: 15),
                                 )),
@@ -437,9 +437,8 @@ class ActivityViewPostScreen extends StatelessWidget {
                                         ),
                                         Text(
                                           getPostController.actPayment[
-                                              ActivityPostService
-                                                      .activityDetailList[
-                                                  'payment']],
+                                              getPostController
+                                                  .selectActPayment.value],
                                           style: TextStyle(fontSize: 15),
                                         )
                                       ],
@@ -455,8 +454,7 @@ class ActivityViewPostScreen extends StatelessWidget {
                                           style: TextStyle(fontSize: 13),
                                         ),
                                         Text(
-                                          ActivityPostService
-                                              .activityDetailList['budget']
+                                          getPostController.activitybudget.value
                                               .toString(),
                                           style: TextStyle(fontSize: 15),
                                         ),
@@ -473,9 +471,8 @@ class ActivityViewPostScreen extends StatelessWidget {
                                           style: TextStyle(fontSize: 13),
                                         ),
                                         Text(
-                                          getPostController
-                                              .actType[ActivityPostService
-                                                  .activityDetailList['actId']]
+                                          getPostController.actType[
+                                                  getPostController.actId.value]
                                               .toString(),
                                           style: TextStyle(fontSize: 15),
                                         ),
@@ -502,12 +499,13 @@ class ActivityViewPostScreen extends StatelessWidget {
                                           "按讚活動",
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                        Text(
-                                          ActivityPostService
-                                              .activityDetailList['likes']
-                                              .toString(),
-                                          style: TextStyle(fontSize: 15),
-                                        ),
+                                        Obx(
+                                          () => Text(
+                                            getPostController.activityLike.value
+                                                .toString(),
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ],
