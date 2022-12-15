@@ -4,6 +4,7 @@ import 'package:cozydiary/pages/Home/homePageTabbar.dart';
 import 'package:cozydiary/pages/Personal/Self/Page/personal_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -34,6 +35,18 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  switch (Hive.box("UidAndState").get("themeMode")) {
+    case "system":
+      Get.changeThemeMode(ThemeMode.system);
+      break;
+    case "dark":
+      Get.changeThemeMode(ThemeMode.dark);
+      break;
+    case "light":
+      Get.changeThemeMode(ThemeMode.light);
+      break;
+  }
+
   runApp(const MyApp());
 }
 

@@ -19,17 +19,20 @@ class UidAndStateAdapter extends TypeAdapter<UidAndState> {
     return UidAndState(
       uid: fields[0] as String,
       isLogin: fields[1] == null ? false : fields[1] as bool,
+      themeMode: fields[2] == null ? 'system' : fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UidAndState obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
-      ..write(obj.isLogin);
+      ..write(obj.isLogin)
+      ..writeByte(2)
+      ..write(obj.themeMode);
   }
 
   @override

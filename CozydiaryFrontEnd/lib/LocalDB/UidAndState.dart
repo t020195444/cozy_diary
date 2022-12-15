@@ -12,5 +12,8 @@ class UidAndState {
   @HiveField(1, defaultValue: false)
   final bool isLogin;
 
-  UidAndState({required this.uid, required this.isLogin});
+  @HiveField(2, defaultValue: "system")
+  final String themeMode;
+  UidAndState(
+      {required this.uid, required this.isLogin, required this.themeMode});
 }
