@@ -140,7 +140,7 @@ class MyApp extends StatelessWidget {
             ),
       },
       home: MyHomePage(
-        title: '',
+        title: 'CozyDiary',
       ),
       //右上角Debug標籤
       debugShowCheckedModeBanner: false,
@@ -192,6 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //     child: Center(child: Text("Click")),
     //   ),
     // );
+
     return FutureBuilder(
       initialData: false,
       future: logincontroller.login(id),
@@ -209,6 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           }
         } else {
+          
           return Center(
             child: SpinKitFadingCircle(
               color: Theme.of(context).colorScheme.primary,

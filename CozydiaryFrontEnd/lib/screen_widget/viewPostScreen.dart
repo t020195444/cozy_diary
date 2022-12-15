@@ -1,3 +1,5 @@
+import 'package:cozydiary/pages/Home/controller/changePageController.dart';
+import 'package:cozydiary/pages/Personal/OtherPerson/Page/OtherPersonPage.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:like_button/like_button.dart';
 import 'package:cozydiary/screen_widget/viewPostController.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:cozydiary/pages/Personal/OtherPerson/Controller/otherPersonController.dart';
 
 // ignore: must_be_immutable
 class ViewPostScreen extends StatelessWidget {
@@ -62,20 +65,30 @@ class ViewPostScreen extends StatelessWidget {
                     Get.back(result: viewPostController.needRefresh);
                   },
                 ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(ownerPicUrl),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        username,
-                        style: TextStyle(fontSize: 18),
+                title: GestureDetector(
+                  onTap: () {
+                    final userUid =
+                        viewPostController.currViewPostDetial.value.uid;
+                    Get.put(OtherPersonPageController(otherUid: userUid));
+                    Get.to(
+                        () => OtherPersonalPage(key: UniqueKey(), uid: userUid),
+                        transition: Transition.fadeIn);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(ownerPicUrl),
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          username,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 actions: [
                   viewPostController.uid == ownerUid
@@ -389,7 +402,7 @@ class ViewPostScreen extends StatelessWidget {
                         Obx(
                           () => Flexible(
                             child: ListView.builder(
-                                // physics: NeverScrollableScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: viewPostController
                                     .currViewPostDetial.value.comments.length,
@@ -397,341 +410,410 @@ class ViewPostScreen extends StatelessWidget {
                                   return Padding(
                                     padding: const EdgeInsets.only(
                                         left: 8.0, right: 8.0),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          //去使用者頁面
-                                        },
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                              leading: CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    viewPostController
-                                                        .currViewPostDetial
-                                                        .value
-                                                        .comments[index]
-                                                        .pic),
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          leading: GestureDetector(
+                                            onTap: () {
+                                              var userUid = viewPostController
+                                                  .currViewPostDetial
+                                                  .value
+                                                  .comments[index]
+                                                  .uid;
+
+                                              if (uid != userUid) {
+                                                Get.put(
+                                                    OtherPersonPageController(
+                                                        otherUid: userUid));
+                                                Get.to(
+                                                    () => OtherPersonalPage(
+                                                        key: UniqueKey(),
+                                                        uid: userUid),
+                                                    transition:
+                                                        Transition.fadeIn);
+                                              } else if (userUid == uid) {
+                                                Get.find<
+                                                        ChangePageTabbarController>()
+                                                    .selectedIndex
+                                                    .value = 2;
+                                              }
+                                              ;
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  viewPostController
+                                                      .currViewPostDetial
+                                                      .value
+                                                      .comments[index]
+                                                      .pic),
+                                            ),
+                                          ),
+                                          title: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                viewPostController
+                                                    .currViewPostDetial
+                                                    .value
+                                                    .comments[index]
+                                                    .username,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              title: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    viewPostController
-                                                        .currViewPostDetial
-                                                        .value
-                                                        .comments[index]
-                                                        .username,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  Padding(
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12.0),
+                                                child: Text(
+                                                  viewPostController
+                                                      .currViewPostDetial
+                                                      .value
+                                                      .comments[index]
+                                                      .text,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // style: TextStyle(
+                                                  //     // fontSize: 15,
+                                                  //     color: Color.fromARGB(
+                                                  //         255, 218, 196, 183)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          subtitle: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 40,
+                                                width: 45,
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      viewPostController
+                                                          .commentType
+                                                          .value = false;
+                                                      viewPostController
+                                                              .tempCid =
+                                                          viewPostController
+                                                              .currViewPostDetial
+                                                              .value
+                                                              .comments[index]
+                                                              .commentId
+                                                              .toString();
+                                                      focusNode.requestFocus();
+                                                    },
+                                                    child: Text('回覆',
+                                                        style: TextStyle(
+                                                            fontSize: 12))),
+                                              ),
+                                              viewPostController
+                                                              .currViewPostDetial
+                                                              .value
+                                                              .comments[index]
+                                                              .uid ==
+                                                          Hive.box(
+                                                                  "UidAndState")
+                                                              .get('uid') ||
+                                                      viewPostController
+                                                              .currViewPostDetial
+                                                              .value
+                                                              .uid ==
+                                                          Hive.box(
+                                                                  "UidAndState")
+                                                              .get('uid')
+                                                  ? SizedBox(
+                                                      height: 40,
+                                                      width: 45,
+                                                      child: TextButton(
+                                                          onPressed: () {
+                                                            var uid = Hive.box(
+                                                                    "UidAndState")
+                                                                .get('uid');
+                                                            if (uid ==
+                                                                viewPostController
+                                                                    .currViewPostDetial
+                                                                    .value
+                                                                    .comments[
+                                                                        index]
+                                                                    .uid) {
+                                                              updateCommentCtr
+                                                                      .text =
+                                                                  viewPostController
+                                                                      .currViewPostDetial
+                                                                      .value
+                                                                      .comments[
+                                                                          index]
+                                                                      .text;
+                                                              showDialog<
+                                                                  String>(
+                                                                context:
+                                                                    context,
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                          '編輯留言'),
+                                                                  actions: <
+                                                                      Widget>[
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context,
+                                                                            '編輯');
+                                                                        showDialog<
+                                                                            String>(
+                                                                          context:
+                                                                              context,
+                                                                          builder: (BuildContext context) =>
+                                                                              AlertDialog(
+                                                                            title:
+                                                                                const Text('修改留言'),
+                                                                            content:
+                                                                                TextField(
+                                                                              controller: updateCommentCtr,
+                                                                              maxLines: 1,
+                                                                              maxLength: 30,
+                                                                              decoration: InputDecoration(
+                                                                                border: InputBorder.none,
+                                                                                hintText: '修改留言...',
+                                                                              ),
+                                                                            ),
+                                                                            actions: <Widget>[
+                                                                              TextButton(
+                                                                                onPressed: () {
+                                                                                  if (updateCommentCtr.text != '') {
+                                                                                    viewPostController.updateComment(viewPostController.currViewPostDetial.value.comments[index].commentId.toString(), updateCommentCtr.text);
+                                                                                    updateCommentCtr.clear();
+                                                                                  } else {
+                                                                                    viewPostController.deleteComment(viewPostController.currViewPostDetial.value.comments[index].commentId);
+                                                                                    Fluttertoast.showToast(msg: "已刪除留言", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
+                                                                                  }
+                                                                                  Navigator.pop(context, '確認');
+                                                                                },
+                                                                                child: const Text('確認'),
+                                                                              ),
+                                                                              TextButton(
+                                                                                onPressed: () {
+                                                                                  Navigator.pop(context, '取消');
+                                                                                },
+                                                                                child: const Text('取消'),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                      child: const Text(
+                                                                          '編輯'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        viewPostController.deleteComment(viewPostController
+                                                                            .currViewPostDetial
+                                                                            .value
+                                                                            .comments[index]
+                                                                            .commentId);
+                                                                        Navigator.pop(
+                                                                            context,
+                                                                            '刪除');
+                                                                      },
+                                                                      child: const Text(
+                                                                          '刪除'),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            } else if (viewPostController
+                                                                    .currViewPostDetial
+                                                                    .value
+                                                                    .uid ==
+                                                                Hive.box(
+                                                                        "UidAndState")
+                                                                    .get(
+                                                                        'uid')) {
+                                                              showDialog<
+                                                                      String>(
+                                                                  context:
+                                                                      context,
+                                                                  builder: (BuildContext
+                                                                          context) =>
+                                                                      AlertDialog(
+                                                                          title: const Text(
+                                                                              '刪除留言'),
+                                                                          actions: <
+                                                                              Widget>[
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                viewPostController.deleteComment(viewPostController.currViewPostDetial.value.comments[index].commentId);
+                                                                                Navigator.pop(context, '刪除');
+                                                                              },
+                                                                              child: const Text('刪除'),
+                                                                            ),
+                                                                            TextButton(
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context, '取消');
+                                                                              },
+                                                                              child: const Text('取消'),
+                                                                            ),
+                                                                          ]));
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                            '編輯',
+                                                            style: TextStyle(
+                                                                fontSize: 12),
+                                                          )),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
+                                        ),
+                                        viewPostController
+                                                    .currViewPostDetial
+                                                    .value
+                                                    .comments[index]
+                                                    .repliesComments !=
+                                                []
+                                            ? ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: viewPostController
+                                                    .currViewPostDetial
+                                                    .value
+                                                    .comments[index]
+                                                    .repliesComments
+                                                    .length,
+                                                itemBuilder: ((context, i) {
+                                                  return Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 12.0),
-                                                    child: Text(
-                                                      viewPostController
-                                                          .currViewPostDetial
-                                                          .value
-                                                          .comments[index]
-                                                          .text,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      // style: TextStyle(
-                                                      //     // fontSize: 15,
-                                                      //     color: Color.fromARGB(
-                                                      //         255, 218, 196, 183)),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              subtitle: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 40,
-                                                    width: 45,
-                                                    child: TextButton(
-                                                        onPressed: () {
-                                                          viewPostController
-                                                              .commentType
-                                                              .value = false;
-                                                          viewPostController
-                                                                  .tempCid =
+                                                            left: 25.0),
+                                                    child: ListTile(
+                                                      leading: GestureDetector(
+                                                        onTap: () {
+                                                          var userUid =
                                                               viewPostController
                                                                   .currViewPostDetial
                                                                   .value
                                                                   .comments[
                                                                       index]
-                                                                  .commentId
-                                                                  .toString();
-                                                          focusNode
-                                                              .requestFocus();
+                                                                  .repliesComments[
+                                                                      i]
+                                                                  .uid;
+
+                                                          if (uid != userUid) {
+                                                            Get.put(
+                                                                OtherPersonPageController(
+                                                                    otherUid:
+                                                                        userUid));
+                                                            Get.to(
+                                                                () => OtherPersonalPage(
+                                                                    key:
+                                                                        UniqueKey(),
+                                                                    uid:
+                                                                        userUid),
+                                                                transition:
+                                                                    Transition
+                                                                        .fadeIn);
+                                                          } else if (userUid ==
+                                                              uid) {
+                                                            Get.find<
+                                                                    ChangePageTabbarController>()
+                                                                .selectedIndex
+                                                                .value = 2;
+                                                          }
+                                                          ;
                                                         },
-                                                        child: Text('回覆',
-                                                            style: TextStyle(
-                                                                fontSize: 12))),
-                                                  ),
-                                                  viewPostController
+                                                        child: CircleAvatar(
+                                                          backgroundImage: NetworkImage(
+                                                              viewPostController
                                                                   .currViewPostDetial
                                                                   .value
                                                                   .comments[
                                                                       index]
-                                                                  .uid ==
-                                                              Hive.box(
-                                                                      "UidAndState")
-                                                                  .get('uid') ||
-                                                          viewPostController
+                                                                  .repliesComments[
+                                                                      i]
+                                                                  .pic),
+                                                        ),
+                                                      ),
+                                                      title: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            viewPostController
+                                                                .currViewPostDetial
+                                                                .value
+                                                                .comments[index]
+                                                                .repliesComments[
+                                                                    i]
+                                                                .username,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 12.0),
+                                                            child: Text(
+                                                              viewPostController
                                                                   .currViewPostDetial
                                                                   .value
-                                                                  .uid ==
-                                                              Hive.box(
-                                                                      "UidAndState")
-                                                                  .get('uid')
-                                                      ? SizedBox(
-                                                          height: 40,
-                                                          width: 45,
-                                                          child: TextButton(
-                                                              onPressed: () {
-                                                                var uid = Hive.box(
-                                                                        "UidAndState")
-                                                                    .get('uid');
-                                                                if (uid ==
-                                                                    viewPostController
+                                                                  .comments[
+                                                                      index]
+                                                                  .repliesComments[
+                                                                      i]
+                                                                  .text,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              // style: TextStyle(
+                                                              //     // fontSize: 15,
+                                                              //     color: Color
+                                                              //         .fromARGB(
+                                                              //             255,
+                                                              //             218,
+                                                              //             196,
+                                                              //             183)),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      subtitle: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: viewPostController
                                                                         .currViewPostDetial
                                                                         .value
                                                                         .comments[
                                                                             index]
-                                                                        .uid) {
-                                                                  updateCommentCtr
-                                                                          .text =
-                                                                      viewPostController
-                                                                          .currViewPostDetial
-                                                                          .value
-                                                                          .comments[
-                                                                              index]
-                                                                          .text;
-                                                                  showDialog<
-                                                                      String>(
-                                                                    context:
-                                                                        context,
-                                                                    builder: (BuildContext
-                                                                            context) =>
-                                                                        AlertDialog(
-                                                                      title: const Text(
-                                                                          '編輯留言'),
-                                                                      actions: <
-                                                                          Widget>[
-                                                                        TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.pop(context,
-                                                                                '編輯');
-                                                                            showDialog<String>(
-                                                                              context: context,
-                                                                              builder: (BuildContext context) => AlertDialog(
-                                                                                title: const Text('修改留言'),
-                                                                                content: TextField(
-                                                                                  controller: updateCommentCtr,
-                                                                                  maxLines: 1,
-                                                                                  maxLength: 30,
-                                                                                  decoration: InputDecoration(
-                                                                                    border: InputBorder.none,
-                                                                                    hintText: '修改留言...',
-                                                                                  ),
-                                                                                ),
-                                                                                actions: <Widget>[
-                                                                                  TextButton(
-                                                                                    onPressed: () {
-                                                                                      if (updateCommentCtr.text != '') {
-                                                                                        viewPostController.updateComment(viewPostController.currViewPostDetial.value.comments[index].commentId.toString(), updateCommentCtr.text);
-                                                                                        updateCommentCtr.clear();
-                                                                                      } else {
-                                                                                        viewPostController.deleteComment(viewPostController.currViewPostDetial.value.comments[index].commentId);
-                                                                                        Fluttertoast.showToast(msg: "已刪除留言", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.blue, textColor: Colors.white, fontSize: 16.0);
-                                                                                      }
-                                                                                      Navigator.pop(context, '確認');
-                                                                                    },
-                                                                                    child: const Text('確認'),
-                                                                                  ),
-                                                                                  TextButton(
-                                                                                    onPressed: () {
-                                                                                      Navigator.pop(context, '取消');
-                                                                                    },
-                                                                                    child: const Text('取消'),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                          child:
-                                                                              const Text('編輯'),
-                                                                        ),
-                                                                        TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            viewPostController.deleteComment(viewPostController.currViewPostDetial.value.comments[index].commentId);
-                                                                            Navigator.pop(context,
-                                                                                '刪除');
-                                                                          },
-                                                                          child:
-                                                                              const Text('刪除'),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  );
-                                                                } else if (viewPostController
+                                                                        .repliesComments[
+                                                                            i]
+                                                                        .uid ==
+                                                                    Hive.box(
+                                                                            "UidAndState")
+                                                                        .get(
+                                                                            'uid') ||
+                                                                viewPostController
                                                                         .currViewPostDetial
                                                                         .value
                                                                         .uid ==
                                                                     Hive.box(
                                                                             "UidAndState")
                                                                         .get(
-                                                                            'uid')) {
-                                                                  showDialog<
-                                                                          String>(
-                                                                      context:
-                                                                          context,
-                                                                      builder: (BuildContext
-                                                                              context) =>
-                                                                          AlertDialog(
-                                                                              title: const Text('刪除留言'),
-                                                                              actions: <Widget>[
-                                                                                TextButton(
-                                                                                  onPressed: () {
-                                                                                    viewPostController.deleteComment(viewPostController.currViewPostDetial.value.comments[index].commentId);
-                                                                                    Navigator.pop(context, '刪除');
-                                                                                  },
-                                                                                  child: const Text('刪除'),
-                                                                                ),
-                                                                                TextButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context, '取消');
-                                                                                  },
-                                                                                  child: const Text('取消'),
-                                                                                ),
-                                                                              ]));
-                                                                }
-                                                              },
-                                                              child: Text(
-                                                                '編輯',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12),
-                                                              )),
-                                                        )
-                                                      : Container()
-                                                ],
-                                              ),
-                                            ),
-                                            viewPostController
-                                                        .currViewPostDetial
-                                                        .value
-                                                        .comments[index]
-                                                        .repliesComments !=
-                                                    []
-                                                ? ListView.builder(
-                                                    physics:
-                                                        NeverScrollableScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        viewPostController
-                                                            .currViewPostDetial
-                                                            .value
-                                                            .comments[index]
-                                                            .repliesComments
-                                                            .length,
-                                                    itemBuilder: ((context, i) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 25.0),
-                                                        child: ListTile(
-                                                          leading: CircleAvatar(
-                                                            backgroundImage: NetworkImage(
-                                                                viewPostController
-                                                                    .currViewPostDetial
-                                                                    .value
-                                                                    .comments[
-                                                                        index]
-                                                                    .repliesComments[
-                                                                        i]
-                                                                    .pic),
-                                                          ),
-                                                          title: Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                viewPostController
-                                                                    .currViewPostDetial
-                                                                    .value
-                                                                    .comments[
-                                                                        index]
-                                                                    .repliesComments[
-                                                                        i]
-                                                                    .username,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            12.0),
-                                                                child: Text(
-                                                                  viewPostController
-                                                                      .currViewPostDetial
-                                                                      .value
-                                                                      .comments[
-                                                                          index]
-                                                                      .repliesComments[
-                                                                          i]
-                                                                      .text,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  // style: TextStyle(
-                                                                  //     // fontSize: 15,
-                                                                  //     color: Color
-                                                                  //         .fromARGB(
-                                                                  //             255,
-                                                                  //             218,
-                                                                  //             196,
-                                                                  //             183)),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          subtitle: Align(
-                                                            alignment: Alignment
-                                                                .centerLeft,
-                                                            child: viewPostController
-                                                                            .currViewPostDetial
-                                                                            .value
-                                                                            .comments[
-                                                                                index]
-                                                                            .repliesComments[
-                                                                                i]
-                                                                            .uid ==
-                                                                        Hive.box("UidAndState").get(
-                                                                            'uid') ||
-                                                                    viewPostController
-                                                                            .currViewPostDetial
-                                                                            .value
-                                                                            .uid ==
-                                                                        Hive.box("UidAndState")
-                                                                            .get('uid')
-                                                                ? SizedBox(
-                                                                    height: 40,
-                                                                    width: 45,
-                                                                    child: TextButton(
-                                                                        onPressed: () {
+                                                                            'uid')
+                                                            ? SizedBox(
+                                                                height: 40,
+                                                                width: 45,
+                                                                child:
+                                                                    TextButton(
+                                                                        onPressed:
+                                                                            () {
                                                                           var uid =
                                                                               Hive.box("UidAndState").get('uid');
 
@@ -815,20 +897,21 @@ class ViewPostScreen extends StatelessWidget {
                                                                                     ]));
                                                                           }
                                                                         },
-                                                                        child: Text(
+                                                                        child:
+                                                                            Text(
                                                                           '編輯',
                                                                           style:
                                                                               TextStyle(fontSize: 12),
                                                                         )),
-                                                                  )
-                                                                : Container(),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }))
-                                                : Container()
-                                          ],
-                                        )),
+                                                              )
+                                                            : Container(),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }))
+                                            : Container()
+                                      ],
+                                    ),
                                   );
                                 })),
                           ),

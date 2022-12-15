@@ -22,7 +22,6 @@ class CategoryPostController extends GetxController {
   }
 
   Future<void> getPostCover(String cid) async {
-    print("aksdjlsakjlsajdsalkd");
     isLoading(true);
     if (cid == "") {
       try {
