@@ -74,7 +74,7 @@ class CategoryController extends GetxController {
         update();
       }
     } catch (e) {
-      print(e);
+      
     } finally {}
   }
 
@@ -95,7 +95,7 @@ class CategoryController extends GetxController {
         }
       }
     } catch (e) {
-      print(e);
+     
     } finally {
       isLoding = false;
     }

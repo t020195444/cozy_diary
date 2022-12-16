@@ -316,7 +316,7 @@ class CreatePostController extends GetxController {
         }, //resolution of thumbnail
       ));
     }
-    print(categoryImageList);
+   
   }
 
   RxMap selectedMap = {}.obs;
@@ -324,7 +324,7 @@ class CreatePostController extends GetxController {
   selectCategory(int index) {
     currSelectedNumber.value = index;
     selectedMap.value = categoryList['data'][index];
-    print(selectedMap);
+    
   }
 
   Future<void> changePicSize(String path, int index) async {

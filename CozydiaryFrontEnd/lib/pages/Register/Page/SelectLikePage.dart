@@ -80,7 +80,7 @@ class SelectLikePage extends StatelessWidget {
                 ),
                 onPressed: () async {
                   int status = await categoryController.addUserCategory();
-                  print(status);
+                  
                   if (status == 200) {
                     if (categoryController.registState) {
                       Get.back();

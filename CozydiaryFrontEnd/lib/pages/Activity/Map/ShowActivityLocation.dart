@@ -8,6 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 
+import '../service/ActivityPostService.dart';
+
 class GeolocatorService {
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -49,8 +51,8 @@ class ShowActivityLocationState extends State<ShowActivityLocation> {
   late GoogleMapController googleMapController;
 
   late final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(getPostCoverController.activityLat.value.toDouble(),
-        getPostCoverController.activityLng.value.toDouble()),
+    target: LatLng(ActivityPostService.activityDetailList['placeLat'],
+        ActivityPostService.activityDetailList['placeLng']),
     zoom: 14.4746,
   );
 
@@ -59,8 +61,8 @@ class ShowActivityLocationState extends State<ShowActivityLocation> {
     GeolocatorService()._determinePosition();
     markersList.add(Marker(
       markerId: MarkerId(""),
-      position: LatLng(getPostCoverController.activityLat.value.toDouble(),
-          getPostCoverController.activityLng.value.toDouble()),
+      position: LatLng(ActivityPostService.activityDetailList['placeLat'],
+          ActivityPostService.activityDetailList['placeLng']),
     ));
     super.initState();
   }

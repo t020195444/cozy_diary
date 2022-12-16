@@ -31,6 +31,7 @@ class ActivityPostService {
     activityDetailList['placeLng'] = data['data']['placeLng'];
     activityDetailList['placeLat'] = data['data']['placeLat'];
     activityDetailList['likes'] = data['data']['likes'];
+
     activityDetailList['cover'] = data['data']['cover'];
     activityDetailList['actId'] = data['data']['actId'];
     activityDetailList['payment'] = data['data']['payment'];
@@ -41,6 +42,7 @@ class ActivityPostService {
     activityDetailList['participant'] = data['data']['participant'];
     activityDetailList['content'] = data['data']['content'];
     activityDetailList['url'] = tempPathList;
+
     return activityDetailList;
   }
 

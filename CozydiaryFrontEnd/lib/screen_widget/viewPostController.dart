@@ -128,7 +128,7 @@ class ViewPostController extends GetxController {
   updatePost(String pid, String title, String content) async {
     var updateJson = {};
     updateJson = {'pid': pid, 'title': title, 'content': content};
-    print(updateJson);
+
     await dio.post(Api.ipUrl + Api.updatePost, data: updateJson);
     await getPostDetail();
     needRefresh = true;

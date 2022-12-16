@@ -50,6 +50,8 @@ class ActivityGetPostController extends GetxController {
   //按讚列表
   checkLikeList(String aid) async {
     checkActivitLike.value = await ActivityService().activityLikesList(aid);
+
+ 
     if (checkActivitLike.length == 0) {
       isLike.value = false;
     }
@@ -67,11 +69,13 @@ class ActivityGetPostController extends GetxController {
   }
 
   //按讚
+  RxInt likes = 0.obs;
   checkLike(String uid) async {
     await ActivityService().checkLike(uid, activityId.value.toString());
     await checkLikeList(activityId.value.toString());
     await ActivityPostService.getActivityDetail(activityId.value.toString());
-    update();
+    likes.value = ActivityPostService.activityDetailList['likes'];
+    
   }
 
   //審核 通過/未審核
@@ -124,6 +128,9 @@ class ActivityGetPostController extends GetxController {
     };
     await ActivityService().updateParticipant(updateParticipantData); //呼叫報名API
     await ActivityPostService.getActivityDetail(id); //重新拉活動資訊
+    await isActivityParticipant(
+        ActivityPostService.activityDetailList['participant']);
+
     update(); //更新
   }
 
